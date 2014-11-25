@@ -10,30 +10,66 @@
 		<div class="header">
 			<div class="wrapper">
 				<div class="header-nav clearfix">
-					<h1 class="header-logo"><span>Jquery</span>Comps</h1>
+					<h1 class="header-logo">
+						<span>Jquery</span>Comps
+						<i>|</i>
+						<a class="header-github" hover="logohover" href="http://github.com/openjavascript/jquerycomps" target="_blank">
+							<img class="github-unhover" src="../../static/img/githublogo.png" />
+							<img class="github-hover" src="../../static/img/githublogo2.png" />
+						</a>
+					</h1>
 					<ul id="menulist" class="header-menu">
 						<script id="tpl-menulist" type="text/html">
-							{{each list as value i}}
-						    <li>{{value.name}}</li>
+							{{each compsList as value}}
+						    <li hover="header-menuhover">
+						    	{{value.name}}
+						    	<div class="header-submenu clearfix">
+						    		{{each value.list as item}}
+						    		{{if !item.hide && !item.history}}
+							    		{{if value.name != 'Plugin'}}
+							    			<a class="header-complink" version="{{item.version}}" href="#">{{item.name}}</a>
+							    		{{else}}
+							    			<a href="{{item.outlink}}" target="_blank">{{item.name}}</a>
+							    		{{/if}}
+							    	{{/if}}
+						    		{{/each}}
+						    	</div>
+						    </li>
+						    {{/each}}
+						    {{each extraMenu as value}}
+						    <li class="header-extramenu" hover="header-menuhover">
+						    	<a href="{{value.url}}" target="_blank" hover="header-menuhover">
+						    	{{value.name}}
+						    	</a>
+						    </li>
 						    {{/each}}
 						</script>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="flor-img">
-		</div>
+		<div class="flor-img"></div>
 		<div class="wrapper">
 			<div class="body clearfix">
+				<div class="body-helper">
+					<a href="#" class="body-homebtn" style="display:none">HOME</a>
+					<a href="#" class="body-backbtn" style="display:none">BACK</a>
+					<a href="#" class="body-topbtn" style="display:none">TOP</a>
+				</div>
+				
 				<div id="bodynav" class="body-nav">
 					<script id="tpl-navlist" type="text/html">
-						{{each list as value i}}
+						{{each compsList as value}}
 				        <dl>
 							<dt>{{value.name}}</dt>
 							<dd>
 								<ul>
-									{{each value.list as item i}}
-									<li><a href="#">{{item.name}}</a></li>
+									{{each value.list as item}}
+									{{if !item.hide && !item.history}}
+									<li>
+										<a href="#" linkdata="{{item.name | replace}}">{{item.name}}</a>
+									</li>
+									{{/if}}
 									{{/each}}
 								</ul>
 							</dd>
@@ -43,27 +79,62 @@
 				</div>
 				<div id="itemlist" class="body-content">
 					<script id="tpl-itemlist" type="text/html">
-						{{each list as value i}}
+						{{each compsList as value}}
 				        <ul class="body-compblock">
-				        	{{each value.list as item i}}
-							<li>
-								<h2 class="body-comptitle">{{item.name}}</h2>
-								<h3 class="body-compsubtitle">{{item.subtitle}}</h3>
-								{{each item.desc as desc i}}
-								<p class="body-compdesc">{{desc}}</p>
+				        	{{if value.name != 'Plugin'}}
+					        	{{each value.list as item}}
+					        	{{if !item.hide && !item.history}}
+								<li id="{{item.name | replace}}" class="body-comp" data-version="{{item.version}}">
+									<h2 class="body-comptitle clearfix">
+										<span class="body-compname">{{item.name}}</span>
+										<a href="#" class="body-attrbtn body-changebtn">ATTR</a>
+										{{if !item.nodemo}}
+										<a href="#" class="body-demobtn body-changebtn">DEMO</a>
+										<a href="#" class="body-sdemobtn">SIMPLE DEMO</a>
+										{{/if}}
+									</h2>
+									<h3 class="body-compsubtitle">{{item.subtitle}}<span class="body-compversion">最新版本: {{item.version}}</span></h3>
+									{{each item.desc as desc}}
+									<p class="body-compdesc">{{desc}}</p>
+									{{/each}}
+									<div class="body-compdemo">
+										<a href="#" class="body-compclose">CLOSE DEMO</a>
+										<iframe src="" frameborder="no" border="0"></iframe>
+									</div>
+								</li>
+								{{/if}}
 								{{/each}}
-							</li>
-							{{/each}}
+							{{else}}
+								{{each value.list as item}}
+								{{if !item.hide && !item.history}}
+								<li id="{{item.name | replace}}" class="body-comp">
+									<h2 class="body-comptitle clearfix">
+										<span class="body-compname">{{item.name}}</span>
+										<a href="{{item.outlink}}" target="_blank" class="body-attrbtn">官网</a>
+									</h2>
+									<h3 class="body-compsubtitle">{{item.subtitle}}<span class="body-compversion">使用版本: {{item.version}}</span></h3>
+									{{each item.desc as desc}}
+									<p class="body-compdesc">{{desc}}</p>
+									{{/each}}
+								</li>
+								{{/if}}
+								{{/each}}
+							{{/if}}
 						</ul>
 					    {{/each}}
 					</script>
 				</div>
+				<div class="body-detail">
+					<iframe id="detailframe" src="" frameborder="no" border="0"></iframe>
+					<ul class="body-detailnav"></ul>
+				</div>
 			</div>
 			<div class="footer">
-				
+				<h2>友情链接：</h2>
+				<p class="clearfix"><a href="" hover="linkhover" target="_blank">奇舞团</a></p>
 			</div>
 		</div>
-		<script src="http://s0.qhimg.com/static/8b15829770ad1a0f/jquery,require.js"></script>
+		<script src="../../static/js/jc/lib.js"></script>
 		<script src="../../static/js/config.js"></script>
 		<script src="../../static/js/app/index.js"></script>
 	</body>
