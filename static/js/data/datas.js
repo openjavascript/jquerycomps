@@ -13,9 +13,9 @@
 
 		basePath : '../../tpl/demo/'
 		
-		, demoPage : '_demo.html'
+		, demoPage : 'demo.html'
 		
-		, detailPage : '_detail.html'
+		, detailPage : 'detail.html'
 
 		, extraMenu : [ 
 			{
