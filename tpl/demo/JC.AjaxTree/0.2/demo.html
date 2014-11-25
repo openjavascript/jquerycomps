@@ -4,17 +4,17 @@
     <meta charset="utf-8" />
         <title>JC.AjaxTree simple demo</title>
         <!-- start pageCommon style -->
-        <link rel="stylesheet" type="text/css" href="/jc_doc/static/css/common.css" />
-        <link rel="stylesheet" type="text/css" href="/jc_doc/static/css/app/simple.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../static/css/common.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../static/css/app/simple.css" />
         <!-- end pageCommon style -->
 
         <!-- start codeview style -->
-        <link rel="stylesheet" type="text/css" href="/jc_doc/static/js/codeMirror/lib/codemirror.css" />
-        <link rel="stylesheet" type="text/css" href="/jc_doc/static/css/app/codeview/neo.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../static/js/codeMirror/lib/codemirror.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../static/css/app/codeview/neo.css" />
         <!-- end codeview style -->
 
         <!-- start JC style -->
-        <link href='/jc_doc/static/js/jc/modules/JC.AjaxTree/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../static/js/jc/modules/JC.AjaxTree/0.1/res/default/style.css' rel='stylesheet' />
         <!-- end JC style -->
 
         <!-- start customer style ( add class 'show-css' will show in css block ) -->
@@ -31,8 +31,9 @@
             }
         </style>
         
-        <script src="/jc_doc/static/js/jc/lib.js"></script>
-        <script src="/jc_doc/static/js/config.js"></script>
+        <script src="../../../../static/js/jc/lib.js"></script>
+        <script src="../../../../static/js/config.js"></script>
+        <script src="../../../../static/js/app/demo.js"></script>
 
     </head>
     <body>
@@ -158,74 +159,6 @@
             });
 
         </script>
-
-        <script type="text/javascript">
-            requirejs( [ 'JC.AjaxTree', '../../lib/codemirror', 'codeMirror.htmlmixed', 'JC.FrameUtil' ], function( Tree, CodeMirror ){
-                JC.FrameUtil.autoNoticeSize();
-
-                $( '.codeview-cssview textArea' ).html( $( '.show-css' ).html() );
-                var cssEditor = CodeMirror.fromTextArea( $( '.codeview-cssview textArea' )[0], {
-                    readOnly: 'nocursor',
-                    lineNumbers: true,
-                    lineWrapping: true,
-                    mode: { name: 'css' }
-                } );
-                cssEditor.refresh();
-
-                $( '.codeview-jsview textArea' ).html( $( '.show-js' ).html() );
-                var jsEditor = CodeMirror.fromTextArea( $( '.codeview-jsview textArea' )[0], {
-                    readOnly: 'nocursor',
-                    lineNumbers: true,
-                    lineWrapping: true,
-                    mode: { name: 'javascript' }
-                } );
-                jsEditor.refresh();
-
-                $( '.codeview-htmlview textArea' ).html( $( '.show-html' )
-                    .html().replace( /</ig,'&lt;' ).replace( />/ig,'&gt;' ) );
-
-                var htmlEditor = CodeMirror.fromTextArea( 
-                    $( '.codeview-htmlview textArea' )[0], {
-                    
-                    readOnly: 'nocursor',
-                    lineNumbers: true,
-                    lineWrapping: true,
-                    mode: { 
-                        name: 'htmlmixed'
-                        , scriptTypes: [
-                            { matches: 'text/template', mode: null } 
-                        ]
-                    }
-                } );
-
-                htmlEditor.refresh();
-
-                $( '.codeview-tabbar a' ).on( 'click', function( e ){
-                    e.preventDefault();
-
-                    var _tar = $( e.target );
-                    if( _tar.hasClass( 'selected' ) ){
-                        return;
-                    }
-
-                    var _tarClass = _tar.attr( 'class' );
-                    _tar.parent().find( '.selected' ).removeClass( 'selected' );
-                    _tar.addClass( 'selected' );
-
-                    $( '.codeview-view .nowview' ).removeClass( 'nowview' );
-                    $( '.' + _tarClass + 'view' ).addClass( 'nowview' );
-
-                    if( _tarClass.indexOf('css') >= 0 ){
-                        cssEditor.refresh();
-                    } else if( _tarClass.indexOf('js') >= 0 ) {
-                        jsEditor.refresh();
-                    } else {
-                        htmlEditor.refresh();
-                    }
-                });
-            });
-        </script>
-
     </body>
 </html>
 
