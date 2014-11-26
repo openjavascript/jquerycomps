@@ -10,6 +10,9 @@
     !console.dir && (
         console.dir = function(){}
     );
+    !console.error && (
+        console.error = function(){}
+    );
     /**
      * 声明主要命名空间, 方便迁移
      */
@@ -17,6 +20,12 @@
     JC.log = function(){ JC.debug && console.log( sliceArgs( arguments ).join(' ') ); };
     JC.dir = function(){ 
         JC.debug && $.each( sliceArgs( arguments ), function( _ix, _item ){ console.dir( _item )} );
+    };
+    JC.error = function(){ 
+        JC.debug && $.each( sliceArgs( arguments ), function( _ix, _item ){ console.error( _item )} );
+    };
+    JC.clear = function(){ 
+        console.clear && console.clear();
     };
 
     JC.PATH = JC.PATH || scriptPath();
@@ -1203,13 +1212,18 @@
         var _r = null   
             , _re = /^now/i
             , _nowFirstRe = /^nowfirst/
+            , _dateRe = /^([\d]{8}|[\d]{4}.[\d]{2}.[\d]{2})/
             , _d, _ar, _item
             ;
         if( _dateStr && typeof _dateStr == 'string' ){
-            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) ){
+            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) || _dateRe.test( _dateStr ) ){
                 _d = new Date();
                 if( _nowFirstRe.test(_dateStr ) ){
                     _d.setDate( 1 );
+                }
+                if( _dateRe.test( _dateStr ) ){
+                    _d = JC.f.parseISODate( _dateStr.replace( /[^\d]/g, '' ).slice( 0, 8 ) );
+                    _dateStr = _dateStr.replace( _dateRe, '' );
                 }
                 _dateStr = _dateStr.replace( _re, '' ).replace(/[\s]+/g, '');
                 _ar = _dateStr.split(',');

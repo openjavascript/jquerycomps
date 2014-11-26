@@ -5,8 +5,7 @@
      * <br />响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = "<b>.js_autoTab</b>" 的 HTML 标签
      * <br />需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>

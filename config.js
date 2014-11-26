@@ -125,7 +125,7 @@ requirejs.config( {
         , 'jquery.mousewheel': 'modules/jquery.mousewheel/3.1.12/jquery.mousewheel'
         , 'jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
         , 'jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
-
+        , 'jquery.cookie': 'modules/jquery.cookie/1.4.1/jquery.cookie'
 
         , 'json2': 'modules/JSON/2/JSON'
         , 'plugins.JSON2': 'modules/JSON/2/JSON'
@@ -145,8 +145,8 @@ requirejs.config( {
         , 'swfupload': 'modules/SWFUpload/2.5.0/SWFUpload'
         , 'Raphael': 'modules/Raphael/latest/raphael'
 
-
-
+        , 'artTemplate':  "modules/artTemplate/3.0/artTemplate"
+        , 'store':  "modules/store/1.3.14/store"
     }
 });
 /**

@@ -116,7 +116,7 @@
      * @default     300
      * @static
      */
-    Fixed.durationms = 300;
+    Fixed.durationms = 200;
     /**
      * 每次滚动的时间间隔( 时间运动 )
      * @property    stepms
@@ -159,6 +159,11 @@
         , fixedright: function(){ return parseInt( this._layout.attr('fixedright'), 10 ); }
         , fixedbottom: function(){ return parseInt( this._layout.attr('fixedbottom'), 10 ); }
         , fixedleft: function(){ return parseInt( this._layout.attr('fixedleft'), 10 ); }
+
+        , fixedAutoHide:
+            function(){
+                return JC.f.parseBool( this._layout.attr( 'fixedAutoHide' ) );
+            }
 
         , fixedcenter: 
             function(){ 
@@ -243,7 +248,31 @@
                     : this._initFixedUnsupport();
 
                 this._initMoveTo();
-                this._model.layout().show();
+
+                $( _p ).on( 'hide_layout', function(){
+                    _p._model.layout().hide();
+                });
+
+                $( _p ).on( 'show_layout', function(){
+                    _p._model.layout().show();
+                });
+
+
+                if( _p._model.fixedAutoHide() ){
+                    if( JDOC.scrollTop() <= 20 ){
+                        $( _p ).trigger( 'hide_layout' );
+                    }
+
+                    JDOC.on( 'scroll', function(){
+                        if( JDOC.scrollTop() <= 20 ){
+                            $( _p ).trigger( 'hide_layout' );
+                        }else{
+                            $( _p ).trigger( 'show_layout' );
+                        }
+                    });
+                }else{
+                    $( _p ).trigger( 'show_layout' );
+                }
 
                 return this;
             }
@@ -476,6 +505,7 @@
             , 'ul.js_autoFixed'
             , 'ol.js_autoFixed'
             , 'button.js_autoFixed'
+            , 'a.js_autoFixed'
            ].join() ).each( function(){ new Fixed( $(this) ); });
     });
 

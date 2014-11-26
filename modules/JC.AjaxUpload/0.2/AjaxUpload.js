@@ -2,8 +2,7 @@
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Panel.html'>JC.Panel</a>
      *      , <a href='javascript:;'>SWFUpload</a>
      * </p>
@@ -389,6 +388,14 @@
                         });
                     }, 300 );
                 });
+
+                _p.on( 'SHOW_LAYOUT_BUTTON', function(){
+                    _p._model.layoutButton().css( { 'position': 'static' } );
+                });
+
+                _p.on( 'HIDE_LAYOUT_BUTTON', function(){
+                    _p._model.layoutButton().css( { 'position': 'absolute', 'left': '-10000px' } );
+                });
             }
         , _inited:
             function(){
@@ -577,7 +584,7 @@
                 if( !this._buttonLayout ){
                     _p._buttonLayout = 
                             $( JC.f.printf( 
-                                '<button type="text" class="AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
+                                '<button type="submit" class="AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
                                 , _holderId 
                                 , _p.cauStyle()
                             ));
@@ -586,6 +593,10 @@
                         ? _p.selector().after( this._buttonLayout )
                         : _p.selector().before( this._buttonLayout )
                         ;
+                    _p._buttonLayout.on( 'click', function( _evt ){
+                        _evt.preventDefault();
+                        _evt.stopPropagation();
+                    });
                 }
                 return this._buttonLayout;
             }
@@ -968,7 +979,8 @@
                     ;
                     
                     _p.updateChange();
-                    _p._model.layoutButton().show();
+                    //_p._model.layoutButton().show();
+                    _p.trigger( 'SHOW_LAYOUT_BUTTON' );
 
                     _statusLabel && _statusLabel.length && _statusLabel.hide();
                     _displayLabel && _displayLabel.length && _displayLabel.hide();
@@ -997,19 +1009,6 @@
                                 break;
                             }
 
-                        case -200:
-                            {
-                                _tmp = JC.f.printf( '<h2>文件大小超出服务器限制</h2>'
-                                    +'{1}: <b style="color:red">{2}</b>' 
-                                    , _p._model.cauFileSize()
-                                    , _file.name
-                                    , humanFileSize( _file.size ).replace( 'i', '' )
-                                );
-
-                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
-                                break;
-                            }
-
                         case -130:
                             {
                                 _p._model.beforeUploadError( true );
@@ -1025,10 +1024,17 @@
                                 break;
                             }
 
+
                         default:
                             {
-                                alert( ['上传出错!', '错误代码:', _errCode, '出错原因:', _msg ].join( ' ' ) );
-                                //JC.log( ['上传出错!', '错误代码:', _errCode, '出错原因:', _msg ].join( ' ' ) );
+                                _tmp = JC.f.printf( '<h2>上传失败</h2>'
+                                    +'错误代码：{0}' 
+                                    +'<br />错误信息：{1}' 
+                                    , _errCode
+                                    , _msg
+                                );
+
+                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
                                 break;
                             }
                     }
@@ -1060,6 +1066,8 @@
                         && _displayLabel.html( _label ) 
                         ;
                 });
+
+
             }
 
         , beforeUpload:
@@ -1117,7 +1125,8 @@
 
                 if( _statusLabel && _statusLabel.length && !_noLabelAction ){
                     _p._model.selector().show();
-                    _p._model.layoutButton().show();
+                    //_p._model.layoutButton().show();
+                    _p.trigger( 'SHOW_LAYOUT_BUTTON' );
                     _statusLabel.hide();
                 }
                 if( _displayLabel && _displayLabel.length ){
@@ -1125,7 +1134,8 @@
                 }
 
                 if( _d && _displayLabel && _displayLabel.length ){
-                    _p._model.layoutButton().hide();
+                    //_p._model.layoutButton().hide();
+                    _p.trigger( 'HIDE_LAYOUT_BUTTON' );
                 }
 
                 _p._model.selector().val( '' );

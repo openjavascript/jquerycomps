@@ -51,7 +51,7 @@
 
     $( document ).delegate( 'div.js_compAjaxTree', 'change', function( _evt, _item, _data, _box ){
         //JC.dir( _item[0], _data, _box[0] );
-        JC.log( _data );
+        JC.log( 'change', _data );
     });
 
 </script>
@@ -64,18 +64,20 @@
             <button type="button" class="js_open_all">open all</button>
             <button type="button" class="js_close_all">close all</button>
             <button type="button" class="js_open_for" data_target="#open_to_val">open for</button>
-            <input type="text" value="24" id="open_to_val" />
+            <input type="text" value="0,03,35,36" id="open_to_val" />
             <button type="button" class="js_close_for" data_target="#open_to_val">close for</button>
             </dd>
         </dl>
     </div>
     <dl>
-        <dt>默认树 - Tree 示例</dt>
+        <dt>默认树 - AjaxTree 示例 - [同步&&异步]加载</dt>
         <dd>
             <div class="js_compAjaxTree" data-cajScriptData="|script">
                 <script type="text/template">
                     {
-                        data: 
+                        root: ["folder","0",'root']
+                        , url: "data/treedata.php?id={0}"
+                        , data: 
                             {
                                 "0": [
                                         ["folder","01","非异步节点01"],
@@ -98,32 +100,34 @@
                                     ]
 
                             }
-                        , root: ["folder","0",'root']
-                        , url: "data/treedata.php"
                     }
                 </script>
             </div>
         </dd>
     </dl>
     <dl>
-        <dt>添加 a 链接 - Tree 示例</dt>
+        <dt>添加 a 链接 - AjaxTree 示例 - 同步加载</dt>
         <dd>
         <div class="js_compAjaxTree js_tree2" data-cajData="TREE_2" data-urlArgName="node">
             <script>
                 window.TREE_2 = {
-                    data: 
+                    root: [ 'folder', "23",'客户发展部']
+                    , data: 
                         {
                             "24":
                             [
                                 [
+                                    'file',
                                     "25", 
                                     "二组一队"
                                 ], 
                                 [
+                                    'file',
                                     "26", 
                                     "二组二队"
                                 ], 
                                 [
+                                    'file',
                                     "27", 
                                     "二组三队"
                                 ]
@@ -131,20 +135,21 @@
                             "23":
                             [
                                 [
+                                    'file',
                                     "28", 
                                     "销售二组"
                                 ], 
                                 [
+                                    'folder', 
                                     "24", 
                                     "售前审核组"
                                 ]
                             ]
                         }
-                    , root: ["23",'客户发展部']
                 };           
 
                 $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
-                    _item.html( JC.f.printf( '<a href="?node={0}" data-id="{0}">{1}</a>', _data[0], _data[1] ) );
+                    _item.html( JC.f.printf( '<a href="?node={0}" data-id="{0}">{1}</a>', _data[1], _data[2] ) );
                 });
 
             </script>
@@ -152,24 +157,28 @@
         </dd>
     </dl>
     <dl>
-        <dt>添加 a 链接, evt.preventDefault - Tree 示例</dt>
+        <dt>添加 a 链接, evt.preventDefault - AjaxTree 示例 - 同步加载</dt>
         <dd>
         <div class="js_compAjaxTree js_tree3" data-cajData="TREE_3" data-urlArgName="node">
             <script>
                 window.TREE_3 = {
-                    data: 
+                    root: [ 'folder', "23",'客户发展部']
+                    , data: 
                         {
                             "24":
                             [
                                 [
+                                    'file',
                                     "25", 
                                     "二组一队"
                                 ], 
                                 [
+                                    'file',
                                     "26", 
                                     "二组二队"
                                 ], 
                                 [
+                                    'file',
                                     "27", 
                                     "二组三队"
                                 ]
@@ -177,25 +186,26 @@
                             "23":
                             [
                                 [
+                                    'file',
                                     "28", 
                                     "销售二组"
                                 ], 
                                 [
+                                    'folder',
                                     "24", 
                                     "售前审核组"
                                 ]
                             ]
                         }
-                    , root: ["23",'客户发展部']
                 };           
 
                 $( document ).delegate( 'div.js_tree3', 'renderItem', function( _evt, _item, _data ){
-                    _item.html( JC.f.printf( '<a href="javascript:;" data-id="{0}">{1}</a>', _data[0], _data[1] ) );
+                    _item.html( JC.f.printf( '<a href="javascript:;" data-id="{0}">{1}</a>', _data[1], _data[2] ) );
                 });
 
                 $( document ).delegate( 'div.js_tree3', 'change', function( _evt, _item, _data, _box ){
                     //JC.dir( _item[0], _data, _box[0] );
-                    JC.log( 'tree3:', _data );
+                    //JC.log( 'tree3:', _data );
                 });
             </script>
         </div>

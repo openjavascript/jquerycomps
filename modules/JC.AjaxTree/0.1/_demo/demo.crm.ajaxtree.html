@@ -59,24 +59,26 @@
                 <button type="button" class="js_open_all">open all</button>
                 <button type="button" class="js_close_all">close all</button>
                 <button type="button" class="js_open_for" data_target="#open_to_val">open for</button>
-                <input type="text" value="1080" id="open_to_val" />
+                <input type="text" value="1,883,1521,1266,1271" id="open_to_val" />
                 <button type="button" class="js_close_for" data_target="#open_to_val">close for</button>
             </dd>
         </dl>
     </div>
     <dl>
-        <dt>默认树 - Tree 示例</dt>
+        <dt>默认树 - AjaxTree 示例 - 异步加载</dt>
         <dd>
             <div class="js_compAjaxTree js_tree2" 
                 data-cajData="CRM_TREE_DATA" 
                 data-urlArgName="node" 
+                data-typeIndex="0" 
                 data-idIndex="1" 
                 data-nameIndex="2" 
-                data-typeIndex="0" 
-                data-isAjax="true"
                 >
                 <script>
-                    window.CRM_TREE_DATA = { root: ["folderRoot","1",'总部'] };
+                    window.CRM_TREE_DATA = { 
+                        root: ["folderRoot","1",'总部'] 
+                        , url: "data/treedata.php?id={0}"
+                    };
 
                     $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
                         _item.html( JC.f.printf( '<a href="?node={0}" data-id="{0}">{1}</a>', _data[1], _data[2] ) );
