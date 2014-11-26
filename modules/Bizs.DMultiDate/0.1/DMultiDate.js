@@ -129,10 +129,11 @@
                 .attr('calendarlayoutchange', _layoutchangeendcb)
                 .attr('calendarclear', _clearendcb);
 
-            window[_updatestartcb] = function (_d, _ins) {
+            window[_updatestartcb] = function (_d, _dend, _ins) {
+                console.log("_updatestartcb", JC.f.formatISODate(_d), JC.f.formatISODate(_dend));
                 var _mddateEl = _p._model.mddateEl(),
                     _type = _p._model.calendarType(),
-                    _newmaxdate = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate()),
+                    _newmaxdate = JC.f.cloneDate(_d),
                     _curmaxdate = DMultiDate.Model._defaultMaxvalue,
                     _range;
 
@@ -188,9 +189,19 @@
                         .attr('defaultdate', _d);
                 }
                 _p._model.setHiddenStartdate(_d);
+
+                if (_p._model.mddateEl().length === 1) {
+                    _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
+                } else {
+                    if (!_p._model.mddateEl().eq(1).is('reqmsg') &&  !_p._model.hiddenEnddateEl().val() ) {
+                        _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
+                    }
+                }
+
+                
             };
 
-            window[_updateendcb] = function (_d, _ins) {
+            window[_updateendcb] = function (_d,_dend, _ins) {
                 var _mddateEl = _p._model.mddateEl(),
                     _type = _p._model.calendarType(),
                     _mindate = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate()),
@@ -241,7 +252,10 @@
                         .attr('defaultdate', _mindate);
                 }
 
-                _p._model.setHiddenEnddate(JC.f.formatISODate(_d));
+                _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
+                if (!_p._model.mddateEl().eq(0).is('reqmsg') && !_p._model.hiddenStartdateEl().val() ) {
+                    _p._model.setHiddenStartdate(JC.f.formatISODate(_d));
+                }
             };
 
             window[_showstartcb] = function () {
@@ -259,12 +273,17 @@
             
             window[_hidestartcb] = function () {
                 JC.Tips && JC.Tips.hide();
-                _p._model.updateHiddenStartdate();
+                if (!_p._model.hiddendateiso()) {
+                    _p._model.updateHiddenStartdate();
+                }
+                
             };
 
             window[_hideendcb] = function () {
                 JC.Tips && JC.Tips.hide();
-                _p._model.updateHiddenEnddate();
+                if (!_p._model.hiddendateiso()) {
+                    _p._model.updateHiddenEnddate();
+                }
             };
 
             window[_layoutchangestartcb] = function () {
@@ -383,9 +402,12 @@
                         return _r;
                     }
 
-                    var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+                    var _year = _dateStr.slice( 0, 4 ), 
+                        _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
 
                     _r.start = new Date( _year, _month, 1 );
+                    _r.end = JC.f.cloneDate(_r.start);
+                    _r.end.setDate(JC.f.maxDayOfMonth(_r.start));
                 }
 
                 return _r;
@@ -522,10 +544,9 @@
             return this.selector().find('>select');
         },
 
-        mcIgnoreUrlFill: 
-            function(){
-                return this.boolProp( 'mdIgnoreUrlFill' );
-            },
+        mcIgnoreUrlFill: function() {
+            return this.boolProp( 'mdIgnoreUrlFill' );
+        },
 
         calendarType: function () {
             return this.calendarTypeEl().val();
@@ -703,6 +724,10 @@
 
         yearrange: function () {
             return this.intProp('mdyearrange');
+        },
+
+        hiddendateiso: function () {
+            return this.boolProp('hiddendateiso');
         }
 
     };
