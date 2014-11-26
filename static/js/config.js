@@ -10,6 +10,7 @@
 	        __FILE__ = ex.fileName; 
 	    else if(ex.stack){//Chrome 或 IE10 
 	        ex.stack.replace( /([\w]+tp\:\/\/.*?)\:[\d]+?\:[\d]+/i, function($0, $1){
+
 	        	__FILE__ = $1;
 	        });
 	    }else if(ex.sourceURL)//Safari 
@@ -24,7 +25,7 @@
 	    , urlArgs: 'v=' + new Date().getTime()
 	    , paths: {
 	    	'template' : 'artTemplate/dist/template'
-	    	, 'data' : 'data/datas'
+	    	, 'data' : 'dataTool'
 	    	, 'iscroll' : 'iscroll/build/iscroll'
 	    	, 'velocity' : 'velocity/velocity.min'
 

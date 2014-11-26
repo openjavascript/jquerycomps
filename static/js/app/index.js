@@ -1,30 +1,13 @@
 ;requirejs( [ 
 	'data'
-    , 'template'
     , 'iscroll'
     , 'velocity'
     , 'JC.FrameUtil'
-], function( dataTool, template, iScroll, velocity ){
+], function( dataTool, iScroll, velocity ){
 
-	templateHandler();
+	window.dataTool = dataTool;
 
 	pageEventHandler();
-
-	function templateHandler(){
-		template.helper( 'replace', function ( str ) {
-			return str.replace( '.', '_' );
-		});
-
-		var _data = dataTool.getAllData();
-
-		$( '#menulist' ).html( template( 'tpl-menulist', _data ) );
-
-		$( '#bodynav' ).html( template( 'tpl-navlist', _data ) );
-
-		$( '#itemlist' ).html( template( 'tpl-itemlist', _data ) );
-
-		$( '#outlink' ).html( template( 'tpl-outlink', _data ) );
-	}
 
 	function detailHandler() {
 		var body = $('.body');
@@ -197,7 +180,7 @@
 					.find( '.body-attrbtn' ).click();
 			} else {
 				showNextComp( dataTool.getDetailPathByNameAndVersion( 
-					_tar.text(), _tar.attr( 'version' )
+					_tar.text(), _tar.attr( 'data-version' )
 				) );
 			}
 			
@@ -313,8 +296,9 @@
 
 			_sdemoView.find( 'iframe' )
 				.attr( 'src', 
-					dataTool.getDemoPathByName( 
+					dataTool.getDemoPathByNameAndVersion( 
 						_parent.attr( 'id' ).replace( '_', '.' ) 
+						, _parent.attr( 'data-version' )
 					) 
 				).load( function(){
 					_sdemoView.velocity( { opacity: '0' }, 0 ).show();
