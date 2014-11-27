@@ -22,7 +22,7 @@
 	window.requirejs && 
 	requirejs.config( {
 	    baseUrl: ar.join('/') + '/'
-	    , urlArgs: 'v=' + new Date().getTime()
+	    , urlArgs: 'v=20141127'
 	    , paths: {
 	    	'template' : 'artTemplate/dist/template'
 	    	, 'data' : 'dataTool'
