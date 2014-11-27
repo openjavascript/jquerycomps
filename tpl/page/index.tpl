@@ -25,7 +25,7 @@
 					    	{{$value.name}}
 					    	<div class="header-submenu clearfix">
 					    		{{foreach from=$value.list item=item}}
-					    		{{if !$item.hide && !$item.history}}
+					    		{{if !$item.hide|default:'' && !$item.history|default:''}}
 						    		{{if $value.name != 'Plugin'}}
 						    			<a class="header-complink" data-version="{{$item.version}}" href="#">{{$item.name}}</a>
 						    		{{else}}
@@ -63,7 +63,7 @@
 						<dd>
 							<ul>
 								{{foreach from=$value.list item=item}}
-								{{if !$item.hide && !$item.history}}
+								{{if !$item.hide|default:'' && !$item.history|default:'' }}
 								<li>
 									<a href="#" linkdata="{{$item.name|replace:'.':'_'}}">{{$item.name}}</a>
 								</li>
@@ -83,12 +83,12 @@
 			        	{{/foreach}}
 			        	{{if $value.name != 'Plugin'}}
 				        	{{foreach from=$value.list item=item}}
-				        	{{if !$item.hide && !$item.history}}
+				        	{{if !$item.hide|default:'' && !$item.history|default:''}}
 							<li id="{{$item.name|replace:'.':'_'}}" class="body-comp" data-version="{{$item.version}}">
 								<h2 class="body-comptitle clearfix">
 									<span class="body-compname">{{$item.name}}</span>
 									<a href="#" class="body-attrbtn body-changebtn">ATTR</a>
-									{{if !$item.nodemo}}
+									{{if !$item.nodemo|default:''}}
 									<a href="#" class="body-demobtn body-changebtn">DEMO</a>
 									<a href="#" class="body-sdemobtn">SIMPLE DEMO</a>
 									{{/if}}
@@ -106,7 +106,7 @@
 							{{/foreach}}
 						{{else}}
 							{{foreach from=$value.list item=item}}
-							{{if !$item.hide && !$item.history}}
+							{{if !$item.hide|default:'' && !$item.history|default:''}}
 							<li id="{{$item.name|replace:'.':'_'}}" class="body-comp">
 								<h2 class="body-comptitle clearfix">
 									<span class="body-compname">{{$item.name}}</span>
