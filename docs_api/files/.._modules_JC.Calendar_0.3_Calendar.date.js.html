@@ -266,8 +266,7 @@
      * &lt;br /&gt;Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )
      * &lt;br /&gt;_selector 可以是 新加载的容器, 也可以是新加载的所有input
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Calendar.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -370,6 +369,9 @@
      *          针对 日期类型: 月/季/年 定义显示格式, default: &quot;{0} 至 {1}&quot;
      *          &lt;br /&gt;{0}代表开始日期, {1}代表结束日期
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;ignoreInitCalendarDate = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否忽略初始化 控件的值&lt;/dd&gt;
      *
      *      &lt;dt&gt;dateParse = function &lt;/dt&gt;
      *      &lt;dd&gt;
@@ -1065,42 +1067,45 @@ function parseYearDate( _dateStr ){
                         || $.trim( _p.attr(&#x27;multidate&#x27;) || &#x27;&#x27;)
                         ) ) return;
 
+
                 var _btn = _p.find( &#x27;+ input.UXCCalendar_btn&#x27; );
                 if( !_btn.length ){
                     _p.after( _btn = $(&#x27;&lt;input type=&quot;button&quot; class=&quot;UXCCalendar_btn&quot;  /&gt;&#x27;) );
                 }
 
                 //Calendar.fixDefaultDate( _p );
+                if( !( JC.f.parseBool( _p.attr( &#x27;ignoreInitCalendarDate&#x27; ) ) || JC.f.parseBool( _p.data( &#x27;ignoreInitCalendarDate&#x27; ) ) ) ){
 
-                ( _tmp = _p.val().trim() )
-                    &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
-                    &amp;&amp; _p.val( JC.f.formatISODate( _tmp ) )
-                    ; 
+                    ( _tmp = _p.val().trim() )
+                        &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
+                        &amp;&amp; _p.val( JC.f.formatISODate( _tmp ) )
+                        ; 
 
-                ( _tmp = ( _p.attr(&#x27;minvalue&#x27;) || &#x27;&#x27; ) )
-                    &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
-                    &amp;&amp; _p.attr( &#x27;minvalue&#x27;, JC.f.formatISODate( _tmp ) )
-                    ; 
+                    ( _tmp = ( _p.attr(&#x27;minvalue&#x27;) || &#x27;&#x27; ) )
+                        &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
+                        &amp;&amp; _p.attr( &#x27;minvalue&#x27;, JC.f.formatISODate( _tmp ) )
+                        ; 
 
-                ( _tmp = ( _p.attr(&#x27;maxvalue&#x27;) || &#x27;&#x27; ) )
-                    &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
-                    &amp;&amp; _p.attr( &#x27;maxvalue&#x27;, JC.f.formatISODate( _tmp ) )
-                    ; 
+                    ( _tmp = ( _p.attr(&#x27;maxvalue&#x27;) || &#x27;&#x27; ) )
+                        &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
+                        &amp;&amp; _p.attr( &#x27;maxvalue&#x27;, JC.f.formatISODate( _tmp ) )
+                        ; 
 
-                if( _p.is( &#x27;[dateFormat]&#x27; ) || _p.is( &#x27;[fullDateFormat]&#x27; ) ){
-                    var _ins = Calendar.getInstance( _selector );
-                    !_ins &amp;&amp; ( _ins = new Calendar( _selector ) );
-                    _ins.updateSelector( _selector );
-                    _ins.updateFormat( _p );
-                }
+                    if( _p.is( &#x27;[dateFormat]&#x27; ) || _p.is( &#x27;[fullDateFormat]&#x27; ) ){
+                        var _ins = Calendar.getInstance( _selector );
+                        !_ins &amp;&amp; ( _ins = new Calendar( _selector ) );
+                        _ins.updateSelector( _selector );
+                        _ins.updateFormat( _p );
+                    }
 
-                if( ( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27; ).toLowerCase() == &#x27;monthday&#x27;
-                    || ( _p.attr(&#x27;multidate&#x27;) || &#x27;&#x27; ).toLowerCase() == &#x27;monthday&#x27; ){
-                    if( !_p.is(&#x27;[placeholder]&#x27;) ){
-                        var _tmpDate = new Date();
-                        _p.attr(&#x27;defaultdate&#x27;) &amp;&amp; ( _tmpDate = JC.f.parseISODate( _p.attr(&#x27;defaultdate&#x27;) ) || _tmpDate );
-                        _p.val().trim() &amp;&amp; ( _tmpDate = JC.f.parseISODate( _p.val().replace( /[^d]/g, &#x27;&#x27;).slice( 0, 8 ) ) || _tmpDate );
-                        _tmpDate &amp;&amp; _p.attr( &#x27;placeholder&#x27;, JC.f.printf( &#x27;{0}年 {1}月&#x27;, _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) );
+                    if( ( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27; ).toLowerCase() == &#x27;monthday&#x27;
+                        || ( _p.attr(&#x27;multidate&#x27;) || &#x27;&#x27; ).toLowerCase() == &#x27;monthday&#x27; ){
+                        if( !_p.is(&#x27;[placeholder]&#x27;) ){
+                            var _tmpDate = new Date();
+                            _p.attr(&#x27;defaultdate&#x27;) &amp;&amp; ( _tmpDate = JC.f.parseISODate( _p.attr(&#x27;defaultdate&#x27;) ) || _tmpDate );
+                            _p.val().trim() &amp;&amp; ( _tmpDate = JC.f.parseISODate( _p.val().replace( /[^d]/g, &#x27;&#x27;).slice( 0, 8 ) ) || _tmpDate );
+                            _tmpDate &amp;&amp; _p.attr( &#x27;placeholder&#x27;, JC.f.printf( &#x27;{0}年 {1}月&#x27;, _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) );
+                        }
                     }
                 }
 
