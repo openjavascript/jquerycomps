@@ -4,8 +4,7 @@
      * DMultiDate 复合日历业务逻辑
      * <br/> Dom 加载后会自动加载页面上所有.js_autoDMultiDate的标签
      * <p><b>require</b>: 
-     *      <a href='.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Calendar.html'>JC.Calendar</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -63,6 +62,7 @@
     
     DMultiDate.prototype = {
         _beforeInit: function () {
+            this._model.mddateEl().attr( 'ignoreInitCalendarDate', 'true' ).data( 'ignoreInitCalendarDate', true );
             DMultiDate.Model._defaultMaxvalue = this._model.mddateEl().eq(0).attr('maxvalue') || '';
             DMultiDate.Model._defaultMinvalue = this._model.mddateEl().eq(1).attr('minvalue') || '';
         },
@@ -104,6 +104,12 @@
                  *打开第一个日历输入框的日历面板
                  */
 
+                if( _type == 'custom' || _type == 'customized' ){
+                    _p._model.lastIptBox().show();
+                }else{
+                    _p._model.lastIptBox().hide();
+                }
+
                 if (_flag) return; 
 
                 setTimeout( function () {
@@ -129,10 +135,11 @@
                 .attr('calendarlayoutchange', _layoutchangeendcb)
                 .attr('calendarclear', _clearendcb);
 
-            window[_updatestartcb] = function (_d, _ins) {
+            window[_updatestartcb] = function (_d, _dend, _ins) {
+                console.log("_updatestartcb", JC.f.formatISODate(_d), JC.f.formatISODate(_dend));
                 var _mddateEl = _p._model.mddateEl(),
                     _type = _p._model.calendarType(),
-                    _newmaxdate = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate()),
+                    _newmaxdate = JC.f.cloneDate(_d),
                     _curmaxdate = DMultiDate.Model._defaultMaxvalue,
                     _range;
 
@@ -156,6 +163,7 @@
                         break;
 
                     case 'season':
+                    //case 'quarter':
                         _range = _p._model.seasonrange();
                         
                         if (_range) {
@@ -168,6 +176,12 @@
                     case 'year':
                         _range = _p._model.yearrange();
                         _range && _newmaxdate.setYear( _newmaxdate.getFullYear() + _range - 1 );
+                        break;
+
+                    case 'custom': 
+                    case 'customized':
+                        _range = _p._model.dayrange();
+                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + _range - 1 );
                         break;
 
                     case 'date':
@@ -188,9 +202,19 @@
                         .attr('defaultdate', _d);
                 }
                 _p._model.setHiddenStartdate(_d);
+
+                if (_p._model.mddateEl().length === 1) {
+                    _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
+                } else {
+                    if (!_p._model.mddateEl().eq(1).is('reqmsg') &&  !_p._model.hiddenEnddateEl().val() ) {
+                        _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
+                    }
+                }
+
+                
             };
 
-            window[_updateendcb] = function (_d, _ins) {
+            window[_updateendcb] = function (_d,_dend, _ins) {
                 var _mddateEl = _p._model.mddateEl(),
                     _type = _p._model.calendarType(),
                     _mindate = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate()),
@@ -200,6 +224,7 @@
 
                 _curmindate && (_curmindate = JC.f.dateDetect(_curmindate));
                 //_d = JC.f.formatISODate(_d);
+                //
 
                 switch (_type) {
                     case 'week':
@@ -213,6 +238,7 @@
                         break;
 
                     case 'season':
+                    //case 'quarter':
                         _range = _p._model.seasonrange();
                         _range && (_mindate.setMonth( _mindate.getMonth() - (_range - 1) * 3 ));
                         break;
@@ -220,6 +246,12 @@
                     case 'year':
                         _range = _p._model.yearrange();
                         _range && (_mindate.setYear( _mindate.getFullYear() - _range + 1 ));
+                        break;
+
+                    case 'custom':
+                    case 'customized':
+                        _range = _p._model.dayrange();
+                        _range && _mindate.setDate(_mindate.getDate() - _range + 1  );    
                         break;
 
                     case 'date':
@@ -241,7 +273,10 @@
                         .attr('defaultdate', _mindate);
                 }
 
-                _p._model.setHiddenEnddate(JC.f.formatISODate(_d));
+                _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
+                if (!_p._model.mddateEl().eq(0).is('reqmsg') && !_p._model.hiddenStartdateEl().val() ) {
+                    _p._model.setHiddenStartdate(JC.f.formatISODate(_d));
+                }
             };
 
             window[_showstartcb] = function () {
@@ -259,12 +294,17 @@
             
             window[_hidestartcb] = function () {
                 JC.Tips && JC.Tips.hide();
-                _p._model.updateHiddenStartdate();
+                if (!_p._model.hiddendateiso()) {
+                    _p._model.updateHiddenStartdate();
+                }
+                
             };
 
             window[_hideendcb] = function () {
                 JC.Tips && JC.Tips.hide();
-                _p._model.updateHiddenEnddate();
+                if (!_p._model.hiddendateiso()) {
+                    _p._model.updateHiddenEnddate();
+                }
             };
 
             window[_layoutchangestartcb] = function () {
@@ -383,9 +423,12 @@
                         return _r;
                     }
 
-                    var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+                    var _year = _dateStr.slice( 0, 4 ), 
+                        _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
 
                     _r.start = new Date( _year, _month, 1 );
+                    _r.end = JC.f.cloneDate(_r.start);
+                    _r.end.setDate(JC.f.maxDayOfMonth(_r.start));
                 }
 
                 return _r;
@@ -452,6 +495,7 @@
         },
 
         _initDefaultData: function () {
+
             if( this._model.mcIgnoreUrlFill() ){
                 return;
             }
@@ -459,13 +503,14 @@
             var _p = this,
                 _startdate = _p._model.urlStartdate() || _p._model.mddateEl().eq(0).val(),
                 _enddate = _p._model.urlEnddate() || _p._model.mddateEl().eq(1).val(),
-                _type = _p._model.urlCalendarType() || _p._model.calendarType();
+                _type = _p._model.urlCalendarType() || _p._model.calendarType()
+                ;
 
-            _p._model.updatemddateElProp(_type);
             _p._model.calendarTypeEl().val(_type);
+            _p._model.updatemddateElProp(_type);
             
             setTimeout(function () {
-                _p._model.setmddate(_startdate, _enddate);
+                _p._model.setmddate( _startdate, _enddate );
                 _p._model.setHiddenStartdate(_startdate);
                 _p._model.setHiddenEnddate(_enddate);
             }, 200);
@@ -518,14 +563,21 @@
         init: function () {
         },
 
+        lastIptBox: function(){
+            if( !this._lastIptBox ){
+                this._lastIptBox = JC.f.parentSelector( this.selector(), this.selector().attr( 'lastIptBox' ) );
+                !this._lastIptBox && ( this._lastIptBox = $( 'sdfasefasdfasfsadfasdfsdf' ) );
+            }
+            return this._lastIptBox;
+        },
+
         calendarTypeEl: function () {
             return this.selector().find('>select');
         },
 
-        mcIgnoreUrlFill: 
-            function(){
-                return this.boolProp( 'mdIgnoreUrlFill' );
-            },
+        mcIgnoreUrlFill: function() {
+            return this.boolProp( 'mdIgnoreUrlFill' );
+        },
 
         calendarType: function () {
             return this.calendarTypeEl().val();
@@ -541,6 +593,9 @@
         setmddate: function (_starttime, _endtime) {
             var _el = this.mddateEl();
 
+            _starttime && ( _starttime = JC.f.dateFormat( JC.f.dateDetect( _starttime ), _el.eq(0).attr( 'dateformat' ) ) );
+            _endtime && ( _endtime = JC.f.dateFormat( JC.f.dateDetect( _endtime ), _el.eq(1).attr( 'dateformat' ) ) );
+
             _el.eq(0).val(_starttime);
             _el.eq(1).val(_endtime);
         },
@@ -548,6 +603,8 @@
         updatemddateElProp: function (_setter) {
             var _p = this,
                 _el = _p.mddateEl();
+
+            //_setter && ( _setter.toLowerCase() == 'quarter' ) && ( _setter = 'season' );
 
             _el.attr('multidate', _setter);
 
@@ -589,6 +646,7 @@
                     _r = 'YY-MM';
                     break;
                 case 'season':
+                //case 'quarter':
                     _r = 'YYQYQ';
                     break;
                 case 'year':
@@ -703,6 +761,10 @@
 
         yearrange: function () {
             return this.intProp('mdyearrange');
+        },
+
+        hiddendateiso: function () {
+            return this.boolProp('hiddendateiso');
         }
 
     };
