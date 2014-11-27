@@ -113,6 +113,9 @@
      *          <br />{0}代表开始日期, {1}代表结束日期
      *      </dd>
      *
+     *      <dt>ignoreInitCalendarDate = bool, default = false</dt>
+     *      <dd>是否忽略初始化 控件的值</dd>
+     *
      *      <dt>dateParse = function </dt>
      *      <dd>
      *          自定义日期格式函数, 针对日期不能解析为 8 位数字的特殊日期
@@ -807,42 +810,45 @@ function parseYearDate( _dateStr ){
                         || $.trim( _p.attr('multidate') || '')
                         ) ) return;
 
+
                 var _btn = _p.find( '+ input.UXCCalendar_btn' );
                 if( !_btn.length ){
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
 
                 //Calendar.fixDefaultDate( _p );
+                if( !( JC.f.parseBool( _p.attr( 'ignoreInitCalendarDate' ) ) || JC.f.parseBool( _p.data( 'ignoreInitCalendarDate' ) ) ) ){
 
-                ( _tmp = _p.val().trim() )
-                    && ( _tmp = JC.f.dateDetect( _tmp ) )
-                    && _p.val( JC.f.formatISODate( _tmp ) )
-                    ; 
+                    ( _tmp = _p.val().trim() )
+                        && ( _tmp = JC.f.dateDetect( _tmp ) )
+                        && _p.val( JC.f.formatISODate( _tmp ) )
+                        ; 
 
-                ( _tmp = ( _p.attr('minvalue') || '' ) )
-                    && ( _tmp = JC.f.dateDetect( _tmp ) )
-                    && _p.attr( 'minvalue', JC.f.formatISODate( _tmp ) )
-                    ; 
+                    ( _tmp = ( _p.attr('minvalue') || '' ) )
+                        && ( _tmp = JC.f.dateDetect( _tmp ) )
+                        && _p.attr( 'minvalue', JC.f.formatISODate( _tmp ) )
+                        ; 
 
-                ( _tmp = ( _p.attr('maxvalue') || '' ) )
-                    && ( _tmp = JC.f.dateDetect( _tmp ) )
-                    && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
-                    ; 
+                    ( _tmp = ( _p.attr('maxvalue') || '' ) )
+                        && ( _tmp = JC.f.dateDetect( _tmp ) )
+                        && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
+                        ; 
 
-                if( _p.is( '[dateFormat]' ) || _p.is( '[fullDateFormat]' ) ){
-                    var _ins = Calendar.getInstance( _selector );
-                    !_ins && ( _ins = new Calendar( _selector ) );
-                    _ins.updateSelector( _selector );
-                    _ins.updateFormat( _p );
-                }
+                    if( _p.is( '[dateFormat]' ) || _p.is( '[fullDateFormat]' ) ){
+                        var _ins = Calendar.getInstance( _selector );
+                        !_ins && ( _ins = new Calendar( _selector ) );
+                        _ins.updateSelector( _selector );
+                        _ins.updateFormat( _p );
+                    }
 
-                if( ( _p.attr('datatype') || '' ).toLowerCase() == 'monthday'
-                    || ( _p.attr('multidate') || '' ).toLowerCase() == 'monthday' ){
-                    if( !_p.is('[placeholder]') ){
-                        var _tmpDate = new Date();
-                        _p.attr('defaultdate') && ( _tmpDate = JC.f.parseISODate( _p.attr('defaultdate') ) || _tmpDate );
-                        _p.val().trim() && ( _tmpDate = JC.f.parseISODate( _p.val().replace( /[^d]/g, '').slice( 0, 8 ) ) || _tmpDate );
-                        _tmpDate && _p.attr( 'placeholder', JC.f.printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) );
+                    if( ( _p.attr('datatype') || '' ).toLowerCase() == 'monthday'
+                        || ( _p.attr('multidate') || '' ).toLowerCase() == 'monthday' ){
+                        if( !_p.is('[placeholder]') ){
+                            var _tmpDate = new Date();
+                            _p.attr('defaultdate') && ( _tmpDate = JC.f.parseISODate( _p.attr('defaultdate') ) || _tmpDate );
+                            _p.val().trim() && ( _tmpDate = JC.f.parseISODate( _p.val().replace( /[^d]/g, '').slice( 0, 8 ) ) || _tmpDate );
+                            _tmpDate && _p.attr( 'placeholder', JC.f.printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) );
+                        }
                     }
                 }
 

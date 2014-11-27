@@ -255,6 +255,8 @@
                             ;
                         if( _type == 'file' ) return;
 
+                        if( JC.f.parseBool( _item.attr( 'ignoreUrlFill' ) || '' ) ) return;
+
                         //JC.log( _nt, _type );
 
                         if( /input/i.test( _nt ) ){

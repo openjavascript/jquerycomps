@@ -63,6 +63,7 @@
     
     DMultiDate.prototype = {
         _beforeInit: function () {
+            this._model.mddateEl().attr( 'ignoreInitCalendarDate', 'true' ).data( 'ignoreInitCalendarDate', true );
             DMultiDate.Model._defaultMaxvalue = this._model.mddateEl().eq(0).attr('maxvalue') || '';
             DMultiDate.Model._defaultMinvalue = this._model.mddateEl().eq(1).attr('minvalue') || '';
         },
@@ -103,6 +104,12 @@
                  *日历输入框，及隐藏域的值清空
                  *打开第一个日历输入框的日历面板
                  */
+
+                if( _type == 'custom' || _type == 'customized' ){
+                    _p._model.lastIptBox().show();
+                }else{
+                    _p._model.lastIptBox().hide();
+                }
 
                 if (_flag) return; 
 
@@ -157,6 +164,7 @@
                         break;
 
                     case 'season':
+                    //case 'quarter':
                         _range = _p._model.seasonrange();
                         
                         if (_range) {
@@ -169,6 +177,12 @@
                     case 'year':
                         _range = _p._model.yearrange();
                         _range && _newmaxdate.setYear( _newmaxdate.getFullYear() + _range - 1 );
+                        break;
+
+                    case 'custom': 
+                    case 'customized':
+                        _range = _p._model.dayrange();
+                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + _range - 1 );
                         break;
 
                     case 'date':
@@ -211,6 +225,7 @@
 
                 _curmindate && (_curmindate = JC.f.dateDetect(_curmindate));
                 //_d = JC.f.formatISODate(_d);
+                //
 
                 switch (_type) {
                     case 'week':
@@ -224,6 +239,7 @@
                         break;
 
                     case 'season':
+                    //case 'quarter':
                         _range = _p._model.seasonrange();
                         _range && (_mindate.setMonth( _mindate.getMonth() - (_range - 1) * 3 ));
                         break;
@@ -231,6 +247,12 @@
                     case 'year':
                         _range = _p._model.yearrange();
                         _range && (_mindate.setYear( _mindate.getFullYear() - _range + 1 ));
+                        break;
+
+                    case 'custom':
+                    case 'customized':
+                        _range = _p._model.dayrange();
+                        _range && _mindate.setDate(_mindate.getDate() - _range + 1  );    
                         break;
 
                     case 'date':
@@ -474,6 +496,7 @@
         },
 
         _initDefaultData: function () {
+
             if( this._model.mcIgnoreUrlFill() ){
                 return;
             }
@@ -481,13 +504,17 @@
             var _p = this,
                 _startdate = _p._model.urlStartdate() || _p._model.mddateEl().eq(0).val(),
                 _enddate = _p._model.urlEnddate() || _p._model.mddateEl().eq(1).val(),
-                _type = _p._model.urlCalendarType() || _p._model.calendarType();
+                _type = _p._model.urlCalendarType() || _p._model.calendarType(),
+                _xstartdate = JC.f.getUrlParam( _p._model.mddateEl().eq(0).attr( 'name' ) ) || _p._model.urlStartdate(),
+                _xenddate = _p._model.mddateEl().eq(1).val() || _p._model.urlEnddate()
+                ;
 
-            _p._model.updatemddateElProp(_type);
             _p._model.calendarTypeEl().val(_type);
+            _p._model.updatemddateElProp(_type);
             
             setTimeout(function () {
-                _p._model.setmddate(_startdate, _enddate);
+                JC.log( _xstartdate, _xenddate, _startdate, _enddate );
+                _p._model.setmddate(_xstartdate, _xenddate);
                 _p._model.setHiddenStartdate(_startdate);
                 _p._model.setHiddenEnddate(_enddate);
             }, 200);
@@ -540,6 +567,14 @@
         init: function () {
         },
 
+        lastIptBox: function(){
+            if( !this._lastIptBox ){
+                this._lastIptBox = JC.f.parentSelector( this.selector(), this.selector().attr( 'lastIptBox' ) );
+                !this._lastIptBox && ( this._lastIptBox = $( 'sdfasefasdfasfsadfasdfsdf' ) );
+            }
+            return this._lastIptBox;
+        },
+
         calendarTypeEl: function () {
             return this.selector().find('>select');
         },
@@ -569,6 +604,8 @@
         updatemddateElProp: function (_setter) {
             var _p = this,
                 _el = _p.mddateEl();
+
+            //_setter && ( _setter.toLowerCase() == 'quarter' ) && ( _setter = 'season' );
 
             _el.attr('multidate', _setter);
 
@@ -610,6 +647,7 @@
                     _r = 'YY-MM';
                     break;
                 case 'season':
+                //case 'quarter':
                     _r = 'YYQYQ';
                     break;
                 case 'year':
