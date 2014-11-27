@@ -8,8 +8,7 @@
      * <br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )
      * <br />_selector 可以是 新加载的容器, 也可以是新加载的所有input
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>

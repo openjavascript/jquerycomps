@@ -4,8 +4,7 @@
      * DMultiDate 复合日历业务逻辑
      * <br/> Dom 加载后会自动加载页面上所有.js_autoDMultiDate的标签
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Calendar.html'>JC.Calendar</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -504,17 +503,14 @@
             var _p = this,
                 _startdate = _p._model.urlStartdate() || _p._model.mddateEl().eq(0).val(),
                 _enddate = _p._model.urlEnddate() || _p._model.mddateEl().eq(1).val(),
-                _type = _p._model.urlCalendarType() || _p._model.calendarType(),
-                _xstartdate = JC.f.getUrlParam( _p._model.mddateEl().eq(0).attr( 'name' ) ) || _p._model.urlStartdate(),
-                _xenddate = _p._model.mddateEl().eq(1).val() || _p._model.urlEnddate()
+                _type = _p._model.urlCalendarType() || _p._model.calendarType()
                 ;
 
             _p._model.calendarTypeEl().val(_type);
             _p._model.updatemddateElProp(_type);
             
             setTimeout(function () {
-                JC.log( _xstartdate, _xenddate, _startdate, _enddate );
-                _p._model.setmddate(_xstartdate, _xenddate);
+                _p._model.setmddate( _startdate, _enddate );
                 _p._model.setHiddenStartdate(_startdate);
                 _p._model.setHiddenEnddate(_enddate);
             }, 200);
@@ -596,6 +592,9 @@
 
         setmddate: function (_starttime, _endtime) {
             var _el = this.mddateEl();
+
+            _starttime && ( _starttime = JC.f.dateFormat( JC.f.dateDetect( _starttime ), _el.eq(0).attr( 'dateformat' ) ) );
+            _endtime && ( _endtime = JC.f.dateFormat( JC.f.dateDetect( _endtime ), _el.eq(1).attr( 'dateformat' ) ) );
 
             _el.eq(0).val(_starttime);
             _el.eq(1).val(_endtime);
