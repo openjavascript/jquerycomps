@@ -250,9 +250,9 @@
     window.Bizs.MultiDate = MultiDate;
     /**
      * MultiDate 复合日历业务逻辑
-     * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+     * 根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期
+     * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: v
+     *      &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.Calendar.html&#x27;&gt;JC.Calendar&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -278,11 +278,14 @@
     MultiDate.prototype = {
         _beforeInit:
             function(){
+                this._model.mdstartdate().attr( &#x27;ignoreInitCalendarDate&#x27;, true ).data( &#x27;ignoreInitCalendarDate&#x27;, true );
+                this._model.mdenddate().attr( &#x27;ignoreInitCalendarDate&#x27;, true ).data( &#x27;ignoreInitCalendarDate&#x27;, true );
                 JC.log( &#x27;MultiDate _beforeInit&#x27;, new Date().getTime() );
             }
         , _initHanlderEvent:
             function(){
                 var _p = this;
+
 
                 $( [ _p._view, _p._model ] ).on(&#x27;BindEvent&#x27;, function( _evt, _evtName, _cb ){
                     _p.on( _evtName, _cb );
@@ -291,26 +294,36 @@
                 $([ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName ){
                     var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
+
                 });
                 _p._initDefaultValue();
+                JC.f.safeTimeout( function(){
+                    _p._initDefaultValue();
+                }, _p.selector(), &#x27;as3asdfasew3asdf&#x27;, 201 );
                 _p._initHandlerEvent();
 
                 _p.selector().trigger( &#x27;change&#x27;, [ true ] );
             }
         , _initDefaultValue:
             function(){
+                //将url上带入的参数赋给各标签
                 var _p = this
                     , _qs = _p._model.qstartdate()
                     , _qe = _p._model.qenddate()
                     , _mdcusStart = _p._model.mdCustomStartDate()
                     , _mdcusEnd= _p._model.mdCustomEndDate()
+                    , _type = _p._model.qtype() || _p._model.selector().val()
+                    , _defaultBox = _p._model.mdDefaultBox()
+                    , _customBox = _p._model.mdCustomBox()
                     ;
 
                 _p._model.selector( _p._model.qtype() );
                 _p._model.mdstartdate( _qs );
                 _p._model.mdenddate( _qe );
 
+                //如果日期没有name属性，那么赋值
                 if( !_p._model.mddate().attr(&#x27;name&#x27;) ){
+                    
                     if( _qs &amp;&amp; _qe ){
                         if( _qs == _qe ){
                             _p._model.mddate( JC.f.formatISODate(JC.f.parseISODate(_qs)) );
@@ -322,11 +335,17 @@
                         }
                     }
                 }else{
+                    //将url上的日期赋给日期控件
                     _p._model.mddate( _p._model.qdate() );
                 }
 
+                if (_type !== &#x27;custom&#x27; &amp;&amp; _p._model.mdlastdate() ) {
+                    _p._model.setmaxdate(_type);
+                }
+
+                //如果是daterange类型，那么将url上的起止时间赋值给他们。
                 _mdcusStart &amp;&amp; _mdcusStart.length &amp;&amp; _mdcusStart.val( _qs ? JC.f.formatISODate( JC.f.parseISODate( _qs ) ) : _qs );
-                _mdcusEnd&amp;&amp; _mdcusEnd.length &amp;&amp; _mdcusEnd.val( _qe ? JC.f.formatISODate( JC.f.parseISODate( _qe ) ) : _qe );
+                _mdcusEnd &amp;&amp; _mdcusEnd.length &amp;&amp; _mdcusEnd.val( _qe ? JC.f.formatISODate( JC.f.parseISODate( _qe ) ) : _qe );
 
             }
         , _initHandlerEvent:
@@ -338,7 +357,7 @@
                         , _defaultBox = _p._model.mdDefaultBox()
                         , _customBox = _p._model.mdCustomBox()
                         ;
-                    JC.log( &#x27;type:&#x27;, _type );
+    
                     if( _type == &#x27;custom&#x27; ){
                         if( _defaultBox &amp;&amp; _customBox &amp;&amp; _defaultBox.length &amp;&amp; _customBox.length ){
                             _defaultBox.hide();
@@ -349,18 +368,28 @@
                         }
                     }else{
                         if( _defaultBox &amp;&amp; _customBox &amp;&amp; _defaultBox.length &amp;&amp; _customBox.length ){
+                           
                             _customBox.hide();
                             _customBox.find(&#x27;input&#x27;).prop( &#x27;disabled&#x27;, true);
 
                             _defaultBox.find(&#x27;input&#x27;).prop( &#x27;disabled&#x27;, false);
                             _defaultBox.show();
                         }
+
+                        if ( _p._model.mdlastdate() ) {
+                            _p._model.setmaxdate(_type);
+                        }
+
+                        //页面load，不需要显示日期面板，直接return;
                         if( _noPick ) return;
                         _p._model.settype( _type );
+
                         setTimeout(function(){
                             JC.Calendar.pickDate( _p._model.mddate()[0] );
-                            _p._model.mdstartdate( &#x27;&#x27; );
-                            _p._model.mdenddate( &#x27;&#x27; );
+                            if (!_p._model.setdefaulthiddendate()) {
+                                _p._model.mdstartdate( &#x27;&#x27; );
+                                _p._model.mdenddate( &#x27;&#x27; );
+                            }
                         }, 10);
                     }
                 });
@@ -429,7 +458,7 @@
                 window[ _showcb ] = 
                     function(){
                         var _layout = $(&#x27;body &gt; div.UXCCalendar:visible&#x27;);
-                        _layout.length &amp;&amp; JC.Tips &amp;&amp; JC.Tips.init( _layout.find(&#x27;[title]&#x27;) );
+                            _layout.length &amp;&amp; JC.Tips &amp;&amp; JC.Tips.init( _layout.find(&#x27;[title]&#x27;) );
                     };
                 _p.mddate().attr(&#x27;calendarshow&#x27;, _showcb );
 
@@ -451,14 +480,20 @@
                 return _p;
             }
 
-        , mdDefaultBox: function(){ return this.selectorProp( &#x27;mdDefaultBox&#x27; ); }
-        , mdCustomBox: function(){ return this.selectorProp( &#x27;mdCustomBox&#x27; ); }
+        , mdDefaultBox: function(){ 
+            return this.selectorProp( &#x27;mdDefaultBox&#x27; ); 
+        }
+        , mdCustomBox: function(){ 
+            //datatype = datarange
+            return this.selectorProp( &#x27;mdCustomBox&#x27; ); 
+         }
 
         , mdCustomStartDate: function(){ return this.selectorProp( &#x27;mdCustomStartDate&#x27; ); }
         , mdCustomEndDate: function(){ return this.selectorProp( &#x27;mdCustomEndDate&#x27; ); }
 
         , selector: 
             function( _setter ){ 
+
                 typeof _setter != &#x27;undefined&#x27; 
                     &amp;&amp; this.hastype( this.qtype() ) 
                     &amp;&amp; this._selector.val( _setter )
@@ -467,42 +502,62 @@
                 return this._selector; 
             }
 
+        , mdlastdate:
+            function () {
+                var r = this.selector().attr(&#x27;mdlastdate&#x27;);
+                r = JC.f.parseBool(r);
+                return r ;
+            }
+
         , mddate: 
+            //返回日期控件，如果有日期赋值
             function( _setter ){ 
                 var _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;mddate&#x27;) );
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; _r.val( _setter );
+
                 return _r; 
             }
         , mdstartdate: 
+            //隐藏域开始日期
             function( _setter ){ 
                 var _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;mdstartdate&#x27;) );
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; _r.val( _setter.replace(/[^\d]/g, &#x27;&#x27;) );
                 return _r;
             }
         , mdenddate: 
+            //隐藏域结束日期
             function( _setter ){ 
                 var _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;mdenddate&#x27;) );
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; _r.val( _setter.replace(/[^\d]/g, &#x27;&#x27;) );
                 return _r;
             }
 
+        , setdefaulthiddendate: function () {
+            return JC.f.parseBool(this.selector().attr(&#x27;setdefaulthiddendate&#x27;));
+        }
+
         , qtype: function(){
+            //获取url上的日期类型参数
             return this.decodedata( JC.f.getUrlParam( this.selector().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , qdate: function(){
+            //获取url上的日期值
             return this.decodedata( JC.f.getUrlParam( this.mddate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , qstartdate: function(){
+            //获取url上的开始日期
             return this.decodedata( JC.f.getUrlParam( this.mdstartdate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , qenddate: function(){
+            //获取url上的结束日期
             return this.decodedata( JC.f.getUrlParam( this.mdenddate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , hastype:
+            //是否为可处理的日期类型
             function( _type ){
                 var _r = false;
                 this.selector().find(&#x27;&gt; option&#x27;).each( function(){
@@ -515,6 +570,7 @@
             }
 
         , settype:
+            //修改日期控件的日期类型日、周、月、季
             function( _type ){
                 this.mddate().val(&#x27;&#x27;).attr( &#x27;multidate&#x27;, _type );
             }
@@ -525,6 +581,7 @@
                 return _d;
             }
         , updateHiddenDate: 
+            //更新隐藏域开始结束日期的值，如果日期为空那么隐藏域的值为空，否则8位日期
             function (){
                 var _date = $.trim( this.mddate().val() );
                 if( !_date ){
@@ -542,6 +599,52 @@
                     this.mdenddate( _date.slice(8) );
                 }
             }
+
+        , setmaxdate: function (_type) {
+            var _p = this,
+                _tmpDate,
+                _maxDate,
+                _startDate,
+                _strDate;
+
+            switch( _type ) {
+                case &#x27;week&#x27;:
+                    _tmpDate = JC.f.dateDetect(&#x27;now -1w&#x27;);
+                    _maxDate = JC.f.formatISODate(JC.f.dayOfWeek(_tmpDate).end);
+                    _strDate = JC.f.formatISODate(JC.f.dayOfWeek(_tmpDate).start) + &#x27;至&#x27; + _maxDate;
+                    break;
+                case &#x27;month&#x27;:
+                    _tmpDate = JC.f.dateDetect(&#x27;now -1m&#x27;);
+                    _maxDate = JC.f.cloneDate(_tmpDate);
+                    _maxDate.setDate(JC.f.maxDayOfMonth(_tmpDate));
+                    _maxDate = JC.f.formatISODate(_maxDate);
+                    _startDate = JC.f.cloneDate(_tmpDate);
+                    _startDate.setDate(1);
+                    _strDate = JC.f.formatISODate(_startDate) + &#x27;至&#x27; + _maxDate;
+                    break;
+                case &#x27;season&#x27;:
+                    _tmpDate = JC.f.dayOfSeason(new Date()).q - 2;
+                    _tmpDate &gt; 0? _tmpDate: 0;
+                    _maxDate = JC.f.seasonOfYear(new Date().getFullYear())[_tmpDate].end;
+                    _maxDate = JC.f.formatISODate(_maxDate);
+                    _startDate = JC.f.formatISODate(JC.f.seasonOfYear(new Date().getFullYear())[_tmpDate].start);
+                    _strDate = _startDate + &#x27;至&#x27; + _maxDate;
+                    break;
+                case &#x27;date&#x27;:
+                    _maxDate = new Date();
+                    _maxDate.setDate(_maxDate.getDate() - 1);
+                    _maxDate = JC.f.formatISODate(_maxDate);
+                    _strDate = _maxDate 
+                    break;
+            }
+
+            _p.mddate().attr(&#x27;maxValue&#x27;, _maxDate);
+            if (_p.setdefaulthiddendate()) {
+                setTimeout(function () {
+                    _p.mddate().val(_strDate);
+                }, 30);
+            }
+        }
 
     };
 
@@ -561,7 +664,7 @@
             }
     };
 
-    BaseMVC.build( MultiDate, &#x27;Bizs&#x27; );
+    BaseMVC.build( MultiDate, &#x27;Bizs&#x27; );    
 
     $(document).ready( function(){
         $(&#x27;select.js_autoMultidate&#x27;).each( function(){
