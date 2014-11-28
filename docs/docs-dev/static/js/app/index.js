@@ -49,7 +49,7 @@
 					}
 
 					_tmpComp = _ele.closest( '.body-comp' );
-					detailframe.attr( 'src', _tmpComp.attr( 'data-url' ) );
+					detailframe.attr( 'src', _ele.attr( 'data-url' ) );
 
 					setTimeout( function(){
 
@@ -278,8 +278,6 @@
 		});
 	}
 
-	
-
 	function simpleDemoHandler(){
 
 		$( '.body-sdemobtn' ).on( 'click', function( e ){
@@ -295,7 +293,7 @@
 			}
 
 			_sdemoView.find( 'iframe' )
-				.attr( 'src', _parent.attr( 'data-url' ) ).load( function(){
+				.attr( 'src', _sdemoBtn.attr( 'data-url' ) ).load( function(){
 					_sdemoView.velocity( { opacity: '0' }, 0 ).show();
 					$( 'html,body' ).stop().animate({
 						scrollTop: _sdemoView.offset().top - 20

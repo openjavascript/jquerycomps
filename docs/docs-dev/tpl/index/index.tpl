@@ -1,4 +1,8 @@
 {{extends file="public/base.tpl"}}
+{{block name="inherit_header" append}}
+<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/index.css" />
+{{/block}}
+
 {{block name="body_main"}}
     {{include file="index/body_header.tpl"}}
 
@@ -29,10 +33,16 @@
                             >
                             <h2 class="body-comptitle clearfix">
                                 <span class="body-compname">{{$item.name}}</span>
-                                <a href="#" class="body-attrbtn body-changebtn">ATTR</a>
+                                <a href="#" class="body-attrbtn body-changebtn"
+                                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$item.name}}&version={{$item.version}}&file=detail.tpl#attr"
+                                >ATTR</a>
                                 {{if !$item.nodemo|default:''}}
-                                <a href="#" class="body-demobtn body-changebtn">DEMO</a>
-                                <a href="#" class="body-sdemobtn">SIMPLE DEMO</a>
+                                <a href="#" class="body-demobtn body-changebtn"
+                                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$item.name}}&version={{$item.version}}&file=detail.tpl"
+                                >DEMO</a>
+                                <a href="#" class="body-sdemobtn"
+                                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$item.name}}&version={{$item.version}}&file=demo.html"
+                                >SIMPLE DEMO</a>
                                 {{/if}}
                             </h2>
                             <h3 class="body-compsubtitle">{{$item.subtitle}}<span class="body-compversion">最新版本: {{$item.version}}</span></h3>

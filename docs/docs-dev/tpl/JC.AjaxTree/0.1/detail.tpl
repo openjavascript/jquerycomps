@@ -1,6 +1,5 @@
 {{extends file="public/baseDetail.tpl"}}
 
-
 {{block name="html_header_css" append}}
 <!-- start JC style -->
 <link href='{{$URL_ROOT}}/modules/JC.AjaxTree/0.1/res/default/style.css' rel='stylesheet' />

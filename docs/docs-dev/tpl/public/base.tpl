@@ -11,7 +11,6 @@
 	    <title>Jquey Comps</title>
 
 	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/common.css" />
-	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/index.css" />
 
         <script>
             window.TPATH = window.PROJECT_ROOT = "{{$PROJECT_ROOT}}";
