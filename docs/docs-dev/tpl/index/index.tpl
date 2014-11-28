@@ -41,7 +41,7 @@
                                     data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$item.name}}&version={{$item.version}}&file=detail.tpl"
                                 >DEMO</a>
                                 <a href="#" class="body-sdemobtn"
-                                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$item.name}}&version={{$item.version}}&file=demo.html"
+                                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$item.name}}&version={{$item.version}}&file=demo.tpl"
                                 >SIMPLE DEMO</a>
                                 {{/if}}
                             </h2>
