@@ -4,6 +4,9 @@
     define( 'PROJECT_ROOT', dirname( $_SERVER[ 'PHP_SELF' ] ) );
     define( 'URL_ROOT', dirname( dirname( PROJECT_ROOT ) ) );
 
+    $content = file_get_contents( FILE_ROOT . '/data.json' );
+    $datas = json_decode( $content, true );
+
     /* 模板配置 */
     date_default_timezone_set('Asia/Shanghai'); 
     include_once("smarty_lib/Smarty.class.php"); //导入模板文件
@@ -26,5 +29,8 @@
 
     $smarty->assign( 'PROJECT_ROOT', PROJECT_ROOT );
     $smarty->assign( 'URL_ROOT', URL_ROOT);
+
+    $smarty->assign( 'datas', $datas );
+
 
 ?>

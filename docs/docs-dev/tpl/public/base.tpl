@@ -1,3 +1,4 @@
+<!doctype html>
 <html>{{strip}}
     {{include file="config.tpl" }}
     {{include file="public/func.tpl" }}
@@ -9,8 +10,8 @@
         <meta name="Description" content="JQueryComps" />
 	    <title>Jquey Comps</title>
 
-	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/index.css" />
 	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/common.css" />
+	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/index.css" />
 
         <script>
             window.TPATH = window.PROJECT_ROOT = "{{$PROJECT_ROOT}}";
@@ -32,16 +33,19 @@
             });
 
         </script>
+        {{block name="inherit_header"}}{{/block}}
         {{block name="html_header_css"}}{{/block}}
         {{block name="html_header_js"}}{{/block}}
         {{block name="html_header"}}{{/block}}
     </head>
     <body>
+        {{block name="inherit_body_header"}}{{/block}}
         {{include file="public/body_header.tpl"}}
 
         {{block name="body_main"}}
         {{/block}}
 
+        {{block name="inherit_body_footer"}}{{/block}}
         {{block name="body_custom_footer"}}{{/block}}      
         {{block name="body_footer"}}
             {{include file="public/body_footer.tpl"}}

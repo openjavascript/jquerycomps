@@ -5,7 +5,6 @@
     , 'JC.FrameUtil'
 ], function( dataTool, iScroll, velocity ){
 
-
 	window.dataTool = dataTool;
 
 	pageEventHandler();
@@ -50,13 +49,7 @@
 					}
 
 					_tmpComp = _ele.closest( '.body-comp' );
-					detailframe.attr(
-						'src'
-						, dataTool.getDetailPathByNameAndVersion( 
-							_tmpComp.attr( 'id' ).replace( '_', '.' ) 
-							, _tmpComp.attr( 'data-version' )
-						)
-					);
+					detailframe.attr( 'src', _tmpComp.attr( 'data-url' ) );
 
 					setTimeout( function(){
 
@@ -302,12 +295,7 @@
 			}
 
 			_sdemoView.find( 'iframe' )
-				.attr( 'src', 
-					dataTool.getDemoPathByNameAndVersion( 
-						_parent.attr( 'id' ).replace( '_', '.' ) 
-						, _parent.attr( 'data-version' )
-					) 
-				).load( function(){
+				.attr( 'src', _parent.attr( 'data-url' ) ).load( function(){
 					_sdemoView.velocity( { opacity: '0' }, 0 ).show();
 					$( 'html,body' ).stop().animate({
 						scrollTop: _sdemoView.offset().top - 20

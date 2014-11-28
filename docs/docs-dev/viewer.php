@@ -1,24 +1,54 @@
 <?php
     include_once( "config.php" );
 
-    $content = file_get_contents( 'static/js/data.js' );
+    $modules = isset( $_REQUEST[ 'module' ] ) ? $_REQUEST[ 'module' ] : '';
+    $version = isset( $_REQUEST[ 'version' ] ) ? $_REQUEST[ 'version' ] : '';
+    $file = isset( $_REQUEST[ 'file' ] ) ? $_REQUEST[ 'file' ] : '';
 
-    $datas = json_decode( $content, true );
+    $filepath = FILE_ROOT . "/tpl/$modules/$version/$file";
+    $tplpath = FILE_ROOT . "tpl/$modules/$version/$file";
+    $COMP_ROOT = '';
 
-    $compsList = $datas['compsList'];
+    if( file_exists( $filepath ) ){
+        $COMP_ROOT = URL_ROOT . "/modules/$modules/$version";
 
-    $extraMenu = $datas['extraMenu'];
+        $compsList = $datas['compsList'];
+        $compName = $modules;
+        
+        $compData;
 
-    $websiteLink = $datas['websiteLink'];
+        $allVersionComps = array();
 
-    $smarty->assign( 'datas', $datas );
+        for( $i = 0; $i< sizeof( $compsList ) ;$i++ ) {
+            $groupList = $compsList[ $i ][ 'list' ];
+            for( $j = 0; $j< sizeof( $groupList ) ;$j++ ) {
+                $comp = $groupList[ $j ];
+                if( $comp[ 'name' ] == $compName ) {
+                    array_push( $allVersionComps, $comp );
+                    if( $comp[ 'version' ] == $version ) {
+                        $compData = $comp;
+                        $allVersionComps[ sizeof( $allVersionComps ) - 1 ]
+                            [ 'nowVersion' ] = true;
+                    }
+                }
+            }
+        }
+        $smarty->assign( 'COMP_ROOT', $COMP_ROOT );
+        $requireComps = $compData[ 'require' ];
+        $smarty->assign( 'compData', $compData );
+        $smarty->assign( 'requireComps', $requireComps );
+        $smarty->assign( 'allVersionComps', $allVersionComps );
 
-    $smarty->assign( 'compsList', $compsList );
+        $smarty->display( $filepath );
+    }else{ 
 
-    $smarty->assign( 'extraMenu', $extraMenu );
+        $error = array();
 
-    $smarty->assign( 'websiteLink', $websiteLink );
+        $error[ 'path error' ] = $tplpath;
+    
+        $smarty->assign( 'TERROR', $error );
 
-    $smarty->display('index/index.tpl');
+        $smarty->display('public/http_404.tpl');
+    }
 
 ?>

@@ -1,17 +1,12 @@
 <?php
     include_once( "config.php" );
 
-    $content = file_get_contents( FILE_ROOT . '/data.js' );
-
-    $datas = json_decode( $content, true );
-
     $compsList = $datas['compsList'];
 
     $extraMenu = $datas['extraMenu'];
 
     $websiteLink = $datas['websiteLink'];
 
-    $smarty->assign( 'datas', $datas );
 
     $smarty->assign( 'compsList', $compsList );
 

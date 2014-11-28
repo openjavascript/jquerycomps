@@ -35,7 +35,7 @@
 	    	, 'codeMirror' : PROJECT_ROOT + '/static/js/codeMirror/lib/codemirror'
 	    	, '../xml/xml' : PROJECT_ROOT + '/static/js/codeMirror/mode/xml/xml'
 	    	, '../javascript/javascript' : PROJECT_ROOT + '/static/js/codeMirror/mode/javascript/javascript'
-	    	, '../css/css' : PROJECT_ROOT + '/static/js/PROcodeMirror/mode/css/css'
+	    	, '../css/css' : PROJECT_ROOT + '/static/js/codeMirror/mode/css/css'
 
 	    	, 'codeMirror.htmlmixed' : PROJECT_ROOT + '/static/js/codeMirror/mode/htmlmixed/htmlmixed'
 

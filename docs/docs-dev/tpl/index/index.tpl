@@ -22,7 +22,11 @@
                     {{if $value.name != 'Plugin'}}
                         {{foreach from=$value.list item=item}}
                         {{if !$item.hide|default:'' && !$item.history|default:''}}
-                        <li id="{{$item.name|replace:'.':'_'}}" class="body-comp" data-version="{{$item.version}}">
+                        <li id="{{$item.name|replace:'.':'_'}}" class="body-comp" 
+                            data-version="{{$item.version}}" 
+                            data-name="{{$item.name}}"
+                            data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$item.name}}&version={{$item.version}}&file=detail.tpl"
+                            >
                             <h2 class="body-comptitle clearfix">
                                 <span class="body-compname">{{$item.name}}</span>
                                 <a href="#" class="body-attrbtn body-changebtn">ATTR</a>
@@ -66,13 +70,13 @@
                 <ul class="body-detailnav"></ul>
             </div>
         </div>
-        {{include file="index/body_footer.tpl"}}
+    {{include file="index/body_footer.tpl"}}
     </div>
+
 {{/block}}
 
 {{block name="body_footer_js"}}
     <script>
-        requirejs( [ '{{$PROJECT_ROOT}}/static/js/app/index.js' ], function(){
-        });
+        requirejs( [ '{{$PROJECT_ROOT}}/static/js/app/index.js' ] );
     </script>
 {{/block}} 
