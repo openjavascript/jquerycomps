@@ -236,6 +236,50 @@
 						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
 					]
 				}
+				, {
+					"name":"Bizs.DMultiDate"
+					, "subtitle":"复合日历业务逻辑组件"
+					, "version":"0.1"
+					, "require":[
+						{
+							"name":"JC.BaseMVC"
+							, "version":"0.1"
+						}
+						, {
+							"name":"JC.Calendar"
+							, "version":"0.3"
+						}
+					]
+					, "api":"http://jc2.openjavascript.org/docs_api/classes/Bizs.DMultiDate.html"
+					, "download":"http://github.com/openjavascript/jquerycomps/archive/requirejs_master.zip"
+					, "desc":[
+						"Bizs.DMultiDate 复合日历业务逻辑组件"
+						, "根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期"
+						, "自动初始化 class = \".js_autoDMultiDate\"的HTML标签"
+					]
+				}
+				, {
+					"name":"Bizs.MultiDate"
+					, "subtitle":"复合日历业务逻辑组件"
+					, "version":"0.1"
+					, "require":[
+						{
+							"name":"JC.BaseMVC"
+							, "version":"0.1"
+						}
+						, {
+							"name":"JC.Calendar"
+							, "version":"0.3"
+						}
+					]
+					, "api":"http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiDate.html"
+					, "download":"http://github.com/openjavascript/jquerycomps/archive/requirejs_master.zip"
+					, "desc":[
+						"Bizs.DMultiDate 复合日历业务逻辑组件"
+						, "根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期"
+						, "自动初始化 class = \".js_autoMultiDate\"的HTML标签"
+					]
+				}
 			]
 		}
 		, {
