@@ -1,0 +1,53 @@
+<html>{{strip}}
+    {{include file="config.tpl" }}
+    {{include file="public/func.tpl" }}
+{{/strip}}<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="renderer" content="webkit" />
+        <meta name="Keywords" content="JQueryComps,openjavascript,JC,JC2,jquery" />
+        <meta name="Description" content="JQueryComps" />
+	    <title>Jquey Comps</title>
+
+	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/index.css" />
+	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/common.css" />
+
+        <script>
+            window.TPATH = window.PROJECT_ROOT = "{{$PROJECT_ROOT}}";
+            window.URL_ROOT = "{{$URL_ROOT}}";
+        </script>
+		<script src="{{$URL_ROOT}}/lib.js"></script>
+		<script src="{{$PROJECT_ROOT}}/static/js/config.js"></script>
+
+        <script>
+            JC.PATH = URL_ROOT;
+            JC.debug = {{$TDEBUG|default:0}};
+
+            requirejs.config( {
+                baseUrl: JC.PATH
+                , urlArgs: 'v={{$TVERSION}}'
+                , paths: {
+                    'common': TPATH + '/js/common'
+                }
+            });
+
+        </script>
+        {{block name="html_header_css"}}{{/block}}
+        {{block name="html_header_js"}}{{/block}}
+        {{block name="html_header"}}{{/block}}
+    </head>
+    <body>
+        {{include file="public/body_header.tpl"}}
+
+        {{block name="body_main"}}
+        {{/block}}
+
+        {{block name="body_custom_footer"}}{{/block}}      
+        {{block name="body_footer"}}
+            {{include file="public/body_footer.tpl"}}
+        {{/block}}
+
+        {{block name="body_footer_js"}}{{/block}} 
+        {{if isset($smarty.get.debug) && $smarty.get.debug eq '1' }}{{debug}}{{/if}}
+    </body>
+</html>
