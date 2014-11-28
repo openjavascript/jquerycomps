@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+            dl dd{ margin: 10px 0; }
+        </style>
+        <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true; 
+
+            requirejs( [ 'JC.Valid', 'JC.Tips', 'JC.Calendar', 'plugins.json2' ]
+            , function( Valid, Tips, Calendar ){
+
+                JC.Tips.autoInit = false;
+
+                JC.Calendar.layoutInitedCallback = 
+                function( _layout ){
+                    JC.Tips.init( _layout.find('[title]') );
+                };
+
+                JC.Calendar.layoutHideCallback = 
+                function( _lastIpt ){
+                    JC.Tips.hide();
+                };
+            });
+        </script>
+    </head>    
+    <body>
+        <br /><br /><br /><br /><br /><br />
+        <form action='' method='get'>
+            <dl>
+                <dt>JC.Calendar 示例, 如果没有特别声明, 默认type 都为 date</dt>
+                <dd><input type="text" name="date1" multidate="date" /> date</dd>
+                <dd><input type="text" name="date1" multidate="week" value="2013-06-02" /> week</dd>
+                <dd>
+                <input type="text" name="date2" multidate="week" value="2013-06-03" />
+                <input type="button" class="UXCCalendar_btn" />week
+                </dd>
+                <dd><input type="text" name="date3" multidate="date" value="2013-05-03" /></dd>
+                <dd><input type="text" name="notdate" />not date</dd>
+                <dd>
+                <input type="text" name="date4" multidate="date" value="2012.04.02" /><input type="button" class="UXCCalendar_btn" />
+                </dd>
+                <dd>
+                <input type="text" name="date5" multidate="week" value="20110201" /><input type="button" class="UXCCalendar_btn" />week
+                </dd>
+                <dd>
+                <input type="text" name="date2" multidate="week" value="2013-06-03" minvalue="2013-06-03" />week minvalue="2013-06-03"
+                </dd>
+                <dd>
+                <input type="text" name="date2" multidate="week" value="2013-06-03" maxvalue="2013-06-30" />week maxvalue="2013-06-30"
+                </dd>
+                <dd>
+                <input type="text" name="date2" multidate="week" value="2013-06-03" minvalue="2013-06-01" maxvalue="2013-06-30" />  week minvalue="2013-06-01" maxvalue="2013-06-30"
+                </dd>
+                <dd>
+                date range:
+                <input type="text" name="date2" datatype="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                <input type="text" name="date2" datatype="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                <em class="error"></em>
+                </dd>
+            </dl>
+        </form>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+    </body>
+</html>
+

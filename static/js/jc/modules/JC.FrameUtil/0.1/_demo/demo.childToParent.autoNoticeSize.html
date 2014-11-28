@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>JC.FrameUtil - Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        .ipt,.txt,.txt-1{ border:1px solid #e2e3ea; border-top:1px solid #abadb3; border-radius:2px; height:22px; *line-height:22px;}
+        .ipt{ width:126px;}
+        .ipt-w58{ width:58px;}
+        .ipt-w48{ width:48px; text-align:center;}
+        .ipt-w80{ width:80px;}
+        .ipt-w180{ width:180px;}
+        .ipt-w230{ width: 230px;}
+        .ipt-w320{ width:320px;}
+        .ipt-w380{ width:380px;}
+        .ipt-w480{ width:480px;}
+        .ipt-w545{ width:545px;}
+        .txt,.txt-1{ resize:none; height:50px; width:99.8%;}
+        .txt-w280{ width:280px;}
+        .txt-w480{ width:480px;}
+        .txt-w545{ width:545px;}
+        .txt-w400{ width:410px;}
+        .txt-w380{ width:380px;}
+        .txt-w650{ width:650px;}
+
+        .defDl > dd{
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+    </style>
+    <link href='../../../../modules/JC.Panel/0.2/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'JC.FrameUtil', 'JC.Panel', 'Bizs.ActionLogic' ], function(){
+
+        });
+    </script>
+</head>    
+<body>
+    <h2>JC.FrameUtil - child to parent - JC.FrameUtil.autoNoticeSize( _ms, _type ) - 示例</h2>
+
+    <dl class="defDl">
+        <dt>panel iframe</dt>
+        <dd>
+            <button type="button" 
+                class="js_bizsActionLogic"
+                balType="panel" 
+                balPanelTpl="#scriptPanel" 
+                balCallback="balPanelInitCb"
+            >script tpl</button>
+        </dd>
+    </dl>
+
+    <dl class="defDl">
+        <dt>iframe</dt>
+        <dd>
+            <iframe src="./data/childToParent1.html" frameborder="1" style="width: 99%;" name="f1"></iframe>
+        </dd>
+    </dl>
+
+
+    <dl class="defDl">
+        <dt>iframe</dt>
+        <dd>
+            <iframe src="./data/childToParent.html" frameborder="1" style="width: 99%;" name="f2"></iframe>
+        </dd>
+    </dl>
+
+    <dl class="defDl">
+        <dt>iframe</dt>
+        <dd>
+            <iframe src="./data/childToParent1.html" frameborder="1" style="width: 99%;" name="f3"></iframe>
+        </dd>
+    </dl>
+
+<script type="text/template" id="scriptPanel">
+<div class="UPanel UPanelString" style="display:none; width: 720px;" >    
+    <form action="./data/handler.php" method="POST"
+        class="js_bizsFormLogic"
+        formType="ajax"
+        formConfirmPopupType="popup"
+        formBeforeProcess="formBeforeProcess"
+        formAfterProcess="formAfterProcess"
+        formAjaxDone="formAjaxDone"  
+        >    
+        <div class="UPContent">        
+            <div class="hd">dom panel</div>        
+            <div class="bd">
+                <iframe src="./data/childToParent.close.html" frameborder="0" style="width: 99%;"></iframe>
+            </div>        
+            <div class="ft">test footer</div>        
+            <span class="close" eventtype="close"></span>    
+        </div>
+        <!--end UPContent-->    
+    </form>
+</div>
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bizs.MultiSelect 0.1</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        dd{
+            margin: 10px 20px;
+        }
+    </style>
+
+    <link href='../../../../modules/Bizs.MultiSelect/0.1/res/default/style.css' rel='stylesheet' />
+    
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'Bizs.MultiSelect', 'JC.AutoChecked' ], function(){
+            
+        });
+
+    </script>
+</head>
+<body>
+  <dl>
+    <dt>normal demo</dt>
+    <dd>
+        <div class="test" style="margin-bottom:50px;">
+          <div class="SELECTBOX js_bizMultiSelect" databindbox="(.test .js_box">
+             <i class="SELECTIcon"></i>
+             <span class="SELECTLabel"></span>                                         
+             <div class="SELECTListBox" >
+                  <ul>
+                      <li class="SELECTIgnore">
+                         <label>
+                             <input type="checkbox" value="" name="" checktype="all" checkfor="///input[type=checkbox]">
+                             全选
+                         </label>
+                      </li>
+                      <li>
+                         <label>
+                             <input type="checkbox" value="1" name="" data-text="北京天地在线广告有限公司">
+                             北京天地在线广告有限公司
+                         </label>
+                      </li>
+                      <li>
+                         <label>
+                             <input type="checkbox" value="2" name="" data-text="河南天地在线广告有限公司">
+                             河南天地在线广告有限公司
+                         </label>
+                      </li>
+                      <li>
+                         <label>
+                             <input type="checkbox" value="3" name="" data-text="河北天地在线广告有限公司">
+                             河北天地在线广告有限公司
+                         </label>
+                      </li>
+                 </ul>
+                 <div class="SELECTClose"><a href="javascript:;" class="SELECTCloseBtn">关闭</a></div>
+             </div>
+          </div>
+          <div class="js_box">   
+          </div>
+        </div>
+    </dd>
+    <dt>ajax demo</dt>
+    <dd>
+        <div class="SELECTBOX js_bizMultiSelect" databindbox=".js_box2" ajaxurl="./data/index.php" dataFilter="dataFilter" dataName="city[]">
+          <i class="SELECTIcon"></i>
+          <span class="SELECTLabel"></span>                                         
+          <div class="SELECTListBox" >
+            <div class="SELECTClose"><a href="javascript:;" class="SELECTCloseBtn">关闭</a></div>
+          </div>
+        </div>
+        <div class="js_box2">   
+        </div>
+    </dd>
+  </dl>
+
+
+  <script type="text/javascript">
+    function dataFilter(_json) {
+      if( _json.data && _json.data.length ){
+              _json = _json.data;
+          }
+
+          $.each( _json, function( _ix, _item ){
+              _item.length &&
+                  ( _json[ _ix ] = { 'id': _item[1], 'label': _item[0], 'isChecked': _item[2] } )
+                  ;
+          });
+          return _json;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ margin: 20px 80px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+            dl.fm-items{ margin: 20px 0 20px; }
+            dl.fm-items dd { zoom: 1; padding: 5px 0 5px; clear:both; display:block; }
+            dl.fm-items dd:after {content:".";display:block;visibility:hidden;height:0;clear:both;}
+            dl.fm-items > dt{ text-align: center; font-weight: bold; margin: 20px 0;}
+
+            div.f-l{ float: left; }
+            div.label{ width: 320px; text-align: right; padding-right: 20px }
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+            input[type=checkbox] {
+                height: auto;
+                line-height: auto;
+            }
+
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true; 
+
+            requirejs( [ 'JC.Valid', 'JC.Calendar', 'Bizs.FormLogic' ]
+            , function( Valid, Calendar, FormLogic ){
+                $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                    window.console && console.clear && console.clear();
+                    JC.Valid.clearError( 'form.js_valid' );
+                });
+            });
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid js_bizsFormLogic" validmsg="true" >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
+            </div>
+            <dl class="fm-items">
+                <dt>JC.Valid 示例</dt>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = radio, 至少需要选择一个 radio</dt>
+
+                        <dd>
+                            <input type="radio" name="test1" value="1" datatype="radio" errmsg="请选择一个单选框" />
+                            1
+                            <input type="radio" name="test1" value="2" datatype="radio" errmsg="请选择一个单选框" />
+                            2
+                            <input type="radio" name="test1" value="3" datatype="radio" errmsg="请选择一个单选框" />
+                            3
+                            <em class="error"></em>
+                            <em class="validmsg"></em>
+                        </dd>
+
+                        <dd>
+                            <label>
+                                <input type="radio" name="test2" value="1" datatype="radio" errmsg="请选择一个单选框" />
+                                1
+                            </label>
+                            <label>
+                                <input type="radio" name="test2" value="2" datatype="radio" errmsg="请选择一个单选框" />
+                                2
+                            </label>
+                            <label>
+                                <input type="radio" name="test2" value="3" datatype="radio" errmsg="请选择一个单选框" />
+                                3
+                            </label>
+                            <em class="error"></em>
+                            <em class="validmsg"></em>
+                        </dd>
+
+                        <dd>
+                            <ul>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="test3" value="1" 
+                                            datatype="radio" 
+                                            emel="<ul em.error" 
+                                            validel="<ul em.validmsg" 
+                                            errmsg="请选择一个单选框" 
+                                            datatarget="<ul input"
+                                            />1
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="test3" value="2" 
+                                            datatype="radio" 
+                                            emel="<ul em.error" 
+                                            validel="<ul em.validmsg" 
+                                            errmsg="请选择一个单选框" 
+                                            datatarget="<ul input"
+                                            />2
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="test3" value="3" 
+                                            datatype="radio" 
+                                            emel="<ul em.error" 
+                                            validel="<ul em.validmsg" 
+                                            errmsg="请选择一个单选框" 
+                                            datatarget="<ul input"
+                                            />3
+                                    </label>
+                                </li>
+                                <li>
+                                    <em class="error"></em>
+                                    <em class="validmsg"></em>
+                                </li>
+                            </ul>
+
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd style="">
+                    <button type="submit">submit</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">清空错误信息</button>
+                </dd>
+
+            </dl>
+
+            <div style="position:fixed; bottom: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
+            </div>
+        </form>
+
+
+    </body>
+</html>
+

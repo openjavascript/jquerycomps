@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <link href='../../../../modules/Bizs.CRMSchedule/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.DragSelect/0.1/res/default/style.css' rel='stylesheet' />
+        <style>
+            body{
+                margin: 20px 40px;
+                background: none!important;
+            }
+
+            th.js_bccDateLabel, input.js_bccPopupBtn
+            , td.js_pos_canSelect, td.js_pos_locked {
+                cursor: pointer!important;
+            }
+
+            th.js_bccOutdate, td.js_bccOutdate {
+                cursor: default!important;
+            }
+        </style>
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+
+            JC.debug = true;
+
+            var CRMSchedule_LIST_DATA = {
+                dateLabelLength: 5
+                , list_data: [ 
+                    { "name": "pos1", "id": "1"
+                        , "parent": [ { "name": "parent1", "id": "11" },  { "name": "parent2", "id": "22" } ] 
+                        , "position_date": { 
+                            "2014-04-01": { "status": 1, "company": "company 1" }
+                            , "2014-04-02": { "status": 2  }
+                            , "2014-05-21": { "status": 6  }
+                        }
+                    } 
+
+                    , { "name": "pos2", "id": "2"
+                        , "parent": [ { "name": "parent3", "id": "11" },  { "name": "parent4", "id": "22" } ] 
+                        , "position_date": { 
+                            "2014-04-03": { "status": 3 }
+                            , "2014-04-04": { "status": 4, "company": "company 4"  }
+                        }
+                    } 
+
+                    , { "name": "pos3", "id": "3"
+                        , "parent": [ { "name": "parent5", "id": "11" },  { "name": "parent6", "id": "22" } ] 
+                        , "position_date": { 
+                            "2014-04-05": { "status": 5 }
+                            , "2014-04-06": { "status": 0  }
+                        }
+                    } 
+
+                    , { "name": "pos4", "id": "4"
+                        , "parent": [ { "name": "parent1", "id": "11" },  { "name": "parent2", "id": "22" } ] 
+                        , "position_date": { 
+                            "2014-04-11": { "status": 1 }
+                            , "2014-04-12": { "status": 2, "company": "company 2"  }
+                        }
+                    } 
+
+                    , { "name": "pos5", "id": "5"
+                        , "parent": [ { "name": "parent1", "id": "11" },  { "name": "parent2", "id": "22" } ] 
+                        , "position_date": { 
+                            "2014-04-13": { "status": 3, "company": "company 3" }
+                            , "2014-04-14": { "status": 4  }
+                        }
+                    } 
+                ]
+            };
+
+            requirejs( [ 'Bizs.CRMSchedule' ], function(){
+                Bizs.CRMSchedule.defaultDataBuild = 
+                    function( _data, _sdate ){
+                        var _t = [];
+                        _data.company && (          _t.push( '广告主名称　: ' + _data.company ) );
+                        _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
+                        _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
+                        _data.createUserName && (   _t.push( '提交人　　　: ' + _data.createUserName ) );
+                        _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
+                        _sdate && _t.length && (    _t.push( '日期　　　　: ' + _sdate ) );
+                        _data.title = _t.join( '\n' );
+                        return _data;
+                    };
+
+                JC.Tips.autoInit = false;
+            });
+
+        </script>
+    </head>    
+    <body>
+        <div class="wp">
+            <div class="bd">
+                <div class="right">
+                    <div class="cont">
+
+                        <div class=" mb15">
+                            <ul class="location-type">
+                                <li class="js_pos_selected"><span></span> 选定的时间</li>
+                                <li class="gray">|</li>
+                                <li class="js_pos_canSelect"><span></span>  可预定</li>
+                                <li class="js_pos_ordered"><span></span>已预定</li>
+                                <li class="js_pos_preOnline"><span></span>  待上线</li>
+                                <li class="js_pos_online"><span></span>已上线</li>
+                                <li class="js_pos_notOnline"><span></span>  未上线</li>
+                                <li class="js_pos_locked"><span></span>  已锁定</li>
+                                <li class="js_pos_preVerify"><span></span>  待审核</li>
+                            </ul>
+                            满足条件的任务共 <b>169</b> 条，分<b> 17</b> 页显示。
+                        </div>
+                        <div class="data-box2 data-location">
+                            <div class="js_bizCRMSchedule js_compDragSelect" 
+                                bccInitData="CRMSchedule_LIST_DATA"
+                                bccTpl="script.js_bccTpl"
+                                bccRowTpl="script.js_bccRowTpl"
+                                bccDateNavTpl="script.js_bccDateNavTpl"
+                                bccPopupTpl="script.js_bccPopupTpl"
+                                bccPopupCalendarTpl="script.js_bccPopupCalendarTpl"
+
+                                bccMonthDataUrl="./data/month_data.php?date={1}&id={0}"
+                                bccDateRangeUrl="./data/dateRange.php?id={0}&start_date={1}&end_date={2}"
+
+                                bccActionType="edit"
+                                bccSaveSelectBox="/div.js_bccSaveSelectBox"
+                                bccSaveSelectItemTpl="script.js_bccSaveSelectItemTpl"
+                                bccSaveSelectItemClass=".js_bccSaveSelectItem"
+                                bccDataLabelItemTpl="script.js_bccDataLabelItemTpl"
+                                bccAvailableDate="now, 1d"
+
+                                cdsConfig="/script.js_cdsConfig" 
+                                cdsRealtimeEffect="true" 
+                                >
+                            </div>
+
+                            <div style="display:none" class="js_bccSaveSelectBox">
+                                <input type="hidden" name="selectedPos[1]" value="2014-05-21" class="js_bccSaveSelectItem" data-id="1" />
+                            </div>
+                            <script type="text/template" class="js_bccSaveSelectItemTpl">
+                                <input type="hidden" name="selectedPos[{0}]" value="" class="js_bccSaveSelectItem" data-id="{0}" />
+                            </script>
+
+                            <script type="text/template" class="js_cdsConfig">
+                                {
+                                    "items": {
+                                        "td.js_pos_canSelect": {
+                                            "addClass": "js_pos_selected"
+                                            , "removeClass": "js_pos_canSelect"
+                                            , "callback": Bizs.CRMSchedule.DRAG_EDIT_SELECT_CALLBACK
+                                        }
+                                        , "td.js_pos_selected": {
+                                            "addClass": "js_pos_canSelect"
+                                            , "removeClass": "js_pos_selected"
+                                            , "callback": Bizs.CRMSchedule.DRAG_EDIT_UNSELECT_CALLBACK
+                                        }
+                                    }
+                                    , "callback": Bizs.CRMSchedule.DRAG_EDIT_CALLBACK
+                                    , "itemFilter": Bizs.CRMSchedule.DRAG_EDIT_ITEM_FILTER
+
+                                    , "realtimeClass": "js_cdsRealtimeEffect"
+                                }
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script type="text/template" class="js_bccTpl">
+    <table width="99.9%" border="0" cellspacing="0" cellpadding="0" class="js_bccTable">
+      <thead>	
+      <tr>
+        <th rowspan="3">一级页面</th>
+        <th rowspan="3">二级页面</th>
+        <th rowspan="3">资源位置名称</th>
+        <th colspan="{0}">
+            {1}
+        </th>
+        </tr>
+      <tr>
+        <th class="js_bccWeekLabelHd">星期</th>
+        {2}
+      </tr>
+      <tr>
+        <th class="js_bccDateLabelHd js_bccDateCol_0">日期</th>
+        {3}
+      </tr>
+      </thead>
+      <tbody>
+          {4}
+      </tbody>
+    </table>
+</script>
+
+<script type="text/template" class="js_bccDateNavTpl">
+    <div class="js_bccDataLabelBox">{0}</div>
+</script>
+
+<script type="text/template" class="js_bccDataLabelItemTpl">
+    <button type="button" class="js_bccDataLabelItem {2}" value="{0}">{1}</button>
+</script>
+
+<script type="text/template" class="js_bccRowTpl">
+    <tr class="js_bccDataRow js_bccDataRow_{8}" data-id="{6}" data-label="{2}" data-rowCount="{8}">
+        <td class="js_pos_1 js_bccDataRowFirstCell" data-id="{4}" data-label="{0}" title="{0}">{0}</td>
+        <td class="js_pos_2" data-id="{5}" data-label="{1}" title="{1}">{1}</td>
+        <td class="js_pos_3" data-id="{6}" data-label="{2}" title="{2}">{2}<input type="hidden" value="{6}" class="js_bccItemId" /></td>
+        <td class="xcenter js_bccDateCol_0"><input type="button" class="UXCCalendar_btn js_bccPopupBtn" data-id="{6}" />{7} </td>
+        {3}
+    </tr>
+</script>
+
+<script type="text/template" class="js_bccPopupTpl">
+    <div class="UPanel UPanelLocation">
+        <div class="UPContent">
+            <div class="hd"><h3>预订当月及未来三个月的资源 </h3></div>
+            <div class="bd">
+                <div class="Panel-top">位置：{0} - {1} - {2}</div>
+                <ul class="location-type">
+                    <li class="js_pos_selected"><span></span>选定的时间</li>
+                    <li class="gray">|</li>
+                    <li class="js_pos_canSelect"><span></span>可预定</li>
+                    <li class="js_pos_ordered"><span></span>已预定</li>
+                    <li class="js_pos_preOnline"><span></span>待上线</li>
+                    <li class="js_pos_online"><span></span>已上线</li>
+                    <li class="js_pos_notOnline"><span></span>未上线</li>
+                    <li class="js_pos_locked"><span></span>已预定</li>
+                    <li class="js_pos_preVerify"><span></span>待审核</li>
+                </ul>
+                <div class="Panel-Ldate js_bccPopupDateBox">
+                    {3}
+                </div>
+            </div>
+            <span class="close" eventtype="close"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" class="js_bccPopupCalendarTpl">
+    <div class="data-box2 data-location js_bccPopupDateItem">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="jc_bccPopupCalendarTable">
+          <thead>	
+          <tr>
+              <th colspan="7">{0}</th>
+          </tr>
+          <tr>
+            <th>一</th>
+            <th>二</th>
+            <th>三</th>
+            <th>四</th>
+            <th>五</th>
+            <th>六</th>
+            <th>日</th>
+          </tr>
+          </thead>
+          <tbody>
+              {1}
+          </tbody>
+        </table>
+    </div>
+</script>
+
+    </body>
+</html>
+
