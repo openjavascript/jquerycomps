@@ -31,57 +31,57 @@
             <textArea style="display:none;"></textArea>
         </div>
         <div class="codeview-pageview nowview">
-        <div style="position:fixed; right: 30px; top: 40px;">
-            <dl>
-                <dd>
-                <a style="margin-right: 10px; color: #ccc;" href="?">init Tree</a>
-                <button type="button" class="js_open_all">open all</button>
-                <button type="button" class="js_close_all">close all</button>
-                <button type="button" class="js_open_for" data_target="#open_to_val">open for</button>
-                <input type="text" value="0101" id="open_to_val" style="width: 60px;" />
-                <button type="button" class="js_close_for" data_target="#open_to_val">close for</button>
-                </dd>
-            </dl>
-        </div>
-        <div class="show-html">
-            <!-- simple demo -->
-            <dl class="ajaxtree-demo1">
-                <dt>默认树 - Tree 示例</dt>
-                <dd>
-                    <!-- class="js_compAjaxTree" is necessary -->
-                    <div class="js_compAjaxTree" data-cajScriptData="|script">
-                        <script type="text/template">
-                            {
-                                data:  {
-                                    "0": [
-                                            ["folder","01","非异步节点01"],
-                                            ["folder","02","非异步节点02"],
-                                            ["folder","03","异步节点"],
-                                            ["file","04","叶末节点"]
-                                        ],
-                                    "01": [
-                                            ["folder","0101","folder0101"],
-                                            ["file","0102","file0102"],
-                                            ["file","0103","file0103"]
-                                        ],
-                                    "02": [
-                                            ["file","0201","file0201"],
-                                            ["file","0202","file0202"]
-                                        ],
-                                    "0101": [
-                                            ["file","010101","file010101"],
-                                            ["file","010102","file010102"]
-                                        ]
+            <div style="position:fixed; right: 30px; top: 40px;">
+                <dl>
+                    <dd>
+                    <a style="margin-right: 10px; color: #ccc;" href="?">init Tree</a>
+                    <button type="button" class="js_open_all">open all</button>
+                    <button type="button" class="js_close_all">close all</button>
+                    <button type="button" class="js_open_for" data_target="#open_to_val">open for</button>
+                    <input type="text" value="0101" id="open_to_val" style="width: 60px;" />
+                    <button type="button" class="js_close_for" data_target="#open_to_val">close for</button>
+                    </dd>
+                </dl>
+            </div>
+            <div class="show-html">
+                <!-- simple demo -->
+                <dl class="ajaxtree-demo1">
+                    <dt>默认树 - Tree 示例</dt>
+                    <dd>
+                        <!-- class="js_compAjaxTree" is necessary -->
+                        <div class="js_compAjaxTree" data-cajScriptData="|script">
+                            <script type="text/template">
+                                {
+                                    data:  {
+                                        "0": [
+                                                ["folder","01","非异步节点01"],
+                                                ["folder","02","非异步节点02"],
+                                                ["folder","03","异步节点"],
+                                                ["file","04","叶末节点"]
+                                            ],
+                                        "01": [
+                                                ["folder","0101","folder0101"],
+                                                ["file","0102","file0102"],
+                                                ["file","0103","file0103"]
+                                            ],
+                                        "02": [
+                                                ["file","0201","file0201"],
+                                                ["file","0202","file0202"]
+                                            ],
+                                        "0101": [
+                                                ["file","010101","file010101"],
+                                                ["file","010102","file010102"]
+                                            ]
 
+                                    }
+                                    , root: ["folder","0",'root']
+                                    , url: "{{$COMP_ROOT}}/_demo/data/treedata.php"
                                 }
-                                , root: ["folder","0",'root']
-                                , url: "{{$COMP_ROOT}}/_demo/data/treedata.php"
-                            }
-                        </script>
-                    </div>
-                </dd>
-            </dl>
-        </div>
+                            </script>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
         </div>
     </div>
 </div>
