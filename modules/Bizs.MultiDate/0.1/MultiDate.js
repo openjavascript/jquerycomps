@@ -3,9 +3,8 @@
     /**
      * MultiDate 复合日历业务逻辑
      * 根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期
-     * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     * <p><b>require</b>: v
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Calendar.html'>JC.Calendar</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -31,11 +30,14 @@
     MultiDate.prototype = {
         _beforeInit:
             function(){
+                this._model.mdstartdate().attr( 'ignoreInitCalendarDate', true ).data( 'ignoreInitCalendarDate', true );
+                this._model.mdenddate().attr( 'ignoreInitCalendarDate', true ).data( 'ignoreInitCalendarDate', true );
                 JC.log( 'MultiDate _beforeInit', new Date().getTime() );
             }
         , _initHanlderEvent:
             function(){
                 var _p = this;
+
 
                 $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
                     _p.on( _evtName, _cb );
@@ -47,6 +49,9 @@
 
                 });
                 _p._initDefaultValue();
+                JC.f.safeTimeout( function(){
+                    _p._initDefaultValue();
+                }, _p.selector(), 'as3asdfasew3asdf', 201 );
                 _p._initHandlerEvent();
 
                 _p.selector().trigger( 'change', [ true ] );
@@ -60,6 +65,8 @@
                     , _mdcusStart = _p._model.mdCustomStartDate()
                     , _mdcusEnd= _p._model.mdCustomEndDate()
                     , _type = _p._model.qtype() || _p._model.selector().val()
+                    , _defaultBox = _p._model.mdDefaultBox()
+                    , _customBox = _p._model.mdCustomBox()
                     ;
 
                 _p._model.selector( _p._model.qtype() );
