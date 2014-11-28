@@ -14,7 +14,7 @@
         <!-- end codeview style -->
 
         <!-- start JC style -->
-        <link href='../../../../static/js/jc/modules/Bizs.MultiDate/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../static/js/jc/modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
         <!-- end JC style -->
 
         <!-- start page style -->
@@ -131,7 +131,6 @@
                         setdefaulthiddendate="true"
                     </p>
                     <div class="detail-demoview">
-
                         <select name="dataspan" class="dataspan js_autoMultidate"
                             mddate="/input.js_multidate"
                             mdstartdate="/input.js_startdate"
@@ -149,13 +148,50 @@
                         <input type="hidden" name="startdate" class="js_startdate" value="" />
                         <input type="hidden" name="enddate" class="js_enddate" value="" />
                     </div>
+                    
+                    <h4 id="navmark-demo2" class="detail-groupname">DEMO3 : JC.Calendar  CRM 示例</h4>
+                    <p class="desc">
+                        type=custom
+                    </p>
+                    <div class="detail-demoview">
+                        <select name="dataspan" class="dataspan js_autoMultidate"
+                            mddate="/input.js_multidate"
+
+                            mdstartdate="/input.js_startdate"
+                            mdenddate="/input.js_enddate"
+
+                            mdDefaultBox="/span.js_mdDefault"
+                            mdCustomBox="/span.js_mdCustom"
+                            mdCustomStartDate="/input.js_mdStartDate"
+                            mdCustomEndDate="/input.js_mdEndDate"
+                            >
+                            <option value="date">日数据</option>
+                            <option value="week">周数据</option>
+                            <option value="month">月数据</option>
+                            <option value="season">季数据</option>
+                            <option selected value="custom">自定义</option>
+                        </select>
+                        <span class="js_mdDefault">
+                            <input type="text" class="js_multidate" 
+                            multidate="date" currentcanselect="true" size="40" readonly />
+                            <input type="hidden" name="startdate" class="js_startdate" value="" />
+                            <input type="hidden" name="enddate" class="js_enddate" value="" />
+                        </span>
+                        <span class="js_mdCustom" style="display:none;">
+                            <input type="text" datatype="daterange" name="startdate" class="js_mdStartDate" value="" />
+                            <input type="text" datatype="daterange" name="enddate" class="js_mdEndDate" value="" />
+                            <em class="error"></em>
+                        </span>
+                    </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
         <!-- 外链形式 start -->
         <textArea class="detail-codetpl" type="text/template">
-            <link href='/module/JC.AjaxTree/0.1/res/default/style.css' rel='stylesheet' />
+            <link href='/module/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
             <script src="/module/JC.common/0.2/common.js" />
             <script src="/module/JC.BaseMVC/0.1/BaseMVC.js" />
             <script src="/module/JC.Calendar/0.3/Calendar.js" />
