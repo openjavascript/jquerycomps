@@ -254,8 +254,10 @@
 					, "download":"http://github.com/openjavascript/jquerycomps/archive/requirejs_master.zip"
 					, "desc":[
 						"Bizs.DMultiDate 复合日历业务逻辑组件"
-						, "根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期"
-						, "自动初始化 class = \".js_autoDMultiDate\"的HTML标签"
+						, "根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期；"
+						, "通过html属性可以配置最长可以选择多少个天、周、月、季。"
+						, "自动初始化 class = \"js_autoDMultiDate\"的HTML标签"
+
 					]
 				}
 				, {
@@ -277,7 +279,7 @@
 					, "desc":[
 						"Bizs.DMultiDate 复合日历业务逻辑组件"
 						, "根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期"
-						, "自动初始化 class = \".js_autoMultiDate\"的HTML标签"
+						, "自动初始化 class = \"js_autoMultiDate\"的HTML标签"
 					]
 				}
 			]
