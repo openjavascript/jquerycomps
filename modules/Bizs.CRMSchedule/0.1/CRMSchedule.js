@@ -1293,11 +1293,11 @@
                                 _title = _item.position_date[ _sPosDate ].title || '';
 
                                 _status = _item.position_date[ _sPosDate ].status;
-                                _name = _item.position_date[ _sPosDate ].company || '';
-                                _shortName = byteString( 
-                                                        _item.position_date[ _sPosDate ].company
+                                _name = _item.position_date[_sPosDate].spreadProduct || _item.position_date[ _sPosDate ].company || '';
+                                _shortName = byteString( _item.position_date[_sPosDate].spreadProduct
+                                                        || _item.position_date[ _sPosDate ].company
                                                         || _item.position_date[ _sPosDate ].agencyName
-                                                        ||_item.position_date[ _sPosDate ].departmentName
+                                                        || _item.position_date[ _sPosDate ].departmentName
                                                         || '' 
                                                     , 6 );
 
