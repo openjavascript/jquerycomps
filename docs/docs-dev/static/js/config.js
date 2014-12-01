@@ -24,12 +24,12 @@
 	    baseUrl: ar.join('/') + '/'
 	    , urlArgs: 'v=20141127'
 	    , paths: {
-	    	'template' : PROJECT_ROOT + '/static/js/artTemplate/dist/template'
+	    	'common.doc_demo' : PROJECT_ROOT + '/static/js/app/common.doc_demo'
+	    	, 'template' : PROJECT_ROOT + '/static/js/artTemplate/dist/template'
 	    	, 'data' : PROJECT_ROOT + '/static/js/dataTool'
 	    	, 'iscroll' : PROJECT_ROOT + '/static/js/iscroll/build/iscroll'
 	    	, 'velocity' : PROJECT_ROOT + '/static/js/velocity/velocity.min'
 
-	    	, 'detail' : PROJECT_ROOT + '/static/js/app/detail'
 
 	    	, '../../lib/codemirror' : PROJECT_ROOT + '/static/js/codeMirror/lib/codemirror'
 	    	, 'codeMirror' : PROJECT_ROOT + '/static/js/codeMirror/lib/codemirror'
@@ -150,6 +150,7 @@
 	        , 'jquery.mousewheel': 'modules/jquery.mousewheel/3.1.12/jquery.mousewheel'
 	        , 'jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
 	        , 'jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
+            , 'jquery.cookie': 'modules/jquery.cookie/1.4.1/jquery.cookie'
 
 
 	        , 'json2': 'modules/JSON/2/JSON'

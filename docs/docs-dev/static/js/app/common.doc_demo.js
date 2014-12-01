@@ -4,8 +4,6 @@
         , 'JC.FrameUtil'
     ], function( CodeMirror ){
 
-        var dataTool = window.top.dataTool;
-
         JC.FrameUtil.autoNoticeSize();
 
         var codetpl = $( '.detail-codetpl' );
@@ -21,29 +19,28 @@
         $( '.detail-requirelink' ).on( 'click', function( e ){
             e.preventDefault();
 
-            var _tarTextList = $( e.target ).text().split( '- v' );
-            window.parent.showNextComp( 
-                dataTool.getDetailPathByNameAndVersion( 
-                    $.trim( _tarTextList[ 0 ] )
-                    , $.trim( _tarTextList[ 1 ] )
-                ) 
-            );
+            var _tarTextList = $( e.target ).text().split( '- v' )
+                , _name = $( this ).attr( 'data-name' )
+                , _version = $( this ).attr( 'data-version' )
+                ;
+            window.parent.showNextComp( JC.f.printf( '{0}/viewer.php?module={1}&version={2}&file=doc.tpl'
+                    , window.PROJECT_ROOT, _name, _version ) );
         } );
 
         $( '.detail-versionlink' ).on( 'click', function( e ){
             e.preventDefault();
 
-            var _tar = $( e.target );
+            var _tar = $( e.target )
+                , _version = $( this ).attr( 'data-version' )
+                ;
+
             if( _tar.hasClass( 'detail-nowVersion' ) ){
                 return;
             }
 
-            window.parent.showNextComp( 
-                dataTool.getDetailPathByNameAndVersion( 
-                    $.trim( _tar.attr( 'data-name' ) )
-                    , $.trim( _tar.text() )
-                )
-            );
+            window.parent.showNextComp( JC.f.printf( '{0}/viewer.php?module={1}&version={2}&file=doc.tpl'
+                    , window.PROJECT_ROOT, window.COMP_NAME, _version ) );
+
         });
 
     });

@@ -1,11 +1,15 @@
 <?php
 
+    error_reporting( E_ALL ); 
+
     define( 'FILE_ROOT', dirname( __FILE__ ) );
     define( 'PROJECT_ROOT', dirname( $_SERVER[ 'PHP_SELF' ] ) );
     define( 'URL_ROOT', dirname( dirname( PROJECT_ROOT ) ) );
 
     $content = file_get_contents( FILE_ROOT . '/data.json' );
     $datas = json_decode( $content, true );
+
+    //print_r( $datas );
 
     /* 模板配置 */
     date_default_timezone_set('Asia/Shanghai'); 

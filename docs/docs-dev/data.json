@@ -18,7 +18,7 @@
 			, "url":"http://qiwoo.org/"
 		}
 		, {
-			"name":"邱少伟"
+			"name":"btbtd.org"
 			, "url":"http://btbtd.org/"
 		}
 	]
@@ -26,252 +26,98 @@
 		{
 			"name":"Base"
 			, "desc": [
-				"JqueryComps（JC）组件是一个扩展性强灰常NB的组件"
-				, "Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持"
+				"所有 [JC.*, Bizs.*] 组件依赖的基础类"
 			]
-			, "list": [
-				{
-					"name":"JC.BaseMVC"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "nodemo":"true"
-					, "desc": [
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"JC.Common"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc": [
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
+			, "data": [
+
+                {
+                    "name": "JC.common"
+                    , "desc": [
+                        "JC 组件通用静态方法和属性 ( JC.common, 别名: JC.f ) "
+                        , "所有 JC 组件都会依赖这个静态类"
+                    ]
+                    , "api":"http://jc2.openjavascript.org/docs_api/classes/JC.common.html"
+                    , "output": "common.js"
+                    , "data": [
+                       {
+                            "version":"0.1"
+                            , "require":[ {
+                                "name": "jquery"
+                                , "version": "1.9.1"
+                                , "outlink": "http://www.jquery.com"
+                            }]
+                            , "download":""
+                            , "nodemo":"true"
+                        }
+                       , {
+                            "version":"0.2"
+                            , "require":[ {
+                                "name": "jquery"
+                                , "version": "1.9.1"
+                                , "outlink": "http://www.jquery.com"
+                            }]
+                            , "download":""
+                            , "nodemo":"true"
+                        }
+                    ]
+                }
+                , {
+                    "name":"JC.BaseMVC"
+                    , "desc": [
+                        "MVC 抽象类 ( 仅供扩展用, 这个类不能实例化)"
+                        , "新的 JC 组件 和 Biz(业务)组件 全部继承自 JC.BaseMVC"
+                        , "旧的 JC/Biz 组件将会逐渐升级为继承自 JC.BaseMVC"
+                    ]
+                    , "api":"http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html"
+                    , "output": "BaseMVC.js"
+                    , "data": [
+                        {
+                            "require":[ {
+                                    "name": "JC.common" 
+                                    , "version": "0.2"
+                                }
+                            ]
+                            , "download":""
+                            , "nodemo":"true"
+                            , "version":"0.1"
+                        }
+                    ]
+                }
 			]
 		}
-		, {
+        , {
 			"name":"JC"
 			, "desc":[
-				"JqueryComps（JC）组件是一个扩展性强灰常NB的组件"
-				, "Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持"
+                "JC.* 开头的组件是通用组件"
 			]
-			, "list":[
-				{
-					"name":"JC.AjaxTree"
+            , "data": [
+                {
+                    "name": "JC.AjaxTree"
 					, "subtitle":"AJAX树菜单组件"
-					, "version":"0.1"
-					, "require":[
-						{
-							"name":"JC.BaseMVC"
-							, "version":"0.1"
-						}
-						, {
-							"name":"Json2"
-							, "version":"0.1"
-						}
-					]
-					, "api":"http://jc2.openjavascript.org/docs_api/classes/JC.AjaxTree.html"
-					, "download":"http://github.com/openjavascript/jquerycomps/archive/requirejs_master.zip"
 					, "desc":[
 						"JC.AjaxTree AJAX树菜单组件"
 						, "响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 JC.AutoComplete 实例"
 					]
-				}
-				, {
-					"name":"JC.AutoComplete"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"JC.AutoComplete 类chm索引提示"
-						, "响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 JC.AutoComplete 实例"
-					]
-				}
-				, {
-					"name":"JC.AutoSelect"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"JC.Calendar"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"JC.DCalendar"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				},
-				{
-					"name":"JC.Drag"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-			]
-		}
-		, {
-			"name":"BIZS"
-			, "desc":[
-				"JqueryComps（JC）组件是一个扩展性强灰常NB的组件"
-				, "Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持"
-			]
-			, "list":[
-				{
-					"name":"Bizs.ActionLogic"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"Bizs.AutoSelectComplete"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"Bizs.ChangeLogic"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"Bizs.CommonModify"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"Bizs.CRMSchedule"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "api":""
-					, "download":""
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-			]
-		}
-		, {
-			"name":"Plugin"
-			, "desc":[
-				"JqueryComps（JC）组件是一个扩展性强灰常NB的组件"
-				, "Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持"
-			]
-			, "list":[
-				{
-					"name":"Aes"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "download":""
-					, "outlink":"http://www.so.com"
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"Base64"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "download":""
-					, "outlink":"http://www.so.com"
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"Json2"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "download":""
-					, "outlink":"http://www.so.com"
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-				, {
-					"name":"requirejs.domReady"
-					, "subtitle":"类chm索引提示"
-					, "version":"0.1"
-					, "require":[]
-					, "download":""
-					, "outlink":"http://www.so.com"
-					, "desc":[
-						"响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \".js_autoTab\" 的 HTML 标签"
-						, "需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );"
-					]
-				}
-			]
-		}
+                    , "api":"http://jc2.openjavascript.org/docs_api/classes/JC.AjaxTree.html"
+                    , "output": "AjaxTree.js"
+                    , "data": [
+                        {
+                            "version":"0.1"
+                            , "require":[
+                                {
+                                    "name":"JC.BaseMVC"
+                                    , "version":"0.1"
+                                }
+                                , {
+                                    "name":"Json2"
+                                    , "version":"0.1"
+                                    , "outlink": "https://github.com/douglascrockford/JSON-js"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
 	]
 }

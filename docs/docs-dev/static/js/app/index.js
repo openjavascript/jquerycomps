@@ -3,11 +3,28 @@
     , 'iscroll'
     , 'velocity'
     , 'JC.FrameUtil'
+    , 'jquery.cookie'
 ], function( dataTool, iScroll, velocity ){
 
 	window.dataTool = dataTool;
 
 	pageEventHandler();
+
+    var _hideBar = $( 'button.js_hideHeader' );
+
+    JDOC.delegate( 'div.js_headarBar', 'mouseenter', function(){
+        _hideBar.show();
+    });
+    
+    JDOC.delegate( 'div.js_headarBar', 'mouseleave', function(){
+        _hideBar.hide();
+    });
+
+    JDOC.delegate( 'button.js_hideHeader', 'click', function(){
+        $( 'div.js_headarBar' ).remove();
+        $.cookie( 'hideheader', 1, { expires: 30 } );
+    });
+
 
 	function detailHandler() {
 		var body = $('.body');
@@ -23,21 +40,20 @@
 		var _turnValue;
 		var _tmpComp;
 
-		$( document ).on( 'click', '.body-changebtn', function( e ){
-			e.preventDefault();
-
-			var _ele = $( e.target );
-			var _demoBtn = _ele.hasClass( 'body-demobtn' );
-
+        JWIN.on( 'PLOAD_URL', function( _evt, _ele, _demoBtn, _trunEle ){
 			_backList = [];
 			_backbtn.velocity( { opacity: 0 }, 0 ).hide();
 
 			_turnValue = $( document ).scrollTop();
-			
+
+            _trunEle = _trunEle || body;
+            _trunEle = body;
+
+
 			_childrens.velocity( { 
 			    opacity: '0'
 			}, function(){
-				body.velocity( { 
+				_trunEle.velocity( { 
 				    rotateY: '180deg'
 				}, function(){
 					mainNavFlag = false;
@@ -49,13 +65,15 @@
 					}
 
 					_tmpComp = _ele.closest( '.body-comp' );
+                    detailframe.off( 'load' ).on( 'load', function(){
+						initDetailNav( detailframe );
+                    });
 					detailframe.attr( 'src', _ele.attr( 'data-url' ) );
 
 					setTimeout( function(){
 
 						detailframe.height( detailframe.contents().find('html').outerHeight() );
 
-						initDetailNav( detailframe );
 
 						detail.show().velocity( { opacity: '1' } );
 						_homebtn.show();
@@ -73,6 +91,15 @@
 					}, 100);
 				} );
 			});
+
+        });
+
+		$( document ).on( 'click', '.body-changebtn', function( e ){
+			e.preventDefault();
+
+			var _ele = $( e.target );
+			var _demoBtn = _ele.hasClass( 'body-demobtn' );
+            JWIN.trigger( 'PLOAD_URL', [ _ele, _demoBtn ] );
 		});
 
 		_homebtn.on( 'click', function( e ){
@@ -108,6 +135,13 @@
 
 		$( document ).on( 'click', '.body-detailnav a', function( e ){
 			e.preventDefault();
+            var _sp = $( this );
+            if( _sp.is( '.is_link' ) ){
+                detailframe.attr( 'src', 'about:blank' );
+                //JWIN.trigger( 'PLOAD_URL', [ _sp, _sp.is( '.is_demo' ), detailframe ] );
+                showNextComp( _sp.attr( 'data-url' ) );
+                return;
+            }
 
 			var _height = $('.body-detail').find('#detailframe').contents()
 				.find( '#' + $( e.target ).prop( 'class' ) ).offset().top;
@@ -170,12 +204,9 @@
 
 			var _tar = $( e.target );
 			if( mainNavFlag ){
-				$( '#' + _tar.text().replace( '.', '_' ) )
-					.find( '.body-attrbtn' ).click();
+				$( JC.f.printf( 'li.body-comp[data-id={0}] a.body-attrbtn', _tar.attr( 'data-id' ) ) ).trigger( 'click' );
 			} else {
-				showNextComp( dataTool.getDetailPathByNameAndVersion( 
-					_tar.text(), _tar.attr( 'data-version' )
-				) );
+				showNextComp( _tar.attr( 'data-url' ) );
 			}
 			
 		} );
@@ -264,7 +295,7 @@
 		$( '#bodynav' ).on( 'click', 'dd a', function( e ){
 			e.preventDefault();
 			var _ele = $( e.target );
-			var _target = $( '#' + _ele.attr( 'linkdata' ) );
+			var _target = $( JC.f.printf( 'li[data-id={0}]', _ele.attr( 'data-id' ) ) );
 
 			$( 'html,body' ).stop().animate({
 				scrollTop: _target.offset().top + 1
@@ -329,9 +360,25 @@
 	function initDetailNav( _iframe ){
 		
 		var _idocuemt = _iframe.contents();
+		var _window = _iframe.prop( 'contentWindow' );
 		var _nav = $( '.body-detailnav' );
 		var _li;
 		_nav.html( '' );
+
+        if( _window && ( _window.DOC_PATH || _window.DEMO_PATH ) ){
+            if( _window.DOC_PATH ){
+                console.log( _window.DOC_PATH );
+                $( JC.f.printf( '<li class="nav_ext_link"><a href="javascript:;" class="is_link is_doc" data-url="{0}">查看文档</a></li>', _window.DOC_PATH ) ).appendTo( _nav );
+            }
+
+            if( _window.DEMO_PATH ){
+                console.log( _window.DEMO_PATH );
+                $( JC.f.printf( '<li class="nav_ext_link"><a href="javascript:;" class="is_link is_demo" data-url="{0}">查看演示</a></li>', _window.DEMO_PATH ) ).appendTo( _nav );
+            }
+
+            $( '<li class="nav_border"></li>' ).appendTo( _nav );
+        }
+
 		_idocuemt.find( '[id^=navmark-]' ).each( function( _i, _ele ){
 			_ele = $( _ele );
 

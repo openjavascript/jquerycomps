@@ -5,9 +5,17 @@
 
 <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/js/codeMirror/lib/codemirror.css" />
 <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/codeview/neo.css" />
-<!-- end codeview style -->
 
-<!-- start JC style -->
+{{/block}}
 
-<script src="{{$PROJECT_ROOT}}/static/js/app/demo.js"></script>
+{{block name="body_header" append}}
+    {{include file="public/simple_demo/body_header.tpl"}}
+{{/block}}
+
+{{block name="body_footer" append}}
+    <script >
+        requirejs( [ "{{$PROJECT_ROOT}}/static/js/app/simple_demo.js" ] );
+    </script>
+    
+    {{include file="public/simple_demo/body_footer.tpl"}}
 {{/block}}

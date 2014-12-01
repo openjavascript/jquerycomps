@@ -15,6 +15,18 @@
         <script>
             window.TPATH = window.PROJECT_ROOT = "{{$PROJECT_ROOT}}";
             window.URL_ROOT = "{{$URL_ROOT}}";
+
+{{if $SHOW_COMP_INFO|default:''}}
+            window.COMP_ROOT = "{{$COMP_ROOT|default:''}}";
+            window.COMP_URL = "{{$COMP_URL|default:''}}";
+
+            window.NAME = "{{$NAME|default:''}}";
+            window.OUTPUT = "{{$OUTPUT|default:''}}";
+
+            window.COMP_NAME = "{{$COMP_NAME|default:''}}";
+            window.COMP_VERSION = "{{$COMP_VERSION|default:''}}";
+            {{/if}}
+
         </script>
 		<script src="{{$URL_ROOT}}/lib.js"></script>
 		<script src="{{$PROJECT_ROOT}}/static/js/config.js"></script>
@@ -38,17 +50,19 @@
         {{block name="html_header"}}{{/block}}
     </head>
     <body>
-        {{block name="inherit_body_header"}}{{/block}}
         {{include file="public/body_header.tpl"}}
+        {{block name="body_header"}}{{/block}}
+        {{block name="inherit_header"}}{{/block}}
+        {{block name="inherit_body_header"}}{{/block}}
 
         {{block name="body_main"}}
         {{/block}}
 
         {{block name="inherit_body_footer"}}{{/block}}
         {{block name="body_custom_footer"}}{{/block}}      
-        {{block name="body_footer"}}
-            {{include file="public/body_footer.tpl"}}
-        {{/block}}
+
+        {{block name="body_footer"}}{{/block}}
+        {{include file="public/body_footer.tpl"}}
 
         {{block name="body_footer_js"}}{{/block}} 
         {{if isset($smarty.get.debug) && $smarty.get.debug eq '1' }}{{debug}}{{/if}}

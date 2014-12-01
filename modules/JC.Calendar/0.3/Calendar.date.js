@@ -815,22 +815,22 @@ function parseYearDate( _dateStr ){
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
 
+                ( _tmp = ( _p.attr('minvalue') || '' ) )
+                    && ( _tmp = JC.f.dateDetect( _tmp ) )
+                    && _p.attr( 'minvalue', JC.f.formatISODate( _tmp ) )
+                    ; 
+
+                ( _tmp = ( _p.attr('maxvalue') || '' ) )
+                    && ( _tmp = JC.f.dateDetect( _tmp ) )
+                    && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
+                    ; 
+
                 //Calendar.fixDefaultDate( _p );
                 if( !( JC.f.parseBool( _p.attr( 'ignoreInitCalendarDate' ) ) || JC.f.parseBool( _p.data( 'ignoreInitCalendarDate' ) ) ) ){
 
                     ( _tmp = _p.val().trim() )
                         && ( _tmp = JC.f.dateDetect( _tmp ) )
                         && _p.val( JC.f.formatISODate( _tmp ) )
-                        ; 
-
-                    ( _tmp = ( _p.attr('minvalue') || '' ) )
-                        && ( _tmp = JC.f.dateDetect( _tmp ) )
-                        && _p.attr( 'minvalue', JC.f.formatISODate( _tmp ) )
-                        ; 
-
-                    ( _tmp = ( _p.attr('maxvalue') || '' ) )
-                        && ( _tmp = JC.f.dateDetect( _tmp ) )
-                        && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
                         ; 
 
                     if( _p.is( '[dateFormat]' ) || _p.is( '[fullDateFormat]' ) ){
