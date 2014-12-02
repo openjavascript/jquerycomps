@@ -10,6 +10,7 @@
         <meta name="Description" content="JQueryComps" />
 	    <title>Jquey Comps</title>
 
+        <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/button.css" />
 	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/common.css" />
 
         <script>

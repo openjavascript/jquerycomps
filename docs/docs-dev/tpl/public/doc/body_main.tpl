@@ -73,7 +73,7 @@
     <a name="methodAttr"></a>
     <h3 id="navmark-data" class="detail-blockname">Methods</h3>
     <div class="detail-ct detail-data">
-        <textArea class="detail-code is_js"></textArea>
+        <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
