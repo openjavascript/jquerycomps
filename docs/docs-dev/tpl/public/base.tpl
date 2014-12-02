@@ -17,8 +17,9 @@
             window.URL_ROOT = "{{$URL_ROOT}}";
 
 {{if $SHOW_COMP_INFO|default:''}}
-            window.COMP_ROOT = "{{$COMP_ROOT|default:''}}";
             window.COMP_URL = "{{$COMP_URL|default:''}}";
+
+            window.COMP_ROOT = "{{$COMP_ROOT|default:''}}";
 
             window.NAME = "{{$NAME|default:''}}";
             window.OUTPUT = "{{$OUTPUT|default:''}}";

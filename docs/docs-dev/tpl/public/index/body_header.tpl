@@ -28,7 +28,7 @@
                                                 data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=doc.tpl"
                                                 href="javascript:;">{{$sitem.name}}</a>
                                             {{else}}
-                                                <a href="{{$sitem.outlink}}" target="_blank">{{$sitem.name}}</a>
+                                                <a href="{{$sitem.data[$i].outlink}}" target="_blank">{{$sitem.name}}</a>
                                             {{/if}}
                                             {{break}}
                                         {{/if}}

@@ -17,17 +17,24 @@
         } );
 
         $( '.detail-requirelink' ).on( 'click', function( e ){
+            JC.FrameUtil.noticeData( { 'type': 'GO_MAIN_TOP' } );
             e.preventDefault();
 
             var _tarTextList = $( e.target ).text().split( '- v' )
                 , _name = $( this ).attr( 'data-name' )
                 , _version = $( this ).attr( 'data-version' )
                 ;
-            window.parent.showNextComp( JC.f.printf( '{0}/viewer.php?module={1}&version={2}&file=doc.tpl'
-                    , window.PROJECT_ROOT, _name, _version ) );
+
+
+            JC.FrameUtil.noticeData( { 'type': 'NEXT_COMP', 'url': 
+                JC.f.printf( '{0}/viewer.php?module={1}&version={2}&file=doc.tpl'
+                    , window.PROJECT_ROOT, _name, _version )
+            } );
         } );
 
         $( '.detail-versionlink' ).on( 'click', function( e ){
+
+            JC.FrameUtil.noticeData( { 'type': 'GO_MAIN_TOP' } );
             e.preventDefault();
 
             var _tar = $( e.target )
@@ -38,9 +45,11 @@
                 return;
             }
 
-            window.parent.showNextComp( JC.f.printf( '{0}/viewer.php?module={1}&version={2}&file=doc.tpl'
-                    , window.PROJECT_ROOT, window.COMP_NAME, _version ) );
 
+            JC.FrameUtil.noticeData( { 'type': 'NEXT_COMP', 'url': 
+                JC.f.printf( '{0}/viewer.php?module={1}&version={2}&file=doc.tpl'
+                    , window.PROJECT_ROOT, window.COMP_NAME, _version )
+            } );
         });
 
     });

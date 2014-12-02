@@ -8,6 +8,25 @@
 
 	window.dataTool = dataTool;
 
+    JC.FrameUtil.subscribeEvent( 'data', function( _evt, _params ){
+        switch( _params.data.type ){
+            case 'GO_MAIN_TOP': {
+                JC.f.safeTimeout( function(){
+                    JWIN.trigger( 'GO_MAIN_TOP' );
+                }, null, 'asdfawefasd', 20 );
+                break;
+            }
+            case 'NEXT_COMP': {
+                _params.data.url && showNextComp( _params.data.url );
+                break;
+            }
+        }
+    });
+
+    JWIN.on( 'GO_MAIN_TOP', function(){
+        location.href = "#mainTop";
+    });
+
 	pageEventHandler();
 
     var _hideBar = $( 'button.js_hideHeader' );
@@ -41,6 +60,7 @@
 		var _tmpComp;
 
         JWIN.on( 'PLOAD_URL', function( _evt, _ele, _demoBtn, _trunEle ){
+
 			_backList = [];
 			_backbtn.velocity( { opacity: 0 }, 0 ).hide();
 
@@ -99,10 +119,12 @@
 
 			var _ele = $( e.target );
 			var _demoBtn = _ele.hasClass( 'body-demobtn' );
+            JWIN.trigger( 'GO_MAIN_TOP' );
             JWIN.trigger( 'PLOAD_URL', [ _ele, _demoBtn ] );
 		});
 
 		_homebtn.on( 'click', function( e ){
+            JWIN.trigger( 'GO_MAIN_TOP' );
 			e.preventDefault();
 
 			_helper.velocity( { opacity: '0' },function(){ _helper.hide(); });
@@ -200,6 +222,8 @@
 		var _detailnav = $( '.body-detailnav' );
 
 		$( '#menulist .header-complink' ).on( 'click', function( e ){
+
+            JWIN.trigger( 'GO_MAIN_TOP' );
 			e.preventDefault();
 
 			var _tar = $( e.target );
@@ -228,11 +252,11 @@
 			if( _bodyScrollTop > _bodyTop && !_helper.hasClass( 'body-helperfix' ) ){
 				_helper.addClass('body-helperfix');
 				_topbtn.show().velocity( { opacity: 1 } );
-                JC.log( 111, JC.f.ts()  );
+                //JC.log( 111, JC.f.ts()  );
 			} else if( _bodyScrollTop <= _bodyTop && _helper.hasClass( 'body-helperfix' ) ) {
 				_helper.removeClass('body-helperfix');
 				_topbtn.velocity( { opacity: 0 }, function(){ _topbtn.hide() } );
-                JC.log( 222, JC.f.ts() );
+                //JC.log( 222, JC.f.ts() );
 			}
 
 			/* 处理右部菜单导航 */
@@ -261,7 +285,7 @@
 				!_sideBar.hasClass( 'body-nav-fixed' ) 
 					&& _sideBar.addClass( 'body-nav-fixed' );
 			} else {
-                JC.log( _bodyScrollTop, _maxTop, _windowHeight, _maxTop - _windowHeight, JC.f.winSize().height );
+                //JC.log( _bodyScrollTop, _maxTop, _windowHeight, _maxTop - _windowHeight, JC.f.winSize().height );
 				if( _bodyScrollTop > _maxTop - _windowHeight ){
 					_sideBar.css( 'bottom', '0' );
 				} else {

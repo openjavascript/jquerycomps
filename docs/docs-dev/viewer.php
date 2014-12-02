@@ -22,19 +22,21 @@
         $allVersionComps = array();
 
         for( $i = 0; $i< count( $compsList ) ;$i++ ) {
-            $groupList = $compsList[ $i ][ 'data' ];
-            for( $j = 0; $j< count( $groupList ) ;$j++ ) {
-                $comp = $groupList[ $j ];
+            if( isset( $compsList[ $i ][ 'data' ] ) ){
+                $groupList = $compsList[ $i ][ 'data' ];
+                for( $j = 0; $j< count( $groupList ) ;$j++ ) {
+                    $comp = $groupList[ $j ];
 
-                if( $comp[ 'name' ] == $compName ) {
+                    if( $comp[ 'name' ] == $compName ) {
 
-                    for( $k = 0; $k < count( $comp['data'] ); $k++ ){
-                        if( $comp['data'][$k]['version'] == $version ){
+                        for( $k = 0; $k < count( $comp['data'] ); $k++ ){
+                            if( $comp['data'][$k]['version'] == $version ){
 
-                            $allVersionComps = $comp;
-                            $compData = $comp['data'][$k];
-                            $allVersionComps['data'][$k]['nowVersion'] = true;
-                            break 1;
+                                $allVersionComps = $comp;
+                                $compData = $comp['data'][$k];
+                                $allVersionComps['data'][$k]['nowVersion'] = true;
+                                break 1;
+                            }
                         }
                     }
                 }

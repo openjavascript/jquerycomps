@@ -3,15 +3,13 @@
 
     $compsList = $datas['compsList'];
 
-    //$extraMenu = $datas['extraMenu'];
+    $extraMenu = $datas['extraMenu'];
 
     $websiteLink = $datas['websiteLink'];
-    //
-
 
     $smarty->assign( 'compsList', $compsList );
 
-    //$smarty->assign( 'extraMenu', $extraMenu );
+    $smarty->assign( 'extraMenu', $extraMenu );
 
     $smarty->assign( 'websiteLink', $websiteLink );
 
