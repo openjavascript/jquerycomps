@@ -54,7 +54,6 @@
     <body>
         {{include file="public/body_header.tpl"}}
         {{block name="body_header"}}{{/block}}
-        {{block name="inherit_header"}}{{/block}}
         {{block name="inherit_body_header"}}{{/block}}
 
         {{block name="body_main"}}

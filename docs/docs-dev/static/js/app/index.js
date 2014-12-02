@@ -23,8 +23,11 @@
         }
     });
 
-    JWIN.on( 'GO_MAIN_TOP', function(){
-        location.href = "#mainTop";
+    JWIN.on( 'GO_MAIN_TOP', function( _evt, _ms ){
+        _ms = _ms || 0;
+        JC.f.safeTimeout( function(){
+            location.href = "#mainTop";
+        }, null, 'GO_MAIN_TOPsdfadsf', 20 );
     });
 
 	pageEventHandler();
@@ -438,6 +441,7 @@
 	}
 
 	function showNextComp( _url ){
+        JWIN.trigger( 'GO_MAIN_TOP', [ 20 ] );
 		_backList.push( _detailframe.attr( 'src' ) );
 		pageTurn( _url );
 		if( _backbtn.css( 'display' ) == 'none' ){
