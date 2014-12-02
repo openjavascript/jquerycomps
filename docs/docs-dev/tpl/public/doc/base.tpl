@@ -5,6 +5,11 @@
 
 <!-- start codeview style -->
 <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/js/codeMirror/lib/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/codeview/neo.css" />
+<style>
+.cm-variable {
+}
+</style>
 <!-- end codeview style -->
 <script>
     {{if !$compData['nodemo']|default:'' }}

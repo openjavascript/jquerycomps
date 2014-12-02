@@ -8,11 +8,16 @@
 
         var codetpl = $( '.detail-codetpl' );
         $( '.detail-code' ).each( function( i, ele ){
-            $( ele ).html( codetpl.eq( i ).html() );
-            CodeMirror.fromTextArea( ele, {
+            ele = $( ele );
+            var _mode = 'htmlmixed';
+            if( ele.hasClass( 'is_js' )){
+                _mode = 'javascript';
+            }
+            ele.html( codetpl.eq( i ).html() );
+            CodeMirror.fromTextArea( ele[0], {
                 readOnly: 'nocursor',
                 lineWrapping: true,
-                mode: { name: 'htmlmixed' }
+                mode: { name: _mode }
             } );
         } );
 
