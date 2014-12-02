@@ -6,6 +6,10 @@
 
         JC.FrameUtil.autoNoticeSize();
 
+        if( window.parent === window ){
+            $( 'body' ).css( { 'overflow-y': 'auto' } );
+        }
+
         var codetpl = $( '.detail-codetpl' );
         $( '.detail-code' ).each( function( i, ele ){
             ele = $( ele );
@@ -13,7 +17,7 @@
             if( ele.hasClass( 'is_js' )){
                 _mode = 'javascript';
             }
-            ele.html( codetpl.eq( i ).html() );
+            ele.html( codetpl.eq( i ).html().trim() );
             CodeMirror.fromTextArea( ele[0], {
                 readOnly: 'nocursor',
                 lineWrapping: true,

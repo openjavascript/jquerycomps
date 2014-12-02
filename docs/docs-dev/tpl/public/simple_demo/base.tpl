@@ -1,10 +1,10 @@
 {{extends file="public/base.tpl"}}
 
 {{block name="inherit_header" append}}
-<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/simple.css" />
 
 <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/codemirror.css" />
 <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/codeview.neo.css" />
+<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/simple.css" />
 
 {{/block}}
 

@@ -48,6 +48,7 @@
         $smarty->assign( 'SHOW_COMP_INFO', 1 );
         $smarty->assign( 'COMP_ROOT', $COMP_ROOT );
         $smarty->assign( 'COMP_URL', $COMP_URL );
+        $smarty->assign( 'VIEWER_URL', PROJECT_ROOT . "/viewer.php?module=$modules&version=$version&file=" );
 
         $smarty->assign( 'NAME', preg_replace( '/^.*?\./', '', $modules ) );
         $smarty->assign( 'OUTPUT', isset( $allVersionComps['output'] ) ? $allVersionComps['output'] : '' );

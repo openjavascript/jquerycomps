@@ -19,6 +19,7 @@
 
 {{if $SHOW_COMP_INFO|default:''}}
             window.COMP_URL = "{{$COMP_URL|default:''}}";
+            window.VIEWER_URL = "{{$VIEWER_URL|default:''}}{0}";
 
             window.COMP_ROOT = "{{$COMP_ROOT|default:''}}";
 

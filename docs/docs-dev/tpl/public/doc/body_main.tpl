@@ -55,6 +55,20 @@
         <textArea class="detail-code"></textArea>
     </div>
 
+    {{if $constructorAttr|default:''}}
+    <h3 id="navmark-attr" class="detail-blockname">Constructor</h3>
+    <div class="detail-ct detail-htmlattr">
+        <textArea class="detail-code"></textArea>
+    </div>
+    {{/if}}
+
+    {{if $initAttr|default:''}}
+    <h3 id="navmark-attr" class="detail-blockname">Init</h3>
+    <div class="detail-ct detail-htmlattr">
+        <textArea class="detail-code"></textArea>
+    </div>
+    {{/if}}
+
     {{if $htmlAttr|default:''}}
     <h3 id="navmark-attr" class="detail-blockname">HTML Attributes</h3>
     <div class="detail-ct detail-htmlattr">
