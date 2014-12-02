@@ -1073,22 +1073,22 @@ function parseYearDate( _dateStr ){
                     _p.after( _btn = $(&#x27;&lt;input type=&quot;button&quot; class=&quot;UXCCalendar_btn&quot;  /&gt;&#x27;) );
                 }
 
+                ( _tmp = ( _p.attr(&#x27;minvalue&#x27;) || &#x27;&#x27; ) )
+                    &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
+                    &amp;&amp; _p.attr( &#x27;minvalue&#x27;, JC.f.formatISODate( _tmp ) )
+                    ; 
+
+                ( _tmp = ( _p.attr(&#x27;maxvalue&#x27;) || &#x27;&#x27; ) )
+                    &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
+                    &amp;&amp; _p.attr( &#x27;maxvalue&#x27;, JC.f.formatISODate( _tmp ) )
+                    ; 
+
                 //Calendar.fixDefaultDate( _p );
                 if( !( JC.f.parseBool( _p.attr( &#x27;ignoreInitCalendarDate&#x27; ) ) || JC.f.parseBool( _p.data( &#x27;ignoreInitCalendarDate&#x27; ) ) ) ){
 
                     ( _tmp = _p.val().trim() )
                         &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
                         &amp;&amp; _p.val( JC.f.formatISODate( _tmp ) )
-                        ; 
-
-                    ( _tmp = ( _p.attr(&#x27;minvalue&#x27;) || &#x27;&#x27; ) )
-                        &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
-                        &amp;&amp; _p.attr( &#x27;minvalue&#x27;, JC.f.formatISODate( _tmp ) )
-                        ; 
-
-                    ( _tmp = ( _p.attr(&#x27;maxvalue&#x27;) || &#x27;&#x27; ) )
-                        &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
-                        &amp;&amp; _p.attr( &#x27;maxvalue&#x27;, JC.f.formatISODate( _tmp ) )
                         ; 
 
                     if( _p.is( &#x27;[dateFormat]&#x27; ) || _p.is( &#x27;[fullDateFormat]&#x27; ) ){
