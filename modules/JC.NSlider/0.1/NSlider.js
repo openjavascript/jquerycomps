@@ -129,12 +129,8 @@
 
     JC.NSlider = NSlider;
 
-    NSlider._selector;
-
     function NSlider( _selector ){
         _selector && ( _selector = $( _selector ) );
-
-        NSlider._selector = _selector;
 
         if( JC.BaseMVC.getInstance( _selector, NSlider ) ) 
             return JC.BaseMVC.getInstance( _selector, NSlider );
@@ -168,7 +164,6 @@
                 });
             }
         }
-        console.log( 'in init' );
         return _r;
     }
 
@@ -245,11 +240,13 @@
         }
 
         , _initVerticalControl: function(){
+
             var _p = this;
             var _model = _p._model;
+
             _model.prevbutton() 
                 && _p._model.prevbutton().on( 'click', function( _evt ){
-                    
+
                     if( _model._movelock ){ return; }
                     _model.lockmove();
 
@@ -287,7 +284,7 @@
                 var _index = parseInt(_tar.attr( 'data-index' ) );
 
                 _p._view.moveTo( _model.itemRemote( 
-                    _Model._nowIndex
+                    _model._nowIndex
                     , _index
                 ) );
 
@@ -351,7 +348,7 @@
                 var _howmany = _model.howmanyitem();
 
                 _p._model.timeout( setTimeout( function(){
-                    _p._view.moveTo( _model.page( _Model._nowIndex, _howmany ) );
+                    _p._view.moveTo( _model.page( _model._nowIndex, _howmany ) );
                     _model.changeIndex();
 
                 }, _p._model.automovems() ));
@@ -369,13 +366,10 @@
     
     var _Model = NSlider.Model;
 
-    _Model._moveDirection = true;
-
-    _Model._nowIndex = 0;
-
     JC.f.extendObject( _Model.prototype, {
         init: function() { 
-            
+            this._nowIndex = 0;
+            this._moveDirection = true;
         }
         , layout: function() {
             return NSlider.selector;
@@ -386,13 +380,13 @@
          * @method prevbutton
          * @return selector
          */
-        , prevbutton: function(){ return JC.f.parentSelector( this.attrProp( 'sliderprev' ) ); }
+        , prevbutton: function(){ return this.selectorProp( 'sliderprev' ); }
         /**
          * 获取 右移的 selector
          * @method nextbutton
          * @return selector
          */
-        , nextbutton: function(){ return JC.f.parentSelector( this.attrProp( 'slidernext' ) ); }
+        , nextbutton: function(){ return this.selectorProp( 'slidernext' ); }
         /**
          * 获取移动方向
          * <br />horizontal, vertical
@@ -409,8 +403,8 @@
          * @return string
          */
         , moveDirection: function( _setter ){
-            typeof _setter != 'undefined' && ( _Model._moveDirection = _setter );
-            return _Model._moveDirection;
+            typeof _setter != 'undefined' && ( this._moveDirection = _setter );
+            return this._moveDirection;
         }
         /**
          * 获取每次移动多少项
@@ -500,7 +494,7 @@
          * @return  int
          * @default 0
          */
-         , slidernav: function(){ return this.attrProp('slidernav'); }
+         , slidernav: function(){ return this.boolProp('slidernav'); }
         /**
          * 获取滑动导航的配置
          * @method  slidernavtype
@@ -578,10 +572,14 @@
             return this.page( _nowIndex, Math.abs( rIndex ) , rIndex >= 0 );
         }
 
+        , getNowIndex: function(  ){
+            return this._nowIndex;
+        }
+
         , changeIndex: function( _idx ){
 
             var _oldIndex = ( typeof _idx == 'undefined' )
-                 ? _Model._nowIndex : _idx;
+                 ? this._nowIndex : _idx;
             var _index = _oldIndex;
             var _howmany;
             var _subitems;
@@ -603,7 +601,7 @@
                 }
             }
             
-            _Model._nowIndex = _index;
+            this._nowIndex = _index;
             this.changeRemoteNav( _index );
             return _oldIndex;
         }
@@ -677,19 +675,18 @@
 
         this._itemspace = parseInt( ( _model.width() - _viewItemNum
              * _model.itemwidth() ) / _viewItemNum );
-
-        this._init();
     }
 
     HorizontalView.prototype = {
-        _init: function() {
+        init: function() {
             this.setPagePosition( this._model.pointer() );
             this._initSliderNav( this._model.slidernav() );
             return this;
         }
 
         , _initSliderNav: function( _nav ){
-            if( _nav == '' ){
+
+            if( !_nav ){
                 return;
             }
 
@@ -710,7 +707,7 @@
             } );
 
             _nav.append( _tmpItem );
-            _model.layout().append( _nav );
+            _model._selector.append( _nav );
         }
 
         , move: function( _backwrad ){
@@ -719,7 +716,7 @@
 
             _backwrad = !!_backwrad;
 
-            var _nowIndex = _Model._nowIndex;
+            var _nowIndex = _model._nowIndex;
             var _howmany = _model.howmanyitem();
             this.moveTo( _model.page( _nowIndex, _howmany ) );
             _model.changeIndex();
@@ -830,7 +827,7 @@
         }
 
         , _initSliderNav: function( _nav ){
-            if( _nav == '' ){
+            if( !_nav ){
                 return;
             }
 
@@ -860,7 +857,7 @@
 
             _backwrad = !!_backwrad;
 
-            var _nowIndex = _Model._nowIndex;
+            var _nowIndex = _model._nowIndex;
             var _howmany = _model.howmanyitem();
             this.moveTo( _model.page( _nowIndex, _howmany ) );
             _model.changeIndex();
@@ -953,9 +950,9 @@
     };
 
     _jdoc.ready( function(){
-        if( !JC.BaseMVC.getInstance( 'js_NSlider', NSlider ) ){
-            NSlider.init( '.js_NSlider' );
-        }
+        $('.js_NSlider').each( function( _i, _item ){
+            new NSlider( _item );
+        });
     });
 
     return JC.NSlider;
