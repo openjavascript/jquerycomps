@@ -1,18 +1,28 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- * 模拟多选下拉框
- * 框的click将列表拉出来。
- * close和document的click将面板关闭，返回数据，并把数据铺到指定的面板里
+ * 输入下拉框
+ * 可以输入数据也可以通过点下拉箭头选择数据。
+ * 下拉的数据支持Ajax接口和php前段铺数据。
  *
- *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+ * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *   | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.InputSelect.html' target='_blank'>API docs</a>
  *   | <a href='../../modules/Bizs.InputSelect/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *<h2>页面只要引用本脚本, 默认会自动处理 div class="js_bizInputSelect" </h2>
+ * <h2>页面只要引用本脚本, 默认会自动处理 div class="js_bizInputSelect" </h2>
  *
- *<h2>可用的 HTML attribute</h2>
+ * <h2>可用的 HTML attribute</h2>
  *
- *
+ * <dl>
+ * <dt>iptseldatabox = string</dt>
+ * <dd>指定下拉数据存放的父容器</dd>
+ * <dt>iptseloption = string</dt>
+ * <dd>指定下拉数据选项</dd>
+ * <dt>iptseldataurl = string</dt>
+ * <dd>指定下拉数据的ajax接口，要求返回json数据格式如下：
+ *   { errorno: 0,
+ *     data: [{label: 'item1'}]    
+ *   }</dd>
+ * </dl>
  * @namespace window.Bizs
  * @class InputSelect
  * @extends JC.BaseMVC
@@ -51,11 +61,11 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_bizInputSelect' )  ){
                     _r.push( new InputSelect( _selector ) );
                 }else{
-                    _selector.find( 'div.js_bizInputSelect' ).each( function(){
+                    _selector.find( '.js_bizInputSelect' ).each( function(){
                         _r.push( new InputSelect( this ) );
                     });
                 }
@@ -91,14 +101,16 @@
             //箭头事件处理
             p._model.iptselarrow().on('click', function (e) {
                 e.stopPropagation();
+                if (p._model.dataurl() && !p._model.dataready) {
+                    p._model.ajaxdata();
+                }
+
                 p[p._model.selector().data('visible') ? '_hide': '_show']();
             });
 
             //选项事件处理
-            p._model.iptseloption().on('click', function (e) {
-                var $this = $(this);
-
-                e.stopPropagation();
+            p._model.iptselbox().delegate(p._model.iptseloption()[0], 'click', function (e) {
+                var $this = $(e.target || e.srcElement);
                 p._model.iptselipt().val($this.data('label'));
                 p._hide();
             });
@@ -133,13 +145,10 @@
 
             p._view.hide();
             p._model.selector().data('visible', 0);
-
-
+            
             return this;
         }
 
-
-           
     });
 
     InputSelect.Model._instanceName = 'InputSelectIns';
@@ -176,28 +185,41 @@
 
         //ajax数据url
         dataurl: function () {
-            return this.selector().attrProp('iptseldataurl');
+            return this.attrProp('iptseldataurl');
         },
 
         //获取ajax数据
         ajaxdata: function () {
-            var url = this.dataurl();
+            var p = this,
+                url = this.dataurl();
 
-            if (url) {
-                $.get(url).done(function (res) {
-                    res = $.parseJSON(res);
+            $.get(url).done(function (res) {
+                res = $.parseJSON(res);
+                var tpl = '<ul>',
+                    i = 0,
+                    l;
 
-                    if (res.errorno) {
-                        JC.f.alert('操作失败', 2);
+                if (res.errorno) {
+                    JC.f.alert('操作失败', 2);
+                } else {
+                    l = res.data.length;
+                    if (l === 0) {
+                        tpl = '<li>暂无数据</li>';
                     } else {
-                        return res.data;
+                        for (i = 0; i < l; i++) {
+                            tpl += '<li data-label="' + res.data[i].label + '" class="IPTSEL-ITEM">' + res.data[i].label + '</li>';
+                        }
                     }
-                });
-            }
-        }
+                    
+                    tpl += '</ul>';
+                  
+                    p.iptselbox().html(tpl);
+                    p.dataready = 1;
+                }
+            });
+        },
 
-
-        
+        dataready: 0
 
     });
 
@@ -226,41 +248,6 @@
         InputSelect.autoInit
             && ( _insAr = InputSelect.init() );
     });
-
-    // $doc.delegate(, 'click', function () {
-    //     var _p = $(this), 
-    //         _ins;
- 
-    //     JC.f.safeTimeout( function(){
-    //         _ins = JC.BaseMVC.getInstance( _p, InputSelect );
-    //         !_ins && ( _ins = new InputSelect( _p ) );
-    //         _ins.trigger('SHOW');
-    //     }, _p, 'bizInputSelectClick', 50 );
-
-    // });
-
-    // $doc.on('mousedown', function () {
-    //     JC.f.safeTimeout( function(){
-    //         $('.js_bizInputSelect').each( function(){
-    //             var _ins = JC.BaseMVC.getInstance( $(this), InputSelect );
-                
-    //             if (_ins) {
-    //                 _ins.trigger('HIDE');
-    //             }
-    //             //_ins && _ins.hide();
-    //         });
-    //     }, null, 'CLOSE_MULTI_SELECT')
-
-    // } );
-
-    // doc.delegate('.SELECTCloseBtn', 'mousedown', function () {
-    //     var _ins = JC.BaseMVC.getInstance( JC.f.getJqParent($(this), '.js_bizInputSelect'), InputSelect );
-    //     _ins && _ins.hide();
-    // });
-
-    // $doc.delegate('.js_bizInputSelect>.IPTSEL-DROPDOWN', 'mousedown', function( _evt ){
-    //     _evt.stopPropagation();
-    // });
 
     return Bizs.InputSelect;
 });}( typeof define === 'function' && define.amd ? define : 
