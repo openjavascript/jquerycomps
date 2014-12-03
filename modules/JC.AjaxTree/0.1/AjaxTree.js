@@ -14,6 +14,8 @@
      * @constructor
      * @param   {selector}          _selector   树要显示的选择器
      * @param   {object}            _data       树菜单的数据
+     * @param   {object}            _root       树菜单的根节点数据
+     * @param   {object}            _url        树菜单异步请求的url地址
      * @version dev 0.1 2014-09-23
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
      * @date    
