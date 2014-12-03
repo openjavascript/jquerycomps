@@ -17,7 +17,7 @@ requirejs.config( {
         , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
         , 'DEV.JC.AjaxUpload': 'modules/JC.AjaxUpload/dev/AjaxUpload'
         , 'DEV.JC.Suggest': 'modules/JC.Suggest/dev/Suggest'
-        ,  'DEV.Bizs.InputSelect': 'modules/Bizs.InputSelect/dev/InputSelect'
+      
 
         //, 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.2/AjaxUpload'
@@ -116,6 +116,7 @@ requirejs.config( {
         , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
         , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
+        , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/dev/InputSelect'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
         , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'
