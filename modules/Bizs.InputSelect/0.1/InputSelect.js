@@ -80,7 +80,7 @@
         _beforeInit: function () {
            var p = this;
 
-           p._model.selector().addClass('IPTSEL-BOX').html('<input type="text" class="IPTSEL-INPUT"><input type="hidden" value="" class="IPTSEL-HIDE" /><span class="IPTSEL-ARROW"></span>');
+           p._model.selector().addClass('IPTSEL-BOX').append('<input type="hidden" value="" class="IPTSEL-HIDE" /><span class="IPTSEL-ARROW"></span>');
             //JC.log( 'InputSelect _beforeInit', new Date().getTime() );
         },
 
@@ -109,12 +109,68 @@
             });
 
             //选项事件处理
-            p._model.iptselbox().delegate(p._model.iptseloption()[0], 'mousedown', function (e) {
+            p._model.iptselbox().delegate(p._model.iptseloption()[0], 'click', function (e) {
                 var $this = $(e.target || e.srcElement);
+                
                 p._model.iptselipt().val($this.data('label'));
                 p._model.iptselhideipt().val($this.data('value'));
                 p._hide();
+
+                JC.f.safeTimeout( function(){
+                    p._model.iptselipt().trigger( 'blur' );
+                }, null, 'IptSelItemClick', 200);
             });
+
+            //选项键盘事件处理
+            // p._model.iptselbox().delegate(p._model.iptseloption()[0], 'keydown', function (e) {
+            //     var keycode = e.keyCode, 
+            //         $this = $(this), 
+            //         keyindex, 
+            //         isBackward, 
+            //         items = p._model.items(), 
+            //         item;
+
+            //         keycode == 38 && ( isBackward = true );
+            //         JC.log( 'keyup', new Date().getTime(), keycode );
+ 
+            //         switch( keycode ){
+            //             case 38://up
+            //             case 40://down
+            //                 {
+            //                     // keyindex = p._model.nextIndex( isBackward );
+ 
+            //                     // if( keyindex >= 0 && keyindex < items.length ){
+            //                     //     e.preventDefault();
+            //                     //     item = $(items[keyindex]);
+            //                     //     p._model.selectedIdentifier( item );
+            //                     //     p.selector().val( p._model.getKeyword(item ) );
+            //                     //     return;
+            //                     // }
+            //                     break;
+            //                 }
+            //             case 9://tab
+            //                 {
+            //                     p.hide();
+            //                     return;
+            //                 }
+            //             case 13://回车
+            //                 {
+            //                     // var tmpSelectedItem;
+            //                     // if( p._model.iptselbox().is( ':visible' ) 
+            //                     //         && ( tmpSelectedItem = p._model.layout().find( 'dd.active') ) && tmpSelectedItem.length ){
+            //                     //     p.trigger('SuggestSelected', [ tmpSelectedItem, p._model.getKeyword( tmpSelectedItem ) ]);
+            //                     // }
+ 
+            //                     p._hide();
+            //                     $this.data( 'IgnoreTime', new Date().getTime() );
+ 
+            //                     p._model.iptselprevententer() && e.preventDefault();
+            //                     break;
+            //                 }
+            //         }
+            // });
+
+           
 
             //容器事件处理
             p._model.iptselbox().on('mousedown', function (e) {
@@ -157,14 +213,12 @@
     JC.f.extendObject( InputSelect.Model.prototype, {
         init: function () {
             var p = this;
-
-            p.iptselipt().attr('name', p.iptseliptname());
             p.iptselhideipt().attr('name', p.iptselhideiptname());
         },
 
-        //输入框的name属性
-        iptseliptname: function () {
-            return this.attrProp('iptseliptname');
+        //输入框
+        iptselipt: function () {
+            return JC.f.parentSelector(this.selector(), this.attrProp('iptselipt')).addClass('IPTSEL-INPUT');
         },
 
         iptselhideiptname: function () {
@@ -173,11 +227,6 @@
 
         iptselhideipt: function () {
             return this.selector().find('.IPTSEL-HIDE');
-        },
-
-        //输入框
-        iptselipt: function () {
-            return this.selector().find('.IPTSEL-INPUT');
         },
 
         //箭头
@@ -198,6 +247,16 @@
 
             return JC.f.parentSelector(p.selector(), r ).addClass('IPTSEL-DROPDOWN');
            
+        },
+
+        iptselprevententer: function () {
+            var r,
+                selector = this.selector();
+
+            selector.is( '[iptselprevententer]' )
+                && ( _r = JC.f.parseBool( selector.attr('iptselprevententer') ) )
+                ;
+            return _r;
         },
 
         //ajax数据url
