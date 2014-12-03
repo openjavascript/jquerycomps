@@ -203,7 +203,14 @@
                 }
                 _p._model.setHiddenStartdate(_d);
 
-                if (_p._model.mddateEl().length === 1) {
+                var _tmpNum = 0;
+                $.each( _p._model.mddateEl(), function( _i, _item ){ 
+                    if( !$( _item ).is(":hidden") ){
+                        _tmpNum++;
+                    }
+                } );
+
+                if ( _tmpNum == 1 ) {
                     _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
                 } else {
                     if (!_p._model.mddateEl().eq(1).is('reqmsg') &&  !_p._model.hiddenEnddateEl().val() ) {
