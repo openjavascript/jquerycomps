@@ -10,6 +10,7 @@
         <meta name="Description" content="JQueryComps" />
 	    <title>Jquey Comps</title>
 
+        <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/button.css" />
 	    <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/common.css" />
 
         <script>
@@ -18,6 +19,7 @@
 
 {{if $SHOW_COMP_INFO|default:''}}
             window.COMP_URL = "{{$COMP_URL|default:''}}";
+            window.VIEWER_URL = "{{$VIEWER_URL|default:''}}{0}";
 
             window.COMP_ROOT = "{{$COMP_ROOT|default:''}}";
 
@@ -53,7 +55,6 @@
     <body>
         {{include file="public/body_header.tpl"}}
         {{block name="body_header"}}{{/block}}
-        {{block name="inherit_header"}}{{/block}}
         {{block name="inherit_body_header"}}{{/block}}
 
         {{block name="body_main"}}

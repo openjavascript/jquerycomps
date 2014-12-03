@@ -1,10 +1,13 @@
 {{extends file="public/base.tpl"}}
 
 {{block name="inherit_header" append}}
-<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/detail.css" />
-
+<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/detail.css" />
 <!-- start codeview style -->
-<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/js/codeMirror/lib/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/codemirror.css" />
+<style>
+.cm-variable {
+}
+</style>
 <!-- end codeview style -->
 <script>
     {{if !$compData['nodemo']|default:'' }}

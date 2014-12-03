@@ -1,7 +1,6 @@
 {{extends file="public/base.tpl"}}
 {{block name="inherit_header" append}}
-<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/button.css" />
-<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/app/index.css" />
+<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/index.css" />
 {{/block}}
 
 {{block name="body_main"}}
@@ -60,8 +59,8 @@
                 >SIMPLE DEMO</a>
                 {{/if}}
             {{/if}}
+            <span class="body-compversion">最新版本: {{$sitem.data[$i].version}}</span>
         </h2>
-        <h3 class="body-compsubtitle">{{$sitem.subtitle|default:''}}<span class="body-compversion">最新版本: {{$sitem.data[$i].version}}</span></h3>
         {{foreach from=$sitem.desc item=desc}}
         <p class="body-compdesc">{{$desc}}</p>
         {{/foreach}}

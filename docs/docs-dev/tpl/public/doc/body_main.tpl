@@ -55,22 +55,51 @@
         <textArea class="detail-code"></textArea>
     </div>
 
-    {{if $htmlAttr|default:''}}
-    <h3 id="navmark-attr" class="detail-blockname">HTML 属性</h3>
+    {{if $constructorAttr|default:''}}
+    <h3 id="navmark-attr" class="detail-blockname">Constructor</h3>
     <div class="detail-ct detail-htmlattr">
         <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
-    {{if $methodAttr|default:''}}
-    <h3 id="navmark-data" class="detail-blockname">Method</h3>
+    {{if $initAttr|default:''}}
+    <h3 id="navmark-attr" class="detail-blockname">Init</h3>
+    <div class="detail-ct detail-htmlattr">
+        <textArea class="detail-code"></textArea>
+    </div>
+    {{/if}}
+
+    {{if $htmlAttr|default:''}}
+    <h3 id="navmark-attr" class="detail-blockname">HTML Attributes</h3>
+    <div class="detail-ct detail-htmlattr">
+        <textArea class="detail-code"></textArea>
+    </div>
+    {{/if}}
+
+    {{if $propertyAttr|default:''}}
+    <h3 id="navmark-data" class="detail-blockname">Properties</h3>
     <div class="detail-ct detail-data">
         <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
-    {{if $dataFormat|default:''}}
-    <h3 id="navmark-data" class="detail-blockname">数据格式</h3>
+    {{if $methodAttr|default:''}}
+    <a name="methodAttr"></a>
+    <h3 id="navmark-data" class="detail-blockname">Methods</h3>
+    <div class="detail-ct detail-data">
+        <textArea class="detail-code"></textArea>
+    </div>
+    {{/if}}
+
+    {{if $eventAttr|default:''}}
+    <h3 id="navmark-data" class="detail-blockname">Events</h3>
+    <div class="detail-ct detail-data">
+        <textArea class="detail-code"></textArea>
+    </div>
+    {{/if}}
+
+    {{if $dataFormat|default:'' || $dataFormatAttr|default:'' }}
+    <h3 id="navmark-data" class="detail-blockname">Data Format</h3>
     <div class="detail-ct detail-data">
         <textArea class="detail-code"></textArea>
     </div>
