@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bizs.InputSelect 0.1</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        dd{
+            margin: 10px 20px;
+        }
+    </style>
+
+    <link href='../../../../modules/Bizs.InputSelect/dev/res/default/style.css' rel='stylesheet' />
+    
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'DEV.Bizs.InputSelect' ], function(){
+            
+        });
+
+    </script>
+</head>
+<body>
+  <dl>
+    <dt>normal demo</dt>
+    <dd>
+        <div class="js_bizInputSelect"  iptseldatabox="(dd .test" iptseloption="(dd .test li">
+            
+        </div>
+        <div class="test" style="display:none;">
+            <ul>
+              <li data-label="item 1">item 1</li>
+              <li data-label="item 2">item 2</li>
+              <li data-label="item 3">item 3</li>
+              <li data-label="item 4">item 4</li>
+            </ul>
+        </div>
+    </dd>
+    <dt>ajax demo</dt>
+    <dd><br><br><br><br><br><br><br><br><br>
+      <div class="js_bizInputSelect" iptseldataurl="data/index.php" iptseldatabox="(dd .test" iptseloption="(dd .test li">
+            
+        </div>
+        <div class="test">
+          
+        </div>
+        <select>
+          <option>item 1</option>
+          <option value="">item 2</option>
+        </select>
+    </dd>
+  </dl>
+
+
+  <script type="text/javascript">
+    function dataFilter(_json) {
+      if( _json.data && _json.data.length ){
+              _json = _json.data;
+          }
+
+          $.each( _json, function( _ix, _item ){
+              _item.length &&
+                  ( _json[ _ix ] = { 'id': _item[1], 'label': _item[0], 'isChecked': _item[2] } )
+                  ;
+          });
+          return _json;
+    }
+  </script>
+</body>
+</html>

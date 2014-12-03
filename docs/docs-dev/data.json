@@ -1,0 +1,182 @@
+{
+	"basePath":"../../tpl/demo/"
+	, "demoPage":"demo.html"
+	, "detailPage":"detail.html"
+	, "extraMenu": [
+		{
+			"name":"API"
+			, "url":"http://jc2.openjavascript.org/docs_api/index.html"
+		}
+		, {
+			"name":"Download"
+			, "url":"http://github.com/openjavascript/jquerycomps/archive/requirejs_master.zip"
+		}
+	]
+	, "websiteLink": [
+		{
+			"name":"奇舞团"
+			, "url":"http://qiwoo.org/"
+		}
+		, {
+			"name":"btbtd.org"
+			, "url":"http://btbtd.org/"
+		}
+	]
+	, "compsList": [
+		{
+			"name":"Base"
+			, "desc": [
+				"所有 [JC.*, Bizs.*] 组件依赖的基础类"
+			]
+			, "data": [
+
+                {
+                    "name": "JC.common"
+                    , "subtitle": "提供一些全局的静态方法"
+                    , "desc": [
+                        "JC 组件通用静态方法和属性 ( JC.common, 别名: JC.f ) "
+                        , "所有 JC 组件都会依赖这个静态类"
+                    ]
+                    , "api":"http://jc2.openjavascript.org/docs_api/classes/JC.common.html"
+                    , "output": "common.js"
+                    , "data": [
+                       {
+                            "version":"0.1"
+                            , "require":[ {
+                                "name": "jquery"
+                                , "version": "1.9.1"
+                                , "outlink": "http://www.jquery.com"
+                            }]
+                            , "download":""
+                            , "nodemo":"true"
+                        }
+                       , {
+                            "version":"0.2"
+                            , "require":[ {
+                                "name": "jquery"
+                                , "version": "1.9.1"
+                                , "outlink": "http://www.jquery.com"
+                            }]
+                            , "download":""
+                            , "nodemo":"true"
+                        }
+                    ]
+                }
+                , {
+                    "name":"JC.BaseMVC"
+                    , "subtitle": "JC 组件基础代码结构"
+                    , "desc": [
+                        "MVC 抽象类 ( 仅供扩展用, 这个类不能实例化)"
+                        , "新的 JC 组件 和 Biz(业务)组件 全部继承自 JC.BaseMVC"
+                        , "旧的 JC/Biz 组件将会逐渐升级为继承自 JC.BaseMVC"
+                    ]
+                    , "api":"http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html"
+                    , "output": "BaseMVC.js"
+                    , "data": [
+                        {
+                            "require":[ {
+                                    "name": "JC.common" 
+                                    , "version": "0.2"
+                                }
+                            ]
+                            , "download":""
+                            , "nodemo":"true"
+                            , "version":"0.1"
+                        }
+                    ]
+                }
+			]
+		}
+        , {
+			"name":"JC"
+			, "desc":[
+                "JC.* 开头的组件是通用组件"
+			]
+            , "data": [
+                {
+                    "name": "JC.AjaxTree"
+					, "subtitle":"AJAX树菜单组件"
+					, "desc":[
+						"JC.AjaxTree AJAX树菜单组件"
+						, "响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 JC.AutoComplete 实例"
+					]
+                    , "api":"http://jc2.openjavascript.org/docs_api/classes/JC.AjaxTree.html"
+                    , "output": "AjaxTree.js"
+                    , "data": [
+                        {
+                            "version":"0.1"
+                            , "require":[
+                                {
+                                    "name":"JC.BaseMVC"
+                                    , "version":"0.1"
+                                }
+                                , {
+                                    "name":"Json2"
+                                    , "version":"0.1"
+                                    , "outlink": "https://github.com/douglascrockford/JSON-js"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        , {
+            "name": "Bizs"
+            , "desc": [
+                "Bizs 开头的组件为业务组件，主要在特定的项目中使用"
+            ]
+            , "data": [
+                {
+                    "name": "Bizs.ActionLogic"
+					, "subtitle":"组件化一些零散的操作"
+					, "desc":[
+                        "应用场景 "
+                        , "点击后弹框( 脚本模板 ) "
+                        , "点击后弹框( AJAX ) "
+                        , "点击后弹框( Dom 模板 ) "
+                        , "点击后执行 AJAX 操作"
+					]
+                    , "api":"http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html"
+                    , "output": "ActionLogic.js"
+                    , "data": [
+                        {
+                            "version":"0.1"
+                            , "require":[
+                                {
+                                    "name":"JC.BaseMVC"
+                                    , "version":"0.1"
+                                }
+                                , {
+                                    "name":"JC.Panel"
+                                    , "version":"0.2"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        , {
+            "name": "Plugin"
+            , "desc": [
+                "所有非 [JC.*, Bizs.*] 的组件都归类为plugin"
+            ]
+            , "data": [
+                {
+                    "name": "Aes"
+                    , "subtitle": "可逆的加密算法"
+                    , "desc": [
+                        "高级加密标准（英语：Advanced Encryption Standard，缩写：AES），在密码学中又称Rijndael加密法，是美国联邦政府采用的一种区块加密标准。这个标准用来替代原先的DES，已经被多方分析且广为全世界所使用。"
+                    ]
+                    , "data": [
+                        {
+                            "version": "2005-2012"
+                            , "outlink": "http://www.movable-type.co.uk/scripts/aes.html"
+                        }
+                    ]
+                }
+            ]
+        }
+	]
+}

@@ -10,7 +10,7 @@
  *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Rate.html' target='_blank'>API docs</a>
  *      | <a href='../../modules/JC.Rate/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *  <h2>页面只要引用本脚本, 默认会处理 span class="js_compRate"</h2>
+ *  <h2>页面只要引用本脚本, 默认会处理 [ span | label ] class="js_compRate"</h2>
  *
  *  <h2>可用的 HTML attribute</h2>
  *
@@ -35,7 +35,9 @@
  *
  *      <dt>hints = string, default = '较差,一般,不错,很好,非常棒'</dt>
  *      <dd>鼠标hover时，显示的title，以分号隔开</dd>
-
+ *
+ *      <dt>hiddenName = string, default = 'score'</dt>
+ *      <dd>隐藏域控件的 name</dd>
  *  </dl> 
  *
  * @namespace   JC

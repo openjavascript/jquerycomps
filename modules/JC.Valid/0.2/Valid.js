@@ -7,8 +7,7 @@
      * <b>表单验证</b> (单例模式)
      * <br />全局访问请使用 JC.Valid 或 Valid
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
@@ -116,6 +115,7 @@
      *              <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>
      *              <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>
      *              <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>
+     *              <dd>html attr <b>datespan:</b>, 指定开始与结束日期的时间跨度(JC.f.dateDetect)</dd>
      *          </dl>
      *      </dd>
      *      <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>
@@ -206,6 +206,9 @@
      *          </dl>
      *      </dd>
      *
+     *      <dd><b>qq:</b> 检查QQ号码, 5 ~ 11位数字</dd>
+     *      <dd><b>qqall:</b> 检查QQ号码, [ qq | email ]</dd>
+     *
      *      <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>
      *      <dd>
      *          <dl>
@@ -282,6 +285,7 @@ function (){
     var _selector = $(this);
 });</pre>
      *              </dd>
+     *              <dd>
      *                  <b>datavalidKeyupCallback:</b> 每次 keyup 的回调
 <pre>function datavalidKeyupCallback( _evt ){
     var _selector = $(this);
@@ -410,6 +414,8 @@ function (){
         , parse: 
             function( _item ){
                 var _p = this, _r = true, _item = $( _item );
+
+                if( _item.prop( 'nodeName' ).toLowerCase() == 'object' ) return _r;
 
                 if( !_p._model.isAvalible( _item ) ) return _r;
                 if( !_p._model.isValid( _item ) ) return _r;
@@ -1372,7 +1378,7 @@ function (){
          */
         , daterange:
             function( _item ){
-                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items, _tmp;
+                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items, _tmp, _datespan;
 
                 if( _r ){
                     if( _item.is( '[fromDateEl]' ) ) {
@@ -1406,6 +1412,15 @@ function (){
                             _r && _min && _max 
                                && _min.getTime() > _max.getTime() 
                                && ( _r = false );
+
+                            if( _r && _min && _max ){
+                                _datespan = ( _fromDateEl.attr( 'datespan' ) || _toDateEl.attr( 'datespan' ) );
+                                if( _datespan && ( _datespan = JC.f.dateDetect( JC.f.formatISODate( _min ) + _datespan ) ) ){
+                                    if( _max.getTime() > _datespan.getTime() ){
+                                        _r = false;
+                                    }
+                                }
+                            }
 
                             _r && ( _tmp = _fromDateEl.attr( 'rangeCanEqual' ) || _toDateEl.attr( 'rangeCanEqual' ) )
                                 && !JC.f.parseBool( _tmp )
@@ -1591,10 +1606,42 @@ function (){
                 return _r;
             }
         /**
+         * 检查QQ号码( 5 ~ 11位数字 )
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+            <div class="f-l">
+                <input type="TEXT" name="qq" 
+                    datatype="qq" 
+                    errmsg="请填写正确的qq号码">
+            </div>
+         */
+        , qq: 
+            function( _item, _noError ){
+                var _p = this, _r =  /^[1-9][\d]{4,10}$/.test( _item.val() );
+                !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查QQ号码( 数字号码|电子邮件 )
+         * <br />5 ~ 11位数字
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+            <div class="f-l">
+                <input type="TEXT" name="qqall" 
+                    datatype="qqall" 
+                    errmsg="请填写正确的qq号码">
+            </div>
+         */
+        , qqall: 
+            function( _item, _noError ){
+                var _p = this, _r =  _p.qq( _item, true ) || _p.email( _item, true );
+                !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
          * 检查手机号码<br />
-         * @method  mobilecode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {bool}      _noError
          * @example
@@ -1953,9 +2000,9 @@ function (){
                 </div>
          */
         , email: 
-            function( _item ){
+            function( _item, _noError ){
                 var _p = this, _r = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test( _item.val() );
-                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
         /**
@@ -2988,6 +3035,14 @@ function (){
         _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
         Valid.checkTimeout( _p );
     });
+    $(document).delegate( 'input', 'focus', function($evt){
+        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        if( _p.attr( 'type' ) ) return;
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
+        !_v && Valid.setValid( _p );
+    });
+
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private

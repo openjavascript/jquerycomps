@@ -17,11 +17,12 @@
 
             requirejs( [ 'JC.Tips', 'JC.Calendar', 'JC.Form', 'Bizs.MultiDate', 'Bizs.FormLogic' ]
             , function( Tips, Calendar, JCForm, MultiDate, FormLogic ){
-                var _maxDate = new Date();
-                _maxDate.setDate( _maxDate.getDate() - 1 );
-                $('input.js_multidate').attr( 'maxvalue', JC.f.formatISODate( _maxDate ) );
+                // var _maxDate = new Date();
+                // _maxDate.setDate( _maxDate.getDate() - 10 );
+                // $('input.js_multidate').attr( 'maxvalue', JC.f.formatISODate( _maxDate ) );
 
-                window.Bizs && Bizs.MultiDate && ( Bizs.MultiDate.maxDate = _maxDate );
+                // window.Bizs && Bizs.MultiDate && ( Bizs.MultiDate.maxDate = _maxDate );
+                
             });
         </script>
     </head>    
@@ -35,13 +36,45 @@
                     mddate="/input.js_multidate"
                     mdstartdate="/input.js_startdate"
                     mdenddate="/input.js_enddate"
+                    mdlastdate="true"
                     >
                     <option value="date">日数据</option>
                     <option value="week">周数据</option>
                     <option value="month">月数据</option>
                     <option value="season">季数据</option>
                 </select>
-                <input type="text" class="js_multidate" 
+                <input type="text" class="js_multidate" name="ssdate"
+                multidate="date" currentcanselect="true" size="40" readonly
+                ignoreInitCalendarDate="true"
+                />
+                <input type="hidden" name="startdate" class="js_startdate" value="" />
+                <input type="hidden" name="enddate" class="js_enddate" value="" />
+
+                <button type="submit">submit</button>
+                <button type="reset" onclick="location.href='?'">reset</button>
+                </dd>
+            </dl>
+
+       <!--  </form> -->
+        <br /><br /><br /><br /><br /><br />
+       <!--  <form action='' method='get' class="js_autoFillUrlForm"> -->
+            <dl>
+                <dt>JC.Calendar  CRM 示例mdlastdate="true"
+                    setdefaulthiddendate="true"</dt>
+                <dd>
+                <select name="dataspan" class="dataspan js_autoMultidate"
+                    mddate="/input.js_multidate"
+                    mdstartdate="/input.js_startdate"
+                    mdenddate="/input.js_enddate"
+                    mdlastdate="true"
+                    setdefaulthiddendate="true"
+                    >
+                    <option value="date">日数据</option>
+                    <option value="week">周数据</option>
+                    <option value="month">月数据</option>
+                    <option value="season">季数据</option>
+                </select>
+                <input type="text" class="js_multidate" name="ssdate"
                 multidate="date" currentcanselect="true" size="40" readonly />
                 <input type="hidden" name="startdate" class="js_startdate" value="" />
                 <input type="hidden" name="enddate" class="js_enddate" value="" />
@@ -50,10 +83,8 @@
                 <button type="reset" onclick="location.href='?'">reset</button>
                 </dd>
             </dl>
+            
         </form>
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-
     </body>
 </html>
 
