@@ -7,8 +7,8 @@
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Slider/0.1/_demo' target='_blank'>demo link</a></p>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NSlider.html' target='_blank'>API docs</a>
+     * | <a href='../../modules/JC.NSlider/0.1/_demo' target='_blank'>demo link</a></p>
      * <h2> 可用的 html attribute </h2>
      * <dl>
      *      <dt>slidersubitems</dt>
@@ -54,10 +54,10 @@
      *      <dd>自动滚动的间隔</dd>
      * </dl>
      * @namespace JC
-     * @class Slider
      * @constructor
      * @param   {selector|string}   _selector   
      * @version dev 0.1
+     * @class NSlider
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
      * @date    2013-07-20
      * @example
