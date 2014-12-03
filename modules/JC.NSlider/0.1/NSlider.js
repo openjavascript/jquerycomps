@@ -494,7 +494,7 @@
          * @return  int
          * @default 0
          */
-         , slidernav: function(){ return this.boolProp('slidernav'); }
+         , slidernav: function(){ return this.attrProp('slidernav'); }
         /**
          * 获取滑动导航的配置
          * @method  slidernavtype
@@ -607,10 +607,26 @@
         }
 
         , changeRemoteNav : function( _index ){
+
             var _slider = this._selector;
-            _slider.find( '.slide_on' ).removeClass( 'slide_on' );
-            _slider.find( '.slide_navbtn[data-index='+_index+']' )
-                .addClass( 'slide_on' );
+            var _nowNav = _slider.find( '.slide_on' );
+
+            if( this.slidernav() == 'group' ){
+                var _viewItemNum = this.viewItemNum();
+                var _nowNavNum = parseInt( _nowNav.attr( 'data-index' ) );
+                
+                if( _nowNavNum + _viewItemNum - 1 > _index && _index > _nowNavNum ){
+                    return;
+                }
+                _nowNav.removeClass( 'slide_on' );
+
+                _slider.find( '.slide_navbtn[data-index=' + 
+                    ( _index - ( _index % _viewItemNum ) ) + ']' ).addClass( 'slide_on' );
+            } else {
+                _nowNav.removeClass( 'slide_on' );
+                _slider.find( '.slide_navbtn[data-index=' + _index + ']' )
+                    .addClass( 'slide_on' );
+            }
         }
         /**
          * 获取/设置 划动的 interval 对象
@@ -691,11 +707,16 @@
             }
 
             var _model = this._model;
-            var _nav = $( '<div class="hslide_nav"></div>' );
+            var _navEl = $( '<div class="hslide_nav"></div>' );
             var _tmpItem = '';
             var _navType = _model.slidernavtype();
+            var _viewItemNum = _model.viewItemNum();
+            var _navNum = _model.subitems().length;
 
-            $.each( _model.subitems(), function( _i, _item ){
+            _navNum = ( _nav == 'group' ) ? 
+                ( _navNum / _viewItemNum ) : _navNum;
+
+            for( var _i = 0; _i < _navNum; _i++ ){
                 _tmpItem += '<a href="#" class="slide_navbtn';
 
                 _tmpItem += ( _i == 0 ) ? ' slide_on' : '';
@@ -703,11 +724,13 @@
                 _tmpItem += ( _navType == 'num' ) ? 
                     ' hslide_navnum' : ' hslide_navicon';
 
-                _tmpItem += '" data-index="'+_i+'" >'+ ( _i + 1 ) +'</a>';
-            } );
+                _tmpItem += '" data-index="' + 
+                    ( ( _nav == 'group' ) ? ( _i * _viewItemNum ) : _i ) +
+                    '" >'+ ( _i + 1 ) +'</a>';
+            }
 
-            _nav.append( _tmpItem );
-            _model._selector.append( _nav );
+            _navEl.append( _tmpItem );
+            _model._selector.append( _navEl );
         }
 
         , move: function( _backwrad ){
