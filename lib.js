@@ -12042,7 +12042,7 @@ window.Bizs = window.Bizs || {};
                 var _r = '';
                 _selector
                     && _selector.is( '[' + _key + ']' ) 
-                    && ( _r = _selector.attr( _key ).trim() );
+                    && ( ( _r = _selector.attr( _key ) || '' ).trim() );
                 return _r;
             }
 
