@@ -25,6 +25,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.FrameUtil",
         "JC.ImageCutter",
         "JC.LunarCalendar",
+        "JC.NSlider",
         "JC.NumericStepper",
         "JC.Paginator",
         "JC.Panel",

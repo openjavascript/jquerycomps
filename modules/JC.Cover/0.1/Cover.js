@@ -28,7 +28,7 @@
  *      <dd>遮罩是否显示手型</dd>
  *
  *      <dt>coverdir = int default = 2</dt>
- *      <dd>遮罩遮盖方向，0-上、1-右、2-下、9-左</dd>
+ *      <dd>遮罩遮盖方向，0-上、1-右、2-下、3-左</dd>
  *  </dl> 
  *
  * @namespace   JC

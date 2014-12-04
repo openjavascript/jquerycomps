@@ -115,6 +115,8 @@
             
                 <li><a href="../classes/JC.msgbox.html">JC.msgbox</a></li>
             
+                <li><a href="../classes/JC.NSlider.html">JC.NSlider</a></li>
+            
                 <li><a href="../classes/JC.NumericStepper.html">JC.NumericStepper</a></li>
             
                 <li><a href="../classes/JC.Paginator.html">JC.Paginator</a></li>
@@ -345,6 +347,8 @@
            var p = this;
 
            p._model.selector().addClass(&#x27;IPTSEL-BOX&#x27;).append(&#x27;&lt;span class=&quot;IPTSEL-ARROW&quot;&gt;&lt;/span&gt;&#x27;);
+           p._model.iptselbox().length &amp;&amp; p._model.iptselbox().addClass(&#x27;IPTSEL-DROPDOWN&#x27;);
+           p._model.iptseloption().length &amp;&amp; p._model.iptseloption().addClass(&#x27;IPTSEL-ITEM&#x27;);
             //JC.log( &#x27;InputSelect _beforeInit&#x27;, new Date().getTime() );
         },
 
@@ -352,6 +356,35 @@
             var p = this;
 
             p._model.selector().data(&#x27;visible&#x27;, 0);
+
+            p._model.iptselipt().on(&#x27;keyup&#x27;, function( _evt, _showPopup ){
+                var _sp = $(this)
+                    , _val = _sp.val().trim()
+                    , _keycode = _evt.keyCode
+                    , _ignoreTime = _sp.data(&#x27;IgnoreTime&#x27;)
+                    ;
+
+                if( _keycode ){
+                    switch( _keycode ){
+                        case 38://up
+                        case 40://down
+                            {
+                                _evt.preventDefault();
+                            }
+                        case 37: //left
+                        case 39: //right
+                            {
+                                return;
+                            }
+                        case 27: //ESC
+                            {
+                                p._hide();
+                                return;
+                            }
+                    }
+                }
+ 
+            });
 
             //输入框事件处理
             p._model.iptselipt().on(&#x27;click&#x27;, function () {
@@ -372,28 +405,100 @@
                 p[p._model.selector().data(&#x27;visible&#x27;) ? &#x27;_hide&#x27;: &#x27;_show&#x27;]();
             });
 
-            //选项事件处理
-            p._model.iptselbox().delegate(p._model.iptseloption()[0], &#x27;click&#x27;, function (e) {
-                var $this = $(e.target || e.srcElement);
-                
-                p._model.iptselipt().val($this.data(&#x27;label&#x27;));
-                p._model.iptselhideipt().val($this.data(&#x27;value&#x27;));
+            //键盘事件处理
+            p._model.iptselipt().on(&#x27;keydown&#x27;, function (e) {
+
+                var keycode = e.keyCode, 
+                    $this = $(this), 
+                    keyindex, 
+                    isBackward, 
+                    items = p._model.iptseloption(), 
+                    item;
+
+                keycode == 38 &amp;&amp; ( isBackward = true );
+                //JC.log( &#x27;keyup&#x27;, new Date().getTime(), keycode );
+
+                switch ( keycode ) {
+                    case 38://up
+                    case 40://down
+                        {   
+                            
+                            if (p._model.dataurl()) {
+                                p._model.iptselarrow().trigger(&#x27;click&#x27;);
+                            }
+                            p._show();
+                            keyindex = p._model.nextIndex( isBackward );
+
+                            if( keyindex &gt;= 0 &amp;&amp; keyindex &lt; items.length ){
+                                e.preventDefault();
+                                item = $(items[keyindex]);
+                                p._model.selectedIdentifier( item );
+                                p._model.iptselipt().val( p._model.getKeyword(item ) );
+                                return;
+                            }
+                            break;
+                        }
+                    case 9://tab
+                        {
+                            p._hide();
+                            return;
+                        }
+                    case 13://回车
+                        {
+                            var tmpSelectedItem;
+
+                            if( p._model.iptselbox().is( &#x27;:visible&#x27; ) 
+                                    &amp;&amp; ( tmpSelectedItem = p._model.iptselbox().find( &#x27;li.active&#x27;) ) &amp;&amp; tmpSelectedItem.length ){
+                                p.trigger(&#x27;iptselitemselected&#x27;, [ tmpSelectedItem, p._model.getKeyword( tmpSelectedItem ) ]);
+                            }
+                            p._hide();
+                            p._model.iptselprevententer() &amp;&amp; e.preventDefault();
+                            break;
+                        }
+                }
+            });
+
+            //容器事件处理阻止冒泡
+            p._model.iptselbox().on(&#x27;mousedown&#x27;, function (e) {
+                e.stopPropagation();
+            });
+
+            //选项mouseenter,mouseleave事件处理
+            p._model.iptselbox()
+                .delegate(&#x27;.IPTSEL-ITEM&#x27;, &#x27;mouseenter&#x27;, function (e) {
+                    var $this = $(this);
+                    p._model.selectedIdentifier($this, true);
+                })
+                .delegate(&#x27;.IPTSEL-ITEM&#x27;, &#x27;mouseleave&#x27;, function (e) {
+                    var $this = $(this);
+                    $this.removeClass(&#x27;active&#x27;);
+                });
+
+            //选项click事件处理
+            p._model.iptselbox().delegate(&#x27;.IPTSEL-ITEM&#x27;, &#x27;click&#x27;, function (e) {
+                var $this = $(e.target || e.srcElement),
+                    keyword = $this.data(&#x27;label&#x27;),
+                    kvalue = $this.data(&#x27;value&#x27;);
+               
+                p._model.iptselipt().val(keyword);
+                p._model.iptselhideipt().val(kvalue);
                 p._hide();
 
+                p.trigger(&#x27;iptselitemselected&#x27;, [$this, keyword, kvalue ]);
                 JC.f.safeTimeout( function(){
                     p._model.iptselipt().trigger( &#x27;blur&#x27; );
                 }, null, &#x27;IptSelItemClick&#x27;, 200);
             });
 
-            //容器事件处理
-            p._model.iptselbox().on(&#x27;mousedown&#x27;, function (e) {
-                e.stopPropagation();
+            p.on(&#x27;iptselitemselected&#x27;, function (e, sp, keyword, kvalue) {
+                p._model.iptselitemselectedcallback() 
+                &amp;&amp; p._model.iptselitemselectedcallback().call(p, keyword, kvalue);
             });
 
             //空白处点击处理
             $(document).on(&#x27;mousedown&#x27;, function () {
                 p._hide();
-            })
+            });
 
         },
 
@@ -444,7 +549,7 @@
         //选项
         iptseloption: function () {
             var selector = this.selector();
-            return JC.f.parentSelector(selector, this.attrProp(&#x27;iptseloption&#x27;)).addClass(&#x27;IPTSEL-ITEM&#x27;);
+            return JC.f.parentSelector(selector, this.attrProp(&#x27;iptseloption&#x27;));
         },
 
         //选项的容器
@@ -452,18 +557,18 @@
             var p = this,
                 r = p.attrProp(&#x27;iptseldatabox&#x27;);
 
-            return JC.f.parentSelector(p.selector(), r ).addClass(&#x27;IPTSEL-DROPDOWN&#x27;);
+            return JC.f.parentSelector(p.selector(), r );
            
         },
 
         iptselprevententer: function () {
-            var r,
+            var r = true,
                 selector = this.selector();
 
             selector.is( &#x27;[iptselprevententer]&#x27; )
-                &amp;&amp; ( _r = JC.f.parseBool( selector.attr(&#x27;iptselprevententer&#x27;) ) )
-                ;
-            return _r;
+                &amp;&amp; ( r = JC.f.parseBool( selector.attr(&#x27;iptselprevententer&#x27;) ) );
+
+            return r;
         },
 
         //ajax数据url
@@ -490,7 +595,7 @@
                         tpl = &#x27;&lt;li&gt;暂无数据&lt;/li&gt;&#x27;;
                     } else {
                         for (i = 0; i &lt; l; i++) {
-                            tpl += &#x27;&lt;li data-label=&quot;&#x27; + res.data[i].label + &#x27;&quot; class=&quot;IPTSEL-ITEM&quot;&gt;&#x27; + res.data[i].label + &#x27;&lt;/li&gt;&#x27;;
+                            tpl += &#x27;&lt;li data-label=&quot;&#x27; + res.data[i].label + &#x27;&quot; class=&quot;IPTSEL-ITEM&quot; data-keyindex=&quot;&#x27; + i + &#x27;&quot;&gt;&#x27; + res.data[i].label + &#x27;&lt;/li&gt;&#x27;;
                         }
                     }
                     
@@ -502,7 +607,61 @@
             });
         },
 
-        dataready: 0
+        nextIndex: function (isBackward) {
+            var p = this,
+                items = p.iptseloption(),
+                len = items.length;
+
+            if (isBackward) {
+                if (p.keyindex &lt;= 0) {
+                    p.keyindex = len - 1;
+                } else {
+                    p.keyindex--;
+                }
+            } else {
+                if( p.keyindex &gt;= len - 1 ) {
+                    p.keyindex = 0;
+                } else {
+                    p.keyindex++;
+                }
+            }
+
+            return p.keyindex;
+        },
+
+        //高亮显示选中项
+        selectedIdentifier: function (selector, updateKeyIndex) {
+            this.preSelected &amp;&amp; this.preSelected.removeClass(&#x27;active&#x27;);
+            selector.addClass(&#x27;active&#x27;);
+            updateKeyIndex &amp;&amp; (this.keyindex = parseInt(selector.data(&#x27;keyindex&#x27;)));
+            this.preSelected = selector;
+        },
+
+        //下拉选项的值
+        getKeyword: function (selector) {
+            var keyword = selector.data(&#x27;label&#x27;);
+            try {
+                keyword = decodeURIComponent(keyword);
+            } catch (ex) {
+
+            }
+
+            return keyword;
+        },
+
+        keyindex: -1,
+
+        dataready: 0,
+
+        //下拉选中后的回调
+        iptselitemselectedcallback: function () {
+            var p = this;
+
+            p.selector().is(&#x27;[iptselitemselectedcallback]&#x27;)
+                &amp;&amp;  (p._iptselselectedcallback = p.selector().attr(&#x27;iptselitemselectedcallback&#x27;));
+            
+            return p._iptselselectedcallback ? window[p._iptselselectedcallback]: null;
+        }
 
     });
 
@@ -514,7 +673,7 @@
         show: function () {
             var p = this;
 
-            p._model.iptselbox().show();
+            p._model.iptselbox().show().css(&#x27;z-index&#x27;, window.ZINDEX_COUNT++);
         },
 
         hide: function () {
