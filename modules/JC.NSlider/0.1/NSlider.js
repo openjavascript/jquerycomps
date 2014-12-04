@@ -1,128 +1,146 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
     /**
-     * Slider 划动菜单类
-     * <br />页面加载完毕后, Slider 会查找那些有 class = js_autoSlider 的标签进行自动初始化
-     * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     * 组件用途简述
+     *
+     * <p><b>require</b>:
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      * </p>
+     * 
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Slider/0.1/_demo' target='_blank'>demo link</a></p>
+     *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NSlider.html' target='_blank'>API docs</a>
+     *      | <a href='../../modules/JC.NSlider/0.1/_demo/hslider_loop_automove.html' target='_blank'>demo link</a></p>
+     * 
      * <h2> 可用的 html attribute </h2>
+     * 
      * <dl>
-     *      <dt>slidersubitems</dt>
-     *      <dd>指定具体子元素是那些, selector ( 子元素默认是 layout的子标签 )</dd>
+     *      <dt>slidersubitems = selector</dt>
+     *      <dd>指定具体子元素是那些，支持JC的选择器扩展</dd>
      *
-     *      <dt>sliderleft</dt>
-     *      <dd>左移的触发selector</dd>
-     *
-     *      <dt>sliderright</dt>
-     *      <dd>右移的触发selector</dd>
-     *
-     *      <dt>sliderwidth</dt>
-     *      <dd>主容器宽度</dd>
-     *
-     *      <dt>slideritemwidth</dt>
-     *      <dd>子元素的宽度</dd>
-     *
-     *      <dt>sliderhowmanyitem</dt>
-     *      <dd>每次滚动多少个子元素, 默认1</dd>
-     *
-     *      <dt>sliderdefaultpage</dt>
-     *      <dd>默认显示第几页</dd>
-     *
-     *      <dt>sliderstepms</dt>
-     *      <dd>滚动效果运动的间隔时间(毫秒), 默认 5</dd>
-     *
-     *      <dt>sliderdurationms</dt>
-     *      <dd>滚动效果的总时间</dd>
-     *
-     *      <dt>sliderdirection</dt>
+     *      <dt>sliderdirection = String default = 'horizontal'</dt>
      *      <dd>滚动的方向, 默认 horizontal, { horizontal, vertical }</dd>
      *
-     *      <dt>sliderloop</dt>
+     *      <dt>sliderloop = boolean default = false</dt>
      *      <dd>是否循环滚动</dd>
      *
-     *      <dt>sliderinitedcb</dt>
-     *      <dd>初始完毕后的回调函数, 便于进行更详细的声明</dd>
-     *
-     *      <dt>sliderautomove</dt>
+     *      <dt>sliderautomove = boolean default = false</dt>
      *      <dd>是否自动滚动</dd>
      *
-     *      <dt>sliderautomovems</dt>
-     *      <dd>自动滚动的间隔</dd>
+     *      <dt>sliderprev = selector</dt>
+     *      <dd>后( 左 | 上 )移的触发元素selector, 控制slider向后( 左 | 上 )滚动</dd>
+     *
+     *      <dt>slidernext = selector</dt>
+     *      <dd>前( 右 | 下 )移的触发元素selector, 控制slider向前( 右 | 下 )滚动</dd>
+     *
+     *      <dt>sliderhowmanyitem = int default = 1</dt>
+     *      <dd>每次滚动多少个子元素, 默认1</dd>
+     *
+     *      <dt>sliderstepms = int default = 10</dt>
+     *      <dd>滚动效果运动的间隔时间(毫秒), 默认 10ms</dd>
+     *
+     *      <dt>sliderdurationms = int default = 300</dt>
+     *      <dd>滚动效果的总时间(毫秒), 默认 300ms</dd>
+     *
+     *      <dt>sliderautomovems = int default = 2000</dt>
+     *      <dd>自动滚动的间隔(毫秒), 默认 2000ms</dd>
      * </dl>
-     * @namespace JC
-     * @class Slider
+     * 
+     * @namespace   JC
+     * @class       NSlider
+     * @extends     JC.BaseMVC
      * @constructor
      * @param   {selector|string}   _selector   
-     * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 75 Team
-     * @date    2013-07-20
+     * @version dev 0.1 2014-12-04
+     * @author  pengjunkai <pengjunkai@360.cn> | 75 Team
+     * @date    2014-12-04
      * @example
-            <style>
-                .hslide_list dd{ display: none; }
-
-                .hslide_list dd, .hslide_list dd img{
-                    width: 160px;
-                    height: 230px;
-                }
-
-                .slider_one_item dd, .slider_one_item dd img{
-                    width: 820px;
-                    height: 230px;
-                }
-            </style>
-            <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />
-            <script src="../../../lib.js"></script>
-            <script src="../../../config.js"></script>
-            <script>
-                JC.debug = true;
-                requirejs( [ 'JC.Slider' ] );
-
-                function sliderinitedcb(){
-                    var _sliderIns = this;
-
-                    JC.log( 'sliderinitedcb', new Date().getTime() );
-
-                    _sliderIns.on('outmin', function(){
-                        JC.log( 'slider outmin' );
-                    }).on('outmax', function(){
-                        JC.log( 'slider outmax' );
-                    }).on('movedone', function( _evt, _oldpointer, _newpointer){
-                        JC.log( 'slider movedone', _evt, _oldpointer, _newpointer );
-                    }).on('beforemove', function( _evt, _oldpointer, _newpointer ){
-                        JC.log( 'slider beforemove', _evt, _oldpointer, _newpointer );
-                    });
-                }
-            </script>
-            <table class="hslide_wra">
-                <tr>
-                    <td class="hslide_left">
-                        <a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideleft">左边滚动</a>
-                    </td>
-                    <td class="hslide_mid">
-                        <dl 
-                            style="width:820px; height: 230px; margin:0 5px;"
-                            class="hslide_list clearfix js_slideList js_autoSlider" 
-                            slidersubitems="> dd" sliderleft="a.js_slideleft" sliderright="a.js_slideright" 
-                            sliderwidth="820" slideritemwidth="160"
-                            sliderdirection="horizontal" sliderhowmanyitem="5"
-                            sliderloop="false" sliderdurationms="300"
-                            sliderinitedcb="sliderinitedcb"
-                            >
-                            <dd style="display: block; left: 0; " class="tipsItem">content...</dd>
-                            <dd style="display: block; left: 0; " class="tipsItem">content...</dd>
-                            <dd style="display: block; left: 0; " class="tipsItem">content...</dd>
-                        </dl>
-                    </td>
-                    <td class="hslide_right">
-                        <a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideright">右边滚动</a>
-                    </td>
-                </tr>
-            </table>
-
+        <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />
+        <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
+        <script>
+            JC.debug = true;
+            requirejs( [ 'JC.NSlider' ] );
+        </script>
+        <table class="hslide_wra" style="margin: 0 auto;">
+            <tr>
+                <td class="hslide_left">
+                    <a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideleft">左边滚动</a>
+                </td>
+                <td class="hslide_mid">
+                    <dl 
+                        style="width:360px; height: 230px; margin:0 5px;"
+                        class="hslide_list hslide_list2 clearfix js_slideList js_NSlider" 
+                        slidersubitems="/dd"
+                        slidernav="single" slidernavtype="icon"
+                        sliderprev="(table a.js_slideleft" 
+                        slidernext="(table a.js_slideright" 
+                        sliderdirection="horizontal" sliderhowmanyitem="1" 
+                        sliderinitedcb="sliderinitedcb"
+                        sliderloop="true" sliderdurationms="300"
+                        sliderautomove="true" sliderautomovems="2500"
+                        >
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                            <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions0"> 
+                            </span>
+                        </a>
+                        </dd>
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                            <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions1"> 
+                            </span>
+                        </a>
+                        </dd>
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                            <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions2"> 
+                            </span>
+                        </a>
+                        </dd>
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                            <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions3"> 
+                            </span>
+                        </a>
+                        </dd>
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                           <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions4"> 
+                            </span>
+                        </a>
+                        </dd>
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                            <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions5"> 
+                            </span>
+                        </a>
+                        </dd>
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                            <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions6"> 
+                            </span>
+                        </a>
+                        </dd>
+                        <dd class="tipsItem">
+                        <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                            <span class="pc">
+                                <img alt="minions" src="data/images/minions.jpg" title="minions7"> 
+                            </span>
+                        </a>
+                        </dd>
+                    </dl>
+                </td>
+                <td class="hslide_right">
+                    <a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideright">右边滚动</a>
+                </td>
+            </tr>
+        </table>
      */
 
     var _jdoc = $( document ), _jwin = $( window );
@@ -215,6 +233,8 @@
                     if( _model._movelock ){ return; }
                     _model.lockmove();
 
+                    _p.notification( _Model.PREVCLICK, [ $( _evt ), _p ] );
+
                     _p.trigger('cleartimeout');
                     _p.trigger('movetoprev');
                     _p._view.move( 1 );
@@ -229,6 +249,8 @@
                     
                     if( _model._movelock ){ return; }
                     _model.lockmove();
+
+                    _p.notification( _Model.NEXTCLICK, [ $( _evt ), _p ] );
 
                     _p.trigger('cleartimeout');
                     _p.trigger('movetotnext');
@@ -250,6 +272,8 @@
                     if( _model._movelock ){ return; }
                     _model.lockmove();
 
+                    _p.notification( _Model.PREVCLICK, [ $( _evt ), _p ] );
+
                     _p.trigger('cleartimeout');
                     _p.trigger('movetoprev');
                     _p._view.move( 1 );
@@ -263,6 +287,8 @@
                     
                     if( _model._movelock ){ return; }
                     _model.lockmove();
+
+                    _p.notification( _Model.NEXTCLICK, [ $( _evt ), _p ] );
 
                     _p.trigger('cleartimeout');
                     _p.trigger('movetotnext');
@@ -293,13 +319,6 @@
             } );
         }
 
-        /**
-         * 初始化自动滚动
-         * <br />如果 layout 的 html属性 sliderautomove=ture, 则会执行本函数
-         * @method  _initAutoMove
-         * @private
-         * @return SliderInstance
-         */
         , _initAutoMove: function(){
             var _p = this;
             var _model = _p._model;
@@ -308,9 +327,14 @@
 
             _p.on('beforemove', function( _evt ){
                 _p.trigger('cleartimeout');
+
+                _p.notification( _Model.BEFOREMOVE, [ $( _evt ), _p ] );
             });
 
-            _p.on('movedone', function( _evt, _oldpointer, _newpointer ){
+            _p.on('aftermove', function( _evt, _oldpointer, _newpointer ){
+
+                _p.notification( _Model.AFTERMOVE, [ $( _evt ), _p ] );
+
                 if( _model.controlover() ) return;
                 _p.trigger('automove');
             });
@@ -344,15 +368,13 @@
                 _model.moveDirection( true );
             });
 
-            $( _p ).on('automove', function(){
+            _model.automove && $( _p ).on('automove', function(){
                 var _howmany = _model.howmanyitem();
 
                 _p._model.timeout( setTimeout( function(){
                     _p._view.moveTo( _model.page( _model._nowIndex, _howmany ) );
                     _model.changeIndex();
-
                 }, _p._model.automovems() ));
-                
             });
 
             _p.trigger('automove');
@@ -366,39 +388,81 @@
     
     var _Model = NSlider.Model;
 
+    /**
+     * JC.NSlider 在滚动前 selector 触发的事件
+     * @event  beforeMove
+     * @param   {Event}         _evt
+     * @param   {Target}         _target
+     * @param   {coverInstance}  _coverIns
+     * @example
+    <pre>
+    $( document ).delegate( ".nslider_callback", "beforeMove", function( _evt, _target, _coverIns ) {
+        JC.log( 'slider beforeMove' );
+    } );
+    </pre>
+     */
+    _Model.PREVCLICK = 'slidPrev';
+
+    /**
+     * JC.NSlider 在滚动后 selector 触发的事件
+     * @event  afterMove
+     * @param   {Event}         _evt
+     * @param   {Target}         _target
+     * @param   {coverInstance}  _coverIns
+     * @example
+    <pre>
+    $( document ).delegate( ".nslider_callback", "afterMove", function( _evt, _target, _coverIns ) {
+        JC.log( 'slider afterMove' );
+    } );
+    </pre>
+     */
+    _Model.NEXTCLICK = 'slidNext';
+
+    /**
+     * JC.NSlider 点击向前滚动按钮后 selector 触发的事件
+     * @event  slidPrev
+     * @param   {Event}         _evt
+     * @param   {Target}         _target
+     * @param   {coverInstance}  _coverIns
+     * @example
+    <pre>
+    $( document ).delegate( ".nslider_callback", "slidPrev", function( _evt, _target, _coverIns ) {
+        JC.log( 'slider slidPrev' );
+    } );
+    </pre>
+     */
+    _Model.BEFOREMOVE = 'beforeMove';
+
+    /**
+     * JC.NSlider 点击向后滚动按钮后 selector 触发的事件
+     * @event  slidNext
+     * @param   {Event}         _evt
+     * @param   {Target}         _target
+     * @param   {coverInstance}  _coverIns
+     * @example
+    <pre>
+    $( document ).delegate( ".nslider_callback", "slidNext", function( _evt, _target, _coverIns ) {
+        JC.log( 'slider slidNext' );
+    } );
+    </pre>
+     */
+    _Model.AFTERMOVE = 'afterMove';
+
+
     JC.f.extendObject( _Model.prototype, {
         init: function() { 
             this._nowIndex = 0;
             this._moveDirection = true;
         }
-        , layout: function() {
-            return NSlider.selector;
-        }
 
-        /**
-         * 获取 左移的 selector
-         * @method prevbutton
-         * @return selector
-         */
         , prevbutton: function(){ return this.selectorProp( 'sliderprev' ); }
-        /**
-         * 获取 右移的 selector
-         * @method nextbutton
-         * @return selector
-         */
+
         , nextbutton: function(){ return this.selectorProp( 'slidernext' ); }
-        /**
-         * 获取移动方向
-         * <br />horizontal, vertical
-         * @method direction
-         * @default horizontal
-         * @return string
-         */
+
         , direction: function(){ return this.attrProp( 'sliderdirection' ) || 'horizontal'; }
         /**
          * 获取/设置自动移动的方向
          * <br /> true = 向右|向下, false = 向左|向上
-         * @method  moveDirection
          * @param   {string}    _setter
          * @return string
          */
@@ -408,96 +472,84 @@
         }
         /**
          * 获取每次移动多少项
-         * @method howmanyitem
          * @return int
          */
         , howmanyitem: function(){ return this.intProp('sliderhowmanyitem') || 1; }
         /**
-         * 获取每次移动多少项
-         * @method howmanyitem
+         * 获取一次可展示的个数
          * @return int
          */
-        , viewItemNum: function(){ 
-            return Math.floor( 
+        , viewItemNum: function(){
+            var _itemNum = Math.floor( 
                 this.direction() == 'horizontal' ? ( this.width() / this.itemwidth() ) 
                     : ( this.height() / this.itemheight() ) 
-            ); 
+            );
+
+            return ( this.viewItemNum = function(){
+                return _itemNum;
+            } )();
         }
-        /**
-         * 获取宽度
-         * @method width
-         * @default 800 
-         * @return int
-         */
-        , width: function(){ return this.intProp('sliderwidth') || 800; }
-        /**
-         * 获取高度
-         * @method height
-         * @default 230
-         * @return int
-         */
-        , height: function(){ return this.intProp('sliderheight') || 230; }
-        /**
-         * 获取项宽度
-         * @method itemwidth
-         * @default 160
-         * @return int
-         */
-        , itemwidth: function(){ return this.intProp('slideritemwidth') || 160; }
-        /**
-         * 获取项高度
-         * @method itemheight
-         * @default 230
-         * @return int
-         */
-        , itemheight: function(){ return this.intProp('slideritemheight') || 230; }
-        /**
-         * 每次移动的总时间, 单位毫秒
-         * @method      loop
-         * @default false
-         * @return bool
-         */
+
+        , width: function(){ 
+            var _width = this.selector().width() || 800;
+            return ( this.width = function(){
+                return _width;
+            } )();
+        }
+        
+
+        , height: function(){ 
+            var _height = this.selector().height() || 230;
+            return ( this.height = function(){
+                return _height;
+            } )();
+        }
+
+        , itemwidth: function(){
+            var _itemWidth = this.subitems().eq( 0 ).width() || 160;
+            return ( this.itemwidth = function(){
+                return _itemWidth;
+            } )();
+        }
+
+        , itemheight: function(){
+            var _itemHeight = this.subitems().eq( 0 ).height() || 230;
+            return ( this.itemheight = function(){
+                return _itemHeight;
+            } )();
+        }
+
         , loop: function(){ return this.boolProp('sliderloop'); }
         /**
          * 获取每次移动间隔的毫秒数
-         * @method stepms
          * @default 10
          * @return int
          */
         , stepms: function(){ return this.intProp('sliderstepms') || 10; }
         /**
          * 获取每次移动持续的毫秒数
-         * @method durationms
          * @default 300
          * @return int
          */
         , durationms: function(){ return this.intProp('sliderdurationms') || 300; }
         /**
          * 获取自动滚动的间隔
-         * @method automovems
          * @default 2000
          * @return int
          */
         , automovems: function(){ return this.intProp('sliderautomovems') || 2000; }
-        /**
-         * 获取是否自动滚动
-         * @method automove
-         * @default false
-         * @return bool
-         */
+
         , automove: function(){ return this.boolProp('sliderautomove'); }
 
         , defaultindex: function(){ return this.intProp('sliderdefaultindex') || 0; }
         /**
          * 获取滑动导航的配置
-         * @method  slidernav
          * @return  int
          * @default 0
          */
          , slidernav: function(){ return this.attrProp('slidernav'); }
         /**
          * 获取滑动导航的配置
-         * @method  slidernavtype
          * @return  int
          * @default 0
          */
@@ -512,7 +564,6 @@
         }
         /**
          * 获取/设置当前索引位置
-         * @method  pointer
          * @param   {int}   _setter
          * @return int
          */
@@ -524,7 +575,6 @@
 
         /**
          * 获取指定页的所有划动项
-         * @method  page
          * @param   {int}   _index
          * @return array
          */
@@ -570,10 +620,6 @@
             var rIndex = _targetIdx - _nowIndex;
 
             return this.page( _nowIndex, Math.abs( rIndex ) , rIndex >= 0 );
-        }
-
-        , getNowIndex: function(  ){
-            return this._nowIndex;
         }
 
         , changeIndex: function( _idx ){
@@ -630,7 +676,6 @@
         }
         /**
          * 获取/设置 划动的 interval 对象
-         * @method  interval
          * @param   {interval}  _setter
          * @return  interval
          */
@@ -640,14 +685,12 @@
         }
         /**
          * 清除划动的 interval
-         * @method clearInterval
          */
         , 'clearInterval': function(){
             this.interval() && clearInterval( this.interval() );
         }
         /**
          * 获取/设置 自动划动的 timeout
-         * @method  timeout
          * @param   {timeout}   _setter
          * @return  timeout
          */
@@ -657,14 +700,12 @@
         }
         /**
          * 清除自动划动的 timeout
-         * @method clearTimeout
          */
-        , 'clearTimeout': function(){
+        , clearTimeout: function(){
             this.timeout() && clearTimeout( this.timeout() );
         }
         /**
          * 获取/设置当前鼠标是否位于 slider 及其控件上面
-         * @method  controlover
          * @param   {bool}  _setter
          * @return  bool
          */
@@ -707,7 +748,6 @@
             }
 
             var _model = this._model;
-            var _navEl = $( '<div class="hslide_nav"></div>' );
             var _tmpItem = '';
             var _navType = _model.slidernavtype();
             var _viewItemNum = _model.viewItemNum();
@@ -716,21 +756,19 @@
             _navNum = ( _nav == 'group' ) ? 
                 ( _navNum / _viewItemNum ) : _navNum;
 
+            _tmpItem += '<div class="hslide_nav">';
             for( var _i = 0; _i < _navNum; _i++ ){
-                _tmpItem += '<a href="#" class="slide_navbtn';
-
-                _tmpItem += ( _i == 0 ) ? ' slide_on' : '';
-
-                _tmpItem += ( _navType == 'num' ) ? 
-                    ' hslide_navnum' : ' hslide_navicon';
-
-                _tmpItem += '" data-index="' + 
-                    ( ( _nav == 'group' ) ? ( _i * _viewItemNum ) : _i ) +
-                    '" >'+ ( _i + 1 ) +'</a>';
+                _tmpItem += JC.f.printf( 
+                    '<a href="#" class="slide_navbtn {0} {1}" data-index="{2}">{3}</a>'
+                    , ( _i == 0 ) ? 'slide_on' : ''
+                    , ( _navType == 'num' ) ? 'hslide_navnum' : 'hslide_navicon'
+                    , ( _nav == 'group' ) ? _i * _viewItemNum : _i
+                    , _i + 1 
+                );
             }
+            _tmpItem += '</div>';
 
-            _navEl.append( _tmpItem );
-            _model._selector.append( _navEl );
+            _model._selector.append( _tmpItem );
         }
 
         , move: function( _backwrad ){
@@ -813,7 +851,7 @@
                 }
             }, _slidWidth, 0, this._model.durationms(), this._model.stepms() ) );
 
-            $( _p._slider ).trigger( 'movedone' );
+            $( _p._slider ).trigger( 'aftermove' );
 
         }
 
@@ -850,28 +888,31 @@
         }
 
         , _initSliderNav: function( _nav ){
-            if( !_nav ){
+            if( _nav == '' ){
                 return;
             }
 
             var _model = this._model;
-            var _nav = $( '<div class="vslide_nav"></div>' );
             var _tmpItem = '';
             var _navType = _model.slidernavtype();
+            var _navNum = _model.subitems().length;
 
-            $.each( _model.subitems(), function( _i, _item ) {
-                _tmpItem += '<a href="#" class="slide_navbtn';
+            _navNum = ( _nav == 'group' ) ? 
+                ( _navNum / _viewItemNum ) : _navNum;
 
-                _tmpItem += ( _i == 0 ) ? ' slide_on' : '';
+            _tmpItem += '<div class="vslide_nav">';
+            for( var _i = 0; _i < _navNum; _i++ ){
+                _tmpItem += JC.f.printf( 
+                    '<a href="#" class="slide_navbtn {0} {1}" data-index="{2}">{3}</a>'
+                    , ( _i == 0 ) ? 'slide_on' : ''
+                    , ( _navType == 'num' ) ? 'vslide_navnum' : 'vslide_navicon'
+                    , ( _nav == 'group' ) ? _i * _viewItemNum : _i
+                    , _i + 1 
+                );
+            }
+            _tmpItem += '</div>';
 
-                _tmpItem += ( _navType == 'num' ) ? 
-                    ' vslide_navnum' : ' vslide_navicon';
-
-                _tmpItem += '" data-index="' + _i + '" >'+ ( _i + 1 ) +'</a>';
-            } );
-
-            _nav.append( _tmpItem );
-            _model._selector.append( _nav );
+            _model._selector.append( _tmpItem );
         }
 
         , move: function( _backwrad ){
@@ -953,7 +994,7 @@
                 }
             }, _slidWidth, 0, this._model.durationms(), this._model.stepms() ) );
 
-            $( _p._slider ).trigger( 'movedone' );
+            $( _p._slider ).trigger( 'aftermove' );
 
         }
 
