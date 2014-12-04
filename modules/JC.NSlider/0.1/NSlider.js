@@ -7,9 +7,14 @@
      * </p>
      * 
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+<<<<<<< HEAD
      *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NSlider.html' target='_blank'>API docs</a>
      *      | <a href='../../modules/JC.NSlider/0.1/_demo/hslider_loop_automove.html' target='_blank'>demo link</a></p>
      * 
+=======
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NSlider.html' target='_blank'>API docs</a>
+     * | <a href='../../modules/JC.NSlider/0.1/_demo' target='_blank'>demo link</a></p>
+>>>>>>> 42ba21e40e692c0d035c98138a76a8710db858ea
      * <h2> 可用的 html attribute </h2>
      * 
      * <dl>
@@ -43,6 +48,7 @@
      *      <dt>sliderautomovems = int default = 2000</dt>
      *      <dd>自动滚动的间隔(毫秒), 默认 2000ms</dd>
      * </dl>
+<<<<<<< HEAD
      * 
      * @namespace   JC
      * @class       NSlider
@@ -52,6 +58,15 @@
      * @version dev 0.1 2014-12-04
      * @author  pengjunkai <pengjunkai@360.cn> | 75 Team
      * @date    2014-12-04
+=======
+     * @namespace JC
+     * @constructor
+     * @param   {selector|string}   _selector   
+     * @version dev 0.1
+     * @class NSlider
+     * @author  qiushaowei   <suches@btbtd.org> | 75 Team
+     * @date    2013-07-20
+>>>>>>> 42ba21e40e692c0d035c98138a76a8710db858ea
      * @example
         <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />
         <script src="../../../lib.js"></script>

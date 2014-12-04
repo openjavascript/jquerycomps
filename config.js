@@ -12,7 +12,7 @@ requirejs.config( {
         'JC.common': 'modules/JC.common/0.2/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
-        , 'DEV.Bizs.FormLogic': 'modules/Bizs.FormLogic/dev/FormLogic'
+       
 
         , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
         , 'DEV.JC.AjaxUpload': 'modules/JC.AjaxUpload/dev/AjaxUpload'
@@ -118,7 +118,7 @@ requirejs.config( {
         , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
         , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
-        , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/dev/InputSelect'
+        , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/0.1/InputSelect'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
         , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'

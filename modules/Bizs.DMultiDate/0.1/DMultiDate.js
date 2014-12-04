@@ -682,11 +682,23 @@
         },
 
         setHiddenStartdate: function (_date) {
-            this.hiddenStartdateEl().val(_date);
+            var _p = this, _old = _date;
+            if( _date ){
+                _date = JC.f.parseDate( _date, _p.mddateEl().first() );
+                _date && ( _date = JC.f.dateFormat( _date, _p.hiddendateiso() ? '' : _p.mddateEl().first().attr( 'dateformat' ) ) );
+                !_date && ( _date = _old );
+            }
+            _p.hiddenStartdateEl().val(_date);
         },
 
         setHiddenEnddate: function (_date) {
-            this.hiddenEnddateEl().val(_date);
+            var _p = this, _old = _date;
+            if( _date ){
+                _date = JC.f.parseDate( _date, _p.mddateEl().first() );
+                _date && ( _date = JC.f.dateFormat( _date,  _p.hiddendateiso() ? '' : _p.mddateEl().first().attr( 'dateformat' ) ) );
+                !_date && ( _date = _old );
+            }
+            _p.hiddenEnddateEl().val(_date);
         },
 
         updateHiddenStartdate: function () {

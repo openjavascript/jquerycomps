@@ -1202,6 +1202,8 @@
          */
         Bizs.AutoSelectComplete && Bizs.AutoSelectComplete.init( _selector );
 
+        Bizs.InputSelect && Bizs.InputSelect.init( _selector );
+
         /**
          *排期日期展示
         */
