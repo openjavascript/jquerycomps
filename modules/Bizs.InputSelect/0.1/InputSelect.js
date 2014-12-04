@@ -125,57 +125,6 @@
                 }, null, 'IptSelItemClick', 200);
             });
 
-            //选项键盘事件处理
-            // p._model.iptselbox().delegate(p._model.iptseloption()[0], 'keydown', function (e) {
-            //     var keycode = e.keyCode, 
-            //         $this = $(this), 
-            //         keyindex, 
-            //         isBackward, 
-            //         items = p._model.items(), 
-            //         item;
-
-            //         keycode == 38 && ( isBackward = true );
-            //         JC.log( 'keyup', new Date().getTime(), keycode );
- 
-            //         switch( keycode ){
-            //             case 38://up
-            //             case 40://down
-            //                 {
-            //                     // keyindex = p._model.nextIndex( isBackward );
- 
-            //                     // if( keyindex >= 0 && keyindex < items.length ){
-            //                     //     e.preventDefault();
-            //                     //     item = $(items[keyindex]);
-            //                     //     p._model.selectedIdentifier( item );
-            //                     //     p.selector().val( p._model.getKeyword(item ) );
-            //                     //     return;
-            //                     // }
-            //                     break;
-            //                 }
-            //             case 9://tab
-            //                 {
-            //                     p.hide();
-            //                     return;
-            //                 }
-            //             case 13://回车
-            //                 {
-            //                     // var tmpSelectedItem;
-            //                     // if( p._model.iptselbox().is( ':visible' ) 
-            //                     //         && ( tmpSelectedItem = p._model.layout().find( 'dd.active') ) && tmpSelectedItem.length ){
-            //                     //     p.trigger('SuggestSelected', [ tmpSelectedItem, p._model.getKeyword( tmpSelectedItem ) ]);
-            //                     // }
- 
-            //                     p._hide();
-            //                     $this.data( 'IgnoreTime', new Date().getTime() );
- 
-            //                     p._model.iptselprevententer() && e.preventDefault();
-            //                     break;
-            //                 }
-            //         }
-            // });
-
-           
-
             //容器事件处理
             p._model.iptselbox().on('mousedown', function (e) {
                 e.stopPropagation();
