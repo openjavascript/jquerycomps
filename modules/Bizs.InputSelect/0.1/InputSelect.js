@@ -85,6 +85,8 @@
            var p = this;
 
            p._model.selector().addClass('IPTSEL-BOX').append('<span class="IPTSEL-ARROW"></span>');
+           p._model.iptselbox().length && p._model.iptselbox().addClass('IPTSEL-DROPDOWN');
+           p._model.iptseloption().length && p._model.iptseloption().addClass('IPTSEL-ITEM');
             //JC.log( 'InputSelect _beforeInit', new Date().getTime() );
         },
 
@@ -92,6 +94,35 @@
             var p = this;
 
             p._model.selector().data('visible', 0);
+
+            p._model.iptselipt().on('keyup', function( _evt, _showPopup ){
+                var _sp = $(this)
+                    , _val = _sp.val().trim()
+                    , _keycode = _evt.keyCode
+                    , _ignoreTime = _sp.data('IgnoreTime')
+                    ;
+
+                if( _keycode ){
+                    switch( _keycode ){
+                        case 38://up
+                        case 40://down
+                            {
+                                _evt.preventDefault();
+                            }
+                        case 37: //left
+                        case 39: //right
+                            {
+                                return;
+                            }
+                        case 27: //ESC
+                            {
+                                p._hide();
+                                return;
+                            }
+                    }
+                }
+ 
+            });
 
             //输入框事件处理
             p._model.iptselipt().on('click', function () {
@@ -112,28 +143,100 @@
                 p[p._model.selector().data('visible') ? '_hide': '_show']();
             });
 
-            //选项事件处理
-            p._model.iptselbox().delegate(p._model.iptseloption()[0], 'click', function (e) {
-                var $this = $(e.target || e.srcElement);
-                
-                p._model.iptselipt().val($this.data('label'));
-                p._model.iptselhideipt().val($this.data('value'));
+            //键盘事件处理
+            p._model.iptselipt().on('keydown', function (e) {
+
+                var keycode = e.keyCode, 
+                    $this = $(this), 
+                    keyindex, 
+                    isBackward, 
+                    items = p._model.iptseloption(), 
+                    item;
+
+                keycode == 38 && ( isBackward = true );
+                //JC.log( 'keyup', new Date().getTime(), keycode );
+
+                switch ( keycode ) {
+                    case 38://up
+                    case 40://down
+                        {   
+                            
+                            if (p._model.dataurl()) {
+                                p._model.iptselarrow().trigger('click');
+                            }
+                            p._show();
+                            keyindex = p._model.nextIndex( isBackward );
+
+                            if( keyindex >= 0 && keyindex < items.length ){
+                                e.preventDefault();
+                                item = $(items[keyindex]);
+                                p._model.selectedIdentifier( item );
+                                p._model.iptselipt().val( p._model.getKeyword(item ) );
+                                return;
+                            }
+                            break;
+                        }
+                    case 9://tab
+                        {
+                            p._hide();
+                            return;
+                        }
+                    case 13://回车
+                        {
+                            var tmpSelectedItem;
+
+                            if( p._model.iptselbox().is( ':visible' ) 
+                                    && ( tmpSelectedItem = p._model.iptselbox().find( 'li.active') ) && tmpSelectedItem.length ){
+                                p.trigger('iptselitemselected', [ tmpSelectedItem, p._model.getKeyword( tmpSelectedItem ) ]);
+                            }
+                            p._hide();
+                            p._model.iptselprevententer() && e.preventDefault();
+                            break;
+                        }
+                }
+            });
+
+            //容器事件处理阻止冒泡
+            p._model.iptselbox().on('mousedown', function (e) {
+                e.stopPropagation();
+            });
+
+            //选项mouseenter,mouseleave事件处理
+            p._model.iptselbox()
+                .delegate('.IPTSEL-ITEM', 'mouseenter', function (e) {
+                    var $this = $(this);
+                    p._model.selectedIdentifier($this, true);
+                })
+                .delegate('.IPTSEL-ITEM', 'mouseleave', function (e) {
+                    var $this = $(this);
+                    $this.removeClass('active');
+                });
+
+            //选项click事件处理
+            p._model.iptselbox().delegate('.IPTSEL-ITEM', 'click', function (e) {
+                var $this = $(e.target || e.srcElement),
+                    keyword = $this.data('label'),
+                    kvalue = $this.data('value');
+               
+                p._model.iptselipt().val(keyword);
+                p._model.iptselhideipt().val(kvalue);
                 p._hide();
 
+                p.trigger('iptselitemselected', [$this, keyword, kvalue ]);
                 JC.f.safeTimeout( function(){
                     p._model.iptselipt().trigger( 'blur' );
                 }, null, 'IptSelItemClick', 200);
             });
 
-            //容器事件处理
-            p._model.iptselbox().on('mousedown', function (e) {
-                e.stopPropagation();
+            p.on('iptselitemselected', function (e, sp, keyword, kvalue) {
+                p._model.iptselitemselectedcallback() 
+                && p._model.iptselitemselectedcallback().call(p, keyword, kvalue);
             });
 
             //空白处点击处理
             $(document).on('mousedown', function () {
                 p._hide();
-            })
+            });
 
         },
 
@@ -184,7 +287,7 @@
         //选项
         iptseloption: function () {
             var selector = this.selector();
-            return JC.f.parentSelector(selector, this.attrProp('iptseloption')).addClass('IPTSEL-ITEM');
+            return JC.f.parentSelector(selector, this.attrProp('iptseloption'));
         },
 
         //选项的容器
@@ -192,18 +295,18 @@
             var p = this,
                 r = p.attrProp('iptseldatabox');
 
-            return JC.f.parentSelector(p.selector(), r ).addClass('IPTSEL-DROPDOWN');
+            return JC.f.parentSelector(p.selector(), r );
            
         },
 
         iptselprevententer: function () {
-            var r,
+            var r = true,
                 selector = this.selector();
 
             selector.is( '[iptselprevententer]' )
-                && ( _r = JC.f.parseBool( selector.attr('iptselprevententer') ) )
-                ;
-            return _r;
+                && ( r = JC.f.parseBool( selector.attr('iptselprevententer') ) );
+
+            return r;
         },
 
         //ajax数据url
@@ -230,7 +333,7 @@
                         tpl = '<li>暂无数据</li>';
                     } else {
                         for (i = 0; i < l; i++) {
-                            tpl += '<li data-label="' + res.data[i].label + '" class="IPTSEL-ITEM">' + res.data[i].label + '</li>';
+                            tpl += '<li data-label="' + res.data[i].label + '" class="IPTSEL-ITEM" data-keyindex="' + i + '">' + res.data[i].label + '</li>';
                         }
                     }
                     
@@ -242,7 +345,61 @@
             });
         },
 
-        dataready: 0
+        nextIndex: function (isBackward) {
+            var p = this,
+                items = p.iptseloption(),
+                len = items.length;
+
+            if (isBackward) {
+                if (p.keyindex <= 0) {
+                    p.keyindex = len - 1;
+                } else {
+                    p.keyindex--;
+                }
+            } else {
+                if( p.keyindex >= len - 1 ) {
+                    p.keyindex = 0;
+                } else {
+                    p.keyindex++;
+                }
+            }
+
+            return p.keyindex;
+        },
+
+        //高亮显示选中项
+        selectedIdentifier: function (selector, updateKeyIndex) {
+            this.preSelected && this.preSelected.removeClass('active');
+            selector.addClass('active');
+            updateKeyIndex && (this.keyindex = parseInt(selector.data('keyindex')));
+            this.preSelected = selector;
+        },
+
+        //下拉选项的值
+        getKeyword: function (selector) {
+            var keyword = selector.data('label');
+            try {
+                keyword = decodeURIComponent(keyword);
+            } catch (ex) {
+
+            }
+
+            return keyword;
+        },
+
+        keyindex: -1,
+
+        dataready: 0,
+
+        //下拉选中后的回调
+        iptselitemselectedcallback: function () {
+            var p = this;
+
+            p.selector().is('[iptselitemselectedcallback]')
+                &&  (p._iptselselectedcallback = p.selector().attr('iptselitemselectedcallback'));
+            
+            return p._iptselselectedcallback ? window[p._iptselselectedcallback]: null;
+        }
 
     });
 
@@ -254,7 +411,7 @@
         show: function () {
             var p = this;
 
-            p._model.iptselbox().show();
+            p._model.iptselbox().show().css('z-index', window.ZINDEX_COUNT++);
         },
 
         hide: function () {
