@@ -17,6 +17,10 @@
  * <dd>指定下拉数据存放的父容器</dd>
  * <dt>iptseloption = string</dt>
  * <dd>指定下拉数据选项</dd>
+ * <dt>iptselipt = string</dt>
+ * <dd>指定输入框</dd>
+ * <dt>iptselhideipt = string</dt>
+ * <dd>指定隐藏域</dd>
  * <dt>iptseldataurl = string</dt>
  * <dd>指定下拉数据的ajax接口，要求返回json数据格式如下：
  *   { errorno: 0,
@@ -80,7 +84,7 @@
         _beforeInit: function () {
            var p = this;
 
-           p._model.selector().addClass('IPTSEL-BOX').append('<input type="hidden" value="" class="IPTSEL-HIDE" /><span class="IPTSEL-ARROW"></span>');
+           p._model.selector().addClass('IPTSEL-BOX').append('<span class="IPTSEL-ARROW"></span>');
             //JC.log( 'InputSelect _beforeInit', new Date().getTime() );
         },
 
@@ -212,8 +216,6 @@
 
     JC.f.extendObject( InputSelect.Model.prototype, {
         init: function () {
-            var p = this;
-            p.iptselhideipt().attr('name', p.iptselhideiptname());
         },
 
         //输入框
@@ -221,12 +223,8 @@
             return JC.f.parentSelector(this.selector(), this.attrProp('iptselipt')).addClass('IPTSEL-INPUT');
         },
 
-        iptselhideiptname: function () {
-            return this.attrProp('iptselhideiptname');
-        },
-
         iptselhideipt: function () {
-            return this.selector().find('.IPTSEL-HIDE');
+            return JC.f.parentSelector(this.selector(), this.attrProp('iptselhideipt')).addClass('IPTSEL-HIDE');
         },
 
         //箭头
