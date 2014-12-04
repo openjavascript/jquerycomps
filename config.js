@@ -52,6 +52,8 @@ requirejs.config( {
         , 'JC.LunarCalendar.nationalHolidays': 'modules/JC.LunarCalendar/0.1/LunarCalendar.nationalHolidays'
 
         , 'JC.NumericStepper': 'modules/JC.NumericStepper/0.1/NumericStepper'
+        , 'JC.NSlider': 'modules/JC.NSlider/0.1/NSlider'
+
         , 'JC.Paginator': 'modules/JC.Paginator/0.1/Paginator'
         
         , 'JC.Rate': 'modules/JC.Rate/0.1/Rate'
@@ -109,6 +111,7 @@ requirejs.config( {
         , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
         , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
+        , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/0.1/InputSelect'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
         , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'

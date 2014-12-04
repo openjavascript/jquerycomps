@@ -203,7 +203,14 @@
                 }
                 _p._model.setHiddenStartdate(_d);
 
-                if (_p._model.mddateEl().length === 1) {
+                var _tmpNum = 0;
+                $.each( _p._model.mddateEl(), function( _i, _item ){ 
+                    if( !$( _item ).is(":hidden") ){
+                        _tmpNum++;
+                    }
+                } );
+
+                if ( _tmpNum == 1 ) {
                     _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
                 } else {
                     if (!_p._model.mddateEl().eq(1).is('reqmsg') &&  !_p._model.hiddenEnddateEl().val() ) {
@@ -675,11 +682,23 @@
         },
 
         setHiddenStartdate: function (_date) {
-            this.hiddenStartdateEl().val(_date);
+            var _p = this, _old = _date;
+            if( _date ){
+                _date = JC.f.parseDate( _date, _p.mddateEl().first() );
+                _date && ( _date = JC.f.dateFormat( _date, _p.hiddendateiso() ? '' : _p.mddateEl().first().attr( 'dateformat' ) ) );
+                !_date && ( _date = _old );
+            }
+            _p.hiddenStartdateEl().val(_date);
         },
 
         setHiddenEnddate: function (_date) {
-            this.hiddenEnddateEl().val(_date);
+            var _p = this, _old = _date;
+            if( _date ){
+                _date = JC.f.parseDate( _date, _p.mddateEl().first() );
+                _date && ( _date = JC.f.dateFormat( _date,  _p.hiddendateiso() ? '' : _p.mddateEl().first().attr( 'dateformat' ) ) );
+                !_date && ( _date = _old );
+            }
+            _p.hiddenEnddateEl().val(_date);
         },
 
         updateHiddenStartdate: function () {
