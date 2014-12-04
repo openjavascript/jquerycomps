@@ -57,6 +57,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.DisableLogic",
         "window.Bizs.DropdownTree",
         "window.Bizs.FormLogic",
+        "window.Bizs.InputSelect",
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",
         "window.Bizs.MultiAutoComplete",

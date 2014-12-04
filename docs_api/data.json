@@ -106,6 +106,17 @@
                 "window.Bizs": 1
             }
         },
+        "../bizs/InputSelect/InputSelect.js": {
+            "name": "../bizs/InputSelect/InputSelect.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.InputSelect": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../bizs/KillISPCache/KillISPCache.js": {
             "name": "../bizs/KillISPCache/KillISPCache.js",
             "modules": {},
@@ -1001,6 +1012,30 @@
             "example": [
                 "\n           <script>\n               JC.debug = true;\n               JC.use( 'Bizs.FormLogic, Calendar, plugins.json2' );\n\n               function formBeforeProcess( _evt, _ins ){\n                   var _form = $(this);\n                   JC.log( 'formBeforeProcess', new Date().getTime() );\n               }\n\n               function formAfterProcess( _evt, _ins ){\n                   var _form = $(this);\n                   JC.log( 'formAfterProcess', new Date().getTime() );\n                   //return false;\n               }\n\n               function formAjaxDone( _json, _submitButton, _ins ){\n                   var _form = $(this);\n                   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n                   if( _json.errorno ){\n                       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n                   }else{\n                       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n                           JC.f.reloadPage( \"?donetype=custom\" );\n                       });\n                   }\n               };\n           </script>\n\n           <dl class=\"defdl\">\n               <dt>Bizs.FormLogic, get form example 3, nothing at done</dt>\n               <dd>\n                   <dl>\n                       <form action=\"./data/handler.php\" method=\"POST\"\n                           class=\"js_bizsFormLogic\"\n                           formType=\"ajax\"\n                           formAjaxMethod=\"POST\"\n                           formBeforeProcess=\"formBeforeProcess\"\n                           formAfterProcess=\"formAfterProcess\"\n                           formAjaxDone=\"formAjaxDone\"                            \n                           formAjaxDoneAction=\"?donetype=system\"\n                           >\n                           <dl>\n                               <dd>\n                                   文件框: <input type=\"text\" name=\"text\" reqmsg=\"文本框\" value=\"test3\" />\n                               </dd>\n                               <dd>\n                                   日期: <input type=\"text\" name=\"date\" datatype=\"date\" reqmsg=\"日期\" value=\"2015-02-20\" />\n                                   <em class=\"error\"></em>\n                               </dd>\n                               <dd>\n                                   下拉框:\n                                       <select name=\"dropdown\" reqmsg=\"下拉框\" >\n                                           <option value=\"\">请选择</option>\n                                           <option value=\"1\">条件1</option>\n                                           <option value=\"2\">条件2</option>\n                                           <option value=\"3\" selected>条件3</option>\n                                       </select>\n                               </dd>\n                               <dd>\n                                   <input type=\"hidden\" name=\"getform\" value=\"1\" />\n                                   <button type=\"submit\" formSubmitConfirm=\"确定要提交吗?\" >submit - dialog</button>\n                                   <button type=\"submit\" formConfirmPopupType=\"dialog\" \n                                                           formSubmitConfirm=\"确定要提交吗?\" >submit - popup</button>\n\n                                   <button type=\"reset\" formResetConfirm=\"确定要重置吗?\"  >reset</button>\n                                   <button type=\"reset\" formResetConfirm=\"确定要重置吗?\" formResetUrl=\"?\"  >reset - url</button>\n                                   <a href=\"?\">back</a>\n                               </dd>\n                           </dl>\n                       </form>\n                   </dl>\n               </dd>\n           </dl>     "
             ]
+        },
+        "window.Bizs.InputSelect": {
+            "name": "window.Bizs.InputSelect",
+            "shortname": "window.Bizs.InputSelect",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/InputSelect/InputSelect.js",
+            "line": 2,
+            "description": "输入下拉框\n可以输入数据也可以通过点下拉箭头选择数据。\n下拉的数据支持Ajax接口和php前段铺数据。\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.InputSelect.html' target='_blank'>API docs</a>\n  | <a href='../../comps/InputSelect/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会自动处理 div class=\"js_bizInputSelect\" </h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n<dt>iptseldatabox = string</dt>\n<dd>指定下拉数据存放的父容器</dd>\n<dt>iptseloption = string</dt>\n<dd>指定下拉数据选项</dd>\n<dt>iptselipt = string</dt>\n<dd>指定输入框</dd>\n<dt>iptselhideipt = string</dt>\n<dd>指定隐藏域</dd>\n<dt>iptseldataurl = string</dt>\n<dd>指定下拉数据的ajax接口，要求返回json数据格式如下：\n  { errorno: 0,\n    data: [{label: 'item1'}]    \n  }</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-12-02",
+            "author": "zuojing <suches@btbtd.org> | 75 Team"
         },
         "window.Bizs.KillISPCache": {
             "name": "window.Bizs.KillISPCache",
@@ -3179,7 +3214,7 @@
         },
         {
             "file": "../bizs/DMultiDate/DMultiDate.js",
-            "line": 525,
+            "line": 532,
             "description": "获取或设置 DMultiDate 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3200,7 +3235,7 @@
         },
         {
             "file": "../bizs/DMultiDate/DMultiDate.js",
-            "line": 541,
+            "line": 548,
             "description": "判断 selector 是否可以初始化 DMultiDate",
             "itemtype": "method",
             "name": "isDMultiDate",
@@ -3604,6 +3639,27 @@
             "line": 875,
             "description": "这个回调的 this 指针是 window",
             "class": "window.Bizs.FormLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/InputSelect/InputSelect.js",
+            "line": 56,
+            "description": "初始化可识别的 InputSelect 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of InputSelectInstance"
+            },
+            "class": "window.Bizs.InputSelect",
             "namespace": "window.Bizs"
         },
         {
@@ -18754,7 +18810,7 @@
                     "type": "Number"
                 },
                 {
-                    "name": "_dot,",
+                    "name": "_dot",
                     "description": "default = 2",
                     "type": "Int"
                 }
@@ -18899,7 +18955,7 @@
                 }
             ],
             "return": {
-                "description": "需要克隆的日期对象",
+                "description": "",
                 "type": "Date"
             },
             "class": "JC.common"
@@ -19233,7 +19289,7 @@
                     "type": "Bool"
                 },
                 {
-                    "name": "_selector,",
+                    "name": "_selector",
                     "description": "default = document",
                     "type": "Selector"
                 }
@@ -19430,13 +19486,13 @@
         },
         {
             "file": "../common.js",
-            "line": 1204,
+            "line": 1206,
             "description": "排期日期展示",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1209,
+            "line": 1211,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -19458,7 +19514,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1250,
+            "line": 1252,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -19481,13 +19537,13 @@
         },
         {
             "file": "../common.js",
-            "line": 1319,
+            "line": 1321,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1337,
+            "line": 1339,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -19521,7 +19577,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1392,
+            "line": 1394,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -19545,7 +19601,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1473,
+            "line": 1475,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -19574,7 +19630,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1495,
+            "line": 1497,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -19608,7 +19664,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1516,
+            "line": 1518,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -19628,7 +19684,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1534,
+            "line": 1536,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -19647,7 +19703,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1577,
+            "line": 1579,
             "description": "获取 document 的 相关大小",
             "itemtype": "method",
             "name": "docSize",
@@ -19666,7 +19722,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1606,
+            "line": 1608,
             "description": "获取 window 的 相关大小",
             "itemtype": "method",
             "name": "winSize",
@@ -19824,6 +19880,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../bizs/FormLogic/FormLogic.js:4"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../bizs/InputSelect/InputSelect.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -21623,11 +21683,11 @@
         },
         {
             "message": "Missing item type\n排期日期展示",
-            "line": " ../common.js:1204"
+            "line": " ../common.js:1206"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:1319"
+            "line": " ../common.js:1321"
         },
         {
             "message": "Missing item type\nFor feature detection",

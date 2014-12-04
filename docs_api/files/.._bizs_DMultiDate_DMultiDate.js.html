@@ -175,6 +175,8 @@
             
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.InputSelect.html">window.Bizs.InputSelect</a></li>
+            
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MoneyTips.html">window.Bizs.MoneyTips</a></li>
@@ -451,7 +453,14 @@
                 }
                 _p._model.setHiddenStartdate(_d);
 
-                if (_p._model.mddateEl().length === 1) {
+                var _tmpNum = 0;
+                $.each( _p._model.mddateEl(), function( _i, _item ){ 
+                    if( !$( _item ).is(&quot;:hidden&quot;) ){
+                        _tmpNum++;
+                    }
+                } );
+
+                if ( _tmpNum == 1 ) {
                     _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
                 } else {
                     if (!_p._model.mddateEl().eq(1).is(&#x27;reqmsg&#x27;) &amp;&amp;  !_p._model.hiddenEnddateEl().val() ) {
@@ -923,11 +932,23 @@
         },
 
         setHiddenStartdate: function (_date) {
-            this.hiddenStartdateEl().val(_date);
+            var _p = this, _old = _date;
+            if( _date ){
+                _date = JC.f.parseDate( _date, _p.mddateEl().first() );
+                _date &amp;&amp; ( _date = JC.f.dateFormat( _date, _p.hiddendateiso() ? &#x27;&#x27; : _p.mddateEl().first().attr( &#x27;dateformat&#x27; ) ) );
+                !_date &amp;&amp; ( _date = _old );
+            }
+            _p.hiddenStartdateEl().val(_date);
         },
 
         setHiddenEnddate: function (_date) {
-            this.hiddenEnddateEl().val(_date);
+            var _p = this, _old = _date;
+            if( _date ){
+                _date = JC.f.parseDate( _date, _p.mddateEl().first() );
+                _date &amp;&amp; ( _date = JC.f.dateFormat( _date,  _p.hiddendateiso() ? &#x27;&#x27; : _p.mddateEl().first().attr( &#x27;dateformat&#x27; ) ) );
+                !_date &amp;&amp; ( _date = _old );
+            }
+            _p.hiddenEnddateEl().val(_date);
         },
 
         updateHiddenStartdate: function () {
