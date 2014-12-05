@@ -25,6 +25,8 @@
  * <dd>指定隐藏域</dd>
  * <dt>iptselprevententer = bool</dt>
  * <dd>回车键阻止表单提交， default = true</dd>
+ * <dt>iptselitemselected = function</dt>
+ * <dd>选择数据后的回调</dd>
  *
  * <dt>iptseldataurl = string</dt>
  * <dd>指定下拉数据的ajax接口，要求返回json数据格式如下：
@@ -184,6 +186,7 @@
                                 item = $(items[keyindex]);
                                 p._model.selectedIdentifier( item );
                                 p._model.iptselipt().val( p._model.getKeyword(item ) );
+                                p._model.iptselhideipt().val(item.data('value') || '');
                                 return;
                             }
                             break;
@@ -226,9 +229,9 @@
 
             //选项click事件处理
             p._model.iptselbox().delegate('.IPTSEL-ITEM', 'click', function (e) {
-                var $this = $(e.target || e.srcElement),
+                var $this = $(this),
                     keyword = $this.data('label'),
-                    kvalue = $this.data('value');
+                    kvalue = $this.data('value') || '';
                
                 p._model.iptselipt().val(keyword);
                 p._model.iptselhideipt().val(kvalue);
