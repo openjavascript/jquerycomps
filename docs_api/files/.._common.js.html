@@ -327,6 +327,16 @@
         , &quot;dayOfSeason&quot;: dayOfSeason
         , &quot;jcAutoInitComps&quot;: jcAutoInitComps
 
+        , &quot;autoInit&quot;: autoInit
+        , &quot;addAutoInit&quot;: addAutoInit
+        /**
+         * 保存需要自动识别的组件
+         * @property    _AUTO_INIT_DATA
+         * @type Object
+         * @protected
+         */
+        , &quot;_AUTO_INIT_DATA&quot;: {}
+
         , &quot;maxDayOfMonth&quot;: maxDayOfMonth
         , &quot;mousewheelEvent&quot;: mousewheelEvent
         , &quot;padChar&quot;: padChar
@@ -1197,7 +1207,7 @@
                     _done = true;
                     clearInterval( _interval );
                 }
-                _cb &amp;&amp; _cb( _tmp + _startVal, _done );
+                _cb &amp;&amp; _cb( _tmp + _startVal, _done, _timepass, _duration, _stepMs, _startVal, _maxVal );
             }, _stepMs );
 
         return _interval;
@@ -1370,25 +1380,42 @@
       return _r.trim();
     }
     /**
-     * 动态添加内容时, 初始化可识别的组件
-     * &lt;dl&gt;
-     *      &lt;dt&gt;目前会自动识别的组件&lt;/dt&gt;
-     *      &lt;dd&gt;
-     *          Bizs.CommonModify, JC.Panel, JC.Dialog
-     *          &lt;br /&gt;&lt;b&gt;自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件&lt;/b&gt;
-     *      &lt;/dd&gt;
-     * &lt;/d&gt;
-     * &lt;dl&gt;
-     *      &lt;dt&gt;可识别的组件&lt;/dt&gt;
-     *      &lt;dd&gt;
-     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar
-     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter, JC.Tab
-     *          &lt;br /&gt;Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
-     *      &lt;/dd&gt;
-     * &lt;/d&gt;
-     * @method  jcAutoInitComps
+     * 执行自动识别的组件
+     * @method  autoInit
      * @param   {selector}  _selector
-     * @static
+     */
+    function autoInit( _selector ){
+        _selector = $( _selector || document );
+        if( !( _selector &amp;&amp; _selector.length &amp;&amp; window.JC ) ) return;
+        if( !( JC.f &amp;&amp; JC.f._AUTO_INIT_DATA ) ) return;
+
+        $.each( JC.f._AUTO_INIT_DATA, function( _k, _class ){
+            if( !_class ) return;
+            _class.init ? _class.init( _selector ) : _class( _selector );
+        });
+        return JC.f;
+    }
+    /**
+     * 添加需要自动识别的组件
+     * @method addAutoInit
+     * @param   {class} _class
+     * @example
+     *      JC.f.addAutoInit( JC.Calendar );
+     */
+    function addAutoInit( _class ){
+        _class 
+            &amp;&amp; JC.f._AUTO_INIT_DATA 
+            &amp;&amp; ( JC.f._AUTO_INIT_DATA[ 
+                    _class &amp;&amp; _class.Model &amp;&amp; _class.Model._instanceName 
+                    ? _class.Model._instanceName
+                    : funcName( _class )
+                ] = _class )
+                ;
+        return JC.f;
+    }
+    /**
+     * jcAutoInitComps 不久后将被清除
+     * 请使用 JC.f.autoInit 和 JC.f.addAutoInit
      */
     function jcAutoInitComps( _selector ){
         _selector = $( _selector || document );
@@ -1458,6 +1485,7 @@
         */
         Bizs.TaskViewer &amp;&amp; Bizs.TaskViewer.init(_selector);
     }
+
     /**
      * URL 占位符识别功能
      * &lt;br /&gt;&lt;b&gt;require:&lt;/b&gt; addUrlParams, filterXSS

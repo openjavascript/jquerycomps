@@ -4,8 +4,7 @@
  * <br />对 [ div | button ].js_compDrag 生效
  *
  *<p><b>require</b>:
- *   <a href=".jQuery.html">jQuery</a>
- *   , <a href="JC.common.html">JC.common</a>
+ *   <a href="JC.common.html">JC.common</a>
  *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *</p>
  *
@@ -150,6 +149,7 @@
         </table>
  */
     JC.Drag = Drag;
+    JC.f.addAutoInit( Drag );
     var _jdoc = $( document ), _jwin = $( window );
 
     function Drag( _selector ){

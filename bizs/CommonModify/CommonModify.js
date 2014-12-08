@@ -4,8 +4,7 @@
  * <br/>应用场景
  * <br/>需要动态添加删除内容的地方可以使用这个类
  * <p><b>require</b>: 
- *      <a href='.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>
@@ -479,7 +478,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     default: _item.after( _newItem ); break;
                 }
                 
-                window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _newItem );
+                JC.f.autoInit && JC.f.autoInit( _newItem );
 
                 $( _p ).trigger( 'TriggerEvent', [ 'add', _newItem, _boxParent ] );
                 $( _p ).trigger( 'TriggerEvent', [ 'done', _newItem, _boxParent ] );

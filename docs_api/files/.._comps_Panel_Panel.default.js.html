@@ -254,8 +254,7 @@
     /**
      * 弹出层基础类 JC.Panel
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Panel.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -1004,7 +1003,7 @@
                     //JC.log( &#x27;user tpl&#x27;, this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
-                        window.JC.f.jcAutoInitComps &amp;&amp; JC.f.jcAutoInitComps( _p.selector );
+                        window.JC.f.autoInit &amp;&amp; JC.f.autoInit( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -1135,7 +1134,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
-                        window.JC.f.jcAutoInitComps &amp;&amp; JC.f.jcAutoInitComps( this._model.panel );
+                        window.JC.f.autoInit &amp;&amp; JC.f.autoInit( this._model.panel );
                     }
                 }
 

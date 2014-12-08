@@ -4,8 +4,7 @@
  * <p>实现的功能上一页，下一页，数字页，...显示页码，跳转到n页，每页显示n条记录，</p>
  * <p>
  *      <b>require</b>: 
- *          <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Paginator.html' target='_blank'>API docs</a>
@@ -48,6 +47,7 @@
         </div>
 */
     JC.Paginator = Paginator;
+    JC.f.addAutoInit( Paginator );
  
     function Paginator( _selector ){
         _selector && ( _selector = $( _selector ) );

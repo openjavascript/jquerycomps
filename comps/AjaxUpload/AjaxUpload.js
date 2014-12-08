@@ -1,3 +1,4 @@
+//TODO: 添加文件大小判断
 (function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
     /**
      * Ajax 文件上传
@@ -151,6 +152,7 @@ url: ?callback=callback
                 }
      */
     JC.AjaxUpload = AjaxUpload;
+    JC.f.addAutoInit( AjaxUpload );
 
     function AjaxUpload( _selector ){
         if( AjaxUpload.getInstance( _selector ) ) return AjaxUpload.getInstance( _selector );

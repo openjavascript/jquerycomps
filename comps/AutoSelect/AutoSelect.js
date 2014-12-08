@@ -6,8 +6,7 @@
      * <br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化
      * <br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性
      * <p><b>require</b>: 
-     *      <a href='.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>
@@ -141,6 +140,8 @@
      */
     JC.AutoSelect = AutoSelect;
     JC.Form && ( JC.Form.initAutoSelect = AutoSelect );
+
+    JC.f.addAutoInit( AutoSelect );
 
     function AutoSelect( _selector ){
         var _ins = [];

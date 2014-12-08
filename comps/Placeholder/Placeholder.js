@@ -18,6 +18,7 @@
  * @date    2013-10-19
  */
     JC.Placeholder = Placeholder;
+    JC.f.addAutoInit( Placeholder );
 
     function Placeholder( _selector ){
         _selector && ( _selector = $( _selector ) );
@@ -100,7 +101,7 @@
             return _r;
         };
     /**
-     * 更新所有 placeholder 实现的状态
+     * 更新所有 placeholder 的状态
      * @method  update
      * @static
      */

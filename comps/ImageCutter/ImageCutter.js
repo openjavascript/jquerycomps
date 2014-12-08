@@ -4,8 +4,7 @@
  * <br />借助 PHP GD 库进行图片裁切( 不仅限于 PHP GD )
  *
  *<p><b>require</b>:
- *   <a href=".jQuery.html">jQuery</a>
- *   , <a href="JC.common.html">JC.common</a>
+ *   <a href="JC.common.html">JC.common</a>
  *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *</p>
  *
