@@ -807,7 +807,7 @@
                 var _data, _parentNode, _label, _node, _span, _r;
                 
                 _data = _p._model.data().root;
-                _parentNode = $( &#x27;&lt;ul class=&quot;tree_wrap&quot;&gt;&lt;/ul&gt;&#x27; );
+                _parentNode = $( &#x27;&lt;ul class=&quot;ajtree_wrap&quot;&gt;&lt;/ul&gt;&#x27; );
 
                 _label = this._initLabel( _data );
 
@@ -833,7 +833,7 @@
 
                 this.selector( _parentNode );
 
-                _r =  $( &#x27;&lt;ul style=&quot;&quot; class=&quot;tree_wrap_inner&quot;&gt;&lt;/ul&gt;&#x27; )
+                _r =  $( &#x27;&lt;ul style=&quot;&quot; class=&quot;ajtree_wrap_inner&quot;&gt;&lt;/ul&gt;&#x27; )
                 _r.appendTo( _node );
 
                 return _r;
@@ -1107,16 +1107,16 @@
      */
     AjaxTree.lastHover = null;
 
-    JDOC.delegate( &#x27;.js_compAjaxTree ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseenter&#x27;, function(){
+    JDOC.delegate( &#x27;.js_compAjaxTree ul.ajtree_wrap div.node_ctn&#x27;, &#x27;mouseenter&#x27;, function(){
         if( AjaxTree.lastHover ) AjaxTree.lastHover.removeClass(&#x27;ms_over&#x27;);
         $(this).addClass(&#x27;ms_over&#x27;);
         AjaxTree.lastHover = $(this);
     });
-    JDOC.delegate( &#x27;.js_compAjaxTree ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseleave&#x27;, function(){
+    JDOC.delegate( &#x27;.js_compAjaxTree ul.ajtree_wrap div.node_ctn&#x27;, &#x27;mouseleave&#x27;, function(){
         if( AjaxTree.lastHover ) AjaxTree.lastHover.removeClass(&#x27;ms_over&#x27;);
     });
 
-    JDOC.delegate( &#x27;.js_compAjaxTree ul.tree_wrap div.node_ctn a[href]&#x27;, &#x27;click&#x27;, function( _evt ){
+    JDOC.delegate( &#x27;.js_compAjaxTree ul.ajtree_wrap div.node_ctn a[href]&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $( this )
             , _href = ( _p.attr( &#x27;href&#x27; ) || &#x27;&#x27; ).trim().replace( /[\s]+/g, &#x27;&#x27; )
             , _idList
@@ -1151,7 +1151,7 @@
         _pntUl = JC.f.getJqParent( _node, &#x27;ul&#x27; );
         if( _pntUl 
             &amp;&amp; _pntUl.length 
-            &amp;&amp; ( _pntUl.is( &#x27;.folder_ul_lst&#x27; ) || _pntUl.is( &#x27;.tree_wrap_inner&#x27; ) ) 
+            &amp;&amp; ( _pntUl.is( &#x27;.folder_ul_lst&#x27; ) || _pntUl.is( &#x27;.ajtree_wrap_inner&#x27; ) ) 
         ){
             _pntNode = _pntUl.prev( &#x27;div.node_ctn&#x27; );
             if( _pntNode &amp;&amp; _pntNode.length ){
@@ -1162,7 +1162,7 @@
         return _list;
     });
 
-    JDOC.delegate( &#x27;.js_compAjaxTree ul.tree_wrap div.node_ctn&#x27;, &#x27;click&#x27;, function( _evt ){
+    JDOC.delegate( &#x27;.js_compAjaxTree ul.ajtree_wrap div.node_ctn&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this)
             , _treeselector = JC.f.getJqParent( _p, &#x27;.js_compAjaxTree&#x27; )
             , _treeIns = _treeselector.data( AjaxTree.Model._instanceName )
