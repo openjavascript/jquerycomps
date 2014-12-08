@@ -25,7 +25,7 @@ DEMO: balType = panel
         <a href="#" class="codeview-html">HTML</a>
         <a href="#" class="codeview-page selected">PAGE</a>
     </div>
-    <div class="codeview-view cm-s-neo">
+    <div class="codeview-view">
         <div class="codeview-cssview">
 <textArea style="display:none;">
 </textArea>

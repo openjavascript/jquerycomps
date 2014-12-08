@@ -21,7 +21,7 @@
         <a href="#" class="codeview-html">HTML</a>
         <a href="#" class="codeview-page selected">PAGE</a>
     </div>
-    <div class="codeview-view cm-s-neo">
+    <div class="codeview-view">
         <div class="codeview-cssview">
 <textArea style="display:none;">
 <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />

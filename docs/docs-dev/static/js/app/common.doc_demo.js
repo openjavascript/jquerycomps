@@ -17,7 +17,7 @@
             if( ele.hasClass( 'is_js' )){
                 _mode = 'javascript';
             }
-            ele.html( codetpl.eq( i ).html().trim() );
+            ele.html( codetpl.eq( i ).html() );
             CodeMirror.fromTextArea( ele[0], {
                 readOnly: 'nocursor',
                 lineWrapping: true,
