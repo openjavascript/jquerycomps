@@ -15,18 +15,28 @@
  * <dl>
  * <dt>iptseldatabox = string</dt>
  * <dd>指定下拉数据存放的父容器</dd>
+ * <dt>iptseldataboxheight = int</dt>
+ * <dd>指定下拉数据存放的父容器的高度，默然为自适应</dd>
  * <dt>iptseloption = string</dt>
  * <dd>指定下拉数据选项</dd>
  * <dt>iptselipt = string</dt>
  * <dd>指定输入框</dd>
  * <dt>iptselhideipt = string</dt>
  * <dd>指定隐藏域</dd>
+ * <dt>iptselprevententer = bool</dt>
+ * <dd>回车键阻止表单提交， default = true</dd>
+ * <dt>iptselitemselected = function</dt>
+ * <dd>选择数据后的回调</dd>
+ *
  * <dt>iptseldataurl = string</dt>
  * <dd>指定下拉数据的ajax接口，要求返回json数据格式如下：
  *   { errorno: 0,
- *     data: [{label: 'item1'}]    
+ *     data: [{label: 'item1', 'value': 0}]    
  *   }</dd>
  * </dl>
+ *
+ *
+ *
  * @namespace window.Bizs
  * @class InputSelect
  * @extends JC.BaseMVC
@@ -84,10 +94,15 @@
         _beforeInit: function () {
            var p = this;
 
-           p._model.selector().addClass('IPTSEL-BOX').append('<span class="IPTSEL-ARROW"></span>');
-           p._model.iptselbox().length && p._model.iptselbox().addClass('IPTSEL-DROPDOWN');
-           p._model.iptseloption().length && p._model.iptseloption().addClass('IPTSEL-ITEM');
+            p._model.selector().addClass('IPTSEL-BOX').append('<span class="IPTSEL-ARROW"></span>');
+            if ( p._model.iptselbox().length ) {
+                p._model.iptselbox().addClass('IPTSEL-DROPDOWN');
+                p._model.iptselboxheight() 
+                    && p._model.iptselbox().css({'height': p._model.iptselboxheight() + 'px', 'overflow-y': 'auto'});
+            }
+            p._model.iptseloption().length && p._model.iptseloption().addClass('IPTSEL-ITEM');
             //JC.log( 'InputSelect _beforeInit', new Date().getTime() );
+
         },
 
         _initHanlderEvent: function () {
@@ -160,7 +175,6 @@
                     case 38://up
                     case 40://down
                         {   
-                            
                             if (p._model.dataurl()) {
                                 p._model.iptselarrow().trigger('click');
                             }
@@ -172,6 +186,7 @@
                                 item = $(items[keyindex]);
                                 p._model.selectedIdentifier( item );
                                 p._model.iptselipt().val( p._model.getKeyword(item ) );
+                                p._model.iptselhideipt().val(item.data('value') || '');
                                 return;
                             }
                             break;
@@ -214,9 +229,9 @@
 
             //选项click事件处理
             p._model.iptselbox().delegate('.IPTSEL-ITEM', 'click', function (e) {
-                var $this = $(e.target || e.srcElement),
+                var $this = $(this),
                     keyword = $this.data('label'),
-                    kvalue = $this.data('value');
+                    kvalue = $this.data('value') || '';
                
                 p._model.iptselipt().val(keyword);
                 p._model.iptselhideipt().val(kvalue);
@@ -246,19 +261,15 @@
 
         _show: function () {
             var p = this;
-
             p._view.show();
             p._model.selector().data('visible', 1);
-
             return this;
         },
 
         _hide: function () {
             var p = this;
-
             p._view.hide();
             p._model.selector().data('visible', 0);
-            
             return this;
         }
 
@@ -272,11 +283,16 @@
 
         //输入框
         iptselipt: function () {
-            return JC.f.parentSelector(this.selector(), this.attrProp('iptselipt')).addClass('IPTSEL-INPUT');
+            var r = JC.f.parentSelector(this.selector(), this.attrProp('iptselipt'));
+            r.length && r.addClass('IPTSEL-INPUT');
+            return r;
         },
 
+        //隐藏域
         iptselhideipt: function () {
-            return JC.f.parentSelector(this.selector(), this.attrProp('iptselhideipt')).addClass('IPTSEL-HIDE');
+            var r = JC.f.parentSelector(this.selector(), this.attrProp('iptselhideipt'));
+            r.length && r.addClass('IPTSEL-HIDE');
+            return r;
         },
 
         //箭头
@@ -299,12 +315,18 @@
            
         },
 
+        //选项容器的高度
+        iptselboxheight: function () {
+            return this.intProp('iptselboxheight');
+        },
+
+        //是否阻止enter提交表单
         iptselprevententer: function () {
             var r = true,
                 selector = this.selector();
 
             selector.is( '[iptselprevententer]' )
-                && ( r = JC.f.parseBool( selector.attr('iptselprevententer') ) );
+                && ( r = this.boolProp('iptselprevententer')  );
 
             return r;
         },
@@ -322,6 +344,7 @@
             $.get(url).done(function (res) {
                 res = $.parseJSON(res);
                 var tpl = '<ul>',
+                    str = '<li data-label="{0}" data-keyindex="{1}" data-value="{2}" class="IPTSEL-ITEM">{0}</li>',
                     i = 0,
                     l;
 
@@ -333,7 +356,7 @@
                         tpl = '<li>暂无数据</li>';
                     } else {
                         for (i = 0; i < l; i++) {
-                            tpl += '<li data-label="' + res.data[i].label + '" class="IPTSEL-ITEM" data-keyindex="' + i + '">' + res.data[i].label + '</li>';
+                            tpl += JC.f.printf(str, res.data[i].label, i, res.data[i].value || '');
                         }
                     }
                     
@@ -375,7 +398,7 @@
             this.preSelected = selector;
         },
 
-        //下拉选项的值
+        //获取下拉选项的值
         getKeyword: function (selector) {
             var keyword = selector.data('label');
             try {
@@ -383,7 +406,6 @@
             } catch (ex) {
 
             }
-
             return keyword;
         },
 
