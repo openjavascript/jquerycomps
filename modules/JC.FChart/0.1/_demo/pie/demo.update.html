@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        .defDl > dd{
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+        table {
+            width: 100%
+        }
+
+        table .updatediv {
+            margin-top: 20px;
+            padding-left: 20px;
+            float: left;
+            width: 45%;
+        }
+
+        .updatediv h2 {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .updatediv button {
+            margin-left: 10px;
+        }
+
+        table textarea {
+            height: 300px;
+            width: 500px;
+        }
+
+    </style>
+    
+</head>    
+<body>
+    <h2>JC.FChart - pie chart 示例</h2>
+
+    <div class="js_jchartTest"></div>
+
+    <dl class="defDl">
+        <dd>
+            <div class="js_compFChart"
+                chartScriptData="/script"
+                chartHeight="600"
+                >
+                <script type="text/template">
+                    {
+                        chart: {
+                            type: 'pie' 
+                        }, 
+                        title: {
+                            text:'浏览器使用份额'
+                        },
+                        subtitle: {
+                            text: 'for PC'
+                        }, 
+                        series:[{
+                            name: 'Browser share',
+                            data: [
+                                ['Firefox',   45.0],
+                                ['IE',       26.8],
+                                {
+                                    name: 'Chrome',
+                                    y: 12.8,
+                                    selected: true
+                                },
+                                ['Safari',    8.5],
+                                ['Opera',     6.2],
+                                ['Others',   50]
+                            ]
+                        }]
+                        , legend: {
+                            enabled: false
+                        }
+                    }
+                </script>
+            </div>
+        </dd>
+    </dl>
+    <table>
+        <tr>
+            <td>
+                <div class="updatediv">
+                    <h2>
+                        pie data update
+                        <button type="button" class="js_updateChart">update</button>
+                    </h2>
+                    <textarea>
+    {
+        "chart": {
+            "type": "pie"
+        }, 
+        "title": {
+            "text": "浏览器使用份额"
+        }, 
+        "subtitle": {
+            "text": "for PC"
+        }, 
+        "series": [
+            {
+                "name": "Browser share", 
+                "data": [
+                    [
+                        "Firefox", 
+                        45
+                    ], 
+                    [
+                        "IE", 
+                        26.8
+                    ], 
+                    {
+                        "name": "Chrome", 
+                        "y": 12.8, 
+                        "selected": true
+                    }, 
+                    [
+                        "Safari", 
+                        8.5
+                    ], 
+                    [
+                        "Opera", 
+                        6.2
+                    ], 
+                    [
+                        "Others", 
+                        0.7
+                    ]
+                ]
+            }
+        ], 
+        "offsetAngle": 180
+    }
+                    </textarea>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script src="../../../../../lib.js"></script>
+    <script src="../../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'JC.FChart' ], function(){
+
+            $( document ).delegate( 'button.js_updateChart', 'click', function( _evt ){
+
+                var _data = $( _evt.target ).closest( 'div' ).find( 'textarea' ).val().trim();
+
+                $( '.js_compFChart object' )[ 0 ].update( $.parseJSON( _data ) );
+
+            } );
+        } );
+    </script>
+</body>
+</html>
+
+

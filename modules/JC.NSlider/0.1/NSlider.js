@@ -8,7 +8,7 @@
      * 
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NSlider.html' target='_blank'>API docs</a>
-     *      | <a href='../../modules/JC.NSlider/0.1/_demo/hslider_loop_automove.html' target='_blank'>demo link</a></p>
+     *      | <a href='../../modules/JC.NSlider/0.1/_demo/' target='_blank'>demo link</a></p>
      * 
      * <h2> 可用的 html attribute </h2>
      * 
