@@ -460,7 +460,10 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
                 }
 
                 var _flashVar = { 'chart': encodeURIComponent( _dataStr ) }
-                    , _flashParams = { 'wmode': 'transparent' }
+                    , _flashParams = { 
+                        'wmode': 'transparent'
+                        , 'allowScriptAccess' : 'always' 
+                    }
                     , _flashAttrs = { 'id': _p._model.gid(), 'name': _p._model.gid() }
                     ;
 
