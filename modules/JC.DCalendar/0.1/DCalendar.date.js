@@ -3,8 +3,7 @@
  * 双日历日期选择组件
  * <p>
  *      <b>require</b>: 
- *          <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.DCalendar.html' target='_blank'>API docs</a>
@@ -144,6 +143,7 @@
  * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
 */
     JC.DCalendar = DCalendar;
+    JC.f.addAutoInit( DCalendar );
 
     function DCalendar(_selector) {
         _selector && (_selector = $(_selector));

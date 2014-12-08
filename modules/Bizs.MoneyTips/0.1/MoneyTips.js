@@ -6,8 +6,7 @@
  * <br/>应用场景
  * <br/>用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额
  * <p><b>require</b>: 
- *      <a href='window.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html' target='_blank'>API docs</a>
@@ -50,6 +49,7 @@
         </div>
  */
     Bizs.MoneyTips = MoneyTips;
+    JC.f.addAutoInit( MoneyTips );
 
     function MoneyTips( _selector ){
         _selector && ( _selector = $( _selector ) );

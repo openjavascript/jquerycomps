@@ -362,7 +362,7 @@
 
                 this.trigger( 'ItemAdded', [ _newItem, _json, _boxSelector ] );
 
-                JC.f.jcAutoInitComps( _newItem );
+                JC.f.autoInit( _newItem );
             }
 
         , checkItemLimit:

@@ -4,8 +4,7 @@
     /**
      * 弹出层基础类 JC.Panel
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
@@ -754,7 +753,7 @@
                     //JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
-                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _p.selector );
+                        window.JC.f.autoInit && JC.f.autoInit( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -885,7 +884,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
-                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( this._model.panel );
+                        window.JC.f.autoInit && JC.f.autoInit( this._model.panel );
                     }
                 }
 

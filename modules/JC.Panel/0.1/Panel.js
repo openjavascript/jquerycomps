@@ -751,7 +751,7 @@
                     JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
-                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _p.selector );
+                        window.JC.f.autoInit && JC.f.autoInit( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -871,7 +871,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
-                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( this._model.panel );
+                        window.JC.f.autoInit && JC.f.autoInit( this._model.panel );
                     }
                 }
 
