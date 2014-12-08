@@ -6,8 +6,7 @@
      * <br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便
      * <br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.AutoComplete.html'>JC.AutoComplete</a>
      *      , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>
      * </p>
@@ -39,6 +38,7 @@
      * @example
      */
     Bizs.AutoSelectComplete = AutoSelectComplete;
+    JC.f.addAutoInit( AutoSelectComplete );
 
     function AutoSelectComplete( _selector ){
         _selector && ( _selector = $( _selector ) );

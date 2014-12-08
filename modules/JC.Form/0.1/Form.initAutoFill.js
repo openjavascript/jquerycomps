@@ -83,7 +83,7 @@
             }
         });
 
-        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _selector );
+        window.JC.f.autoInit && JC.f.autoInit( _selector );
     }
 
     function fillForm( _selector, _url ){

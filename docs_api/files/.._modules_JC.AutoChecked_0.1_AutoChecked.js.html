@@ -262,8 +262,7 @@
     /**
      * 全选/反选
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.AutoChecked.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -344,6 +343,7 @@
      */
     JC.Form &amp;&amp; ( JC.Form.initCheckAll = AutoChecked );
     JC.AutoChecked = AutoChecked;
+    JC.f.addAutoInit( AutoChecked );
 
     function AutoChecked( _selector ){
         _selector = $( _selector );
@@ -354,7 +354,7 @@
         if( AutoChecked.getInstance( _selector ) ) return AutoChecked.getInstance( _selector );
         AutoChecked.getInstance( _selector, this );
 
-        JC.log( &#x27;AutoChecked init&#x27;, new Date().getTime() );
+        //JC.log( &#x27;AutoChecked init&#x27;, new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -415,19 +415,19 @@
                 });
 
                 _p.on(&#x27;all&#x27;, function(){
-                    JC.log( &#x27;AutoChecked all&#x27;, new Date().getTime() );
+                    //JC.log( &#x27;AutoChecked all&#x27;, new Date().getTime() );
                     _p._view.allChange();
                 });
 
                 _p.on(&#x27;inverse&#x27;, function(){
-                    JC.log( &#x27;AutoChecked inverse&#x27;, new Date().getTime() );
+                    //JC.log( &#x27;AutoChecked inverse&#x27;, new Date().getTime() );
                     _p._view.inverseChange();
                 });
 
                 if( !( _p._model.checktype() == &#x27;inverse&#x27; &amp;&amp; _p._model.hasCheckAll() ) ){
                     $( _p._model.delegateElement() ).delegate( _p._model.delegateSelector(), &#x27;click&#x27;, function( _evt ){
                         if( AutoChecked.isAutoChecked( $(this) ) ) return;
-                        JC.log( &#x27;AutoChecked change&#x27;, new Date().getTime() );
+                        //JC.log( &#x27;AutoChecked change&#x27;, new Date().getTime() );
                         _p._view.itemChange();
                     });
                 }
@@ -638,7 +638,7 @@
                     if( !$(this).prop(&#x27;checked&#x27;) ) return _checkAll = false;
                 });
 
-                JC.log( &#x27;_fixAll:&#x27;, _checkAll );
+                //JC.log( &#x27;_fixAll:&#x27;, _checkAll );
 
                 if( !_count ) _checkAll = false;
 

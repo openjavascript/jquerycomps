@@ -9,7 +9,7 @@ requirejs.config( {
     baseUrl: JC.PATH
     , urlArgs: 'v=20141017'
     , paths: {
-        'JC.common': 'modules/JC.common/0.2/common'
+        'JC.common': 'modules/JC.common/0.3/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
         //, 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'

@@ -1,5 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
     window.Tab = JC.Tab = Tab;
+    JC.f.addAutoInit( Tab );
     /**
      * Tab 选项卡
      * <br />响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = "<b>.js_autoTab</b>" 的 HTML 标签

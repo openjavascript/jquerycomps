@@ -195,6 +195,7 @@
                 }
      */
     JC.AjaxUpload = AjaxUpload;
+    JC.f.addAutoInit( AjaxUpload );
 
     function AjaxUpload( _selector ){
         if( AjaxUpload.getInstance( _selector ) ) return AjaxUpload.getInstance( _selector );

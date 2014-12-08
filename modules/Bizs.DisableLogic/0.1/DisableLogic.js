@@ -7,8 +7,7 @@
  * <br/>但选择其他 radio 时, 其他的内容无效
  * <br/>checkbox / select 也可使用( 带change事件的标签 )
  * <p><b>require</b>: 
- *      <a href='window.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>
@@ -102,6 +101,7 @@
         </div>
  */
     window.Bizs.DisableLogic = DisableLogic;
+    JC.f.addAutoInit( DisableLogic );
 
     function DisableLogic( _selector ){
         if( DisableLogic.getInstance( _selector ) ) return DisableLogic.getInstance( _selector );

@@ -2,8 +2,7 @@
     /**
      * 全选/反选
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoChecked.html' target='_blank'>API docs</a>
@@ -84,6 +83,7 @@
      */
     JC.Form && ( JC.Form.initCheckAll = AutoChecked );
     JC.AutoChecked = AutoChecked;
+    JC.f.addAutoInit( AutoChecked );
 
     function AutoChecked( _selector ){
         _selector = $( _selector );
@@ -94,7 +94,7 @@
         if( AutoChecked.getInstance( _selector ) ) return AutoChecked.getInstance( _selector );
         AutoChecked.getInstance( _selector, this );
 
-        JC.log( 'AutoChecked init', new Date().getTime() );
+        //JC.log( 'AutoChecked init', new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -155,19 +155,19 @@
                 });
 
                 _p.on('all', function(){
-                    JC.log( 'AutoChecked all', new Date().getTime() );
+                    //JC.log( 'AutoChecked all', new Date().getTime() );
                     _p._view.allChange();
                 });
 
                 _p.on('inverse', function(){
-                    JC.log( 'AutoChecked inverse', new Date().getTime() );
+                    //JC.log( 'AutoChecked inverse', new Date().getTime() );
                     _p._view.inverseChange();
                 });
 
                 if( !( _p._model.checktype() == 'inverse' && _p._model.hasCheckAll() ) ){
                     $( _p._model.delegateElement() ).delegate( _p._model.delegateSelector(), 'click', function( _evt ){
                         if( AutoChecked.isAutoChecked( $(this) ) ) return;
-                        JC.log( 'AutoChecked change', new Date().getTime() );
+                        //JC.log( 'AutoChecked change', new Date().getTime() );
                         _p._view.itemChange();
                     });
                 }
@@ -378,7 +378,7 @@
                     if( !$(this).prop('checked') ) return _checkAll = false;
                 });
 
-                JC.log( '_fixAll:', _checkAll );
+                //JC.log( '_fixAll:', _checkAll );
 
                 if( !_count ) _checkAll = false;
 
