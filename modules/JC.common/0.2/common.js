@@ -77,6 +77,8 @@
         , "dayOfWeek": dayOfWeek
         , "dayOfSeason": dayOfSeason
         , "jcAutoInitComps": jcAutoInitComps
+        , "autoInit": jcAutoInitComps
+        , "addAutoInit": function(){}
 
         , "maxDayOfMonth": maxDayOfMonth
         , "mousewheelEvent": mousewheelEvent
