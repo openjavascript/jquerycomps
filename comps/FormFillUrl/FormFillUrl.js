@@ -283,7 +283,7 @@
                     }
                 });
 
-                window.JC.f.autoInit && JC.f.autoInit( _selector );
+                JC.f.autoInit && JC.f.autoInit( _selector );
             }
 
         , _updateSelect:

@@ -328,10 +328,14 @@
          */
         , noticeSize:
             function( _type ){
+                try{
                 _type = FU.type( _type );
                 if( ! FU.parent() ) return FU;
-                var _ext = { &#x27;type&#x27;: _type };
-                FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.info( _ext ) ] );
+                    var _ext = { &#x27;type&#x27;: _type };
+                    FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.info( _ext ) ] );
+                }catch(ex){
+                    JC.error( &#x27;JC.FrameUtil noticeSize&#x27;, ex.message );
+                }
                 return FU;
             }
         /**
@@ -377,11 +381,15 @@
          */
         , noticeData:
             function( _data, _type ){
-                if( !(_data) ) return FU;
-                if( !FU.parent() ) return FU;
-                _type = FU.type( _type );
+                try{
+                    if( !(_data) ) return FU;
+                    if( !FU.parent() ) return FU;
+                    _type = FU.type( _type );
 
-                FU.parent().jEventHost.trigger( &#x27;data&#x27;, FU.info( { &#x27;data&#x27;: _data, &#x27;type&#x27;: _type } ) );
+                    FU.parent().jEventHost.trigger( &#x27;data&#x27;, FU.info( { &#x27;data&#x27;: _data, &#x27;type&#x27;: _type } ) );
+                }catch( ex ){
+                    JC.error( &#x27;JC.FrameUtil noticeData&#x27;, ex.message );
+                }
                 return FU;
             }
         /**
@@ -407,10 +415,14 @@
         , noticeReady:
             function( _type ){
                 if( !FU.parent() ) return FU;
-                _type = FU.type( _type );
+                try{
+                    _type = FU.type( _type );
 
-                FU.parent() 
-                    &amp;&amp; FU.parent().jEventHost.trigger( &#x27;ready&#x27;, FU.info( { &#x27;type&#x27;: _type } ) );
+                    FU.parent() 
+                        &amp;&amp; FU.parent().jEventHost.trigger( &#x27;ready&#x27;, FU.info( { &#x27;type&#x27;: _type } ) );
+                }catch( ex ){
+                    JC.error ( &#x27;JC.FrameUtil noticeReady&#x27;, ex.message );
+                }
                 return FU;
             }
         /**
@@ -434,8 +446,12 @@
          */
         , noticeClose:
             function( _type ){
-                _type = FU.type( _type );
-                FU.parent().jEventHost.trigger( &#x27;close&#x27;, FU.info( { &#x27;type&#x27;: _type } ) );
+                try{
+                    _type = FU.type( _type );
+                    FU.parent().jEventHost.trigger( &#x27;close&#x27;, FU.info( { &#x27;type&#x27;: _type } ) );
+                }catch(ex){
+                    JC.error( &#x27;JC.FrameUtil noticeClose&#x27;, ex.message );
+                }
                 return FU;
             }
         /**
@@ -503,11 +519,16 @@
                 var _r = null;
 
                 if( _frame &amp;&amp; _frame.length ){
-                    var _cwin = _frame.prop( &#x27;contentWindow&#x27; )
-                        , _cdoc = _frame.prop( &#x27;contentDocument&#x27; )
-                        , _type = JC.f.getUrlParam( _frame.attr(&#x27;src&#x27;) || &#x27;&#x27;, &#x27;jsAction&#x27; ) || _cwin.name || &#x27;&#x27;
-                        , _vs = JC.f.docSize( _cdoc )
-                        ;
+                    try{
+                        var _cwin = _frame.prop( &#x27;contentWindow&#x27; )
+                            , _cdoc = _frame.prop( &#x27;contentDocument&#x27; )
+                            , _type = JC.f.getUrlParam( _frame.attr(&#x27;src&#x27;) || &#x27;&#x27;, &#x27;jsAction&#x27; ) || _cwin.name || &#x27;&#x27;
+                            , _vs = JC.f.docSize( _cdoc )
+                            ;
+                    }catch(ex){
+                        JC.error( &#x27;JC.FrameUtil frameInfo&#x27;, ex.message );
+                        return _r;
+                    }
 
                     _r = { 
                         &#x27;$&#x27;: _cwin.$
@@ -587,6 +608,7 @@
                 if( !_frame.is( &#x27;:visible&#x27; ) ) return FU;
                 var _finfo, _h;
                 _finfo = FU.frameInfo( _frame );
+                if( !_finfo ) return;
                 if( !_finfo.height ) return FU;
                 _frame.css( FU.cssFromSizePattern( FU.childSizePattern, _finfo ) );
                 _frame.css( &#x27;height&#x27;, _finfo.height + &#x27;px&#x27; );

@@ -239,7 +239,7 @@ return _json;
          
                 _tpl.push('</ul>');
                 $(_tpl.join(' ')).prependTo(_box);
-                JC.f.autoInit(_box);
+                JC.f.autoInit && JC.f.autoInit(_box);
 
             } );
 

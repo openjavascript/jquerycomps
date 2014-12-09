@@ -308,7 +308,7 @@ window.parent
             </dl>     
     */
     Bizs.FormLogic = FormLogic;
-    JC.f.addAutoInit( FormLogic );
+    JC.f.addAutoInit && JC.f.addAutoInit( FormLogic );
 
     function FormLogic( _selector ){
         _selector && ( _selector = $( _selector ) );

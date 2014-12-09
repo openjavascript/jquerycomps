@@ -3,8 +3,7 @@
     /**
      * MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)
      * <p><b>require</b>: 
-     *      <a href='.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>

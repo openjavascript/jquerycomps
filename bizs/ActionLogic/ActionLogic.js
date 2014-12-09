@@ -7,8 +7,7 @@
  * <br/>点击后弹框( Dom 模板 )
  * <br/>点击后执行 AJAX 操作
  * <p><b>require</b>: 
- *      <a href='.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *      , <a href='JC.Panel.html'>JC.Panel</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

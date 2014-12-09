@@ -101,7 +101,7 @@
         </div>
  */
     window.Bizs.DisableLogic = DisableLogic;
-    JC.f.addAutoInit( DisableLogic );
+    JC.f.addAutoInit && JC.f.addAutoInit( DisableLogic );
 
     function DisableLogic( _selector ){
         if( DisableLogic.getInstance( _selector ) ) return DisableLogic.getInstance( _selector );

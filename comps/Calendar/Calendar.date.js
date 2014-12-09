@@ -172,7 +172,7 @@ function parseYearDate( _dateStr ){
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
      */
     window.Calendar = JC.Calendar = Calendar;
-    JC.f.addAutoInit( Calendar );
+    JC.f.addAutoInit && JC.f.addAutoInit( Calendar );
     function Calendar( _selector ){
         if( Calendar.getInstance( _selector ) ) return Calendar.getInstance( _selector );
         Calendar.getInstance( _selector, this );

@@ -3,8 +3,8 @@
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
-     *          <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
-     *          , <a href='JC.Panel.html'>JC.Panel</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.Panel.html'>JC.Panel</a>
      * </p>
      * <p>
      *      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -152,7 +152,7 @@ url: ?callback=callback
                 }
      */
     JC.AjaxUpload = AjaxUpload;
-    JC.f.addAutoInit( AjaxUpload );
+    JC.f.addAutoInit && JC.f.addAutoInit( AjaxUpload );
 
     function AjaxUpload( _selector ){
         if( AjaxUpload.getInstance( _selector ) ) return AjaxUpload.getInstance( _selector );

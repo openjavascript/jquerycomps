@@ -78,10 +78,14 @@
          */
         , noticeSize:
             function( _type ){
+                try{
                 _type = FU.type( _type );
                 if( ! FU.parent() ) return FU;
-                var _ext = { 'type': _type };
-                FU.parent().jEventHost.trigger( 'size', [ FU.info( _ext ) ] );
+                    var _ext = { 'type': _type };
+                    FU.parent().jEventHost.trigger( 'size', [ FU.info( _ext ) ] );
+                }catch(ex){
+                    JC.error( 'JC.FrameUtil noticeSize', ex.message );
+                }
                 return FU;
             }
         /**
@@ -127,11 +131,15 @@
          */
         , noticeData:
             function( _data, _type ){
-                if( !(_data) ) return FU;
-                if( !FU.parent() ) return FU;
-                _type = FU.type( _type );
+                try{
+                    if( !(_data) ) return FU;
+                    if( !FU.parent() ) return FU;
+                    _type = FU.type( _type );
 
-                FU.parent().jEventHost.trigger( 'data', FU.info( { 'data': _data, 'type': _type } ) );
+                    FU.parent().jEventHost.trigger( 'data', FU.info( { 'data': _data, 'type': _type } ) );
+                }catch( ex ){
+                    JC.error( 'JC.FrameUtil noticeData', ex.message );
+                }
                 return FU;
             }
         /**
@@ -157,10 +165,14 @@
         , noticeReady:
             function( _type ){
                 if( !FU.parent() ) return FU;
-                _type = FU.type( _type );
+                try{
+                    _type = FU.type( _type );
 
-                FU.parent() 
-                    && FU.parent().jEventHost.trigger( 'ready', FU.info( { 'type': _type } ) );
+                    FU.parent() 
+                        && FU.parent().jEventHost.trigger( 'ready', FU.info( { 'type': _type } ) );
+                }catch( ex ){
+                    JC.error ( 'JC.FrameUtil noticeReady', ex.message );
+                }
                 return FU;
             }
         /**
@@ -184,8 +196,12 @@
          */
         , noticeClose:
             function( _type ){
-                _type = FU.type( _type );
-                FU.parent().jEventHost.trigger( 'close', FU.info( { 'type': _type } ) );
+                try{
+                    _type = FU.type( _type );
+                    FU.parent().jEventHost.trigger( 'close', FU.info( { 'type': _type } ) );
+                }catch(ex){
+                    JC.error( 'JC.FrameUtil noticeClose', ex.message );
+                }
                 return FU;
             }
         /**
@@ -253,11 +269,16 @@
                 var _r = null;
 
                 if( _frame && _frame.length ){
-                    var _cwin = _frame.prop( 'contentWindow' )
-                        , _cdoc = _frame.prop( 'contentDocument' )
-                        , _type = JC.f.getUrlParam( _frame.attr('src') || '', 'jsAction' ) || _cwin.name || ''
-                        , _vs = JC.f.docSize( _cdoc )
-                        ;
+                    try{
+                        var _cwin = _frame.prop( 'contentWindow' )
+                            , _cdoc = _frame.prop( 'contentDocument' )
+                            , _type = JC.f.getUrlParam( _frame.attr('src') || '', 'jsAction' ) || _cwin.name || ''
+                            , _vs = JC.f.docSize( _cdoc )
+                            ;
+                    }catch(ex){
+                        JC.error( 'JC.FrameUtil frameInfo', ex.message );
+                        return _r;
+                    }
 
                     _r = { 
                         '$': _cwin.$
@@ -337,6 +358,7 @@
                 if( !_frame.is( ':visible' ) ) return FU;
                 var _finfo, _h;
                 _finfo = FU.frameInfo( _frame );
+                if( !_finfo ) return;
                 if( !_finfo.height ) return FU;
                 _frame.css( FU.cssFromSizePattern( FU.childSizePattern, _finfo ) );
                 _frame.css( 'height', _finfo.height + 'px' );
