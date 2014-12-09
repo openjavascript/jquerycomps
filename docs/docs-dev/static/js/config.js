@@ -39,7 +39,7 @@
 
 	    	, 'codeMirror.htmlmixed' : PROJECT_ROOT + '/static/js/codeMirror/mode/htmlmixed/htmlmixed'
 
-	    	, 'JC.common' : 'modules/JC.common/0.2/common'
+	    	, 'JC.common' : 'modules/JC.common/0.3/common'
 	        , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
 	        , 'DEV.Bizs.FormLogic': 'modules/Bizs.FormLogic/dev/FormLogic'
