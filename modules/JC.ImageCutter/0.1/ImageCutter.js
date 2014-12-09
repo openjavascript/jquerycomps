@@ -148,7 +148,7 @@
 </table></xmp>
  */
     var _jdoc = $( document ), _jwin = $( window ), _jbody;
-    JC.f.addAutoInit( ImageCutter );
+    JC.f.addAutoInit && JC.f.addAutoInit( ImageCutter );
 
     JC.ImageCutter = ImageCutter;
 

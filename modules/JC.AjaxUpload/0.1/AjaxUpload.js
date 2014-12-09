@@ -152,7 +152,7 @@ url: ?callback=callback
                 }
      */
     JC.AjaxUpload = AjaxUpload;
-    JC.f.addAutoInit( AjaxUpload );
+    JC.f.addAutoInit && JC.f.addAutoInit( AjaxUpload );
 
     function AjaxUpload( _selector ){
         if( AjaxUpload.getInstance( _selector ) ) return AjaxUpload.getInstance( _selector );

@@ -110,7 +110,7 @@
         </div>
  */
     window.Bizs.ChangeLogic = ChangeLogic;
-    JC.f.addAutoInit( ChangeLogic );
+    JC.f.addAutoInit && JC.f.addAutoInit( ChangeLogic );
 
     function ChangeLogic( _selector ){
         if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );

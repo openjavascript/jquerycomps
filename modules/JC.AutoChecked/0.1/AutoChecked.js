@@ -83,7 +83,7 @@
      */
     JC.Form && ( JC.Form.initCheckAll = AutoChecked );
     JC.AutoChecked = AutoChecked;
-    JC.f.addAutoInit( AutoChecked );
+    JC.f.addAutoInit && JC.f.addAutoInit( AutoChecked );
 
     function AutoChecked( _selector ){
         _selector = $( _selector );

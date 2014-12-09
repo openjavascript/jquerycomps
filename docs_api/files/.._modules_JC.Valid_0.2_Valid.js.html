@@ -368,6 +368,8 @@
      *              &lt;dd&gt;如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
+     *      &lt;dd&gt;&lt;b&gt;f:&lt;/b&gt; 检查是否为正确的数字, default: f-9.2&lt;/dd&gt;
+     *      &lt;dd&gt;&lt;b&gt;f-i.f:&lt;/b&gt; 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], f-7.2 = 0.00 ~ 9999999.99&lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;d:&lt;/b&gt; 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD&lt;/dd&gt;
      *      &lt;dd&gt;
      *          &lt;b&gt;daterange:&lt;/b&gt; 检查两个control的日期范围
@@ -1175,8 +1177,6 @@ function (){
             }
         /**
          * 获取 _item 的检查类型
-         * @method  parseDatatype
-         * @private
          * @static
          * @param   {selector|string}  _item
          */
@@ -1192,8 +1192,6 @@ function (){
             }
        /**
          * 获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象
-         * @method  parseSubdatatype
-         * @private
          * @static
          * @param   {selector|string}  _item
          */
@@ -1367,8 +1365,6 @@ function (){
             }
         /**
          * 检查内容的长度
-         * @method  lengthValid
-         * @private
          * @static
          * @param   {selector}  _item
          * @attr    {string}    datatype        数字类型 text|bytetext|richtext
@@ -1421,8 +1417,6 @@ function (){
         /**
          * 检查是否为正确的数字&lt;br /&gt;
          * &lt;br&gt;默认范围 0 - Math.pow(10, 10)
-         * @method  n
-         * @private
          * @static
          * @param   {selector}  _item
          * @attr    {require}               datatype    - n | n-整数位数.小数位数
@@ -1453,7 +1447,7 @@ function (){
 
                 _p.isMinvalue( _item ) &amp;&amp; ( _min = _p.minvalue( _item, /\./.test( _item.attr(&#x27;minvalue&#x27;) ) ) || _min );
 
-                if( /^[0]+$/.test( _valStr ) &amp;&amp; _valStr.length &gt; 1 ){
+                if( /^[0]{2,}$/.test( _valStr ) ){
                     _r = false;
                 }
 
@@ -1493,13 +1487,85 @@ function (){
                 return _r;
             }
         /**
+         * 检查是否为正确的整数或者浮点数&lt;br /&gt;
+         * &lt;br&gt;默认范围 0 - Math.pow(10, 10)
+         * @static
+         * @param   {selector}  _item
+         * @attr    {require}               datatype    - f | f-整数位数.小数位数
+         * @attr    {integer|optional}      minvalue    - 数值的下限
+         * @attr    {integer|optional}      maxvalue    - 数值的上限
+         *
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_n&quot; errmsg=&quot;请填写正确的正整数&quot; datatype=&quot;f&quot; &gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_n1&quot; errmsg=&quot;请填写正确的数字, 范围1-100&quot; datatype=&quot;f&quot; minvalue=&quot;1&quot;, maxvalue=&quot;100&quot; &gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_n2&quot; errmsg=&quot;请填写正确的数字&quot; datatype=&quot;f-7.2&quot; &gt;
+                &lt;/div&gt;
+         *
+         */
+        , f: 
+            function( _item, _noError ){
+                var _p = this, _r = true
+                    , _valStr = _item.val().trim()
+                    , _val = +_valStr
+                    ,_min = 0
+                    , _pow = 10
+                    , _max = Math.pow( 10, _pow )
+                    , _n, _f, _tmp;
+
+                _p.isMinvalue( _item ) &amp;&amp; ( _min = _p.minvalue( _item, /\./.test( _item.attr(&#x27;minvalue&#x27;) ) ) || _min );
+
+                if( /^[0]{2,}$/.test( _valStr ) ){
+                    _r = false;
+                }
+
+                if( _r &amp;&amp; !isNaN( _val ) &amp;&amp; _val &gt;= _min ){
+                    _item.attr(&#x27;datatype&#x27;).replace( /^f[^\-]*\-(.*)$/, function( $0, $1 ){
+                        _tmp = $1.split(&#x27;.&#x27;);
+                        _n = parseInt( _tmp[0] );
+                        _f = parseInt( _tmp[1] );
+                        _n &gt; _pow &amp;&amp; ( _max = Math.pow( 10, _n ) );
+                    });
+
+                    typeof _n == &#x27;undefined&#x27; &amp;&amp; ( _n = 10 );
+                    typeof _f == &#x27;undefined&#x27; &amp;&amp; ( _f = 2 );
+
+                    _p.isMaxvalue( _item ) &amp;&amp; ( _max = _p.maxvalue( _item, /\./.test( _item.attr(&#x27;maxvalue&#x27;) ) ) );
+
+                    if( _val &gt;= _min &amp;&amp; _val &lt;= _max ){
+                        typeof _n != &#x27;undefined&#x27; 
+                            &amp;&amp; typeof _f != &#x27;undefined&#x27; 
+                            &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)(?:[\\d]{0,&#x27;+_n+&#x27;}|)(?:\\.[\\d]{1,&#x27;+_f+&#x27;}|)$&#x27; ).test( _valStr ) );
+
+                        typeof _n != &#x27;undefined&#x27; 
+                            &amp;&amp; typeof _f == &#x27;undefined&#x27; 
+                            &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)[\\d]{1,&#x27;+_n+&#x27;}$&#x27; ).test( _valStr ) );
+
+                        typeof _n == &#x27;undefined&#x27; 
+                            &amp;&amp; typeof _f != &#x27;undefined&#x27; 
+                            &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)\\.[\\d]{1,&#x27;+_f+&#x27;}$&#x27; ).test( _valStr ) );
+
+                        typeof _f == &#x27;undefined&#x27; &amp;&amp; /\./.test( _valStr ) &amp;&amp; ( _r = false );
+                    } else _r = false;
+
+                    //JC.log( &#x27;n&#x27;, _val, typeof _n, typeof _f, typeof _min, typeof _max, _min, _max );
+                }else _r = false;
+
+                !_r &amp;&amp; !_noError &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+
+                return _r;
+            }
+
+        /**
          * 检查两个输入框的数值
          * &lt;br /&gt; 数字格式为 0-pow(10,10)
          * &lt;br /&gt; 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2
          * &lt;br /&gt; &lt;b&gt;注意:&lt;/b&gt; 如果不显示指定 fromNEl, toNEl, 
          *              将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略
-         * @method  nrange
-         * @private
          * @static
          * @param   {selector}  _item
          * @attr    {require}               datatype    - nrange
@@ -1575,9 +1641,6 @@ function (){
         /**
          * 检查是否为合法的日期,
          * &lt;br /&gt;日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
-         * @method  d
-         * @private
-         * @static
          * @param   {selector}  _item
          * @attr    {require}               datatype    - d
          * @attr    {date string|optional}  minvalue    - 日期的下限
@@ -1618,9 +1681,6 @@ function (){
          * &lt;br /&gt;日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
          * &lt;br /&gt; &lt;b&gt;注意:&lt;/b&gt; 如果不显示指定 fromDateEl, toDateEl, 
          *              将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略
-         * @method  daterange
-         * @private
-         * @static
          * @param   {selector}  _item
          * @attr    {require}               datatype    - daterange
          * @attr    {selector|optional}     fromDateEl  - 起始日期选择器
@@ -1703,9 +1763,6 @@ function (){
         , &#x27;drange&#x27;: function(){ return this.daterange.apply( this, JC.f.sliceArgs( arguments ) ); }
         /**
          * 检查时间格式, 格式为 hh:mm:ss
-         * @method  time
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -1720,9 +1777,6 @@ function (){
             }
         /**
          * 检查时间格式, 格式为 hh:mm
-         * @method  minute
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -1738,9 +1792,6 @@ function (){
         /**
          * 检查银行卡号码
          * &lt;br /&gt;格式为: d{15}, d{16}, d{17}, d{19}
-         * @method  bankcard
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -1765,9 +1816,6 @@ function (){
          * 检查中文姓名
          * &lt;br&gt;格式: 汉字和大小写字母
          * &lt;br&gt;规则: 长度 2-32个字节, 非 ASCII 算2个字节
-         * @method  cnname
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -1786,9 +1834,6 @@ function (){
          * 检查英文
          * &lt;br&gt;格式: 大小写字母 + 空格
          * &lt;br&gt;规则: 长度 2-32个字节, 非 ASCII 算2个字节
-         * @method  enname
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -1807,9 +1852,6 @@ function (){
          * 检查 英文名称/中文名称
          * &lt;br&gt;allname = cnname + enname
          * &lt;br&gt;规则: 长度 2-32个字节, 非 ASCII 算2个字节
-         * @method  allname
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -1830,9 +1872,6 @@ function (){
          * 检查注册用户名
          * &lt;br&gt;格式: a-zA-Z0-9_-
          * &lt;br&gt;规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
-         * @method  username
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -1849,9 +1888,6 @@ function (){
         /**
          * 检查身份证号码&lt;br /&gt;
          * 目前只使用最简单的位数判断~ 有待完善
-         * @method  idnumber
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
             &lt;div class=&quot;f-l&quot;&gt;
@@ -1920,9 +1956,6 @@ function (){
         /**
          * 检查手机号码
          * &lt;br /&gt;这个方法是 mobilecode 的别名
-         * @method  mobile
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {bool}      _noError
          */
@@ -1933,9 +1966,6 @@ function (){
         /**
          * 检查手机号码加强方法
          * &lt;br&gt;格式: [+国家代码] [零]11位数字
-         * @method  mobilezonecode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {bool}      _noError
          * @example
@@ -1954,9 +1984,6 @@ function (){
         /**
          * 检查电话号码
          * &lt;br&gt;格式: 7/8位数字
-         * @method  phonecode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div&gt;
@@ -1973,9 +2000,6 @@ function (){
         /**
          * 检查电话号码
          * &lt;br&gt;格式: [区号]7/8位电话号码
-         * @method  phone
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {bool}      _noError
          * @example
@@ -1994,9 +2018,6 @@ function (){
         /**
          * 检查电话号码
          * &lt;br&gt;格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]
-         * @method  phoneall
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {bool}      _noError
          * @example
@@ -2015,9 +2036,6 @@ function (){
             }
         /**
          * 检查电话区号
-         * @method  phonezone
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div&gt;
@@ -2038,9 +2056,6 @@ function (){
             }
         /**
          * 检查电话分机号码
-         * @method  phoneext
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div&gt;
@@ -2057,9 +2072,6 @@ function (){
         /**
          * 检查手机号码/电话号码
          * &lt;br /&gt;这个方法是原有方法的混合验证 mobilecode + phone
-         * @method  mobilephone
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l label&quot;&gt;
@@ -2081,9 +2093,6 @@ function (){
         /**
          * 检查手机号码/电话号码, 泛匹配
          * &lt;br /&gt;这个方法是原有方法的混合验证 mobilezonecode + phoneall
-         * @method  mobilephoneall
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l label&quot;&gt;
@@ -2103,9 +2112,6 @@ function (){
             }
         /**
          * 自定义正则校验
-         * @method  reg
-         * @private
-         * @static
          * @param   {selector}  _item
          * @attr    {string}    reg-pattern     正则规则 /规则/选项
          * @example
@@ -2130,9 +2136,6 @@ function (){
         /**
          * 检查验证码&lt;br /&gt;
          * 格式: 为 0-9a-zA-Z, 长度 默认为4
-         * @method  vcode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @attr    {string}    datatype    vcode|vcode-[\d]+
          * @example
@@ -2155,18 +2158,12 @@ function (){
             }
         /**
          * 检查文本长度
-         * @method  text
-         * @private
-         * @static
          * @see length
          * @attr    {string}    datatype    text
          */
         , text: function(_item){ return true; }
         /**
          * 检查文本的字节长度
-         * @method  bytetext
-         * @private
-         * @static
          * @see length
          * @attr    {string}    datatype    bytetext
          */
@@ -2174,18 +2171,12 @@ function (){
         /**
          * 检查富文本的字节
          * &lt;br /&gt;TODO: 完成富文本长度检查
-         * @method  richtext
-         * @private
-         * @static
          * @see length
          * @attr    {string}    datatype    richtext
          */
         , richtext: function(_item){ return true; }
         /**
          * 计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节
-         * @method  bytelen
-         * @private
-         * @static
          * @param   {string}    _s
          */
         , bytelen: 
@@ -2194,9 +2185,6 @@ function (){
             }
         /**
          * 检查URL
-         * @method  url
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -2215,9 +2203,6 @@ function (){
             }
         /**
          * 检查域名
-         * @method  domain
-         * @private
-         * @static
          * @param   {selector}  _item
                 &lt;div class=&quot;f-l&quot;&gt;
                     &lt;input type=&quot;TEXT&quot; name=&quot;company_domain&quot; datatype=&quot;domain&quot; reqmsg=&quot;域名&quot; errmsg=&quot;请填写正确的域名&quot;&gt;
@@ -2233,9 +2218,6 @@ function (){
             }
         /**
          * 检查域名
-         * @method  stricdomain
-         * @private
-         * @static
          * @param   {selector}  _item
                 &lt;div class=&quot;f-l&quot;&gt;
                     &lt;input type=&quot;TEXT&quot; name=&quot;company_domain&quot; datatype=&quot;stricdomain&quot; reqmsg=&quot;域名&quot; errmsg=&quot;请填写正确的域名&quot;&gt;
@@ -2250,9 +2232,6 @@ function (){
             }
         /**
          * 检查电子邮件
-         * @method  email
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -2267,9 +2246,6 @@ function (){
             }
         /**
          * 检查地区代码
-         * @method  countrycode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -2284,9 +2260,6 @@ function (){
             }
         /**
          * 检查邮政编码
-         * @method  zipcode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -2301,9 +2274,6 @@ function (){
             }
         /**
          * 纳税人识别号, 15, 18, 20位字符
-         * @method  taxcode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -2323,9 +2293,6 @@ function (){
         /**
          * 此类型检查 2|N 个对象填写的值必须一致
          * 常用于注意时密码验证/重置密码
-         * @method  reconfirm
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;dd&gt;
@@ -2414,9 +2381,6 @@ function (){
         /**
          * 此类型检查 2|N个对象必须至少有一个是有输入内容的, 
          * &lt;br&gt; 常用于 手机/电话 二填一
-         * @method  alternative
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;dd&gt;
@@ -2563,10 +2527,7 @@ function (){
             }
         /**
          * 如果 _item 的值非空, 那么 reqtarget 的值也不能为空
-         * @method  reqtarget
          * @param   {selector}  _item
-         * @private
-         * @static
          */
         , &#x27;reqtarget&#x27;:
             function( _item ){
@@ -2604,10 +2565,7 @@ function (){
             }
         /**
          * N 个值必须保持唯一性, 不能有重复
-         * @method  unique
          * @param   {selector}  _item
-         * @private
-         * @static
          */
         , &#x27;unique&#x27;:
             function( _item ){
@@ -2784,9 +2742,6 @@ function (){
         /**
          * 获取 _selector 对象
          * &lt;br /&gt;这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID
-         * @method  getElement
-         * @private
-         * @static
          * @param   {selector}  _selector
          */
         , getElement: 
@@ -2807,9 +2762,6 @@ function (){
         /**
          * 获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, &lt;br /&gt;
          * 注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写
-         * @method  errorMsg
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
          * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
@@ -2842,9 +2794,6 @@ function (){
         /**
          * 检查内容是否为空,
          * &lt;br&gt;如果声明了该属性, 那么 value 须不为空
-         * @method  reqmsg
-         * @private
-         * @static
          * @param   {selector}  _item
          * @example
                 &lt;div class=&quot;f-l&quot;&gt;
@@ -2938,6 +2887,7 @@ function (){
                     , _items
                     , _tmp
                     , _ckLen = 1
+                    , _ckMaxLen = 0
                     , _count = 0
                     , _finder = _item
                     , _pntIsLabel = _item.parent().prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;label&#x27; 
@@ -2988,9 +2938,10 @@ function (){
                _items.length &amp;&amp; $( _item = _items[ _items.length - 1 ] ).data(&#x27;Last&#x27; + _type, true);
 
                if( _items.length ){
-                    _item.is( &#x27;[datatype]&#x27; )
-                        &amp;&amp; _item.attr(&#x27;datatype&#x27;)
-                        .replace( /[^\-]+?\-([\d]+)/, function( $0, $1 ){ _ckLen = parseInt( $1, 10 ) || _ckLen; } );
+                    if( _item.is( &#x27;[datatype]&#x27; ) &amp;&amp; _item.attr( &#x27;datatype&#x27; ) ){
+                        _item.attr(&#x27;datatype&#x27;).replace( /[^\-]+?\-([\d]+)/, function( $0, $1 ){ _ckLen = parseInt( $1, 10 ) || _ckLen; } );
+                        _item.attr(&#x27;datatype&#x27;).replace( /[^\-]+?\-[\d]+?(?:\.|\-)([\d]+)/, function( $0, $1 ){ _ckMaxLen = parseInt( $1, 10 ) || _ckMaxLen; } );
+                    }
 
                     if( _items.length &gt;= _ckLen ){
                         _items.each( function(){
@@ -2998,6 +2949,8 @@ function (){
                         });
 
                         if( _count &lt; _ckLen ){
+                            _r = false;
+                        }else if( _ckMaxLen &amp;&amp; _count &gt; _ckMaxLen ){
                             _r = false;
                         }
                     }
@@ -3138,9 +3091,6 @@ function (){
             }
         /**
          * 显示正确的视觉效果
-         * @method  valid
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {int}       _tm
          * @param   {bool}      _noStyle
@@ -3196,9 +3146,6 @@ function (){
             }
         /**
          * 显示错误的视觉效果
-         * @method  error
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
          * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写

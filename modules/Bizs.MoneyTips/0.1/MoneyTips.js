@@ -49,7 +49,7 @@
         </div>
  */
     Bizs.MoneyTips = MoneyTips;
-    JC.f.addAutoInit( MoneyTips );
+    JC.f.addAutoInit && JC.f.addAutoInit( MoneyTips );
 
     function MoneyTips( _selector ){
         _selector && ( _selector = $( _selector ) );
