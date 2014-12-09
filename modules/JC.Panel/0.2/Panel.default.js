@@ -753,7 +753,7 @@
                     //JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
-                        window.JC.f.autoInit && JC.f.autoInit( _p.selector );
+                        JC.f.autoInit && JC.f.autoInit( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -884,7 +884,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
-                        window.JC.f.autoInit && JC.f.autoInit( this._model.panel );
+                        JC.f.autoInit && JC.f.autoInit( this._model.panel );
                     }
                 }
 

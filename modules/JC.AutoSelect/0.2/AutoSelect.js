@@ -141,7 +141,7 @@
     JC.AutoSelect = AutoSelect;
     JC.Form && ( JC.Form.initAutoSelect = AutoSelect );
 
-    JC.f.addAutoInit( AutoSelect );
+    JC.f.addAutoInit && JC.f.addAutoInit( AutoSelect );
 
     function AutoSelect( _selector ){
         var _ins = [];
