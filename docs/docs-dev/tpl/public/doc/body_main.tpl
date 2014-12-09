@@ -28,17 +28,15 @@
                     {{if $comp.outlink|default:'' }}
                         <a href="{{$comp.outlink|default:''}}" target="_blank" 
                             data-name="{{$comp.name}}"
-                            data-version="{{$comp.version}}"
                             >
-                            {{$comp.name}} - v{{$comp.version}}
+                            {{$comp.name}}
                         </a>
                     {{else}}
                         {{if !$comp.hide|default:''}}
                         <a href="#" class="detail-requirelink"
                             data-name="{{$comp.name}}"
-                            data-version="{{$comp.version}}"
                             >
-                            {{$comp.name}} - v{{$comp.version}}
+                            {{$comp.name}}
                         </a>
                         {{/if}}
                     {{/if}}

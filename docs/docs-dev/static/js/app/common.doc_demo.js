@@ -31,7 +31,7 @@
 
             var _tarTextList = $( e.target ).text().split( '- v' )
                 , _name = $( this ).attr( 'data-name' )
-                , _version = $( this ).attr( 'data-version' )
+                , _version = $( this ).attr( 'data-version' ) || ''
                 ;
 
 
