@@ -6,8 +6,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.AutoChecked",
         "JC.AutoComplete",
         "JC.AutoSelect",
-        "JC.BaseMVC",
-        "JC.BaseMVC.Model",
         "JC.Calendar",
         "JC.Cover",
         "JC.DCalendar",

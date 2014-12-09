@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../publish_project_example/www/js/jc2/modules/JC.common/0.2/common.js - open jquery components library</title>
+    <title>../modules/JC.common/0.3/common.js - open jquery components library</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -47,8 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
             
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
@@ -60,10 +58,6 @@
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -254,7 +248,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../publish_project_example/www/js/jc2/modules/JC.common/0.2/common.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.common/0.3/common.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -270,6 +264,9 @@
     !console.dir &amp;&amp; (
         console.dir = function(){}
     );
+    !console.error &amp;&amp; (
+        console.error = function(){}
+    );
     /**
      * 声明主要命名空间, 方便迁移
      */
@@ -277,6 +274,12 @@
     JC.log = function(){ JC.debug &amp;&amp; console.log( sliceArgs( arguments ).join(&#x27; &#x27;) ); };
     JC.dir = function(){ 
         JC.debug &amp;&amp; $.each( sliceArgs( arguments ), function( _ix, _item ){ console.dir( _item )} );
+    };
+    JC.error = function(){ 
+        JC.debug &amp;&amp; $.each( sliceArgs( arguments ), function( _ix, _item ){ console.error( _item )} );
+    };
+    JC.clear = function(){ 
+        console.clear &amp;&amp; console.clear();
     };
 
     JC.PATH = JC.PATH || scriptPath();
@@ -294,9 +297,10 @@
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.common.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../modules/JC.common/0.2/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * | &lt;a href=&#x27;../../modules/JC.common/0.3/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @class JC.common
      * @static
+     * @version dev 0.3 2014-12-09
      * @version dev 0.2 2013-11-06 
      * @version dev 0.1 2013-07-04
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 360 75 Team
@@ -325,7 +329,19 @@
         , &quot;isSameYear&quot;: isSameYear
         , &quot;weekOfYear&quot;: weekOfYear
         , &quot;seasonOfYear&quot;: seasonOfYear
+        , &quot;dayOfWeek&quot;: dayOfWeek
+        , &quot;dayOfSeason&quot;: dayOfSeason
         , &quot;jcAutoInitComps&quot;: jcAutoInitComps
+
+        , &quot;autoInit&quot;: autoInit
+        , &quot;addAutoInit&quot;: addAutoInit
+        /**
+         * 保存需要自动识别的组件
+         * @property    _AUTO_INIT_DATA
+         * @type Object
+         * @protected
+         */
+        , &quot;_AUTO_INIT_DATA&quot;: {}
 
         , &quot;maxDayOfMonth&quot;: maxDayOfMonth
         , &quot;mousewheelEvent&quot;: mousewheelEvent
@@ -356,6 +372,7 @@
         , &quot;arrayId&quot;: arrayId
         , &quot;docSize&quot;: docSize
         , &quot;winSize&quot;: winSize
+        , &quot;gid&quot;: gid
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -453,6 +470,17 @@
         
         return _r;
     }
+    /**
+     * 生成全局唯一ID
+     * @method  gid
+     * @return string
+     * @static
+     */
+    function gid(){
+        return &#x27;jc_gid_&#x27; + JC.f.ts() + &#x27;_&#x27; + (JC.GID_COUNT++);
+    }
+    JC.GID_COUNT = 1;
+
     /**
      * 把函数的参数转为数组
      * @method  sliceArgs
@@ -777,7 +805,7 @@
      * @method  parseFinance
      * @static
      * @param   {number}    _i
-     * @param   {int}       _dot, default = 2
+     * @param   {int}       _dot  default = 2
      * @return  number
      */
     function parseFinance( _i, _dot ){
@@ -868,6 +896,7 @@
      * @method  pureDate
      * @param   {Date}  _d   可选参数, 如果为空 = new Date
      * @return  Date
+     * @static
      */
     function pureDate( _d ){
         var _r;
@@ -880,7 +909,7 @@
     * @method  cloneDate
     * @static
     * @param   {Date}  _date   需要克隆的日期
-    * @return  {Date}  需要克隆的日期对象
+    * @return  {Date}
     */
     function cloneDate( _date ){ var d = new Date(); d.setTime( _date.getTime() ); return d; }
     /**
@@ -1056,6 +1085,61 @@
         return _r;
     }
 
+    /**
+     * 取某一天所在星期的开始结束日期,以及第几个星期
+     * @method  dayOfWeek
+     * @static
+     * @param   {iso date}   _date
+     * @param   {int}        _dayOffset
+     * @return  Object
+     */
+    function dayOfWeek( _date, _dayOffset ) {
+        var r = {},
+            weeks = JC.f.weekOfYear(_date.getFullYear(), _dayOffset),
+            i = 0,
+            l = weeks.length,
+            t = _date.getTime(),
+            start = JC.f.pureDate( new Date() ),
+            end = JC.f.pureDate( new Date() );
+
+        for (i; i &lt;l; i++) {
+            if (t &gt;= weeks[i].start &amp;&amp; t &lt;= weeks[i].end) {
+                start.setTime(weeks[i].start);
+                end.setTime(weeks[i].end);
+                r.start = start;
+                r.end = end;
+                r.w = i + 1
+                return r;
+            }
+        }
+    }
+
+    /**
+     * 取某一天所在季度的开始结束日期,以及第几个Q
+     * @method  dayOfSeason
+     * @static
+     * @param   {iso date}   _date
+     * @return  Object
+     */
+
+    function dayOfSeason(_date) {
+        var year = _date.getFullYear(),
+            q = JC.f.seasonOfYear(year),
+            i,
+            r = {},
+            tmp,
+            d = _date.getTime();
+
+        for (i = 0; i &lt; 4; i++) {
+            if (d &gt;= q[i].start.getTime() &amp;&amp; d &lt;= q[i].end.getTime()) {
+                r.start = q[i].start;
+                r.end = q[i].end;
+                r.q = i + 1;
+                return r;
+            }
+        }
+
+    }
 
     /**
      * 取得一个月份中最大的一天
@@ -1130,7 +1214,7 @@
                     _done = true;
                     clearInterval( _interval );
                 }
-                _cb &amp;&amp; _cb( _tmp + _startVal, _done );
+                _cb &amp;&amp; _cb( _tmp + _startVal, _done, _timepass, _duration, _stepMs, _startVal, _maxVal );
             }, _stepMs );
 
         return _interval;
@@ -1159,7 +1243,7 @@
      * @method  mousewheelEvent
      * @param   {function}  _cb
      * @param   {bool}      _detach
-     * @param   {selector}  _selector, default = document
+     * @param   {selector}  _selector  default = document
      * @static
      */
     function mousewheelEvent( _cb, _detach, _selector ){
@@ -1303,25 +1387,44 @@
       return _r.trim();
     }
     /**
-     * 动态添加内容时, 初始化可识别的组件
-     * &lt;dl&gt;
-     *      &lt;dt&gt;目前会自动识别的组件&lt;/dt&gt;
-     *      &lt;dd&gt;
-     *          Bizs.CommonModify, JC.Panel, JC.Dialog
-     *          &lt;br /&gt;&lt;b&gt;自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件&lt;/b&gt;
-     *      &lt;/dd&gt;
-     * &lt;/d&gt;
-     * &lt;dl&gt;
-     *      &lt;dt&gt;可识别的组件&lt;/dt&gt;
-     *      &lt;dd&gt;
-     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar
-     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter, JC.Tab
-     *          &lt;br /&gt;Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
-     *      &lt;/dd&gt;
-     * &lt;/d&gt;
-     * @method  jcAutoInitComps
+     * 执行自动识别的组件
+     * @method  autoInit
      * @param   {selector}  _selector
      * @static
+     */
+    function autoInit( _selector ){
+        _selector = $( _selector || document );
+        if( !( _selector &amp;&amp; _selector.length &amp;&amp; window.JC ) ) return;
+        if( !( JC.f &amp;&amp; JC.f._AUTO_INIT_DATA ) ) return;
+
+        $.each( JC.f._AUTO_INIT_DATA, function( _k, _class ){
+            if( !_class ) return;
+            _class.init ? _class.init( _selector ) : _class( _selector );
+        });
+        return JC.f;
+    }
+    /**
+     * 添加需要自动识别的组件
+     * @method addAutoInit
+     * @param   {class} _class
+     * @static
+     * @example
+     *      JC.f.addAutoInit( JC.Calendar );
+     */
+    function addAutoInit( _class ){
+        _class 
+            &amp;&amp; JC.f._AUTO_INIT_DATA 
+            &amp;&amp; ( JC.f._AUTO_INIT_DATA[ 
+                    _class &amp;&amp; _class.Model &amp;&amp; _class.Model._instanceName 
+                    ? _class.Model._instanceName
+                    : funcName( _class )
+                ] = _class )
+                ;
+        return JC.f;
+    }
+    /**
+     * jcAutoInitComps 不久后将被清除
+     * 请使用 JC.f.autoInit 和 JC.f.addAutoInit
      */
     function jcAutoInitComps( _selector ){
         _selector = $( _selector || document );
@@ -1384,11 +1487,14 @@
          */
         Bizs.AutoSelectComplete &amp;&amp; Bizs.AutoSelectComplete.init( _selector );
 
+        Bizs.InputSelect &amp;&amp; Bizs.InputSelect.init( _selector );
+
         /**
          *排期日期展示
         */
         Bizs.TaskViewer &amp;&amp; Bizs.TaskViewer.init(_selector);
     }
+
     /**
      * URL 占位符识别功能
      * &lt;br /&gt;&lt;b&gt;require:&lt;/b&gt; addUrlParams, filterXSS
@@ -1451,13 +1557,18 @@
         var _r = null   
             , _re = /^now/i
             , _nowFirstRe = /^nowfirst/
+            , _dateRe = /^([\d]{8}|[\d]{4}.[\d]{2}.[\d]{2})/
             , _d, _ar, _item
             ;
         if( _dateStr &amp;&amp; typeof _dateStr == &#x27;string&#x27; ){
-            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) ){
+            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) || _dateRe.test( _dateStr ) ){
                 _d = new Date();
                 if( _nowFirstRe.test(_dateStr ) ){
                     _d.setDate( 1 );
+                }
+                if( _dateRe.test( _dateStr ) ){
+                    _d = JC.f.parseISODate( _dateStr.replace( /[^\d]/g, &#x27;&#x27; ).slice( 0, 8 ) );
+                    _dateStr = _dateStr.replace( _dateRe, &#x27;&#x27; );
                 }
                 _dateStr = _dateStr.replace( _re, &#x27;&#x27; ).replace(/[\s]+/g, &#x27;&#x27;);
                 _ar = _dateStr.split(&#x27;,&#x27;);
