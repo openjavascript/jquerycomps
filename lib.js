@@ -9645,6 +9645,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
      * @class JC.common
      * @static
+     * @version dev 0.3 2014-12-09
      * @version dev 0.2 2013-11-06 
      * @version dev 0.1 2013-07-04
      * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
@@ -10240,6 +10241,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * @method  pureDate
      * @param   {Date}  _d   可选参数, 如果为空 = new Date
      * @return  Date
+     * @static
      */
     function pureDate( _d ){
         var _r;
@@ -10733,6 +10735,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * 执行自动识别的组件
      * @method  autoInit
      * @param   {selector}  _selector
+     * @static
      */
     function autoInit( _selector ){
         _selector = $( _selector || document );
@@ -10749,6 +10752,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * 添加需要自动识别的组件
      * @method addAutoInit
      * @param   {class} _class
+     * @static
      * @example
      *      JC.f.addAutoInit( JC.Calendar );
      */
