@@ -108,7 +108,7 @@
         $smarty->assign( 'allVersionComps', $allVersionComps );
 
         $smarty->display( $FILE_PATH );
-    }else if( $compData ){
+    }else if( $compData && isset( $compData['outlink'] ) ){
         if( isset( $compData[ 'outlink' ] ) ){
             header( "Location: " . $compData[ 'outlink' ] );
             exit;

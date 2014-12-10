@@ -11,9 +11,6 @@
 {{block name="body_main"}}
 {{include file="public/simple_demo/body_header.tpl"}}
 
-<h1 class="detail-groupname">
-DEMO: balType = panel
-</h1>
 
 <style class="show-css">
 @import url( '{{$URL_ROOT}}/modules/JC.Panel/0.2/res/default/style.css' );
@@ -39,7 +36,7 @@ DEMO: balType = panel
         <div class="codeview-pageview nowview">
             <div class="show-html">
 <dl class="defdl">
-    <dt>ActionLogic 示例1, 弹框</dt>
+{{*<dt>ActionLogic 示例1, 弹框</dt>*}}
     <dt>balType = panel</dt>
     <dd>
         <button type="button" 

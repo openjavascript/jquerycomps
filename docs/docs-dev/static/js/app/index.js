@@ -418,8 +418,7 @@
 			}
 
 			_li.append(
-				$( '<a href="#">' ).html( _ele.text().split(':')[0] )
-			  	.addClass( _ele.attr( 'id' ) )
+				$( JC.f.printf( '<a href="javascript:;" title="{0}">{0}</a>', _ele.text() ) ).addClass( _ele.attr( 'id' ) )
 			)
 			_nav.append( _li );
 		} );
