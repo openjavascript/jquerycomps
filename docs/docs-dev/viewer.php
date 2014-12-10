@@ -102,6 +102,7 @@
 
         $smarty->assign( 'COMP_NAME', $MODULE);
         $smarty->assign( 'COMP_VERSION', $VERSION);
+        $smarty->assign( 'COMP_FILE', $FILE);
 
         $smarty->assign( 'compData', $compData );
         $smarty->assign( 'requireComps', $requireComps );

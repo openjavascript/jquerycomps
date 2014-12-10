@@ -1,6 +1,7 @@
 <?php
     $r = array( 'errorno' => 0, 'errmsg' => '', 'data' => array () );
 
+    $uripath = dirname( $_SERVER['SCRIPT_NAME'] );
 
     if( isset( $_REQUEST['errorno'] ) ){
         $r['errorno'] = (int)$_REQUEST['errorno'];
@@ -11,7 +12,7 @@
 
     $r[ 'data' ][ 'balAction' ] = array(
         'type' => 'ajaxaction'
-        , 'url' =>  './data/handler.php?errorno=0'
+        , 'url' =>  "$uripath/handler.php?errorno=0"
         , 'msg' =>  "该单笔合同对应的所有上线任务已撤销，是否一起撤销所有上线任务对应的所有预订任务？
 "
         , 'returnurl' => '?actiondone=2'
