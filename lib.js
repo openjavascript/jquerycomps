@@ -9641,7 +9641,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )
      * <br />所有 JC 组件都会依赖这个静态类
      * <p><b>require</b>: <a href='.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * <p><a  href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
      * @class JC.common
      * @static
@@ -9676,7 +9676,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "seasonOfYear": seasonOfYear
         , "dayOfWeek": dayOfWeek
         , "dayOfSeason": dayOfSeason
-        , "jcAutoInitComps": jcAutoInitComps
+        , "jcAutoInitComps": autoInit
 
         , "autoInit": autoInit
         , "addAutoInit": addAutoInit
@@ -9740,6 +9740,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "pad_char_f": padChar
         , "script_path_f": scriptPath
         , "ts": function(){ return new Date().getTime(); }
+	, 'jhjkhjkhkjhjk': ''
     };
     JC.f.backward();
     /**
@@ -10762,7 +10763,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
             && ( JC.f._AUTO_INIT_DATA[ 
                     _class && _class.Model && _class.Model._instanceName 
                     ? _class.Model._instanceName
-                    : funcName( _class )
+                    : _class.toString()
                 ] = _class )
                 ;
         return JC.f;

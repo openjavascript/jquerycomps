@@ -291,7 +291,7 @@
      * JC 组件通用静态方法和属性 ( JC.common, &lt;b&gt;别名: JC.f&lt;/b&gt; )
      * &lt;br /&gt;所有 JC 组件都会依赖这个静态类
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
-     * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+     * &lt;p&gt;&lt;a  href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.common.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * @class JC.common
      * @static
@@ -326,7 +326,7 @@
         , &quot;seasonOfYear&quot;: seasonOfYear
         , &quot;dayOfWeek&quot;: dayOfWeek
         , &quot;dayOfSeason&quot;: dayOfSeason
-        , &quot;jcAutoInitComps&quot;: jcAutoInitComps
+        , &quot;jcAutoInitComps&quot;: autoInit
 
         , &quot;autoInit&quot;: autoInit
         , &quot;addAutoInit&quot;: addAutoInit
@@ -390,6 +390,7 @@
         , &quot;pad_char_f&quot;: padChar
         , &quot;script_path_f&quot;: scriptPath
         , &quot;ts&quot;: function(){ return new Date().getTime(); }
+	, &#x27;jhjkhjkhkjhjk&#x27;: &#x27;&#x27;
     };
     JC.f.backward();
     /**
@@ -1412,7 +1413,7 @@
             &amp;&amp; ( JC.f._AUTO_INIT_DATA[ 
                     _class &amp;&amp; _class.Model &amp;&amp; _class.Model._instanceName 
                     ? _class.Model._instanceName
-                    : funcName( _class )
+                    : _class.toString()
                 ] = _class )
                 ;
         return JC.f;
