@@ -140,7 +140,7 @@
         , "parse_finance_num": parseFinance
         , "pad_char_f": padChar
         , "script_path_f": scriptPath
-        , "ts": function(){ return new Date().getTime(); }s
+        , "ts": function(){ return new Date().getTime(); }
     };
     JC.f.backward();
     /**
