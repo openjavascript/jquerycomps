@@ -948,7 +948,7 @@
                     _done = true;
                     clearInterval( _interval );
                 }
-                _cb && _cb( _tmp + _startVal, _done );
+                _cb && _cb( _tmp + _startVal, _timepass, _done );
             }, _stepMs );
 
         return _interval;

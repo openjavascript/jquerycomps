@@ -492,7 +492,7 @@
 
             //全部滚动，在这里处理滚动有耦合
             if ( _freezeCols === 0 ) {
-                _selector.css('overflow-x', 'scroll')
+                _selector.css('overflow-x', 'auto')
                     .find('>table').css('width', _p.scrollWidth());
                 return false;
             }

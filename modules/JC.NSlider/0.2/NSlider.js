@@ -217,31 +217,36 @@
             }
 
         , _initControl: function(){
-
                 this._initSliderNav();
                 switch( this._model.direction() ){
                     case 'vertical': this._initVerticalControl(); break;
                     default: this._initHorizontalControl(); break;
                 }
             }
+
         , _initHorizontalControl: function(){
             var _p = this;
             var _model = _p._model;
             _model.prevbutton() 
                 && _model.prevbutton().on( 'click', function( _evt ){
 
-                    if( _model._movelock ){ 
-                        _p.combClick( -1 );
-                        return;
-                    }
-                    _model.lockmove();
-
                     _p.notification( _Model.PREVCLICK, [ $( _evt ), _p ] );
-
                     _p.trigger('cleartimeout');
                     _p.trigger('movetoprev');
-                    _p._view.move( 1 );
-                    
+
+                    if( _model._movelock ){ 
+                        _p._view.jpMove( 
+                            _model.jpPage( _model.combClickNum( ++_model._combClickNum ) )
+                            , _model.durationms() - _model._passTime 
+                        );
+                    } else {
+                        _model.lockmove();
+                        _p._view.jpMove( _model.jpPage( 
+                            _model._nowIndex
+                            , _model.howmanyitem() 
+                        ) );
+                    }
+                    _model.changeIndex();
                 })
                 .on('mouseenter', function(){ _p.trigger('controlover'); } )
                 .on('mouseleave', function(){ _p.trigger('controlout'); } )
@@ -249,19 +254,26 @@
 
             _model.nextbutton() 
                 && _model.nextbutton().on( 'click', function( _evt ){
-                    
-                    if( _model._movelock ){ 
-                        _p.combClick( 1 );
-                        return;
-                    }
-                    _model.lockmove();
 
-                    _p.notification( _Model.NEXTCLICK, [ $( _evt ), _p ] );
-
+                    _p.notification( _Model.PREVCLICK, [ $( _evt ), _p ] );
                     _p.trigger('cleartimeout');
-                    _p.trigger('movetotnext');
-                    _p._view.move();
-                })
+                    _p.trigger('movetonext');
+
+                    if( _model._movelock ){ 
+                        _p._view.jpMove( 
+                            _model.jpPage( _model.combClickNum( ++_model._combClickNum ) )
+                            , _model.durationms() - _model._passTime 
+                        );
+                    } else {
+                        _model.lockmove();
+                        _p._view.jpMove( _model.jpPage( 
+                            _model._nowIndex
+                            , _model.howmanyitem() 
+                        ) );
+                    }
+                    _model.changeIndex();
+
+                } )
                 .on('mouseenter', function(){ _p.trigger('controlover'); } )
                 .on('mouseleave', function(){ _p.trigger('controlout'); } )
             ;
@@ -282,14 +294,20 @@
 
                     _p.trigger('cleartimeout');
                     _p.trigger('movetoprev');
-                    _p._view.move( 1 );
+                    
+                    _p._view.jpMove( _model.jpPage( 
+                        _model._nowIndex
+                        , _model.howmanyitem() 
+                    ) );
+
+                    _model.changeIndex();
                 })
                 .on('mouseenter', function(){ _p.trigger('controlover'); } )
                 .on('mouseleave', function(){ _p.trigger('controlout'); } )
             ;
 
             _model.nextbutton() 
-                && _model.nextbutton().on( 'click', function( _evt ){
+                && _p._model.nextbutton().on( 'click', function( _evt ){
                     
                     if( _model._movelock ){ return; }
                     _model.lockmove();
@@ -297,8 +315,14 @@
                     _p.notification( _Model.NEXTCLICK, [ $( _evt ), _p ] );
 
                     _p.trigger('cleartimeout');
-                    _p.trigger('movetotnext');
-                    _p._view.move();
+                    _p.trigger('movetonext');
+                    
+                    _p._view.jpMove( _model.jpPage( 
+                        _model._nowIndex
+                        , _model.howmanyitem() 
+                    ) );
+
+                    _model.changeIndex();
                 })
                 .on('mouseenter', function(){ _p.trigger('controlover'); } )
                 .on('mouseleave', function(){ _p.trigger('controlout'); } )
@@ -315,10 +339,10 @@
                 var _tar = $( e.target );
                 var _index = parseInt(_tar.attr( 'data-index' ) );
 
-                _p._view.moveTo( _model.itemRemote( 
+                _p._view.jpMove( _model.itemRemote( 
                     _model._nowIndex
                     , _index
-                ) );
+                ), undefined, true );
 
                 _model.changeIndex( _index );
                 
@@ -370,7 +394,7 @@
                 _model.moveDirection( false );
             });
 
-            _p.on('movetotnext', function(){
+            _p.on('movetonext', function(){
                 _model.moveDirection( true );
             });
 
@@ -378,7 +402,7 @@
                 var _howmany = _model.howmanyitem();
 
                 _p._model.timeout( setTimeout( function(){
-                    _p._view.moveTo( _model.page( _model._nowIndex, _howmany ) );
+                    _p._view.jpMove( _model.jpPage( _model._nowIndex, _howmany ) );
                     _model.changeIndex();
                 }, _p._model.automovems() ));
             });
@@ -389,26 +413,6 @@
 
         , _inited: function(){
             this.trigger( 'inited' );
-        }
-
-        , combClick: function( _num ){
-            var _p = this;
-            var _model = _p._model;
-
-            _model._lockTarIndex += _num
-
-            console.log( _index );
-
-            _p._view.moveTo( _model.itemRemote( 
-                _model._nowIndex
-                , _index
-            ) );
-
-            _model.changeIndex( _index );
-        }
-
-        lockTarIndex: function( _num ){
-            
         }
     });
     
@@ -606,6 +610,8 @@
          */
         , page: function( _index, _num, _dir ) {
 
+            this.clearInterval();
+
             typeof _num == 'undefined' && ( _num = 0 );
 
             if( typeof _dir == 'undefined' ){
@@ -614,12 +620,10 @@
                 this.moveDirection( _dir );
             }
 
-            var _remoteNum;
             var _remoteItemList = [];
             var _subitems = this.subitems();
             var _viewItemNum = this.viewItemNum();
 
-            _remoteNum = _viewItemNum + _num;
             if( !_dir ) {
                 _index -= _num;
                 if( _index < 0 ) {
@@ -627,25 +631,76 @@
                 }
             }
 
-            for( var _j = 0; _j < _remoteNum; _j++, _index++ ) {
+            for( var _j = 0; _j < _viewItemNum + _num; _j++, _index++ ) {
                 if( _index == _subitems.length ) {
                     _index = 0;
                 }
                 _remoteItemList.push( _subitems[ _index ] );
             }
 
-            return _remoteItemList;
+            return this._remoteItemList = _remoteItemList;
+        }
+
+        , jpPage: function( _targetIdx, _num, _dir ) {
+
+            this.clearInterval();
+
+            var _subitems = this.subitems();
+            var _index = this._nowIndex;
+
+            typeof _num == 'undefined' && ( _num = this.howmanyitem() );
+            
+            if( typeof _dir == 'undefined' ){
+                _dir = this.moveDirection();
+            } else {
+                this.moveDirection( _dir );
+            }
+
+            if( _dir ) {/* 把_index调整至需要push的位置 */
+                _index += this.viewItemNum();
+            } else {
+                _index -= _num;
+                if( _index < 0 ) {
+                    _index += _subitems.length;
+                }
+            }
+
+            for( var _i = 0, _j = _index; _i < _num; _i++,_j++ ) {
+                if( _j == _subitems.length ){
+                    _j = 0;
+                }
+
+                if( _dir ){
+                    this._remoteItemList[ this._remoteItemList.length - 1 ] != _subitems[ _j ] &&
+                    this._remoteItemList.push( _subitems[ _j ] );
+                } else {
+                    this._remoteItemList[ 0 ] != _subitems[ _j ] &&
+                    this._remoteItemList.unshift( _subitems[ _j ] );
+                }
+            }
+
+            console.log( this._remoteItemList );
+
+            return this._remoteItemList;
+        }
+
+        , remoteIndex: function( _index ){
+            if( typeof _index == 'undefined' ){
+                return this._remoteIndex || 0;
+            } else {
+                return this._remoteIndex = _index;
+            }
         }
 
         , itemRemote: function( _nowIndex, _targetIdx ){
 
             if( _targetIdx == _nowIndex ){
-                return [];
+                return;
             }
 
             var rIndex = _targetIdx - _nowIndex;
 
-            return this.page( _nowIndex, Math.abs( rIndex ) , rIndex >= 0 );
+            return this.jpPage( _nowIndex, Math.abs( rIndex ) , rIndex >= 0 );
         }
 
         , changeIndex: function( _idx ){
@@ -742,11 +797,19 @@
 
         , lockmove: function(){
             this._movelock = true;
-            this._lockTarIndex = this._nowIndex;
+            this.combClickNum( 0 );
         }
 
         , unlockmove: function(){
             this._movelock = false;
+        }
+
+        , combClickNum: function( _num ){
+            if( typeof _num == 'undefined' ){
+                return this._combClickNum;
+            } else {
+                return this._combClickNum = _num;
+            }
         }
 
     });
@@ -798,88 +861,114 @@
             _model._selector.append( _tmpItem );
         }
 
-        , move: function( _backwrad ){
-            var _p = this;
-            var _model = this._model;
+        /*
+        *  _remoteItems : 需要被滑动的元素集合
+        *  _durTime     : 滑动的执行时间
+        *  _navclick    : 是否是nav点击
+        */
+        , jpMove: function( _remoteItems, _durTime, _navclick ){
 
-            _backwrad = !!_backwrad;
-
-            var _nowIndex = _model._nowIndex;
-            var _howmany = _model.howmanyitem();
-            this.moveTo( _model.page( _nowIndex, _howmany ) );
-            _model.changeIndex();
-        }
-
-        , moveTo: function( _remoteList ){
-
-            if( !_remoteList || _remoteList.length == 0 ){
+            if( !_remoteItems || _remoteItems.length == 0 ) {
                 return;
+            }
+
+            if( typeof _durTime == 'undefined' ) {
+                _durTime = this._model.durationms();
             }
 
             var _p = this;
             var _model = this._model;
 
-            var _howmany = _model.howmanyitem();
             var _dir = _model.moveDirection();
-            var _slidWidth = _howmany * ( _model.itemwidth() + _p._itemspace );
+            var _howmany = _model.howmanyitem();
+            var _itemTotalWidth = _model.itemwidth() + _p._itemspace;
+            var _remoteLen = _remoteItems.length;
+            var _slidWidth;
+            var _baseWidth;/* 增加的元素的基础位置 */
             var _tmpItem;
+            var _tmpWidth;
             var _tmpNum = 0;
-            var _begin;
-            var _oldItems = [];
 
             if( _dir ) {/* 向左滑动 */
-                _begin = this._model.width();
-                $.each( _remoteList, function( _ix, _item ) {
+                _baseWidth = $( _remoteItems[ 0 ] ).prop( 'offsetLeft' );
+
+                $.each( _remoteItems, function( _ix, _item ) {
                     _tmpItem = $( _item );
-                    if( _remoteList.length - _ix <= _howmany ) {
-                        _tmpItem.css( { 'left': _begin + _tmpNum * ( _p._model.itemwidth() 
-                            + _p._itemspace ) + 'px' } ).show();
-                        _tmpNum++;
+
+                    if( _remoteLen - _ix <= _howmany ) {
+                        _tmpItem.css( {
+                            'left': ( _baseWidth + ( _navclick ? ++_tmpNum : _ix ) * _itemTotalWidth ) + 'px' 
+                        } ).show();
+                    } else {
+                        _tmpItem.show();
                     }
-                    if( _ix < _howmany ){
-                        _oldItems.push( _tmpItem );
-                    }
-                    _tmpItem.data( 'TMP_LEFT', $( _item ).prop('offsetLeft') );
-                });
+                    _tmpItem.data( 'TMP_LEFT', _tmpItem.prop( 'offsetLeft' ) );
+                } );
+
+                _slidWidth = $( _remoteItems[ _remoteLen - 1 ] ).prop( 'offsetLeft' )
+                     - _model.width() + _itemTotalWidth;
             } else {/* 向右滑动 */
-                _begin = - (_p._model.itemwidth() + _p._itemspace);
-                var _len = _remoteList.length;
-                var _item;
-                for( var _i = _len - 1; _i >= 0; _i-- ){
-                    
-                    _tmpItem = $( _remoteList[ _i ] );
+                _baseWidth = $( _remoteItems[ _remoteLen - 1 ] ).prop( 'offsetLeft' );
 
-                    if( _i < _howmany ) {
-                        _tmpItem.css( { 'left': _begin - _tmpNum * ( _p._model.itemwidth() 
-                            + _p._itemspace ) + 'px' } ).show();
-                        _tmpNum++;
-                    }
+                for( var _n = _remoteLen - 1; _n >= 0; _n-- ) {
+                    _tmpItem = $( _remoteItems[ _n ] );
 
-                    if( _remoteList.length - _i <= _howmany ){
-                        _oldItems.push( _tmpItem );
+                    if( _n < _howmany ) {
+                        _tmpItem.css( { 'left': ( 
+                            _baseWidth - ( _navclick ? ( _howmany - _tmpNum++ ) 
+                                : ( _remoteLen - _n - 1 ) ) * _itemTotalWidth 
+                        ) + 'px' } ).show();
+                    } else {
+                        _tmpItem.show();
                     }
-                    _tmpItem.data('TMP_LEFT', _tmpItem.prop('offsetLeft') );
+                    _tmpItem.data( 'TMP_LEFT', _tmpItem.prop( 'offsetLeft' ) );
                 }
+
+                _slidWidth = Math.abs( $( _remoteItems[ 0 ] ).prop( 'offsetLeft' ) );
             }
 
             $( _p._slider ).trigger( 'beforemove' );
 
-            _p._model.interval( JC.f.easyEffect( function( _step, _done ){
-                $( _remoteList ).each(function( _ix, _item ){
-                    $( _item ).css( { 'left': $( _item ).data( 'TMP_LEFT' ) +
-                        ( _dir ? -_step : _step ) + 'px' } );
-                });
+            var basePassTime = _model._passTime || 0;
+
+            _model.interval( JC.f.easyEffect( function( _step, _done, _passTime ) {
+
+                _model._passTime = basePassTime + _passTime ;
+
+                $( _remoteItems ).each( function( _ix, _item ) {
+                    if( !_item ){ return; }
+
+                    _tmpItem = $( _item )
+                    
+                    _tmpWidth = _tmpItem.data( 'TMP_LEFT' );
+                    if( _dir ) {
+                        _tmpWidth -= _step;
+
+                        _tmpItem.css( { 'left': _tmpWidth + 'px' } );
+                        if( _tmpWidth <= -_itemTotalWidth ) {
+                            _tmpItem.hide();
+                            _item = {};
+                            _model._remoteItemList.shift();
+                        }
+                    } else {
+                        _tmpWidth += _step;
+
+                        _tmpItem.css( { 'left': _tmpWidth + 'px' } );
+                        if( _tmpWidth >= _model.width() ) {
+                            _tmpItem.hide();
+                            _item = {};
+                            _model._remoteItemList.pop();
+                        }
+                    }
+                } );
 
                 if( _done ) {
-                    $.each( _oldItems, function( _i, _item ){ 
-                        $( _item ).hide(); 
-                    } );
                     _model.unlockmove();
+                    _model._passTime = 0;
                 }
-            }, _slidWidth, 0, this._model.durationms(), this._model.stepms() ) );
+            }, _slidWidth, 0, _durTime, this._model.stepms() ) );
 
             $( _p._slider ).trigger( 'aftermove' );
-
         }
 
         , setPagePosition: function( _ix ){
@@ -904,7 +993,6 @@
 
         this._itemspace = parseInt( ( _model.height() - _viewItemNum
              * _model.itemheight() ) / _viewItemNum );
-
     }
 
     VerticalView.prototype = {
@@ -940,18 +1028,6 @@
             _tmpItem += '</div>';
 
             _model._selector.append( _tmpItem );
-        }
-
-        , move: function( _backwrad ){
-            var _p = this;
-            var _model = this._model;
-
-            _backwrad = !!_backwrad;
-
-            var _nowIndex = _model._nowIndex;
-            var _howmany = _model.howmanyitem();
-            this.moveTo( _model.page( _nowIndex, _howmany ) );
-            _model.changeIndex();
         }
 
         , moveTo: function( _remoteList ){
