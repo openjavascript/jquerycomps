@@ -42,7 +42,7 @@
                 baseUrl: JC.PATH
                 , urlArgs: 'v={{$TVERSION}}'
                 , paths: {
-                    'common': TPATH + '/js/common'
+                    'common': TPATH + '/static/js/app/common'
                 }
             });
 

@@ -10,12 +10,17 @@
         <a name="mainTop"></a>
         <div class="body clearfix">
             <div class="body-helper">
-                <a href="#" class="body-homebtn" style="display:none">HOME</a>
-                <a href="#" class="body-backbtn" style="display:none">BACK</a>
-                <a href="#" class="body-topbtn" style="display:none">TOP</a>
+                <a href="javascript:;" class="body-homebtn" style="display:none">HOME</a>
+                <a href="javascript:;" class="body-backbtn" style="display:none">BACK</a>
+                <a href="javascript:;" class="body-topbtn" style="display:none">TOP</a>
             </div>
 
             {{include file="public/index/sidemenu.tpl"}}
+
+            <div class="body-detail">
+                <iframe id="detailframe" src="" frameborder="no" border="0" style="min-height: 600px"></iframe>
+                <ul class="body-detailnav"></ul>
+            </div>
 
             <div id="itemlist" class="body-content">
 {{foreach from=$compsList item=value}}
@@ -47,16 +52,22 @@
             {{if $sitem.data[$i].outlink|default:''}}
                 <a href="{{$sitem.data[$i].outlink}}" target="_blank" class="body-attrbtn">官网</a>
             {{else}}
-                <a href="#" class="body-attrbtn body-changebtn"
-                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=doc.tpl#attr"
+                <a href="{{$PROJECT_ROOT}}/detail.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=doc.tpl#btop" 
+                    target="_detail"
+                    class="body-attrbtn body-changebtn"
                 >DOC</a>
                 {{if !$sitem.data[$i].nodemo|default:'' }}
-                <a href="#" class="body-demobtn body-changebtn"
-                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=demo.tpl"
+                <a href="{{$PROJECT_ROOT}}/detail.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=demo.tpl#btop" 
+                    target="_detail"
+                    class="body-demobtn body-changebtn"
                 >DEMO</a>
-                <a href="#" class="body-sdemobtn"
-                    data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=simple_demo.tpl"
-                >SIMPLE DEMO</a>
+                    {{if !$sitem.data[$i].noSimpleDemo|default:''}}
+                    <a href="javascript:;" 
+                        target="_detail"
+                        class="body-sdemobtn"
+                        data-url="{{$PROJECT_ROOT}}/detail.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=simple_demo.tpl#btop"
+                    >SIMPLE DEMO</a>
+                    {{/if}}
                 {{/if}}
             {{/if}}
             <span class="body-compversion">最新版本: {{$sitem.data[$i].version}}</span>
@@ -67,7 +78,7 @@
 
         {{if !$sitem.data[$i].outlink|default:''}}
             <div class="body-compdemo">
-                <a href="#" class="body-compclose">close</a>
+                <a href="javascript:;" class="body-compclose">close</a>
                 <iframe src="" frameborder="no" border="0"></iframe>
             </div>
         {{/if}}
@@ -80,10 +91,6 @@
     {{/if}}
 </ul>
 {{/foreach}}
-            </div>
-            <div class="body-detail">
-                <iframe id="detailframe" src="" frameborder="no" border="0"></iframe>
-                <ul class="body-detailnav"></ul>
             </div>
         </div>
     {{include file="public/index/body_footer.tpl"}}
