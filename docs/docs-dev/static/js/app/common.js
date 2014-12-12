@@ -1,4 +1,4 @@
-;requirejs( [ 'JC.common' ], function( ){
+;requirejs( [ 'JC.common', 'jquery.scrollFix' ], function( ){
     JWIN.on( 'GO_MAIN_TOP', function( _evt, _ms ){
         _ms = _ms || 0;
         JC.f.safeTimeout( function(){
@@ -43,4 +43,9 @@
             , backgroundColor : '#e6decb'
         } );
     } );
+
+    var _bodyNav = $( '#bodynav' );
+    if( _bodyNav.length ){
+        _bodyNav.scrollFix( 50 );
+    }
 });
