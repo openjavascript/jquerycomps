@@ -18,7 +18,7 @@
  * @date    2013-10-19
  */
     JC.Placeholder = Placeholder;
-    JC.f.addAutoInit( Placeholder );
+    JC.f.addAutoInit && JC.f.addAutoInit( Placeholder );
 
     function Placeholder( _selector ){
         _selector && ( _selector = $( _selector ) );

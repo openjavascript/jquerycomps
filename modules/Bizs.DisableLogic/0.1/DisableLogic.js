@@ -71,8 +71,11 @@
  *
  * <h2>hide target 的 HTML 属性</h2>
  * <dl>
- *      <dt>dlhidetoggle = bool</dt>
+ *      <dt>dlhidetoggle = bool, false</dt>
  *      <dd>显示或显示的时候, 是否与他项相反</dd>
+ *
+ *      <dt>dlDisableToggle = bool, default = false</dt>
+ *      <dd>disabled 的时候, 是否与他项相反</dd>
  * </dl>
  *
  * @namespace   window.Bizs
@@ -101,7 +104,7 @@
         </div>
  */
     window.Bizs.DisableLogic = DisableLogic;
-    JC.f.addAutoInit( DisableLogic );
+    JC.f.addAutoInit && JC.f.addAutoInit( DisableLogic );
 
     function DisableLogic( _selector ){
         if( DisableLogic.getInstance( _selector ) ) return DisableLogic.getInstance( _selector );
@@ -328,6 +331,14 @@
                 return _r;
             }
 
+        , dlDisableToggle:
+            function( _target ){
+                var _r;
+                _target && _target.is( '[dlDisableToggle]' ) 
+                    && ( _r = JC.f.parseBool( _target.attr('dlDisableToggle') ) );
+                return _r;
+            }
+
         , dldonecallback:
             function(){
                 var _r = DisableLogic.doneCallback, _tmp;
@@ -404,7 +415,11 @@
                 if( _dlTarget && _dlTarget.length ){
                     _dlTarget.each( function(){ 
                         var _sp = $( this );
-                        _sp.attr('disabled', _isDisable);
+                        if( _p._model.dlDisableToggle( _sp ) ){
+                            _sp.attr('disabled', !_isDisable);
+                        }else{
+                            _sp.attr('disabled', _isDisable);
+                        }
                         JC.Valid && JC.Valid.setValid( _sp );
 
                         if( _sp.is( '[dlhidetargetsub]' ) ){

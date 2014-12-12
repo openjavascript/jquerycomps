@@ -9,7 +9,7 @@
 
     <!-- 外链形式 start -->
     <textarea class="detail-codetpl" type="text/template">
-        <script src="{{$URL_ROOT}}/JC.common/0.2/common.js" />
+        <script src="{{$URL_ROOT}}/JC.common/0.3/common.js" />
         <script src="{{$URL_ROOT}}/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}" />
     </textarea>
     <!-- 外链形式 end -->

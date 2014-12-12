@@ -80,8 +80,11 @@
  *
  * <h2>hide target 的 HTML 属性</h2>
  * <dl>
- *      <dt>bclHideToggle = bool</dt>
+ *      <dt>bclHideToggle = bool, default = false</dt>
  *      <dd>显示或显示的时候, 是否与他项相反</dd>
+ *
+ *      <dt>bclDisableTarget = bool, default = false</dt>
+ *      <dd>disabled 的时候, 是否与他项相反</dd>
  * </dl>
  *
  * @namespace   window.Bizs
@@ -110,7 +113,7 @@
         </div>
  */
     window.Bizs.ChangeLogic = ChangeLogic;
-    JC.f.addAutoInit( ChangeLogic );
+    JC.f.addAutoInit && JC.f.addAutoInit( ChangeLogic );
 
     function ChangeLogic( _selector ){
         if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );
@@ -439,6 +442,14 @@
                 return _r;
             }
 
+        , bclDisableToggle:
+            function( _target ){
+                var _r;
+                _target && _target.is( '[bclDisableToggle]' ) 
+                    && ( _r = JC.f.parseBool( _target.attr('bclDisableToggle') ) );
+                return _r;
+            }
+
         , bclDoneCallback:
             function(){
                 var _r = ChangeLogic.doneCallback, _tmp;
@@ -515,7 +526,12 @@
                 if( _bclDisableTarget && _bclDisableTarget.length ){
                     _bclDisableTarget.each( function(){ 
                         var _sp = $( this );
-                        _sp.attr('disabled', _isDisable);
+
+                        if( _p._model.bclDisableToggle( _sp ) ){
+                            _sp.attr('disabled', !_isDisable);
+                        }else{
+                            _sp.attr('disabled', _isDisable);
+                        }
                         JC.Valid && JC.Valid.setValid( _sp );
 
                         if( _sp.is( '[bclHideTargetSub]' ) ){

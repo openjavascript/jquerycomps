@@ -11,7 +11,7 @@
     <textArea class="detail-codetpl" type="text/template">
         <link href='{{$URL_ROOT}}/modules/JC.Panel/0.2/res/default/style.css' rel='stylesheet' />
 
-        <script src="{{$URL_ROOT}}/modules/JC.common/0.2/common.js" />
+        <script src="{{$URL_ROOT}}/modules/JC.common/0.3/common.js" />
         <script src="{{$URL_ROOT}}/modules/JC.BaseMVC/0.1/BaseMVC.js" />
         <script src="{{$URL_ROOT}}/modules//JC.Panel/0.2/Panel.js" />
         <script src="{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}" />

@@ -1,6 +1,7 @@
 {{extends file="public/base.tpl"}}
 
 {{block name="inherit_header" append}}
+<link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/index.css" />
 <link rel="stylesheet" type="text/css" href="{{$PROJECT_ROOT}}/static/css/detail.css" />
 
 <!-- start codeview style -->
@@ -13,9 +14,14 @@
 {{/block}}
 
 {{block name="body_header" append}}
-    {{include file="public/demo/body_header.tpl"}}
+    {{include file="public/index/body_header.tpl"}}
+{{/block}}
+
+{{block name="inherit_body_header" append}}
+    {{include file="public/doc/body_header.tpl"}}
 {{/block}}
 
 {{block name="body_footer" append}}
-    {{include file="public/demo/body_footer.tpl"}}
+    {{include file="public/doc/body_footer.tpl"}}
+    {{include file="public/index/body_footer.tpl"}}
 {{/block}}

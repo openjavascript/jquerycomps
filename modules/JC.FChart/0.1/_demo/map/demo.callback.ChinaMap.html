@@ -71,10 +71,10 @@
                             zoomRate: .5,
                             zoomSpeed: .5
                         },
-                        callBack:{
-                            initedCallback: "inited",
-                            hoverCallback: "hovered",
-                            clickCallback: "clicked"
+                        callback: {
+                            itemHoverCallback: "hovered",
+                            itemClickCallback: "clicked",
+                            initedCallback: "inited"
                         },
                         series:[{
                             name: "平均房价",
@@ -233,13 +233,13 @@
             console.log('Map inited!');
         }
 
-        function hovered( a ) {
+        function hovered( data ) {
             //JC.dir( a.data );
-            console.log('hovered : '+ a.data.name);
+            console.log('hovered : '+ data.data.name);
         }
 
-        function clicked(a) {
-            alert('you clicked : '+ JSON.stringify( a.data ) );
+        function clicked( data ) {
+            alert('you clicked : '+ JSON.stringify( data.data ) );
         }
     </script>
 </body>

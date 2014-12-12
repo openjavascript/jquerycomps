@@ -47,7 +47,7 @@
 
  */
     Bizs.InputSelect = InputSelect;
-    JC.f.addAutoInit( InputSelect );
+    JC.f.addAutoInit && JC.f.addAutoInit( InputSelect );
 
     function InputSelect( _selector ){
         _selector && ( _selector = $( _selector ) );

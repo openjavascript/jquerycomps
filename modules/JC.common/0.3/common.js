@@ -43,9 +43,10 @@
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.common/0.2/_demo/' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.common/0.3/_demo/' target='_blank'>demo link</a></p>
      * @class JC.common
      * @static
+     * @version dev 0.3 2014-12-09
      * @version dev 0.2 2013-11-06 
      * @version dev 0.1 2013-07-04
      * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
@@ -76,7 +77,7 @@
         , "seasonOfYear": seasonOfYear
         , "dayOfWeek": dayOfWeek
         , "dayOfSeason": dayOfSeason
-        , "jcAutoInitComps": jcAutoInitComps
+        , "jcAutoInitComps": autoInit
 
         , "autoInit": autoInit
         , "addAutoInit": addAutoInit
@@ -641,6 +642,7 @@
      * @method  pureDate
      * @param   {Date}  _d   可选参数, 如果为空 = new Date
      * @return  Date
+     * @static
      */
     function pureDate( _d ){
         var _r;
@@ -1134,6 +1136,7 @@
      * 执行自动识别的组件
      * @method  autoInit
      * @param   {selector}  _selector
+     * @static
      */
     function autoInit( _selector ){
         _selector = $( _selector || document );
@@ -1150,6 +1153,7 @@
      * 添加需要自动识别的组件
      * @method addAutoInit
      * @param   {class} _class
+     * @static
      * @example
      *      JC.f.addAutoInit( JC.Calendar );
      */
@@ -1159,7 +1163,7 @@
             && ( JC.f._AUTO_INIT_DATA[ 
                     _class && _class.Model && _class.Model._instanceName 
                     ? _class.Model._instanceName
-                    : funcName( _class )
+                    : _class.toString()
                 ] = _class )
                 ;
         return JC.f;

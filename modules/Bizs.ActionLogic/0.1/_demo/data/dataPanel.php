@@ -1,10 +1,10 @@
 <?php
     $r = array( 'errorno' => 0, 'errmsg' => '', 'data' => array () );
-
+    $uripath = dirname( $_SERVER['SCRIPT_NAME'] );
 
     $r['data'] = <<<EOF
 <div class="UPanel UPanelString" style="display:none; width: 600px;" >    
-    <form action="./data/handler.php" method="POST"
+    <form action="$uripath/handler.php" method="POST"
         class="js_bizsFormLogic"
         formType="ajax"
         formConfirmPopupType="popup"

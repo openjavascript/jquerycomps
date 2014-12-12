@@ -34,7 +34,7 @@
      * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
     */
     window.Bizs.TaskViewer = TaskViewer;
-    JC.f.addAutoInit( TaskViewer );
+    JC.f.addAutoInit && JC.f.addAutoInit( TaskViewer );
     
     function TaskViewer( _selector ){
         _selector && (_selector = $(_selector) );

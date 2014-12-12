@@ -143,7 +143,7 @@
  * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
 */
     JC.DCalendar = DCalendar;
-    JC.f.addAutoInit( DCalendar );
+    JC.f.addAutoInit && JC.f.addAutoInit( DCalendar );
 
     function DCalendar(_selector) {
         _selector && (_selector = $(_selector));

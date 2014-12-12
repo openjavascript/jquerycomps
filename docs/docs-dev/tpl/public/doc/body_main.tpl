@@ -1,3 +1,6 @@
+
+<div id="bodynav" class="body-nav"></div>
+
 <div class="detail-attr">
     <h3 id="navmark-desc" class="detail-blockname ">组件简介</h3>
     <div class="detail-ct">
@@ -28,17 +31,15 @@
                     {{if $comp.outlink|default:'' }}
                         <a href="{{$comp.outlink|default:''}}" target="_blank" 
                             data-name="{{$comp.name}}"
-                            data-version="{{$comp.version}}"
                             >
-                            {{$comp.name}} - v{{$comp.version}}
+                            {{$comp.name}}
                         </a>
                     {{else}}
                         {{if !$comp.hide|default:''}}
                         <a href="#" class="detail-requirelink"
                             data-name="{{$comp.name}}"
-                            data-version="{{$comp.version}}"
                             >
-                            {{$comp.name}} - v{{$comp.version}}
+                            {{$comp.name}}
                         </a>
                         {{/if}}
                     {{/if}}
@@ -56,28 +57,28 @@
     </div>
 
     {{if $constructorAttr|default:''}}
-    <h3 id="navmark-attr" class="detail-blockname">Constructor</h3>
+    <h3 id="navmark-constructor" class="detail-blockname">Constructor</h3>
     <div class="detail-ct detail-htmlattr">
         <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
     {{if $initAttr|default:''}}
-    <h3 id="navmark-attr" class="detail-blockname">Init</h3>
+    <h3 id="navmark-init" class="detail-blockname">Init</h3>
     <div class="detail-ct detail-htmlattr">
         <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
     {{if $htmlAttr|default:''}}
-    <h3 id="navmark-attr" class="detail-blockname">HTML Attributes</h3>
+    <h3 id="navmark-htmlattr" class="detail-blockname">HTML Attributes</h3>
     <div class="detail-ct detail-htmlattr">
         <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
     {{if $propertyAttr|default:''}}
-    <h3 id="navmark-data" class="detail-blockname">Properties</h3>
+    <h3 id="navmark-properties" class="detail-blockname">Properties</h3>
     <div class="detail-ct detail-data">
         <textArea class="detail-code"></textArea>
     </div>
@@ -85,21 +86,21 @@
 
     {{if $methodAttr|default:''}}
     <a name="methodAttr"></a>
-    <h3 id="navmark-data" class="detail-blockname">Methods</h3>
+    <h3 id="navmark-methods" class="detail-blockname">Methods</h3>
     <div class="detail-ct detail-data">
         <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
     {{if $eventAttr|default:''}}
-    <h3 id="navmark-data" class="detail-blockname">Events</h3>
+    <h3 id="navmark-events" class="detail-blockname">Events</h3>
     <div class="detail-ct detail-data">
         <textArea class="detail-code"></textArea>
     </div>
     {{/if}}
 
     {{if $dataFormat|default:'' || $dataFormatAttr|default:'' }}
-    <h3 id="navmark-data" class="detail-blockname">Data Format</h3>
+    <h3 id="navmark-dataformat" class="detail-blockname">Data Format</h3>
     <div class="detail-ct detail-data">
         <textArea class="detail-code"></textArea>
     </div>

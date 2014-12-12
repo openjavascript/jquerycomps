@@ -38,7 +38,7 @@
      * @example
      */
     Bizs.AutoSelectComplete = AutoSelectComplete;
-    JC.f.addAutoInit( AutoSelectComplete );
+    JC.f.addAutoInit && JC.f.addAutoInit( AutoSelectComplete );
 
     function AutoSelectComplete( _selector ){
         _selector && ( _selector = $( _selector ) );

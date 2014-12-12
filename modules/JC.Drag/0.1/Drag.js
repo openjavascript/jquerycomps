@@ -149,7 +149,7 @@
         </table>
  */
     JC.Drag = Drag;
-    JC.f.addAutoInit( Drag );
+    JC.f.addAutoInit && JC.f.addAutoInit( Drag );
     var _jdoc = $( document ), _jwin = $( window );
 
     function Drag( _selector ){

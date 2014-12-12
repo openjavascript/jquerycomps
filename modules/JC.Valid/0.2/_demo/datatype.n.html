@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            dd{ margin-bottom: 2px; }
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true; 
+
+            requirejs( ['JC.Valid', 'JC.Calendar' ], function( Valid, Calendar ){
+
+                $(document).delegate( 'button.js_clear_error', 'click', function( _evt ){
+                    window.console && console.clear && console.clear();
+                    JC.Valid.clearError( 'form.js_valid' );
+                });
+
+                $('form.js_valid').on('submit', function( _evt ){
+                    window.console && console.clear && console.clear();
+                    _evt.preventDefault();
+
+                    if( !JC.Valid.check( 'form.js_valid' ) ){
+                        _evt.preventDefault();
+                        return false;
+                    }
+                });
+            });
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid" validmsg="true" >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
+            </div>
+            <dl class="fm-items">
+                <dt>JC.Valid 示例</dt>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = n, 整数</dt>
+                        <dd>
+                            <div>
+                                <label>0 - pow(10, 10 ):</label>
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的正整数" 
+                                datatype="n" 
+                                reqmsg="正整数"  
+                                />
+                                </div>
+                            <div>
+                                <label>-1000000 ~ 1000000:</label>
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的数字, -1000000 ~ 1000000" 
+                                datatype="n" 
+                                minvalue="-1000000" 
+                                maxvalue="1000000" 
+                                />
+                            </div>
+                            <div>
+                                <label>1 ~ 100:</label>
+                                <input type="text" name="company_n1" 
+                                errmsg="请填写正确的数字, 范围1-100" 
+                                datatype="n" 
+                                minvalue="1" 
+                                maxvalue="100" 
+                                />
+                            </div>
+                            <div>
+                                <label>n-7.2</label>
+                                <input type="text" name="company_n2" 
+                                errmsg="0.01 ~ 9999999.99" 
+                                datatype="n-7.2" 
+                                />
+                            </div>
+                            <div>
+                                <label>0.00 ~ 999999999999.99:</label>
+                                <input type="text" name="company_n" 
+                                value="999999999999.99"
+                                errmsg="请填写正确的正整数" 
+                                datatype="n-12.2" 
+                                reqmsg="数字"  
+                                placeholder="0.00 ~ 999999999999.99"
+                                />
+                            </div>
+                            <div>
+                                <label>0.00 ~ 999999999999.99:</label>
+                                <input type="text" name="company_n" 
+                                value="00"
+                                errmsg="请填写正确的正整数" 
+                                datatype="n-12.2" 
+                                reqmsg="数字"  
+                                placeholder="0.00 ~ 999999999999.99"
+                                />
+                            </div>
+                            <div>
+                                <label>0.00 ~ 999999999999.99:</label>
+                                <input type="text" name="company_n" 
+                                value="000"
+                                errmsg="请填写正确的正整数" 
+                                datatype="n-12.2" 
+                                reqmsg="数字"  
+                                placeholder="0.00 ~ 999999999999.99"
+                                />
+                            </div>
+                            <div>
+                                <label>-100 ~ 0</label>
+                                <input type="text" name="company_n2" value="2"  
+                                errmsg="-100 ~ 0" 
+                                datatype="n"
+                                minvalue="-100"
+                                maxvalue="0"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+
+                <dd>
+                    <dl>
+                        <dt>datatype = nrange, 数值范围</dt>
+                        <dd>
+                            <div>
+                                <label>nrange-7.2</label>
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" 
+                                datatype="nrange-7.2" 
+                                minvalue="-1000000.00" 
+                                maxvalue="1000000" 
+                                />
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" 
+                                datatype="nrange-7.2" 
+                                minvalue="-1000000.00" 
+                                maxvalue="1000000" 
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <label></label>
+                                大<input type="text" name="company_n10" 
+                                    fromNEl="/input:last"
+                                    errmsg="请填写正确的数值范围" 
+                                    datatype="nrange" 
+                                    />
+                                - 小<input type="text" name="company_n11" 
+                                    toNEl="/input:first"
+                                    errmsg="请填写正确的数值范围" 
+                                    datatype="nrange" 
+                                    />
+                                <b style="color:red">注意: 这个是大小颠倒位置的nrange</b>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_n12" 
+                                errmsg="请填写正确的数值范围" 
+                                datatype="nrange" 
+                                />
+                                <input type="text" name="company_n13" 
+                                errmsg="请填写正确的数值范围" 
+                                datatype="nrange" 
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <select 
+                                    datatype="nrange" 
+                                    reqmsg="起始数值和结束数值"
+                                    >
+                                    <option value="">请选择</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                                <select 
+                                    datatype="nrange" 
+                                    reqmsg="起始数值和结束数值" 
+                                    errmsg="起始数值不能大于结束数值"
+                                    >
+                                    <option value="">请选择</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+            </dl>
+
+            <div style="position:fixed; bottom: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
+            </div>
+        </form>
+
+    </body>
+</html>
+

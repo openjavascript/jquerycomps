@@ -39,7 +39,7 @@
 
 	    	, 'codeMirror.htmlmixed' : PROJECT_ROOT + '/static/js/codeMirror/mode/htmlmixed/htmlmixed'
 
-	    	, 'JC.common' : 'modules/JC.common/0.2/common'
+	    	, 'JC.common' : 'modules/JC.common/0.3/common'
 	        , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
 	        , 'DEV.Bizs.FormLogic': 'modules/Bizs.FormLogic/dev/FormLogic'
@@ -151,7 +151,7 @@
 	        , 'jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
 	        , 'jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
             , 'jquery.cookie': 'modules/jquery.cookie/1.4.1/jquery.cookie'
-
+            , 'jquery.scrollFix': 'modules/jquery.scrollFix/20120725/scrollFix'
 
 	        , 'json2': 'modules/JSON/2/JSON'
 	        , 'plugins.JSON2': 'modules/JSON/2/JSON'

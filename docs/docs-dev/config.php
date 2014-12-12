@@ -7,6 +7,7 @@
     define( 'URL_ROOT', dirname( dirname( PROJECT_ROOT ) ) );
 
     $content = file_get_contents( FILE_ROOT . '/data.json' );
+    $content = preg_replace( '/\/\*[\s\S]*?\*\//', '', $content );
     $datas = json_decode( $content, true );
 
     //print_r( $datas );
@@ -36,5 +37,8 @@
 
     $smarty->assign( 'datas', $datas );
 
+    $smarty->assign( 'compsList', $datas['compsList'] );
+    $smarty->assign( 'extraMenu', $datas['extraMenu'] );
+    $smarty->assign( 'websiteLink', $datas['websiteLink'] );
 
 ?>

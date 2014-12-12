@@ -16,7 +16,7 @@
         <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
 
         <script src="{{$URL_ROOT}}/modules/JC.plugins/JSON/2/JSON.js" />
-        <script src="{{$URL_ROOT}}/modules/JC.common/0.2/common.js" />
+        <script src="{{$URL_ROOT}}/modules/JC.common/0.3/common.js" />
         <script src="{{$URL_ROOT}}/modules/JC.BaseMVC/0.1/BaseMVC.js" />
         <script src="{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}" />
     </textArea>

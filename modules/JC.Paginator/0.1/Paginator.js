@@ -47,7 +47,7 @@
         </div>
 */
     JC.Paginator = Paginator;
-    JC.f.addAutoInit( Paginator );
+    JC.f.addAutoInit && JC.f.addAutoInit( Paginator );
  
     function Paginator( _selector ){
         _selector && ( _selector = $( _selector ) );

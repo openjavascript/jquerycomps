@@ -19,8 +19,7 @@ requirejs( [ 'JC.common', '../../lib/codemirror', 'codeMirror.htmlmixed', 'JC.Fr
     } );
     jsEditor.refresh();
 
-    $( '.codeview-htmlview textArea' ).html( $( '.show-html' )
-        .html().replace( /</ig,'&lt;' ).replace( />/ig,'&gt;' ) );
+    $( '.codeview-htmlview textArea' ).html( ( $( '.show-html' ).html() || '' ).replace( /</ig,'&lt;' ).replace( />/ig,'&gt;' ) );
 
     var htmlEditor = CodeMirror.fromTextArea( 
         $( '.codeview-htmlview textArea' )[0], {

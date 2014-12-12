@@ -193,7 +193,7 @@
         </dl>
  */
     JC.TableFreeze = TableFreeze;
-    JC.f.addAutoInit( TableFreeze );
+    JC.f.addAutoInit && JC.f.addAutoInit( TableFreeze );
  
     function TableFreeze( _selector ){
         _selector && ( _selector = $( _selector ) );

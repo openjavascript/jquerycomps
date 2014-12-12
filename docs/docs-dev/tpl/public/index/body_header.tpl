@@ -25,8 +25,8 @@
                                                 data-version="{{$sitem.data[$i].version}}" 
                                                 data-name="{{$sitem.name}}" 
                                                 data-id="{{"`$sitem.name` `$sitem.data[$i].version`"|md5}}"
-                                                data-url="{{$PROJECT_ROOT}}/viewer.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=doc.tpl"
-                                                href="javascript:;">{{$sitem.name}}</a>
+                                                target="_detail"
+                                                href="{{$PROJECT_ROOT}}/detail.php?module={{$sitem.name}}&version={{$sitem.data[$i].version}}&file=doc.tpl#btop">{{$sitem.name}}</a>
                                             {{else}}
                                                 <a href="{{$sitem.data[$i].outlink}}" target="_blank">{{$sitem.name}}</a>
                                             {{/if}}
@@ -59,3 +59,4 @@
 </div>
 {{/if}}
 
+<a name="btop"></a>
