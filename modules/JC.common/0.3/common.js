@@ -77,7 +77,7 @@
         , "seasonOfYear": seasonOfYear
         , "dayOfWeek": dayOfWeek
         , "dayOfSeason": dayOfSeason
-        , "jcAutoInitComps": jcAutoInitComps
+        , "jcAutoInitComps": autoInit
 
         , "autoInit": autoInit
         , "addAutoInit": addAutoInit
@@ -1163,7 +1163,7 @@
             && ( JC.f._AUTO_INIT_DATA[ 
                     _class && _class.Model && _class.Model._instanceName 
                     ? _class.Model._instanceName
-                    : funcName( _class )
+                    : _class.toString()
                 ] = _class )
                 ;
         return JC.f;
