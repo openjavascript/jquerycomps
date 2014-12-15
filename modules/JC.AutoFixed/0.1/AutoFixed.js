@@ -122,7 +122,7 @@
                 });
 
                 JWIN.on( 'resize', function( _evt ){
-                    var _cloneItem = _p._model.cloneItem(), _realWidth;
+                    var _cloneItem = _p._model.cloneItem(), _realWidth, _height, _ds, _winSize;
                     if( !_cloneItem ) {
                         _p._model.normalClass() 
                             && _p.selector().removeClass( _p._model.normalClass() )
@@ -130,14 +130,22 @@
                             ;
                         _realWidth = _p.selector().width();
                     }else{
+                        _ds = _p._model.defaultStyle();
+                        _winSize = JC.f.winSize();
+                        _height = _ds.height;
+                        if( _height + _p._model.fixedTopPx() > _winSize.height ){
+                            _height = _winSize.height - _p._model.fixedTopPx();
+                        }
+
                         if( _p._model.defaultStyle().right != 'auto' ) {
                             _p.selector().css( {
                                 right: JC.f.winSize().width - ( _cloneItem.offset().left + _cloneItem.width() )
+                                , height: _height
                             });
                             return;
                         }
                         _realWidth = _cloneItem.width();
-                        _p.selector().css( { 'width': _realWidth } );
+                        _p.selector().css( { 'width': _realWidth, 'height': _height } );
                     }
                     _p._model.defaultStyle().width = _realWidth;
                 });
