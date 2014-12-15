@@ -83,6 +83,14 @@
             }
             return _r;
         };
+    /**
+     * 初始化时是否添加延时
+     * @property INIT_DELAY
+     * @default  0
+     * @type int
+     * @static
+     */
+    AutoFixed.INIT_DELAY = 0;
 
     JC.BaseMVC.build( AutoFixed );
 
@@ -320,7 +328,13 @@
 
     _jdoc.ready( function(){
         JC.f.safeTimeout( function(){
-            AutoFixed.autoInit && AutoFixed.init();
+            if( JC.AutoFixed.INIT_DELAY ){
+                JC.f.safeTimeout( function(){
+                    AutoFixed.autoInit && AutoFixed.init();
+                }, null, 'AutoFixedasdfasefasedf', JC.AutoFixed.INIT_DELAY );
+            }else{
+                AutoFixed.autoInit && AutoFixed.init();
+            }
         }, null, 'AutoFixed23asdfa', 1 );
     });
 
