@@ -960,6 +960,7 @@
                     _done = true;
                     clearInterval( _interval );
                 }
+
                 _cb && _cb( _tmp + _startVal, _done, _timepass, _duration, _stepMs, _startVal, _maxVal );
             }, _stepMs );
 
