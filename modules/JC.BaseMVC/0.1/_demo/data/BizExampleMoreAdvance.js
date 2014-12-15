@@ -95,7 +95,7 @@
             }
     });
 
-    BizExampleMoreAdvance.Model._instanceName = 'JCBizExampleMoreAdvance';
+    BizExampleMoreAdvance.Model._instanceName = 'BizBizExampleMoreAdvance';
     JC.f.extendObject( BizExampleMoreAdvance.Model.prototype, {
         init:
             function(){
