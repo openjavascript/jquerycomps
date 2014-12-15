@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 17:24:35
+<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 18:02:12
          compiled from "/home/suches/udocs/website/git.me.btbtd.org/webroot/jc2_requirejs_dev/docs/docs-dev/tpl/Bizs.ActionLogic/0.1/doc.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:973252924547d5f7352ed94-28004860%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -25,7 +25,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '289a711da12b41818a9ed7aeaaf058ad0665160b' => 
     array (
       0 => '/home/suches/udocs/website/git.me.btbtd.org/webroot/jc2_requirejs_dev/docs/docs-dev/tpl/public/index/body_header.tpl',
-      1 => 1418635460,
+      1 => 1418637729,
       2 => 'file',
     ),
     '0e1cce0a883adb5863158110b4b0457db775980e' => 
@@ -172,7 +172,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     <?php /*  Call merged included template "public/index/body_header.tpl" */
 $_tpl_stack[] = $_smarty_tpl;
  $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate("public/index/body_header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array(), 0, '973252924547d5f7352ed94-28004860');
-content_548ea8d3841621_73627791($_smarty_tpl);
+content_548eb1a4a63bb5_62267196($_smarty_tpl);
 $_smarty_tpl = array_pop($_tpl_stack); 
 /*  End of included template "public/index/body_header.tpl" */?>
 
@@ -180,7 +180,7 @@ $_smarty_tpl = array_pop($_tpl_stack);
     <?php /*  Call merged included template "public/doc/body_header.tpl" */
 $_tpl_stack[] = $_smarty_tpl;
  $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate("public/doc/body_header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array(), 0, '973252924547d5f7352ed94-28004860');
-content_548ea8d387a641_89223445($_smarty_tpl);
+content_548eb1a4a9bbe3_74574312($_smarty_tpl);
 $_smarty_tpl = array_pop($_tpl_stack); 
 /*  End of included template "public/doc/body_header.tpl" */?>
 
@@ -190,7 +190,7 @@ $_smarty_tpl = array_pop($_tpl_stack);
     <?php /*  Call merged included template "public/doc/body_main.tpl" */
 $_tpl_stack[] = $_smarty_tpl;
  $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate("public/doc/body_main.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array('initAttr'=>1,'htmlAttr'=>1), 0, '973252924547d5f7352ed94-28004860');
-content_548ea8d388c724_32540149($_smarty_tpl);
+content_548eb1a4aac920_86295289($_smarty_tpl);
 $_smarty_tpl = array_pop($_tpl_stack); 
 /*  End of included template "public/doc/body_main.tpl" */?>
 
@@ -348,13 +348,13 @@ balType = remove_element 可用的 HTML 属性
     <?php /*  Call merged included template "public/doc/body_footer.tpl" */
 $_tpl_stack[] = $_smarty_tpl;
  $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate("public/doc/body_footer.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array(), 0, '973252924547d5f7352ed94-28004860');
-content_548ea8d38d5082_78802965($_smarty_tpl);
+content_548eb1a4af3370_63329759($_smarty_tpl);
 $_smarty_tpl = array_pop($_tpl_stack); 
 /*  End of included template "public/doc/body_footer.tpl" */?>
     <?php /*  Call merged included template "public/index/body_footer.tpl" */
 $_tpl_stack[] = $_smarty_tpl;
  $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate("public/index/body_footer.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array(), 0, '973252924547d5f7352ed94-28004860');
-content_548ea8d38d9e56_77100274($_smarty_tpl);
+content_548eb1a4af7913_09490779($_smarty_tpl);
 $_smarty_tpl = array_pop($_tpl_stack); 
 /*  End of included template "public/index/body_footer.tpl" */?>
 
@@ -366,9 +366,9 @@ $_smarty_tpl = array_pop($_tpl_stack);
     </body>
 </html>
 <?php }} ?>
-<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 17:24:35
+<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 18:02:12
          compiled from "/home/suches/udocs/website/git.me.btbtd.org/webroot/jc2_requirejs_dev/docs/docs-dev/tpl/public/index/body_header.tpl" */ ?>
-<?php if ($_valid && !is_callable('content_548ea8d3841621_73627791')) {function content_548ea8d3841621_73627791($_smarty_tpl) {?><div class="header js_compAutoFixed" style="z-index: 1000;" data-normalClass="cafHeaderNav" data-fixedClass="cafHeaderNav">
+<?php if ($_valid && !is_callable('content_548eb1a4a63bb5_62267196')) {function content_548eb1a4a63bb5_62267196($_smarty_tpl) {?><div class="header js_compAutoFixed" style="z-index: 1000;" data-normalClass="cafHeaderNav" data-fixedClass="cafHeaderNav">
     <div class="wrapper">
         <div class="header-nav clearfix">
             <h1 class="header-logo">
@@ -458,11 +458,10 @@ $_smarty_tpl->tpl_vars['value']->_loop = true;
 </div>
 <?php }?>
 
-<a name="btop"></a>
 <?php }} ?>
-<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 17:24:35
+<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 18:02:12
          compiled from "/home/suches/udocs/website/git.me.btbtd.org/webroot/jc2_requirejs_dev/docs/docs-dev/tpl/public/doc/body_header.tpl" */ ?>
-<?php if ($_valid && !is_callable('content_548ea8d387a641_89223445')) {function content_548ea8d387a641_89223445($_smarty_tpl) {?><div id="compTitle">
+<?php if ($_valid && !is_callable('content_548eb1a4a9bbe3_74574312')) {function content_548eb1a4a9bbe3_74574312($_smarty_tpl) {?><div id="compTitle">
     <h1 class="detail-title"><?php echo $_smarty_tpl->tpl_vars['COMP_NAME']->value;?>
 </h1>
     <h2 class="detail-subtitle">
@@ -476,9 +475,9 @@ $_smarty_tpl->tpl_vars['value']->_loop = true;
 </div>
 
 <?php }} ?>
-<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 17:24:35
+<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 18:02:12
          compiled from "/home/suches/udocs/website/git.me.btbtd.org/webroot/jc2_requirejs_dev/docs/docs-dev/tpl/public/doc/body_main.tpl" */ ?>
-<?php if ($_valid && !is_callable('content_548ea8d388c724_32540149')) {function content_548ea8d388c724_32540149($_smarty_tpl) {?>
+<?php if ($_valid && !is_callable('content_548eb1a4aac920_86295289')) {function content_548eb1a4aac920_86295289($_smarty_tpl) {?>
 <div id="bodynav" class="body-nav js_compAutoFixed" data-fixedTopPx="<?php echo $_smarty_tpl->tpl_vars['TSIDETOP']->value;?>
 "></div>
 
@@ -610,9 +609,9 @@ $_smarty_tpl->tpl_vars['comp']->_loop = true;
     <?php }?>
 </div>
 <?php }} ?>
-<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 17:24:35
+<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 18:02:12
          compiled from "/home/suches/udocs/website/git.me.btbtd.org/webroot/jc2_requirejs_dev/docs/docs-dev/tpl/public/doc/body_footer.tpl" */ ?>
-<?php if ($_valid && !is_callable('content_548ea8d38d5082_78802965')) {function content_548ea8d38d5082_78802965($_smarty_tpl) {?>
+<?php if ($_valid && !is_callable('content_548eb1a4af3370_63329759')) {function content_548eb1a4af3370_63329759($_smarty_tpl) {?>
 
     <script>
         requirejs( [ '<?php echo $_smarty_tpl->tpl_vars['PROJECT_ROOT']->value;?>
@@ -620,9 +619,9 @@ $_smarty_tpl->tpl_vars['comp']->_loop = true;
     </script>
  
 <?php }} ?>
-<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 17:24:35
+<?php /* Smarty version Smarty-3.1.18, created on 2014-12-15 18:02:12
          compiled from "/home/suches/udocs/website/git.me.btbtd.org/webroot/jc2_requirejs_dev/docs/docs-dev/tpl/public/index/body_footer.tpl" */ ?>
-<?php if ($_valid && !is_callable('content_548ea8d38d9e56_77100274')) {function content_548ea8d38d9e56_77100274($_smarty_tpl) {?><div class="footer">
+<?php if ($_valid && !is_callable('content_548eb1a4af7913_09490779')) {function content_548eb1a4af7913_09490779($_smarty_tpl) {?><div class="footer">
     <h2>友情链接：</h2>
     <p id="outlink" class="clearfix">
         <?php  $_smarty_tpl->tpl_vars['link'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['link']->_loop = false;

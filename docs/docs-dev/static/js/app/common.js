@@ -1,4 +1,7 @@
 ;requirejs( [ 'JC.common', 'JC.AutoFixed' ], function( ){
+
+    JC.AutoFixed.INIT_DELAY = 200;
+
     JWIN.on( 'GO_MAIN_TOP', function( _evt, _ms ){
         _ms = _ms || 0;
         JC.f.safeTimeout( function(){
