@@ -1,4 +1,4 @@
-<div id="bodynav" class="body-nav">
+<div id="bodynav" class="body-nav js_compAutoFixed" data-fixedTopPx="{{$TSIDETOP}}" >
     {{foreach from=$compsList item=value}}
     <dl>
         <dt>{{$value.name}}</dt>

@@ -1,5 +1,5 @@
 
-<div id="bodynav" class="body-nav"></div>
+<div id="bodynav" class="body-nav js_compAutoFixed" data-fixedTopPx="{{$TSIDETOP}}"></div>
 
 <div class="detail-attr">
     <h3 id="navmark-desc" class="detail-blockname ">组件简介</h3>
