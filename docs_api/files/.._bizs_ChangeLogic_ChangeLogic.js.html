@@ -61,6 +61,8 @@
             
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
+                <li><a href="../classes/JC.AutoFixed.html">JC.AutoFixed</a></li>
+            
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
@@ -330,8 +332,11 @@
  *
  * &lt;h2&gt;hide target 的 HTML 属性&lt;/h2&gt;
  * &lt;dl&gt;
- *      &lt;dt&gt;bclHideToggle = bool&lt;/dt&gt;
+ *      &lt;dt&gt;bclHideToggle = bool, default = false&lt;/dt&gt;
  *      &lt;dd&gt;显示或显示的时候, 是否与他项相反&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;bclDisableTarget = bool, default = false&lt;/dt&gt;
+ *      &lt;dd&gt;disabled 的时候, 是否与他项相反&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * @namespace   window.Bizs
@@ -689,6 +694,14 @@
                 return _r;
             }
 
+        , bclDisableToggle:
+            function( _target ){
+                var _r;
+                _target &amp;&amp; _target.is( &#x27;[bclDisableToggle]&#x27; ) 
+                    &amp;&amp; ( _r = JC.f.parseBool( _target.attr(&#x27;bclDisableToggle&#x27;) ) );
+                return _r;
+            }
+
         , bclDoneCallback:
             function(){
                 var _r = ChangeLogic.doneCallback, _tmp;
@@ -765,7 +778,12 @@
                 if( _bclDisableTarget &amp;&amp; _bclDisableTarget.length ){
                     _bclDisableTarget.each( function(){ 
                         var _sp = $( this );
-                        _sp.attr(&#x27;disabled&#x27;, _isDisable);
+
+                        if( _p._model.bclDisableToggle( _sp ) ){
+                            _sp.attr(&#x27;disabled&#x27;, !_isDisable);
+                        }else{
+                            _sp.attr(&#x27;disabled&#x27;, _isDisable);
+                        }
                         JC.Valid &amp;&amp; JC.Valid.setValid( _sp );
 
                         if( _sp.is( &#x27;[bclHideTargetSub]&#x27; ) ){

@@ -9740,7 +9740,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "pad_char_f": padChar
         , "script_path_f": scriptPath
         , "ts": function(){ return new Date().getTime(); }
-	, 'jhjkhjkhkjhjk': ''
     };
     JC.f.backward();
     /**
