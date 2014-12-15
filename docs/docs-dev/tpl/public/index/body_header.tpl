@@ -59,4 +59,3 @@
 </div>
 {{/if}}
 
-<a name="btop"></a>
