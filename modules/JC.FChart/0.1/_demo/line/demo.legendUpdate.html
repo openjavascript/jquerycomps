@@ -1,0 +1,282 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        .defDl > dd{
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+    </style>
+    <script src="../../../../../lib.js"></script>
+    <script src="../../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'JC.FChart' ], function(){
+        });
+    </script>
+</head>    
+<body>
+    <h2>JC.FChart - line chart 示例</h2>
+
+    <div class="js_jchartTest"></div>
+
+    <dl class="defDl">
+        <dt></dt>
+        <dd>
+            <div class="legend-update">
+                屏蔽 ： 
+                <label><input type="checkbox" data-index="0" checked="checked" />Temperature</label>
+                <label><input type="checkbox" data-index="1" checked="checked" />Rainfall</label>
+            </div>
+            <div class="js_compFChart"
+                chartScriptData="|script"
+                chartWidth="1000"
+                chartHeight="400"
+                >
+                <script type="text/template">
+                    {
+                        chart: {
+                            type: 'line' 
+                        }, 
+                        title: {
+                            text:'Chart Title'
+                        },
+                        subtitle: {
+                            text: 'sub title'
+                        }, 
+                        xAxis: {
+                            categories: [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ]
+                        }, 
+                        yAxis: {
+                            title: {
+                                text: '(Vertical Title - 中文)'
+                            }
+                        },
+                        series:[{
+                            name: 'Temperature'
+                            , data: [-50, 0, 3, -20, -20, 27, 28, 32, 30, 25, 15, -58]
+                            , style: { 'stroke': '#ff7100' } 
+                            , pointStyle: {}
+                        }, {
+                            name: 'Rainfall',
+                            data: [20, 21, 20, 100, 200, 210, 220, 100, 20, 10, 20, 10]
+                        }],
+                        credits: {
+                            enabled: true
+                            , text: 'fchart.openjavascript.org'
+                            , href: 'http://fchart.openjavascript.org/'
+                        },
+                        displayAllLabel: true,
+                        legend: {
+                            enabled: true
+                        },
+                        animation: {
+                            enabled: true
+                            , duration: 1
+                        },
+                        callback: {
+                            itemClickCallback: 'itemClickCallback'
+                            , groupClickCallback: 'groupClickCallback'
+                        },
+                        test: 'test'
+                    }
+                </script>
+            </div>
+        </dd>
+    </dl>
+    <dl class="defDl">
+        <dt></dt>
+        <dd>
+            <div class="js_compFChart"
+                chartScriptData="|script"
+                chartWidth="1000"
+                chartHeight="400"
+                >
+                <script type="text/template">
+                    {
+                        "chart": {
+                            "type": "line"
+                        },
+                        "title": {
+                            "text": "日趋势"
+                        },
+                        "xAxis": {
+                            "categories": [
+                                "2014-11-16",
+                                "2014-11-17",
+                                "2014-11-18",
+                                "2014-11-19",
+                                "2014-11-20",
+                                "2014-11-21",
+                                "2014-11-22",
+                                "2014-11-23",
+                                "2014-11-24",
+                                "2014-11-25",
+                                "2014-11-26",
+                                "2014-11-27",
+                                "2014-11-28",
+                                "2014-11-29",
+                                "2014-11-30",
+                                "2014-12-01",
+                                "2014-12-02",
+                                "2014-12-03",
+                                "2014-12-04",
+                                "2014-12-05",
+                                "2014-12-06",
+                                "2014-12-07",
+                                "2014-12-08",
+                                "2014-12-09",
+                                "2014-12-10",
+                                "2014-12-11",
+                                "2014-12-12",
+                                "2014-12-13",
+                                "2014-12-14",
+                                "2014-12-15"
+                            ]
+                        },
+                        "yAxis": {
+                            "customRate": true
+                        },
+                        "series": [
+                            {
+                                "name": "宝马",
+                                "data": [
+                                    176860,
+                                    196424,
+                                    195231,
+                                    199324,
+                                    199135,
+                                    195460,
+                                    182204,
+                                    183666,
+                                    204611,
+                                    198314,
+                                    194346,
+                                    194150,
+                                    166646,
+                                    155503,
+                                    152753,
+                                    168358,
+                                    178876,
+                                    187454,
+                                    180138,
+                                    199983,
+                                    175656,
+                                    175451,
+                                    198325,
+                                    199036,
+                                    193808,
+                                    194871,
+                                    183148,
+                                    171972,
+                                    174395,
+                                    210501
+                                ],
+                                "style": {
+                                    "stroke": "#ff7100"
+                                },
+                                "pointStyle": {}
+                            },
+                            {
+                                "name": "别克",
+                                "data": [
+                                    136029,
+                                    151341,
+                                    148358,
+                                    148603,
+                                    149719,
+                                    146800,
+                                    136326,
+                                    139291,
+                                    155798,
+                                    150060,
+                                    147560,
+                                    149341,
+                                    128774,
+                                    119725,
+                                    120879,
+                                    128208,
+                                    135880,
+                                    144561,
+                                    137500,
+                                    149427,
+                                    131567,
+                                    131653,
+                                    150249,
+                                    148043,
+                                    145478,
+                                    144805,
+                                    140207,
+                                    131481,
+                                    133515,
+                                    159550
+                                ],
+                                "style": {
+                                    "stroke": "#ff7100"
+                                },
+                                "pointStyle": {}
+                            }
+                        ],
+                        "displayAllLabel": false,
+                        "legend": {
+                            "enabled": false
+                        },
+                        "plotOptions": {
+                            "area": {
+                                "fillColor": {}
+                            }
+                        },
+                        "colors": [
+                            "0xbb9b3e",
+                            "0x4673c0"
+                        ],
+                        "callback": {
+                            "initedCallback": "initedCallback"
+                        }
+                    }
+                </script>
+            </div>
+        </dd>
+    </dl>
+    <script type="text/javascript">
+        function itemClickCallback() {
+            console.log( 'do itemClickCallback' );
+        }
+
+        function groupClickCallback() {
+            console.log( 'do groupClickCallback' );
+        }
+
+        function test(){
+            console.log('test');
+        }
+
+        $( document ).on( 'change', '.legend-update input', function( e ){
+            var _tar = $( e.target );
+            var _wrap = _tar.closest( 'dl' );
+            var _checkboxs = _wrap.find( '.legend-update input' );
+            var _swf = _wrap.find( 'object' )[ 0 ];
+            var _dataIndex;
+            var _tmpItem;
+            var _legend = {};
+
+            $.each( _checkboxs, function( _i, _item ){
+                _tmpItem = $( _item );
+                if( !_tmpItem.is( ':checked' ) ) {/* 传入的是需要隐藏的index */
+                    _dataIndex = _tmpItem.attr( 'data-index' )
+                    _legend[ _dataIndex ] = _dataIndex;
+                }
+            } );
+
+            _swf.legendUpdate( _legend );
+        } );
+    </script>
+</body>
+</html>
