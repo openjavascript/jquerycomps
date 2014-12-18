@@ -1048,24 +1048,31 @@
                     _p.nodeImgClick( _nodeId );
                     _callback &amp;&amp; _callback();
                 } else {/* 通过ajxa获取数据 */
-                    _nodeImg.removeClass(&#x27;folder_img_closed&#x27;).addClass(&#x27;folder_img_loading&#x27;);
+                    _nodeImg.removeClass(&#x27;folder_img_closed&#x27;);
+                    _p.showDataLoading( _node );
                     _nodeUl.data( &#x27;inited&#x27;, true );
 
                     if( !_model.data().url ){
+                        _p.hideDataLoading( _node );
                         return;
                     }
+
                     _p._model.ajaxData( _nodeId, function( _data ){
                         _pntLi.addClass(&#x27;folder_open&#x27;).removeClass(&#x27;folder_closed&#x27;);
-                        _nodeImg.removeClass(&#x27;folder_img_loading&#x27;).addClass(&#x27;folder_img_open&#x27;);
+                        _p.hideDataLoading( _node );
                         _p._process( _data.data, _nodeUl.show() );
                         _callback &amp;&amp; _callback();
                     });
                 }
             }
-        , showDataLoading:
-            function( _node ){
-                _node.siblings(&#x27;span&#x27;).removeClass(&#x27;folder_img_closed&#x27;).addClass(&#x27;folder_img_loading&#x27;);
-            }
+
+        , showDataLoading: function( _node ){
+            _node.siblings(&#x27;span&#x27;).removeClass(&#x27;folder_img_closed&#x27;).addClass(&#x27;folder_img_loading&#x27;);
+        }
+
+        , hideDataLoading: function( _node ){
+            _node.siblings(&#x27;span&#x27;).removeClass(&#x27;folder_img_loading&#x27;).addClass(&#x27;folder_img_open&#x27;);
+        }
     });
     /**
      * 树节点的点击事件
