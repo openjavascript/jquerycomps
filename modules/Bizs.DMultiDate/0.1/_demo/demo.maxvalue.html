@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+            dl dd{ margin: 10px 0; }
+            .js_multidateBox{ display: none;}
+        </style>
+        <link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true; 
+
+            requirejs( [ 'JC.Tips', 'JC.Calendar', 'JC.Form', 'Bizs.DMultiDate', 'Bizs.FormLogic', 'JC.Valid' ]
+            , function( Tips, Calendar, JCForm, DMultiDate, FormLogic ) {
+                
+            }
+            );
+        </script>
+    </head>
+    <body>
+        <br /><br />
+        <form action='' method='get' class="js_bizsFormLogic">
+            <dl>
+                <dd>
+                    <div class="js_autoDMultiDate" 
+                        hiddendateiso="true"
+                        mdstartdate=".js_startdate"
+                        mdenddate=".js_enddate"
+
+                        mddate="input.js_multidate"
+                        mddayrange="31"
+                        mdweekrange="12"
+                        mdmonthrange="12"
+                        mdseasonrange="8"
+                        mdyearrange="2"
+                        >
+                        <select name="granularity" class="dataspan js_dateSpan">
+                            <option value="day" >日数据</option>
+                            <option value="week" >周数据</option>
+                            <option value="month" >月数据</option>
+                            <option value="season" >季数据</option>
+                        </select>
+                        <input type="text" class="js_multidate" name="date1"
+                        multidate="date"
+                        datatype="daterange" 
+                        currentcanselect="true"
+                        maxvalue="NOW,-1D" 
+                        size="20" readonly
+                        emel="/em"
+                        ignoreUrlFill="true"
+                        value=""
+                        reqmsg="时间粒度"
+                        >
+                        <em></em>
+
+                        <input type="hidden" name="start_date" class="js_startdate" />
+                        <input type="hidden" name="end_date" class="js_enddate" />
+                    </div>
+                    <div>
+                        <button type="submit">submit</button>
+                        <button type="reset" onclick="location.href='?'">reset</button>
+                    </div>
+                </dd>
+            </dl>
+            <br>
+            <br>
+            <br>
+            <br>
+        </form>
+        <br /><br />
+
+    </body>
+</html>
+

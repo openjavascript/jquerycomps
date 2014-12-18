@@ -788,24 +788,31 @@
                     _p.nodeImgClick( _nodeId );
                     _callback && _callback();
                 } else {/* 通过ajxa获取数据 */
-                    _nodeImg.removeClass('folder_img_closed').addClass('folder_img_loading');
+                    _nodeImg.removeClass('folder_img_closed');
+                    _p.showDataLoading( _node );
                     _nodeUl.data( 'inited', true );
 
                     if( !_model.data().url ){
+                        _p.hideDataLoading( _node );
                         return;
                     }
+
                     _p._model.ajaxData( _nodeId, function( _data ){
                         _pntLi.addClass('folder_open').removeClass('folder_closed');
-                        _nodeImg.removeClass('folder_img_loading').addClass('folder_img_open');
+                        _p.hideDataLoading( _node );
                         _p._process( _data.data, _nodeUl.show() );
                         _callback && _callback();
                     });
                 }
             }
-        , showDataLoading:
-            function( _node ){
-                _node.siblings('span').removeClass('folder_img_closed').addClass('folder_img_loading');
-            }
+
+        , showDataLoading: function( _node ){
+            _node.siblings('span').removeClass('folder_img_closed').addClass('folder_img_loading');
+        }
+
+        , hideDataLoading: function( _node ){
+            _node.siblings('span').removeClass('folder_img_loading').addClass('folder_img_open');
+        }
     });
     /**
      * 树节点的点击事件
