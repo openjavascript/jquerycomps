@@ -102,6 +102,8 @@
             isset( $allVersionComps['api'] ) && ( $API_URL = $allVersionComps['api'] );
         }
 
+        $smarty->assign( 'JCCommonLastVersion', $datas["global"]["JCCommonLastVersion"] );
+
         $smarty->assign( 'SHOW_COMP_INFO', 1 );
         $smarty->assign( 'COMP_ROOT', $COMP_ROOT );
         $smarty->assign( 'COMP_URL', $COMP_URL );
