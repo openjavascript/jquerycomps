@@ -2616,7 +2616,8 @@ function (){
                 return _r;
             }
         /**
-         * 这里需要优化检查, 目前会重复检查
+         * 这里需要优化检查, 目前会重复检查(2次)
+         * 
          */
         , checkedType:
             function( _item, _type ){
@@ -2631,19 +2632,31 @@ function (){
                     , _count = 0
                     , _finder = _item
                     , _pntIsLabel = _item.parent().prop('nodeName').toLowerCase() == 'label' 
-                    , _finderKey = _type + 'finder';
+                    , _finderKey = _type + 'finder'
+                    , _KEY = 'checkedType_' + _type 
+                    , _isReturn
                     ;
 
-                //JC.log( _item.attr('name') + ', ' + _item.val() );
+                if( _p.checkRepeatProcess( _item, _KEY, true ) && !_item.data( 'Last' + _type ) ) {
+                    return !_item.data( 'isErrorVck' ); 
+                }
+                //JC.log( 'checkedType', JC.f.gid() );
 
                 if( _item.is( '[datatarget]' ) ){
                     _items = JC.f.parentSelector( _item, _item.attr('datatarget') );                    
                     _tmp = [];
                     _items.each( function(){
                         var _sp = $(this);
+                        if( 
                             ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
                             && !_sp.prop('disabled')
-                            && _tmp.push( _sp );
+                        ){
+                            _tmp.push( _sp );
+                            if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
+                                _isReturn = true;
+                            }
+                        }
+
                     });
                     _items = $( _tmp );
                 }else{
@@ -2659,10 +2672,17 @@ function (){
                     _tmp.each( function(){
                         var _sp = $(this);
                         var _re = new RegExp( _type, 'i' );
-                        _re.test( _sp.attr('datatype') ) 
-                            && ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
-                            && !_sp.prop('disabled')
-                            && _items.push( _sp );
+
+                        if( 
+                            _re.test( _sp.attr('datatype') ) 
+                                && ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
+                                && !_sp.prop('disabled')
+                          ){
+                            _items.push( _sp );
+                            if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
+                                _isReturn = true;
+                            }
+                        }
                     });
                     _items = $( _items );
                }
@@ -2695,6 +2715,17 @@ function (){
                         }
                     }
 
+                    if( !_r ){
+                        _item.data( 'isErrorVck', true );
+                        _items.each( function(){
+                            $( this ).data( 'isErrorVck', true );
+                        });
+                    }else{
+                        _item.data( 'isErrorVck', false );
+                        _items.each( function(){
+                            $( this ).data( 'isErrorVck', false );
+                        });
+                    }
                     !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                }
 
@@ -2983,7 +3014,7 @@ function (){
         Valid.checkTimeout( _p );
     });
     $(document).delegate( 'input', 'focus', function($evt){
-        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        var _p = $(this), _ins = Valid.getInstance(), _v = ( _p.val()||'').trim();
         if( _p.attr( 'type' ) ) return;
         if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
         _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
@@ -3006,7 +3037,7 @@ function (){
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea'
                             +', select, input[type=file], input[type=checkbox], input[type=radio]', 'focus', function($evt){
-        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        var _p = $(this), _ins = Valid.getInstance(), _v = ( _p.val() || '' ).trim();
         if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
         _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
         !_v && Valid.setValid( _p );
