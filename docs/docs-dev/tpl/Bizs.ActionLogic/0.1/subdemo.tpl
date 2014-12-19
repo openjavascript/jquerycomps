@@ -1,22 +1,15 @@
 {{extends file="public/simple_demo/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<!-- start JC style -->
-<!-- end JC style -->
-<style>
-</style>
-
-{{/block}}
-
-{{block name="body_main"}}
-
 <style class="show-css">
 @import url( '{{$URL_ROOT}}/modules/JC.Panel/0.2/res/default/style.css' );
 </style>
+{{/block}}
+
+{{block name="body_main"}}
     <div class="codeview-view">
         <div class="codeview-cssview">
-<textArea style="display:none;">
-</textArea>
+            <textArea style="display:none;"></textArea>
         </div>
         <div class="codeview-jsview">
             <textArea style="display:none;"></textArea>
@@ -85,7 +78,12 @@
 
     </dd>
 </dl>
+            </div>
+        </div>
+    </div>
+{{/block}}
 
+{{block name="body_footer_js" append}}
 <script type="text/template" id="scriptPanel">
 <div class="UPanel UPanelString" style="display:none; width: 600px;" >    
     <form action="{{$COMP_ROOT}}/_demo/data/handler.php" method="POST"
@@ -137,9 +135,6 @@
     </form>
 </div>
 </script>
-            </div>
-        </div>
-    </div>
 
 <script type="text/javascript" class="show-js">
     JC.debug = true;
@@ -173,6 +168,6 @@
         }
     }
 </script>
-{{include file="public/simple_demo/body_footer.tpl"}}
+
 {{/block}}
 

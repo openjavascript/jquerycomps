@@ -1,10 +1,9 @@
 {{extends file="public/doc/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<!-- start JC style -->
-{{*<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />*}}
-<!-- end JC style -->
-
+{{*
+    <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
+*}}
 {{/block}}
 
 {{block name="body_main"}}
@@ -66,3 +65,5 @@
 
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}

@@ -140,3 +140,5 @@ balType = remove_element 可用的 HTML 属性
 
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}

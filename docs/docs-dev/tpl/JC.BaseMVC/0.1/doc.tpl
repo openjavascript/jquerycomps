@@ -82,3 +82,5 @@
 
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}

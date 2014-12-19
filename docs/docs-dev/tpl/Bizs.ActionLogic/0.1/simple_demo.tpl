@@ -18,10 +18,10 @@
         <div class="codeview-pageview nowview">
         </div>
     </div>
-
-    <script type="text/javascript" class="show-js">
-        requirejs( [ '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}' ] );
-
-    </script>
 {{/block}}
 
+{{block name="body_footer_js" append}}
+    <script type="text/javascript" class="show-js">
+        requirejs( [ '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}' ] );
+    </script>
+{{/block}}

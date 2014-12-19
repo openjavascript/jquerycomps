@@ -1,7 +1,9 @@
 {{extends file="public/demo/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<!-- <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' /> -->
+{{*
+    <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
+*}}
 {{/block}}
 
 {{block name="body_main"}}
@@ -27,7 +29,9 @@
         </div>
     </div>
 
+{{/block}}
+
+{{block name="body_footer_js" append}}
 <script type="text/javascript">
 </script>
 {{/block}}
-

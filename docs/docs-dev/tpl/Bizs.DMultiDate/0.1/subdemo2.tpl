@@ -9,9 +9,7 @@
 {{block name="body_main"}}
     <div class="codeview-view">
         <div class="codeview-cssview">
-<textArea style="display:none;">
-<link href='{{$URL_ROOT}}/modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
-</textArea>
+            <textArea style="display:none;"></textArea>
         </div>
         <div class="codeview-jsview">
             <textArea style="display:none;"></textArea>
@@ -58,6 +56,9 @@
         </div>
     </div>
 
+{{/block}}
+
+{{block name="body_footer_js" append}}
 <script type="text/template" class="show-html">
    <div class="js_autoDMultiDate" 
         mddayrange="31"
@@ -106,6 +107,4 @@
     });
 
 </script>
-{{include file="public/simple_demo/body_footer.tpl"}}
 {{/block}}
-

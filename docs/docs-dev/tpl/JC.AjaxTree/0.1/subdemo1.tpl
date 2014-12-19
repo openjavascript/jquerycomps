@@ -7,12 +7,9 @@
 {{/block}}
 
 {{block name="body_main"}}
-{{include file="public/simple_demo/body_header.tpl"}}
     <div class="codeview-view">
         <div class="codeview-cssview">
-<textArea style="display:none;">
-<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
-</textArea>
+            <textArea style="display:none;"></textArea>
         </div>
         <div class="codeview-jsview">
             <textArea style="display:none;"></textArea>
@@ -63,7 +60,9 @@
             </div>
         </div>
     </div>
+{{/block}}
 
+{{block name="body_footer_js" append}}
 <script type="text/template" class="show-html">
 <div class="js_compAjaxTree" data-cajScriptData="|script">
     <script type="text/template">
@@ -100,6 +99,4 @@
 <script type="text/javascript" class="show-js">
     requirejs( [ '{{$COMP_NAME}}' ] );
 </script>
-{{include file="public/simple_demo/body_footer.tpl"}}
 {{/block}}
-

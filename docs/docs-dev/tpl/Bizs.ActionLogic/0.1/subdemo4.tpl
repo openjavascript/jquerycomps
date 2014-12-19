@@ -1,11 +1,14 @@
 {{extends file="public/simple_demo/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<!-- start JC style -->
-<!-- end JC style -->
-<style>
+<style class="show-css">
+.defdl dt { font-weight: bold; margin: 10px auto; }
+.defdl dd { line-height: 24px; }
+.defdl div {
+    padding: 5px;
+    margin: 5px;
+}
 </style>
-
 {{/block}}
 
 {{block name="body_header" append}}
@@ -15,17 +18,7 @@
 </div>
 {{/block}}
 
-
 {{block name="body_main"}}
-
-<style class="show-css">
-.defdl dt { font-weight: bold; margin: 10px auto; }
-.defdl dd { line-height: 24px; }
-.defdl div {
-    padding: 5px;
-    margin: 5px;
-}
-</style>
     <div class="codeview-view">
         <div class="codeview-cssview">
 <textArea style="display:none;">
@@ -102,13 +95,13 @@
             </div>
         </div>
     </div>
+{{/block}}
 
+{{block name="body_footer_js" append}}
 <script type="text/javascript" class="show-js">
     JC.debug = true;
 
     requirejs( [ '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}', 'Bizs.FormLogic' ], function( {{$NAME}} ){
     });
 </script>
-{{include file="public/simple_demo/body_footer.tpl"}}
 {{/block}}
-

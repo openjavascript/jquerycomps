@@ -1,11 +1,9 @@
 {{extends file="public/simple_demo/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<!-- start JC style -->
 <style class="show-css">
 @import url( '{{$URL_ROOT}}/modules/JC.Calendar/0.3/res/default/style.css'  );
 </style>
-<!-- end JC style -->
 <style>
     .ajaxtree-demo1 {
         margin-left: 50px;
@@ -17,9 +15,7 @@
 {{block name="body_main"}}
     <div class="codeview-view">
         <div class="codeview-cssview">
-<textArea style="display:none;">
-<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
-</textArea>
+            <textArea style="display:none;"></textArea>
         </div>
         <div class="codeview-jsview">
             <textArea style="display:none;"></textArea>
@@ -116,10 +112,10 @@
     </div>
 
 </script>
+{{/block}}
 
+{{block name="body_footer_js" append}}
 <script type="text/javascript" class="show-js">
     requirejs( [ '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}' ] );
 </script>
-{{include file="public/simple_demo/body_footer.tpl"}}
 {{/block}}
-

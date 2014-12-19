@@ -513,3 +513,6 @@ winSize ( _win, ) static
 
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}
+

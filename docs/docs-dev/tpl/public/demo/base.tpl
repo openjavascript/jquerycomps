@@ -11,9 +11,6 @@
 {{/block}}
 
 {{block name="body_header" append}}
-{{/block}}
-
-{{block name="inherit_body_header" append}}
     {{include file="public/demo/body_header.tpl"}}
 {{/block}}
 

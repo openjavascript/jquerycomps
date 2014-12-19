@@ -53,7 +53,9 @@
 
         </div>
     </div>
+{{/block}}
 
+{{block name="body_footer_js" append}}
 {{*
 <script type="text/javascript">
     JC.debug = 1;
@@ -65,4 +67,3 @@
 </script>
 *}}
 {{/block}}
-

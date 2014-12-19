@@ -14,7 +14,6 @@
         {{include file="public/body_header.tpl"}}
         {{include file="public/index/body_header.tpl"}}
         {{block name="body_header"}}{{/block}}
-
         {{block name="inherit_body_header"}}{{/block}}
 
         <div class="wrap">
