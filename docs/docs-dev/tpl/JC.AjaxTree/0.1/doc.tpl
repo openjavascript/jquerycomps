@@ -8,7 +8,6 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" htmlAttr=1 dataFormat=1}}
 
     <!-- 外链形式 start -->
@@ -103,7 +102,5 @@
         }
     </textArea>
     <!-- 数据结构 end -->
-</div>
-
 {{/block}}
 

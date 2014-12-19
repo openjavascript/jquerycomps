@@ -4,7 +4,6 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" initAttr=1 htmlAttr=1}}
 
     <!-- 外链形式 start -->
@@ -138,8 +137,6 @@ balType = remove_element 可用的 HTML 属性
         删除前的回调
     </textArea>
     <!-- HTML属性 end -->
-
-</div>
 
 {{/block}}
 

@@ -4,7 +4,6 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" propertyAttr=1 methodAttr=1 }}
 
     <!-- 外链形式 start -->
@@ -511,8 +510,6 @@ winSize ( _win, ) static
     Returns:
         Object
     </textarea>
-
-</div>
 
 {{/block}}
 

@@ -8,7 +8,6 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" htmlAttr=1 dataFormat=1}}
 
     <!-- 外链形式 start -->
@@ -71,7 +70,6 @@
         数据格式为dom节点，并用slidersubitems属性进行指定
     </textArea>
     <!-- 数据结构 end -->
-</div>
 
 {{/block}}
 

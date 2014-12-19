@@ -2,14 +2,13 @@
 
 {{block name="html_header_css" append}}
 <!-- start JC style -->
-<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
+{{*<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />*}}
 <!-- end JC style -->
 
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
-    {{include file="public/doc/body_main.tpl" htmlAttr=1 dataFormat=1}}
+    {{include file="public/doc/body_main.tpl" htmlAttr=1 }}
 
     <!-- 外链形式 start -->
     <textArea class="detail-codetpl" type="text/template">
@@ -64,9 +63,6 @@
         是否忽略 URL 自动填充
     </textArea>
     <!-- HTML属性 end -->
-
-    
-</div>
 
 {{/block}}
 
