@@ -70,6 +70,9 @@
 	        , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
 	        , 'JC.DragSelect': 'modules/JC.DragSelect/0.1/DragSelect'
 
+	        , 'JC.ExampleComponent': 'modules/JC.ExampleComponent/0.1/ExampleComponent'
+	        , 'Bizs.ExampleComponent': 'modules/Bizs.ExampleComponent/0.1/ExampleComponent'
+
 	        , 'JC.FChart': 'modules/JC.FChart/0.1/FChart'
 	        , 'JC.Form': 'modules/JC.Form/0.2/Form'
 	        , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
