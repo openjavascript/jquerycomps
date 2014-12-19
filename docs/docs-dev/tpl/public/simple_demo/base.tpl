@@ -1,4 +1,4 @@
-{{extends file="public/base.tpl"}}
+{{extends file="public/base.simple.tpl"}}
 
 {{block name="inherit_header" append}}
 

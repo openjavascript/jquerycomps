@@ -8,24 +8,19 @@
 
 {{/block}}
 
-{{block name="body_main"}}
-{{include file="public/simple_demo/body_header.tpl"}}
-{{assign var="url" value=$smarty.server.REQUEST_URI|regex_replace:"/\&(usercallback|baldone)\=[^&]+/":""}}
-
+{{block name="body_header" append}}
+{{assign var="url" value=$smarty.server.REQUEST_URI|regex_replace:"/\&type\=[^&]+/":""}}
 <div>
     {{$url}}
 </div>
+{{/block}}
+
+
+{{block name="body_main"}}
 
 <style class="show-css">
 @import url( '{{$URL_ROOT}}/modules/JC.Panel/0.2/res/default/style.css' );
 </style>
-<div class="codeview-wrap">
-    <div class="codeview-tabbar">
-        <a href="#" class="codeview-css">CSS</a>
-        <a href="#" class="codeview-js">JS</a>
-        <a href="#" class="codeview-html">HTML</a>
-        <a href="#" class="codeview-page selected">PAGE</a>
-    </div>
     <div class="codeview-view">
         <div class="codeview-cssview">
 <textArea style="display:none;">
@@ -173,7 +168,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <script type="text/javascript" class="show-js">
     JC.debug = true;

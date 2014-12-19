@@ -8,13 +8,16 @@
 
 {{/block}}
 
-{{block name="body_main"}}
-{{include file="public/simple_demo/body_header.tpl"}}
-{{assign var="url" value=$smarty.server.REQUEST_URI|regex_replace:"/\&(usercallback|baldone)\=[^&]+/":""}}
 
+{{block name="body_header" append}}
+{{assign var="url" value=$smarty.server.REQUEST_URI|regex_replace:"/\&type\=[^&]+/":"" scope="global"}}
 <div>
     {{$url}}
 </div>
+{{/block}}
+
+
+{{block name="body_main"}}
 
 <style class="show-css">
 .defdl dt { font-weight: bold; margin: 10px auto; }
@@ -24,13 +27,6 @@
     margin: 5px;
 }
 </style>
-<div class="codeview-wrap">
-    <div class="codeview-tabbar">
-        <a href="#" class="codeview-css">CSS</a>
-        <a href="#" class="codeview-js">JS</a>
-        <a href="#" class="codeview-html">HTML</a>
-        <a href="#" class="codeview-page selected">PAGE</a>
-    </div>
     <div class="codeview-view">
         <div class="codeview-cssview">
 <textArea style="display:none;">
@@ -108,7 +104,7 @@
                 type="submit"
                 class="js_bizsActionLogic"
                 balType="hit_value"
-                balTarget="/input[name=type]"
+                balTarget="/input[name=v]"
                 balValue="1"
                 >
                 submit value 1
@@ -118,14 +114,14 @@
                 type="submit"
                 class="js_bizsActionLogic"
                 balType="hit_value"
-                balTarget="/input[name=type]"
+                balTarget="/input[name=v]"
                 balValue="2"
                 >
                 submit value 2
             </button>
 
             <div>
-                <input type="hidden" name="type" value="" />
+                <input type="hidden" name="v" value="" />
             </div>
         </div>
     </dd>
@@ -134,7 +130,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <script type="text/javascript" class="show-js">
     JC.debug = true;
