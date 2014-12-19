@@ -24,7 +24,7 @@
         $.cookie( 'hideheader', 1, { expires: 30 } );
     });
 
-    $(document).on( 'mouseover', '[hover]', function( e ){
+    JDOC.on( 'mouseover', '[hover]', function( e ){
         var _ele = $( e.target );
         _ele.addClass( _ele.attr( 'hover' ) );
     }).on( 'mouseleave', '[hover]', function( e ){ 
@@ -46,5 +46,15 @@
             , backgroundColor : '#e6decb'
         } );
     } );
+
+    /*
+    JDOC.delegate( '#bodynav a[href]', 'click', function( _evt ){
+        var _p = $( this ), _header = $( '#mainHeader' );
+        if( !( _header.length ) ) return;
+        JC.f.safeTimeout( function(){
+            JDOC.scrollTop( JDOC.scrollTop() - _header.height() );
+        }, null, 'bodynav_stasdfasd', 1 );
+    });
+    */
 
 });

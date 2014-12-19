@@ -4,7 +4,6 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" methodAttr=1 }}
 
     <!-- 外链形式 start -->
@@ -55,7 +54,7 @@
          JC.f.urlDetect     
     </textArea>
 
-</div>
-
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}

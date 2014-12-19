@@ -1,12 +1,9 @@
 {{extends file="public/demo/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
-    {{include file="public/demo/body_main.tpl"}}
 
     <div class="detail-demo">
         <h3 id="navmark-demo" class="detail-blockname">DEMO</h3>
@@ -28,9 +25,10 @@
             </div>
         </div>
     </div>
-</div>
 
+{{/block}}
+
+{{block name="body_footer_js" append}}
 <script type="text/javascript">
 </script>
 {{/block}}
-

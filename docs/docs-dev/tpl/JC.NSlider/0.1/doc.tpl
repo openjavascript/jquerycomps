@@ -1,14 +1,11 @@
 {{extends file="public/doc/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<!-- start JC style -->
 <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
-<!-- end JC style -->
 
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" htmlAttr=1 dataFormat=1}}
 
     <!-- 外链形式 start -->
@@ -71,7 +68,8 @@
         数据格式为dom节点，并用slidersubitems属性进行指定
     </textArea>
     <!-- 数据结构 end -->
-</div>
 
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}
