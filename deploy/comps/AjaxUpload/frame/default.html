@@ -73,20 +73,27 @@
 
                     _fm.on( 'submit', function( _evt ){
                         var _flPath = _flBtn.val().trim();
-                        JC.log( 's1', _flPath );
+                        //JC.log( 's1', _flPath );
                         if( !_flPath ) return prevent( _evt );
-                        JC.log( 's2' );
+                        //JC.log( 's2' );
 
                         if( !validFileExt( _flPath, _flBtn.attr('fileExt') ) ) {
                             _auIns.trigger( 'ERR_FILE_EXT', [ _flPath ] );
                             try{ _flBtn.val(''); }catch(ex){}
                             return prevent( _evt );
                         }
-                        JC.log( 's3' );
+                        //JC.log( 's3' );
 
                         _auIns.trigger( 'BeforeUpload' );
 
-                        JC.log( 's4' );
+                        //JC.log( 's4' );
+                        
+                        if( !validFileSize( _flBtn, _flBtn.attr('fileSize') ) ) {
+                            _auIns.trigger( 'ERR_FILE_SIZE',[ _flPath ]);
+                            try{ _flBtn.val(''); }catch(ex){}
+                            return prevent( _evt );
+                        }
+                        
                     });
 
                     _disBtn.on('click', function( _evt ){
@@ -114,8 +121,10 @@
             function initPage( _ins, _model ){
                 //alert( [ 'initPage', _model.cauUrl() ] );
                 _auIns = _ins; 
-                _fm.attr( 'action', addUrlParams( _model.cauUrl(), { 'rnd': new Date().getTime() } ) );
+                    _fm.attr( 'action', JC.f.addUrlParams( _model.cauUrl(), { 'rnd': new Date().getTime() } ) );
                 _model.cauFileExt() && _flBtn.attr( 'fileExt', _model.cauFileExt() );
+                
+                _model.cauFileSize() && _flBtn.attr( 'fileSize', _model.cauFileSize() );
 
                 _model.cauFileName() && _flBtn.attr( 'name', _model.cauFileName() );
 
@@ -176,6 +185,43 @@
                     }
                 }
 
+                return _r;
+            }
+            
+            /**
+             * 验证文件大小
+             */
+            function validFileSize( _flBtn, _flSize ){
+                var _r = true;
+                _flSize = _flSize || '1024 Mb';
+
+                _flBtn = _flBtn[0];
+                isIE = /msie/i.test(navigator.userAgent) && !window.opera; 
+                if (isIE && _flBtn) {         
+                    try{
+                        var fileSystem = new ActiveXObject("Scripting.FileSystemObject");  
+                    }catch( ex ){
+                        return true; 
+                    }
+                    _flPath  = _flBtn.value; 
+                    var file = fileSystem.GetFile (_flPath);  
+                    fileSize = file.Size;
+              } else {
+                    fileSize = _flBtn.files[0].size;   
+              }    
+              var size = 0;
+
+              if( /k/i.test( _flSize ) ){
+                  size = fileSize / Math.pow( 1024, 1 );
+              }else if( /g/i.test( _flSize ) ){
+                  size = fileSize / Math.pow( 1024, 3 );
+              }else{
+                  size = fileSize / Math.pow( 1024, 2 );
+              }
+
+              if(size > parseFloat(_flSize) || size <= 0 ){   
+            	  _r = false ;
+              }    
                 return _r;
             }
 

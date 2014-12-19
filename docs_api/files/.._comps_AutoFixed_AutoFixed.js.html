@@ -281,6 +281,11 @@
  *      &lt;dd&gt;
  *          滚动到多少像素式开始执行 fixed
  *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;data-fixAnchor = bool&lt;/dt&gt;
+ *      &lt;dd&gt;
+ *          是否修正 html 锚点定位问题( 该问题通常出现在 position fixed top = 0 )
+ *      &lt;/dd&gt;
  *  &lt;/dl&gt; 
  *
  * @namespace   JC
@@ -367,6 +372,16 @@
                 });
 
                 _p._model.saveDefault();
+
+                if( _p._model.fixAnchor() ){
+                    JDOC.delegate( &#x27;a[href]&#x27;, &#x27;click&#x27;, function( _evt ){
+                        var _sp = $( this ), _href = _sp.attr( &#x27;href&#x27; ) || &#x27;&#x27;;
+                        if( !/^[#]/.test( _href ) ) return;
+                        JC.f.safeTimeout( function(){
+                            JDOC.scrollTop( JDOC.scrollTop() - _p.selector().height() );
+                        }, null, _p._model.gid(), 1 );
+                    });
+                }
 
                 JWIN.on( &#x27;scroll&#x27;, function( _evt ){
                     var _st = JDOC.scrollTop(), _cp = _p._model.defaultStyle().gtop;
@@ -511,6 +526,12 @@
                 //JC.log( &#x27;AutoFixed.Model.init:&#x27;, new Date().getTime() );
             }
 
+        , gid: 
+            function(){
+                !this._gid &amp;&amp; ( this._gid = JC.f.gid() );
+                return this._gid;
+            }
+
         , defaultStyle:
             function(){
                 var _r = { 
@@ -561,6 +582,11 @@
             function(){
                 typeof this._fixedTopPx == &#x27;undefined&#x27; &amp;&amp; ( this._fixedTopPx = this.floatProp( &#x27;data-fixedTopPx&#x27; ) );
                 return this._fixedTopPx;
+            }
+
+        , fixAnchor:
+            function(){
+                return this.boolProp( &#x27;data-fixAnchor&#x27; );
             }
 
         , fixedClass: function(){ return this.attrProp( &#x27;data-fixedClass&#x27; ); }

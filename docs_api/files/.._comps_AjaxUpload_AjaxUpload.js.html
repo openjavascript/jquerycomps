@@ -306,6 +306,9 @@ url: ?callback=callback
      *      &lt;dt&gt;cauFileExt = file ext, optional&lt;/dt&gt;
      *      &lt;dd&gt;允许上传的文件扩展名, 例: &quot;.jpg, .jpeg, .png, .gif&quot;&lt;/dd&gt;
      *
+     *      &lt;dt&gt;cauFileSize = [ KB | MB | GB ], default = 1024 MB&lt;/dt&gt;
+     *      &lt;dd&gt;上传文件大小限制&lt;/dd&gt;
+     *
      *      &lt;dt&gt;cauFileName = string, default = file&lt;/dt&gt;
      *      &lt;dd&gt;上传文件的 name 属性&lt;/dd&gt;
      *
@@ -531,6 +534,13 @@ url: ?callback=callback
 
                 });
                 /**
+                 * 文件大小错误
+                 */
+                _p.on( &#x27;ERR_FILE_SIZE&#x27;, function( _evt, _flPath ){
+                    _p._view.errFileSize( _flPath );
+                    _p._view.updateChange();
+                });
+                /**
                  * 文件扩展名错误
                  */
                 _p.on( &#x27;ERR_FILE_EXT&#x27;, function( _evt, _flPath ){
@@ -542,6 +552,13 @@ url: ?callback=callback
                  */
                 _p.on( &#x27;BeforeUpload&#x27;, function( _d ){
                     _p._view.beforeUpload();
+                    _p._model.cauBeforeUploadCallback()
+                    &amp;&amp; _p._model.cauBeforeUploadCallback().call(
+                        _p
+                        , _d
+                        , _p._model.selector()
+                        , _p._model.frame() 
+                    );
                 });
                 /**
                  * 上传完毕触发的事件
@@ -684,6 +701,8 @@ url: ?callback=callback
 
         , cauFileExt: function(){ return this.stringProp( &#x27;cauFileExt&#x27; ); }
 
+        , cauFileSize: function(){ return this.stringProp( &#x27;cauFileSize&#x27; ) || &#x27;1024 MB&#x27;; }
+        
         , cauFileName: 
             function(){ 
                 return this.attrProp(&#x27;cauFileName&#x27;) || this.attrProp(&#x27;name&#x27;); 
@@ -714,6 +733,11 @@ url: ?callback=callback
                 return this.boolProp( &#x27;cauDefaultHide&#x27; );
             }
 
+        , cauBeforeUploadCallback:
+            function(){
+                return this.callbackProp( &#x27;cauBeforeUploadCallback&#x27; );
+            }
+        
         , cauUploadDoneCallback:
             function(){
                 return this.callbackProp( &#x27;cauUploadDoneCallback&#x27; );
@@ -1013,6 +1037,22 @@ url: ?callback=callback
                         : alert( _msg )
                         ;
                 }
+            }
+        
+        , errFileSize: 
+            function( _flPath ){
+	            var _p = this, _cb = _p._model.callbackProp( &#x27;cauFileExtErrCallback&#x27; );
+	            if( _cb ){
+	                _cb.call( _p._model.selector(), _p._model.cauFileSize(), _flPath, _p._model.frame() );
+	            }else{
+	                var _msg = JC.f.printf( &#x27;文件大小错误, 允许上传的文件大小为: {0} &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{1}&lt;/p&gt;&#x27;
+	                                    , _p._model.cauFileSize(), _flPath );
+	                JC.Dialog 
+	                    ? JC.Dialog.alert( _msg, 1 )
+	                    : alert( _msg )
+	                    ;
+	            }
+
             }
 
         , errFatalError: 
