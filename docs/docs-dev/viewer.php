@@ -33,6 +33,7 @@
     $TPL_PATH = FILE_ROOT . "/tpl/$MODULE/$VERSION/$FILE";
     $COMP_ROOT = '';
     $COMP_URL = '';
+    $API_URL = '';
 
     $compsList = $datas['compsList'];
     $compName = $MODULE;
@@ -92,6 +93,14 @@
             }
         }
         //print_r( $requireComps );
+        //
+        if( preg_match( "/^JC/", $MODULE ) ){
+            $API_URL = URL_ROOT . "/docs_api/classes/$MODULE.html";
+        }else if( preg_match( "/^Bizs/", $MODULE ) ){
+            $API_URL = URL_ROOT . "/docs_api/classes/window.$MODULE.html";
+        }else {
+            isset( $allVersionComps['api'] ) && ( $API_URL = $allVersionComps['api'] );
+        }
 
         $smarty->assign( 'SHOW_COMP_INFO', 1 );
         $smarty->assign( 'COMP_ROOT', $COMP_ROOT );
@@ -108,6 +117,8 @@
         $smarty->assign( 'compData', $compData );
         $smarty->assign( 'requireComps', $requireComps );
         $smarty->assign( 'allVersionComps', $allVersionComps );
+
+        $smarty->assign( 'API_URL', $API_URL );
 
         $smarty->display( $FILE_PATH );
     }else if( $compData && isset( $compData['outlink'] ) ){
