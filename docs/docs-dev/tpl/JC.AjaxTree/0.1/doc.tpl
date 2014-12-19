@@ -16,7 +16,7 @@
         <script src="{{$URL_ROOT}}/modules/JC.common/{{$JCCommonLastVersion}}/common.js"></script>
 {{foreach from=$requireComps item=comp}}
         {{if !$comp.hide|default:'' }}
-<script src="{{$URL_ROOT}}/modules/{{$comp.name}}/{{$comp.version|default:'0.1'}}/{{$comp.name}}"></script>
+<script src="{{$URL_ROOT}}/modules/{{$comp.name}}/{{$comp.version|default:'0.1'}}/{{$comp.output|default:''}}"></script>
 {{/if}}
 {{/foreach}}
         <script src="{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}"></script>
