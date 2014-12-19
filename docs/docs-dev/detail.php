@@ -4,6 +4,7 @@
     $MODULE = isset( $_REQUEST[ 'module' ] ) ? $_REQUEST[ 'module' ] : '';
     $VERSION = isset( $_REQUEST[ 'version' ] ) ? $_REQUEST[ 'version' ] : '';
     $FILE = isset( $_REQUEST[ 'file' ] ) ? $_REQUEST[ 'file' ] : '';
+    $FILE = preg_replace( "/[\/\\\\~]/", '', $FILE );
 
     if( $MODULE && !$VERSION && $datas ){
         foreach( $datas['compsList'] as $k => $v ){
