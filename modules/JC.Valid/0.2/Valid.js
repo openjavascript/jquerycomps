@@ -329,6 +329,16 @@ function (){
      *              </dd>
      *          </dl>
      *      </dd>
+     *      <dd>
+     *          <dl>
+     *              <dt>subdatatype = even: 数值必须为偶数</dt>
+     *          </dl>
+     *      </dd>
+     *      <dd>
+     *          <dl>
+     *              <dt>subdatatype = odd: 数值必须为奇数</dt>
+     *          </dl>
+     *      </dd>
      * </dl>
      * @namespace JC
      * @class Valid
@@ -1350,11 +1360,28 @@ function (){
 
                         _toNEl.val( $.trim( _toNEl.val() ) );
                         _fromNEl.val( $.trim( _fromNEl.val() ) );
+
+                        if( _r && _toNEl && _toNEl.length && _toNEl.attr( 'subdatatype' ) && /\beven\b/.test( _toNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.even( _toNEl ) );
+                        }
+                        if( _r && _toNEl && _toNEl.length && _toNEl.attr( 'subdatatype' ) && /\bodd\b/.test( _toNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.odd( _toNEl ) );
+                        }
+                        if( _r && _fromNEl && _fromNEl.length && _fromNEl.attr( 'subdatatype' ) && /\beven\b/.test( _fromNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.even( _fromNEl ) );
+                        }
+                        if( _r && _fromNEl && _fromNEl.length && _fromNEl.attr( 'subdatatype' ) && /\bodd\b/.test( _fromNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.odd( _fromNEl ) );
+                        }
+                        if( !_r ){
+                            return false;
+                        }
                         
                         if( _toNEl[0] != _fromNEl[0] && _toNEl.val().length && _fromNEl.val().length ){
 
                             _r && ( _r = _p.n( _toNEl, true ) );
                             _r && ( _r = _p.n( _fromNEl, true ) );
+
 
                             _r && ( +_fromNEl.val() ) > ( +_toNEl.val() ) && ( _r = false );
 
@@ -2287,6 +2314,52 @@ function (){
 
                 return _r;
             }
+        /**
+         * 数值必须为偶数
+         * @param   {selector}  _item
+         */
+        , 'even':
+            function( _item ){
+                var _p = this, _r = true
+                    , _v = JC.f.parseFinance( _item.val().trim(), 9 ) || 0
+                    ;
+
+                if( isNaN( _v ) ){
+                    _r = false;
+                }else if( _v % 2 !== 0 ){
+                    _r = false;
+                }
+
+                !_r && JC.log( 'even:', _r, JC.f.gid() );
+
+                //!_r && _item.attr( 'datatypestatus', 'false' );
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'evenmsg', true ] );
+
+                return _r;
+            }
+        /**
+         * 数值必须为奇数
+         * @param   {selector}  _item
+         */
+        , 'odd':
+            function( _item ){
+                var _p = this, _r = true
+                    , _v = JC.f.parseFinance( _item.val().trim(), 9 ) || 0
+                    ;
+
+                if( isNaN( _v ) ){
+                    _r = false;
+                }else if( _v % 2 === 0 ){
+                    _r = false;
+                }
+
+                //!_r && _item.attr( 'datatypestatus', 'false' );
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'oddmsg', true ] );
+
+                return _r;
+            }
+
+
         , ucheck:
             function( _item ){
                 var _r = true, _p = this;
