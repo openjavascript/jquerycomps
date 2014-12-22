@@ -1,10 +1,14 @@
-<div class="header js_compAutoFixed" style="z-index: 1000;" data-normalClass="cafHeaderNav" data-fixedClass="cafHeaderNav">
+<div class="header js_compAutoFixed" id="mainHeader" style="z-index: 1000;" 
+    data-normalClass="cafHeaderNav" 
+    data-fixedClass="cafHeaderNav"
+    data-fixAnchor="true"
+    >
     <div class="wrapper">
         <div class="header-nav clearfix">
             <h1 class="header-logo">
                 <a href="{{$PROJECT_ROOT}}"><span>Jquery</span><lable class="cwhite">Comps</label></a>
                 <i>|</i>
-                <a class="header-github" hover="logohover" href="http://github.com/openjavascript/jquerycomps" target="_blank">
+                <a class="header-github" hover="logohover" href="//github.com/openjavascript/jquerycomps" target="_blank">
                     <img class="github-unhover" src="{{$PROJECT_ROOT}}/static/img/githubLogo.png" />
                     <img class="github-hover" src="{{$PROJECT_ROOT}}/static/img/githubLogo2.png" />
                 </a>
@@ -42,7 +46,7 @@
                 {{if isset( $extraMenu )}}
                     {{foreach from=$extraMenu item=value}}
                     <li class="header-extramenu" hover="header-menuhover">
-                        <a href="{{$value.url}}" target="_blank" hover="header-menuhover">
+                        <a href="{{$value.url}}" target="{{if $value.name == 'API'}}_api{{else}}_out{{/if}}" hover="header-menuhover">
                         {{$value.name}}
                         </a>
                     </li>

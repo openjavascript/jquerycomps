@@ -4,17 +4,19 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" initAttr=1 htmlAttr=1}}
 
     <!-- 外链形式 start -->
     <textArea class="detail-codetpl" type="text/template">
         <link href='{{$URL_ROOT}}/modules/JC.Panel/0.2/res/default/style.css' rel='stylesheet' />
 
-        <script src="{{$URL_ROOT}}/modules/JC.common/0.3/common.js" />
-        <script src="{{$URL_ROOT}}/modules/JC.BaseMVC/0.1/BaseMVC.js" />
-        <script src="{{$URL_ROOT}}/modules//JC.Panel/0.2/Panel.js" />
-        <script src="{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}" />
+        <script src="{{$URL_ROOT}}/modules/JC.common/{{$JCCommonLastVersion}}/common.js" ></script>
+{{foreach from=$requireComps item=comp}}
+        {{if !$comp.hide|default:'' }}
+<script src="{{$URL_ROOT}}/modules/{{$comp.name}}/{{$comp.version|default:'0.1'}}/{{$comp.output|default:''}}"></script>
+{{/if}}
+{{/foreach}}
+        <script src="{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}" ></script>
     </textArea>
     <!-- 外链形式 end -->
 
@@ -139,7 +141,7 @@ balType = remove_element 可用的 HTML 属性
     </textArea>
     <!-- HTML属性 end -->
 
-</div>
-
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}

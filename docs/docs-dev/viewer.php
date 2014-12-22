@@ -4,6 +4,7 @@
     $MODULE = isset( $_REQUEST[ 'module' ] ) ? $_REQUEST[ 'module' ] : '';
     $VERSION = isset( $_REQUEST[ 'version' ] ) ? $_REQUEST[ 'version' ] : '';
     $FILE = isset( $_REQUEST[ 'file' ] ) ? $_REQUEST[ 'file' ] : '';
+    $FILE = preg_replace( "/[\/\\\\~]/", '', $FILE );
 
     if( $MODULE && !$VERSION && $datas ){
         foreach( $datas['compsList'] as $k => $v ){
@@ -32,6 +33,7 @@
     $TPL_PATH = FILE_ROOT . "/tpl/$MODULE/$VERSION/$FILE";
     $COMP_ROOT = '';
     $COMP_URL = '';
+    $API_URL = '';
 
     $compsList = $datas['compsList'];
     $compName = $MODULE;
@@ -71,9 +73,15 @@
         foreach( $requireComps as $k => &$v ){
             foreach( $datas['compsList'] as $k1 => $v1 ){
                 if( !isset( $v1['data'] ) ) break;
+
                 foreach( $v1['data'] as $k2 => $v2 ){
                     if( !isset( $v2['data'] ) ) break 2;
                     if( $v2['name'] == $v['name'] ){
+
+                        if( isset( $v2['output'] ) ){
+                            $v['output'] = $v2['output'];
+                        }
+
                         foreach( array_reverse( $v2['data'] ) as $k3 => $v3 ){
                             if( isset( $v3['version'] ) ){
                                 $v['version'] = $v3['version'];
@@ -81,6 +89,11 @@
                             if( isset( $v3['outlink'] ) ){
                                 $v['outlink'] = $v3['outlink'];
                             }
+
+                            if( isset( $v3['output'] ) ){
+                                $v['output'] = $v3['output'];
+                            }
+
                             if( !isset( $v3['hide'] ) || ( isset( $v3['hide'] ) && !$v3['hide'] ) ){
                                 break;
                             }
@@ -88,9 +101,27 @@
                         break 2;
                     }
                 }
+
             }
         }
+
+        foreach( $requireComps as $k => &$v ){
+            if( !isset( $v['output'] ) ){
+                $v['output'] = preg_replace( '/^.*?\./', '', $v['name'] ) . ".js";
+            }
+        }
+        //print_r( $requireComps);
         //print_r( $requireComps );
+        //
+        if( preg_match( "/^JC/", $MODULE ) ){
+            $API_URL = URL_ROOT . "/docs_api/classes/$MODULE.html";
+        }else if( preg_match( "/^Bizs/", $MODULE ) ){
+            $API_URL = URL_ROOT . "/docs_api/classes/window.$MODULE.html";
+        }else {
+            isset( $allVersionComps['api'] ) && ( $API_URL = $allVersionComps['api'] );
+        }
+
+        $smarty->assign( 'JCCommonLastVersion', $datas["global"]["JCCommonLastVersion"] );
 
         $smarty->assign( 'SHOW_COMP_INFO', 1 );
         $smarty->assign( 'COMP_ROOT', $COMP_ROOT );
@@ -107,6 +138,8 @@
         $smarty->assign( 'compData', $compData );
         $smarty->assign( 'requireComps', $requireComps );
         $smarty->assign( 'allVersionComps', $allVersionComps );
+
+        $smarty->assign( 'API_URL', $API_URL );
 
         $smarty->display( $FILE_PATH );
     }else if( $compData && isset( $compData['outlink'] ) ){

@@ -11,18 +11,24 @@
     {{block name="html_header"}}{{/block}}
     </head>
     <body>
-        {{include file="public/body_header.tpl"}}
         {{block name="body_header"}}{{/block}}
+
         {{block name="inherit_body_header"}}{{/block}}
 
-        {{block name="body_main"}}
-        {{/block}}
+        <div class="codeview-wrap">
+            <div class="codeview-tabbar">
+                <a href="javascript:;" class="codeview-css">CSS</a>
+                <a href="javascript:;" class="codeview-js">JS</a>
+                <a href="javascript:;" class="codeview-html">HTML</a>
+                <a href="javascript:;" class="codeview-page selected">PAGE</a>
+            </div>
+            {{block name="body_main"}}{{/block}}
+        </div>
 
         {{block name="inherit_body_footer"}}{{/block}}
         {{block name="body_custom_footer"}}{{/block}}      
 
         {{block name="body_footer"}}{{/block}}
-        {{include file="public/body_footer.tpl"}}
 
         {{block name="body_footer_js"}}{{/block}} 
         {{if isset($smarty.get.debug) && $smarty.get.debug eq '1' }}{{debug}}{{/if}}

@@ -1,7 +1,9 @@
 {{extends file="public/simple_demo/base.tpl"}}
 
 {{block name="html_header_css" append}}
-
+<style class="show-css">
+@import url( '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css'  );
+</style>
 {{/block}}
 
 {{block name="body_main"}}
@@ -21,7 +23,10 @@
 {{/block}}
 
 {{block name="body_footer_js" append}}
-    <script type="text/javascript" class="show-js">
-        requirejs( [ '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}' ] );
-    </script>
+<script type="text/template" class="show-html">
+</script>
+
+<script type="text/javascript" class="show-js">
+    requirejs( [ '{{$COMP_NAME}}' ] );
+</script>
 {{/block}}
