@@ -1,10 +1,9 @@
 {{extends file="public/doc/base.tpl"}}
 
 {{block name="html_header_css" append}}
-
-<!-- start JC style -->
-<link href='{{$URL_ROOT}}/modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' /> rel='stylesheet' />
-<!-- end JC style -->
+{{*
+    <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
+*}}
 {{/block}}
 
 {{block name="body_main"}}
@@ -12,7 +11,7 @@
 
     <!-- 外链形式 start -->
     <textArea class="detail-codetpl" type="text/template">
-        <link href='{{$URL_ROOT}}/modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
+        <link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
 
         <script src="{{$URL_ROOT}}/modules/JC.common/{{$JCCommonLastVersion}}/common.js" ></script>
 {{foreach from=$requireComps item=comp}}
