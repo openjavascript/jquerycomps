@@ -581,6 +581,16 @@ function (){
      *              &lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;subdatatype = even: 数值必须为偶数&lt;/dt&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;subdatatype = odd: 数值必须为奇数&lt;/dt&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Valid
@@ -1602,11 +1612,28 @@ function (){
 
                         _toNEl.val( $.trim( _toNEl.val() ) );
                         _fromNEl.val( $.trim( _fromNEl.val() ) );
+
+                        if( _r &amp;&amp; _toNEl &amp;&amp; _toNEl.length &amp;&amp; _toNEl.attr( &#x27;subdatatype&#x27; ) &amp;&amp; /\beven\b/.test( _toNEl.attr( &#x27;subdatatype&#x27; ) ) ){
+                            _r &amp;&amp; ( _r = _p.even( _toNEl ) );
+                        }
+                        if( _r &amp;&amp; _toNEl &amp;&amp; _toNEl.length &amp;&amp; _toNEl.attr( &#x27;subdatatype&#x27; ) &amp;&amp; /\bodd\b/.test( _toNEl.attr( &#x27;subdatatype&#x27; ) ) ){
+                            _r &amp;&amp; ( _r = _p.odd( _toNEl ) );
+                        }
+                        if( _r &amp;&amp; _fromNEl &amp;&amp; _fromNEl.length &amp;&amp; _fromNEl.attr( &#x27;subdatatype&#x27; ) &amp;&amp; /\beven\b/.test( _fromNEl.attr( &#x27;subdatatype&#x27; ) ) ){
+                            _r &amp;&amp; ( _r = _p.even( _fromNEl ) );
+                        }
+                        if( _r &amp;&amp; _fromNEl &amp;&amp; _fromNEl.length &amp;&amp; _fromNEl.attr( &#x27;subdatatype&#x27; ) &amp;&amp; /\bodd\b/.test( _fromNEl.attr( &#x27;subdatatype&#x27; ) ) ){
+                            _r &amp;&amp; ( _r = _p.odd( _fromNEl ) );
+                        }
+                        if( !_r ){
+                            return false;
+                        }
                         
                         if( _toNEl[0] != _fromNEl[0] &amp;&amp; _toNEl.val().length &amp;&amp; _fromNEl.val().length ){
 
                             _r &amp;&amp; ( _r = _p.n( _toNEl, true ) );
                             _r &amp;&amp; ( _r = _p.n( _fromNEl, true ) );
+
 
                             _r &amp;&amp; ( +_fromNEl.val() ) &gt; ( +_toNEl.val() ) &amp;&amp; ( _r = false );
 
@@ -2539,6 +2566,52 @@ function (){
 
                 return _r;
             }
+        /**
+         * 数值必须为偶数
+         * @param   {selector}  _item
+         */
+        , &#x27;even&#x27;:
+            function( _item ){
+                var _p = this, _r = true
+                    , _v = JC.f.parseFinance( _item.val().trim(), 9 ) || 0
+                    ;
+
+                if( isNaN( _v ) ){
+                    _r = false;
+                }else if( _v % 2 !== 0 ){
+                    _r = false;
+                }
+
+                !_r &amp;&amp; JC.log( &#x27;even:&#x27;, _r, JC.f.gid() );
+
+                //!_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;evenmsg&#x27;, true ] );
+
+                return _r;
+            }
+        /**
+         * 数值必须为奇数
+         * @param   {selector}  _item
+         */
+        , &#x27;odd&#x27;:
+            function( _item ){
+                var _p = this, _r = true
+                    , _v = JC.f.parseFinance( _item.val().trim(), 9 ) || 0
+                    ;
+
+                if( isNaN( _v ) ){
+                    _r = false;
+                }else if( _v % 2 === 0 ){
+                    _r = false;
+                }
+
+                //!_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;oddmsg&#x27;, true ] );
+
+                return _r;
+            }
+
+
         , ucheck:
             function( _item ){
                 var _r = true, _p = this;

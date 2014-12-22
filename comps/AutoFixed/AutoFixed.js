@@ -114,7 +114,7 @@
 
                     //JC.log( _p._model.fixedTopPx() );
                     if( JDOC.scrollTop() > 0 ){
-                        JC.dir( _p._model.defaultStyle() );
+                        //JC.dir( _p._model.defaultStyle() );
                         _p.trigger( 'UPDATE_POSITION', [ _st, _cp ]  );
                     }
                 });
@@ -181,7 +181,7 @@
                     _p._model.fixedLock( true );
                     _p._model.unfixedLock( false );
 
-                    JC.log( 'FIXED', _st, _cp );
+                    //JC.log( 'FIXED', _st, _cp );
 
                     if( _ds.left != _ds.gleft ){
                         _left = _ds.gleft;
@@ -217,7 +217,7 @@
                     _p._model.fixedLock( false );
 
                     var _ds = _p._model.defaultStyle(), _css;
-                    JC.log( 'UN_FIXED', _st, _cp );
+                    //JC.log( 'UN_FIXED', _st, _cp );
                     _p.trigger( 'UN_CLONE_ITEM' );
                     _css = {
                         'position': _ds.position
