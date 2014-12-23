@@ -76,6 +76,9 @@
  *
  *      <dt>bclHideTargetSub = selector</dt>
  *      <dd>根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node</dd>
+ *
+ *      <dt>bclShowToggleFilter = selector | html attr</dt>
+ *      <dd>显示的时候, 如果匹配到 filter, 那么将会隐藏</dd>
  * </dl>
  *
  * <h2>hide target 的 HTML 属性</h2>
@@ -83,7 +86,7 @@
  *      <dt>bclHideToggle = bool, default = false</dt>
  *      <dd>显示或显示的时候, 是否与他项相反</dd>
  *
- *      <dt>bclDisableTarget = bool, default = false</dt>
+ *      <dt>bclDisableToggle= bool, default = false</dt>
  *      <dd>disabled 的时候, 是否与他项相反</dd>
  * </dl>
  *
@@ -439,6 +442,13 @@
                 return _r;
             }
 
+        , bclShowToggleFilter:
+            function( _triggerItem ){
+                var _r = '';
+                _triggerItem.attr( 'bclShowToggleFilter' ) && ( _r = _triggerItem.attr( 'bclShowToggleFilter' ) );;
+                return _r;
+            }
+
         , bclHideToggle:
             function( _hideTarget ){
                 var _r;
@@ -545,7 +555,7 @@
                             if( _isDisable ){
                                 _starget.hide();
                             }else{
-                                if( _sp.prop('checked') ){
+                               if( _sp.prop('checked') ){
                                     _starget.show();
                                 }else{
                                     _starget.hide();
@@ -557,8 +567,20 @@
 
                 if( _bclHideTarget &&  _bclHideTarget.length  ){
                     _bclHideTarget.each( function(){
-                        var _display = _p._model.bclHideToggle( $(this) ) ? !_bclDisplay : _bclDisplay;
-                        _display ? $(this).show() : $(this).hide();
+                        var _display = _p._model.bclHideToggle( $(this) ) ? !_bclDisplay : _bclDisplay, _sp = $( this );
+                        if( _display ){
+                            if( _p._model.bclShowToggleFilter( _triggerItem ) ){
+                                if( _sp.is( _p._model.bclShowToggleFilter( _triggerItem ) ) ){
+                                    _sp.hide();
+                                }else{
+                                    _sp.show();
+                                }
+                            }else{
+                                _sp.show();
+                            }
+                        }else{
+                            _sp.hide();
+                        };
                         //JC.log( _display, new Date().getTime() );
                     });
                 }
