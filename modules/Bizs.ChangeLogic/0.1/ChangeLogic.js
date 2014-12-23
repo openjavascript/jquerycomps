@@ -158,7 +158,12 @@
                     if( _p._model.ready() ){
                         _p._model.bclChangeCleanTarget() 
                             && _p._model.bclChangeCleanTarget().each( function(){
-                                $( this ).html( '' );
+                                if (/(input|textarea)/i.test( $(this).prop( 'nodeName' ).toLowerCase() )) {
+                                    $( this ).val( '' );
+                                } else {
+                                    $( this ).html( '' );
+                                }
+
                             });
                     }
                 });
