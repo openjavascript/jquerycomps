@@ -336,6 +336,9 @@
  *
  *      &lt;dt&gt;bclHideTargetSub = selector&lt;/dt&gt;
  *      &lt;dd&gt;根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;bclShowToggleFilter = selector | html attr&lt;/dt&gt;
+ *      &lt;dd&gt;显示的时候, 如果匹配到 filter, 那么将会隐藏&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * &lt;h2&gt;hide target 的 HTML 属性&lt;/h2&gt;
@@ -343,7 +346,7 @@
  *      &lt;dt&gt;bclHideToggle = bool, default = false&lt;/dt&gt;
  *      &lt;dd&gt;显示或显示的时候, 是否与他项相反&lt;/dd&gt;
  *
- *      &lt;dt&gt;bclDisableTarget = bool, default = false&lt;/dt&gt;
+ *      &lt;dt&gt;bclDisableToggle= bool, default = false&lt;/dt&gt;
  *      &lt;dd&gt;disabled 的时候, 是否与他项相反&lt;/dd&gt;
  * &lt;/dl&gt;
  *
@@ -418,7 +421,12 @@
                     if( _p._model.ready() ){
                         _p._model.bclChangeCleanTarget() 
                             &amp;&amp; _p._model.bclChangeCleanTarget().each( function(){
-                                $( this ).html( &#x27;&#x27; );
+                                if (/(input|textarea)/i.test( $(this).prop( &#x27;nodeName&#x27; ).toLowerCase() )) {
+                                    $( this ).val( &#x27;&#x27; );
+                                } else {
+                                    $( this ).html( &#x27;&#x27; );
+                                }
+
                             });
                     }
                 });
@@ -694,6 +702,13 @@
                 return _r;
             }
 
+        , bclShowToggleFilter:
+            function( _triggerItem ){
+                var _r = &#x27;&#x27;;
+                _triggerItem.attr( &#x27;bclShowToggleFilter&#x27; ) &amp;&amp; ( _r = _triggerItem.attr( &#x27;bclShowToggleFilter&#x27; ) );;
+                return _r;
+            }
+
         , bclHideToggle:
             function( _hideTarget ){
                 var _r;
@@ -800,7 +815,7 @@
                             if( _isDisable ){
                                 _starget.hide();
                             }else{
-                                if( _sp.prop(&#x27;checked&#x27;) ){
+                               if( _sp.prop(&#x27;checked&#x27;) ){
                                     _starget.show();
                                 }else{
                                     _starget.hide();
@@ -812,8 +827,20 @@
 
                 if( _bclHideTarget &amp;&amp;  _bclHideTarget.length  ){
                     _bclHideTarget.each( function(){
-                        var _display = _p._model.bclHideToggle( $(this) ) ? !_bclDisplay : _bclDisplay;
-                        _display ? $(this).show() : $(this).hide();
+                        var _display = _p._model.bclHideToggle( $(this) ) ? !_bclDisplay : _bclDisplay, _sp = $( this );
+                        if( _display ){
+                            if( _p._model.bclShowToggleFilter( _triggerItem ) ){
+                                if( _sp.is( _p._model.bclShowToggleFilter( _triggerItem ) ) ){
+                                    _sp.hide();
+                                }else{
+                                    _sp.show();
+                                }
+                            }else{
+                                _sp.show();
+                            }
+                        }else{
+                            _sp.hide();
+                        };
                         //JC.log( _display, new Date().getTime() );
                     });
                 }
