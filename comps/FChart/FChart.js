@@ -266,8 +266,11 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
         , 'vbar': 'VHistogram'
         , 'vhistogram': 'VHistogram'
 
+        , 'column': 'ZHistogram'
         , 'zbar': 'ZHistogram'
         , 'zhistogram': 'ZHistogram'
+
+        , 'mix': 'MixChart'
 
         , 'map': 'Map'
 
