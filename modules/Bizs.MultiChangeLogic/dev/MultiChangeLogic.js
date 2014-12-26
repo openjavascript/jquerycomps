@@ -151,7 +151,11 @@
 
                     if ( $el.is('[bclselfdisplaytargetsiblings]') ) {
                         $siblings = $( JC.f.parentSelector(triggerElement, $el.attr('bclselfdisplaytargetsiblings')) );
-                        $siblings.length && $siblings.hide();
+                        if ( $siblings.length ) {
+                            $siblings.each(function () {
+                                $(this).hide();
+                            });
+                        }
                     }
                 } 
                 
