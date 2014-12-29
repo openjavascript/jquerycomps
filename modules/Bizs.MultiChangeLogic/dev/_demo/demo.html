@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+            .js_hideme,
+            .js_hidebox,
+            .js_item1,
+            .js_item2{display: none;}
+
+            .box{
+              width: 100px;
+              height: 100px;
+              background: #eee;
+              border: 1px solid #ddd;
+              margin: 20px;
+              padding: 20px;
+            }
+
+            .contract h2{
+              display: none;
+            }
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true;
+
+            requirejs( ['JC.Calendar', 'Bizs.FormLogic', 'JC.Valid', 'DEV.Bizs.MultiChangeLogic' ]
+            , function( Calendar, Valid, MultiChangeLogic ){
+            });
+
+           
+        </script>
+    </head>    
+    <body>
+
+      <form action="" class="js_bizsFormLogic">
+           <div class="bizsMultiChangeLogic" bclTrigger="|select" bclDisabledTarget="|.js_disabledbox input[type=text]" bclHideTarget="|.js_hidebox" >
+               <select name="" >
+                   <option value="">请选择</option>
+                   <option value="1" bcldisabled="true">选项一</option>
+                   <option value="2" selected>选项二</option>
+                   <option value="3" bcldisplay="true">选项三</option>
+               </select>
+               <div class="js_hidebox">
+                    <input type="text" name="" value="选项三" />
+               </div>
+               <br>
+               <br>
+               <div class="js_disabledbox">
+                   <input type="text" value="选项一,一直显示呢" >
+               </div>
+           </div>
+
+     
+
+       <br>
+       <br>
+       <hr>
+       隐藏两个元素
+          <div class="bizsMultiChangeLogic" bclTrigger="|input"  bclHideTarget="|.js_hidebox,|.js_hideme" >
+        
+              <label><input type="radio" name="test0" id="" value="1"  bcldisplay="true">选项一</label>
+              <label><input type="radio" name="test0" id="" value="2">选项二</label>
+              <label><input type="radio" name="test0" id="" value="3"  bcldisplay="true">选项三</label>
+               <div class="js_hidebox">
+                    <input type="text" name="" value="选项三" />
+               </div>
+               <div class="js_hideme box">
+                 我也要隐藏
+               </div>
+               <br>
+               <br>
+              
+           </div>
+           <br>
+           <br>
+           <br>
+           <hr>
+      <!--  <div class="bizsMultiChangeLogic" bclTrigger="|input[type=checkbox]" bclDisabledTarget="" bclHideTarget="|.js_hidebox" bclChangeCleanTarget="|input[type=text]">
+            <label>
+                <input type="checkbox" name=""  value="1">选项一
+            </label> &nbsp; &nbsp;
+            <label>
+                <input type="checkbox" name="" value="2">选项二
+            </label>&nbsp; &nbsp;
+            <label>
+                <input type="checkbox" name="" value="3" bcldisplay="true">选项三
+            </label>
+
+            <div class="js_hidebox">
+                <input type="text" name="" value="" />
+            </div>
+       </div> -->
+       <br>
+       <br>
+       <div class="bizsMultiChangeLogic" bclTrigger="|input[type=radio]" bclDisabledTarget="" bclHideTarget="|.js_hidebox" bclChangeCleanTarget="|input[type=text]">
+           <label><input type="radio" name="test1" id="" value="1"  bcldisplay="true">选项一</label>
+           <label><input type="radio" name="test1" id="" value="2">选项二</label>
+           <label><input type="radio" name="test1" id="" value="3"  bcldisplay="true">选项三</label>
+
+            <div class="js_hidebox">
+                <input type="text" name="" value="" />
+            </div>
+
+       </div>
+       <br>
+       <br>
+       <br>
+       <div class="bizsMultiChangeLogic" bclTrigger="|input[type=radio]" bclDisabledTarget="" bclHideTarget="|.js_hidebox" bclChangeCleanTarget="|input[type=text]" bclTriggerChangeOnInit="false">
+           <label><input type="radio" name="test2" id="" value="1"  bcldisplay="true"  checked="checked" bclselfdisplaytarget="(div .js_item1" bclselfdisplaytargetsiblings="(div .js_item2">选项一</label>
+           <label><input type="radio" name="test2" id="" value="2" bclselfdisplaytarget="(div .js_item2">选项二</label>
+           <label><input type="radio" name="test2" id="" value="3"  bcldisplay="true" bclselfdisplaytarget=".js_item1">选项三</label>
+
+            <div class="js_item1 box">
+                第一项， 第三
+            </div>
+
+            <div class="js_item2 box">
+                第二项
+            </div>
+            
+       </div>
+
+       <br>
+       <br>
+       <hr>
+       <div>
+        <div class="bizsMultiChangeLogic" bclTrigger="|input[type=radio]" bclHideTarget=".js_appendixInternal">
+          代理协议属性：
+          <label><input type="radio" name="s1"  bcldisplay="true" bclselfdisplaytarget=".js_hdItem1" bclselfdisplaytargetsiblings=".js_hdItem2, .js_hdItem3">4A代理</label>&nbsp;&nbsp; &nbsp;&nbsp;
+          <label><input type="radio" name="s1"  bcldisplay="true" bclselfdisplaytarget=".js_hdItem2" bclselfdisplaytargetsiblings=".js_hdItem1, .js_hdItem3">
+
+本土代理
+</label>&nbsp;&nbsp; &nbsp;&nbsp;
+          <label><input type="radio" name="s1"  bcldisplay="true" bclselfdisplaytarget=".js_hdItem3" bclselfdisplaytargetsiblings=".js_hdItem1, .js_hdItem2">本土行业代理</label>&nbsp;&nbsp; &nbsp;&nbsp;
+          <label><input type="radio" name="s1"   >海外代理</label>&nbsp;&nbsp; &nbsp;&nbsp;
+          <label><input type="radio" name="s1" bcldisplay="true" bclselfdisplaytarget=".js_hdItem3" bclselfdisplaytargetsiblings=".js_hdItem1, .js_hdItem2">其他品牌客户代理</label>
+        </div>
+        <div class="contract js_appendixInternal" >
+          <h2 class="js_hdItem1" style="font-size:14px;">附件：4A代理合作政策</h2>
+          <h2 class="js_hdItem2" style="font-size:14px;">本土代理合作政策</h2>
+          <h2  class="js_hdItem3" style="font-size:14px;">附件：本土行业代理合作政策</h2>
+        
+
+          <div class="frm-list">
+              <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                      <tr>
+                          <td width="130">
+                              <label class="gray">付款期限：</label>
+                          </td>
+                          <td>
+                            <div class="js_bizsDisableLogic"
+                                dltrigger="|input.js_payDeadline"
+                                dlhidetarget="<table tr.js_prePaidDiscount"
+                            >
+                                 <div class="radio-items clearfix">
+                                     
+                                     <label for="pay_deadline_2" >
+                                      <input type="radio" name="payDeadline" value="2"
+                                      >甲方在乙方提供服务前应支付全额服务费， 具体支付时间以甲乙双方最终签订的单笔服务合同为准。</label> 
+                                 </div>
+                                 <div class="radio-items clearfix">
+                                    
+                                     <label for="pay_deadline_3" >
+                                       <input type="radio" name="payDeadline" value="3"
+                                    >每一个月的服务费在下一个月15日前支付完毕且到账。</label> 
+                                 </div>
+                                 <div class="radio-items clearfix">
+                                     
+                                     <label for="pay_deadline_4" >
+                                      <input type="radio" name="payDeadline" value="4">甲方每一个季度的服务费在下一个季度的第一个月15日前支付完毕且到账。
+      </label>
+                                 </div>
+                                 <div class="radio-items  clearfix" >
+                                     
+                                      <label for="pay_deadline_1" > <input type="radio" name="payDeadline" value="1" 
+                                      > 甲方每一个季度的服务费在下一个季度的第三个月25日前支付完毕且到账。</label>
+                                 </div>
+                             </div>
+                          </td>
+                      </tr>
+                      <tr >
+                          <td class="gray">最低现金消费总金额：</td>
+                          <td>
+                            <input type="text" class="ipt ipt-w58 js_disableItemConsumption js_bizMoneyTips" name="min_consumption" 
+                                value=""
+                                defaultValue="6000000"
+                                datatype="n" 
+                                minvalue="0" 
+                                errmsg="数值范围: 整数" 
+                                reqmsg="消费" 
+                                bmtDisplayLabel="/span.js_bmtSpan"
+                                validemdisplaytype="inline" 
+                                />元
+                                <em class="error"></em>
+                                <span class="js_bmtSpan"></span>
+                          </td>
+                      </tr>
+                      <tr >
+                          <td class="gray">固定折扣优惠：</td>
+                          <td>
+                              <input type="text" class="ipt ipt-w58 " name="fixed_discount" 
+                                value=""
+                                defaultValue="9"
+                                maxlength="6"
+                                datatype="n-3.2" 
+                                minvalue="0" 
+                                maxvalue="100" 
+                                errmsg="0 ~ 100" 
+                                reqmsg="固定折扣优惠" 
+                                validemdisplaytype="inline" 
+                                disabled="disabled"
+                              />
+                              <label>%</label>
+                              <em class="error"></em>
+                          </td>
+                      </tr>
+                      <tr class="js_variableDiscount">
+                          <td  class="gray">浮动折扣优惠：</td>
+                          <td>
+                            <input type="text" class="ipt ipt-w48" name="discount" 
+                                value=""
+                                maxlength="6"
+                                datatype="n-3.2" 
+                                minvalue="0" 
+                                maxvalue="100" 
+                                errmsg="数值范围: 0 ~ 100.99, 最多两位小数" 
+                                reqmsg="折扣" 
+                                validemdisplaytype="inline" 
+                                /> %
+                                <em class="error"></em>
+                          </td>
+                      </tr>
+                      <tr>
+                        <td class="gray">新客户开发优惠：</td>
+                        <td>
+                            <input type="text" class="ipt ipt-w48" name="" 
+                                value=""
+                                maxlength="6"
+                                datatype="n-3.2" 
+                                minvalue="0" 
+                                maxvalue="100" 
+                                errmsg="数值范围: 0 ~ 100.99, 最多两位小数" 
+                                reqmsg="折扣" 
+                                validemdisplaytype="inline" 
+                                /> %
+                                <em class="error"></em>
+                        </td>
+                      </tr>
+                    
+                     
+                  </tbody>
+              </table>
+          </div><!--end user-list-->
+          <div class="corner"></div>
+       </div>
+    </div>
+     </form>
+    </body>
+</html>
+
