@@ -11700,7 +11700,7 @@ window.Bizs = window.Bizs || {};
 
                 $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
                     var _data = JC.f.sliceArgs( arguments ).slice( 2 );
-                    _p.trigger( _evtName, _data );
+                    return _p.triggerHandler( _evtName, _data );
                 });
 
                 _p._beforeInit();
@@ -11955,6 +11955,20 @@ window.Bizs = window.Bizs || {};
                 _args.unshift( _evtName );
                 $( this ).trigger( 'TriggerEvent', _args );
                 return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件( 有换回数据 )
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
+         * @return  {*}
+         */
+        , triggerHandler:
+            function( _evtName, _args ){
+                _args = _args || [];
+                !jQuery.isArray( _args ) && ( _args = [ _args ] );
+                _args.unshift( _evtName );
+                return $( this ).trigger( 'TriggerEvent', _args );
             }
         /**
          * 通知选择器有新事件
@@ -12278,6 +12292,13 @@ window.Bizs = window.Bizs || {};
                 _args.unshift( _evtName );
                 $( this ).trigger( 'TriggerEvent', _args );
                 return this;
+            }
+        , triggerHandler:
+            function( _evtName, _args ){
+                _args = _args || [];
+                !jQuery.isArray( _args ) && ( _args = [ _args ] );
+                _args.unshift( _evtName );
+                return $( this ).trigger( 'TriggerEvent', _args );
             }
         , notification:
             function( _evtName, _args ){
