@@ -334,8 +334,11 @@
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
-     *      &lt;dt&gt;formConfirmPopupType = string, default = dialog&lt;/dt&gt;
+     *      &lt;dt&gt;formPopupType = string, default = dialog&lt;/dt&gt;
      *      &lt;dd&gt;定义提示框的类型: dialog, popup&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;formConfirmPopupType = string, default = dialog&lt;/dt&gt;
+     *      &lt;dd&gt;定义确认提示框的类型: dialog, popup&lt;/dd&gt;
      *
      *      &lt;dt&gt;formResetUrl = url&lt;/dt&gt;
      *      &lt;dd&gt;表单重置时, 返回的URL&lt;/dd&gt;
@@ -820,7 +823,7 @@ window.parent
                     if( _fatalError ){
                         var _msg = JC.f.printf( &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
                                             , _data );
-                        JC.Dialog &amp;&amp; JC.Dialog.alert ? JC.Dialog.alert( _msg, 1 ) : alert( _msg );
+                        _p.trigger( &#x27;SHOW_POPUP&#x27;, [ _p._model.formPopupType(), _msg, null, 1 ] );
                         return;
                     }
 
@@ -842,10 +845,12 @@ window.parent
                             , _p
                         );
 
+                    /*
                    _p._model.formResetAfterSubmit() 
                         &amp;&amp; !_p._model.userFormAjaxDone()
                         &amp;&amp; _resetBtn.length
                         &amp;&amp; _p.selector().trigger(&#x27;reset&#x27;);
+                    */
 
                 });
                 /**
@@ -866,13 +871,17 @@ window.parent
                     _btn &amp;&amp; ( _btn = $( _btn ) );
                     if( !( _btn &amp;&amp; _btn.length ) ) return;
 
-                    var _popup;
+                    var _popup, _type = _p._model.formConfirmPopupType( _btn ) || &#x27;dialog&#x27;;
+                    _type += &#x27;.confirm&#x27;;
+                    _popup = _p.triggerHandler( &#x27;SHOW_POPUP&#x27;, [ _type, _p._model.formSubmitConfirm( _btn ), _btn, 2 ] );
 
+                    /*
                     if( _p._model.formConfirmPopupType( _btn ) == &#x27;dialog&#x27; ){
                         _popup = JC.Dialog.confirm( _p._model.formSubmitConfirm( _btn ), 2 );
                     }else{
                         _popup = JC.confirm( _p._model.formSubmitConfirm( _btn ), _btn, 2 );
                     }
+                    */
 
                     _popup.on(&#x27;confirm&#x27;, function(){
                         _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null );
@@ -907,13 +916,17 @@ window.parent
                     _btn &amp;&amp; ( _btn = $( _btn ) );
                     if( !( _btn &amp;&amp; _btn.length ) ) return;
 
-                    var _popup;
+                    var _popup, _type = _p._model.formConfirmPopupType( _btn ) || &#x27;dialog&#x27;;
+                    _type += &#x27;.confirm&#x27;;
+                    _popup = _p.triggerHandler( &#x27;SHOW_POPUP&#x27;, [ _type, _p._model.formResetConfirm( _btn ), _btn, 2 ] );
 
+                    /*
                     if( _p._model.formConfirmPopupType( _btn ) == &#x27;dialog&#x27; ){
                         _popup = JC.Dialog.confirm( _p._model.formResetConfirm( _btn ), 2 );
                     }else{
                         _popup = JC.confirm( _p._model.formResetConfirm( _btn ), _btn, 2 );
                     }
+                    */
 
                     _popup.on(&#x27;confirm&#x27;, function(){
                         _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
@@ -953,6 +966,41 @@ window.parent
                     JC.f.safeTimeout( function(){
                         _p._model.formResetCallback() &amp;&amp; _p._model.formResetCallback().call( _p.selector(), _srcEvt, _p );
                     }, _p, &#x27;asdfawerasdfase_reset&#x27;, 100 );
+                });
+
+
+                _p.on( &#x27;SHOW_POPUP&#x27;, function( _evt, _type, _str, _src, _status, _cb ){
+                    _type = ( _type || &#x27;&#x27; ).toLowerCase();
+                    var _popup;
+
+                    switch( _type ){
+                        case &#x27;dialog.confirm&#x27;: {
+                            _popup = JC.Dialog.confirm( _str, _status, _cb );
+                            break;
+                        }
+                        case &#x27;popup.confirm&#x27;: {
+                            _popup = JC.confirm( _str, _src, _status, _cb );
+                            break;
+                        }
+                        case &#x27;popup.msgbox&#x27;: {
+                            _popup = JC.msgbox( _str, _src, _status, _cb );
+                            break;
+                        }
+                        case &#x27;dialog.msgbox&#x27;: {
+                            _popup = JC.Dialog.msgbox( _str, _status, _cb );
+                            break;
+                        }
+                        case &#x27;popup&#x27;: {
+                            _popup = JC.alert( _str, _src, _status, _cb );
+                            break;
+                        }
+                        default: {
+                            _popup = JC.Dialog.alert( _str, _status, _cb );
+                            break;
+                        }
+                    }
+
+                    return _popup;
                 });
             }
         , _inited:
@@ -1259,6 +1307,7 @@ window.parent
                 var _form = $(this)
                     , _panel
                     , _url = &#x27;&#x27;
+                    , _type = _p._model.formPopupType() + &#x27;.msgbox&#x27;;
                     ;
 
                 _json.data 
@@ -1269,19 +1318,21 @@ window.parent
                     &amp;&amp; ( _url = _json.url )
                     ;
 
+
                 if( _json.errorno ){
-                    _panel = JC.Dialog.alert( _json.errmsg || &#x27;操作失败, 请重新尝试!&#x27;, 1 );
+                    _p.triggerHandler( &#x27;SHOW_POPUP&#x27;, [ _type, _json.errmsg || &#x27;操作失败, 请重新尝试!&#x27;, _btn, 1 ] );
                 }else{
-                    _panel = JC.Dialog.msgbox( _json.errmsg || &#x27;操作成功&#x27;, 0, function(){
+                    _panel = _p.triggerHandler( &#x27;SHOW_POPUP&#x27;, [ _type, _json.errmsg || &#x27;操作成功&#x27;, null, 0, function(){
                         _url = _url || _p._model.formAjaxDoneAction();
                         if( _url ){
                             try{_url = decodeURIComponent( _url ); } catch(ex){}
                             /^URL/.test( _url) &amp;&amp; ( _url = JC.f.urlDetect( _url ) );
                             JC.f.reloadPage( _url );
                         }
-                    }, _p._model.formPopupCloseMs() );
+                    }, _p._model.formPopupCloseMs() ] );
                 }
             }
+
         , formPopupCloseMs:
             function( _btn ){
                 var _p = this
@@ -1328,13 +1379,28 @@ window.parent
 
         , formConfirmPopupType: 
             function( _btn ){ 
-                var _r = this.stringProp( &#x27;formConfirmPopupType&#x27; ) || &#x27;dialog&#x27;; 
+                var _r = this.stringProp( &#x27;formConfirmPopupType&#x27; ); 
                 _btn &amp;&amp; ( _btn = $( _btn ) ).length 
                     &amp;&amp; _btn.is(&#x27;[formConfirmPopupType]&#x27;)
                     &amp;&amp; ( _r = _btn.attr(&#x27;formConfirmPopupType&#x27;) )
                     ;
+
+                _r = _r || this.formPopupType( _btn );
+
                 return _r.toLowerCase();
             }
+
+        , formPopupType: 
+            function( _btn ){ 
+                var _r = this.stringProp( &#x27;formPopupType&#x27; ) || &#x27;dialog&#x27;; 
+
+                _btn &amp;&amp; ( _btn = $( _btn ) ).length 
+                    &amp;&amp; _btn.is(&#x27;[formPopupType]&#x27;)
+                    &amp;&amp; ( _r = _btn.attr(&#x27;formPopupType&#x27;) )
+                    ;
+                return _r.toLowerCase();
+            }
+
         , formResetUrl: 
             function(){
                 var _p = this
@@ -1375,7 +1441,6 @@ window.parent
                 _msg = $( _item ).attr( &#x27;datavalidFormLogicMsg&#x27; ) || _msg;
                 return _msg;
             }
-
     });
 
     JC.f.extendObject( FormLogic.View.prototype, {
@@ -1432,8 +1497,8 @@ window.parent
                     if( JC.f.parseBool( _status ) ) return;
 
                     if( _p._model.showDataValidError( _item ) ){
-                        //JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
-                        JC.Dialog.msgbox( _p._model.datavalidFormLogicMsg( _item ), 2 );
+                        var _popupType = _p._model.formPopupType() + &#x27;.msgbox&#x27;;
+                        _p.triggerHandler( &#x27;SHOW_POPUP&#x27;, [ _popupType, _p._model.datavalidFormLogicMsg( _item ), _item, 2 ] );
 
                         JC.f.safeTimeout( function(){
                             _item.trigger( &#x27;blur&#x27; );
@@ -1442,7 +1507,6 @@ window.parent
                     return false;
                 });
             }
-
     });
 
     $(document).delegate( &#x27;input[formSubmitConfirm], button[formSubmitConfirm]&#x27;, &#x27;click&#x27;, function( _evt ){
