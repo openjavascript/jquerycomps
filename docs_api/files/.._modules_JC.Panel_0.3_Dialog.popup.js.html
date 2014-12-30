@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.Panel/0.2/Panel.popup.js - open jquery components library</title>
+    <title>../modules/JC.Panel/0.3/Dialog.popup.js - open jquery components library</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -254,26 +254,24 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.Panel/0.2/Panel.popup.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.Panel/0.3/Dialog.popup.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.Panel.default&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.Dialog&#x27; ], function(){
     /**
-     * msgbox 提示 popup
-     * &lt;br /&gt; 这个是不带蒙板 不带按钮的 popup 弹框
+     * 会话框 msgbox 提示 (不带按钮)
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../modules/JC.Panel/0.2/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     * &lt;p&gt;&lt;b&gt;see also&lt;/b&gt;: &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;&lt;/p&gt;
-     * @namespace JC
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;../../modules/JC.Panel/0.3/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;see also&lt;/b&gt;: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;&lt;/p&gt;
+     * @namespace JC.Dialog
      * @class   msgbox
-     * @extends JC.Panel
+     * @extends JC.Dialog
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
-     * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         弹框自动关闭后的的回调, &lt;b&gt;如果 _cb 为 int 值, 将视为 _closeMs&lt;/b&gt;
 &lt;pre&gt;function( _evtName, _panelIns ){
@@ -282,45 +280,41 @@
      * @param   {int}       _closeMs    自动关闭的间隔, 单位毫秒, 默认 2000
      * @return  &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
      */
-    JC.msgbox = 
-        function( _msg, _popupSrc, _status, _cb, _closeMs ){
-            if( typeof _popupSrc == &#x27;number&#x27; ){
-                _status = _popupSrc;
-                _popupSrc = null;
-            }
-            if( typeof _cb == &#x27;number&#x27; ){
-                _closeMs = _cb;
-                _cb = null;
-            }
-            var _ins = _logic.popup( JC.msgbox.tpl || _logic.tpls.msgbox, _msg, _popupSrc, _status );
-                _cb &amp;&amp; _ins.on(&#x27;close&#x27;, _cb );
-                setTimeout( function(){ _ins.autoClose( _closeMs ); }, 1 );
+    JC.Dialog.msgbox = 
+        function(_msg, _status, _cb, _closeMs ){
+            if( !_msg ) return;
+            var _tpl = ( JC.Dialog.msgbox.tpl || _logic.tpls.msgbox )
+                        .replace(/\{msg\}/g, _msg)
+                        .replace(/\{status\}/g, _logic.getStatusClass(_status||&#x27;&#x27;) );
+            var _ins = JC.Dialog(_tpl);
+
+            _logic.fixWidth( _msg, _ins );
+            _cb &amp;&amp; _ins.on(&#x27;close&#x27;, _cb);
+            setTimeout( function(){ _ins.autoClose( _closeMs ); }, 1 );
 
             return _ins;
         };
     /**
-     * 自定义 JC.msgbox 的显示模板
+     * 自定义 JC.Dialog.alert 的显示模板
      * @property    tpl
      * @type    string
      * @default undefined
      * @static
      */
-    JC.msgbox.tpl;
+    JC.Dialog.msgbox.tpl;
     /**
-     * alert 提示 popup
-     * &lt;br /&gt; 这个是不带 蒙板的 popup 弹框
+     * 会话框 alert 提示
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../modules/JC.Panel/0.2/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     * &lt;p&gt;&lt;b&gt;see also&lt;/b&gt;: &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;&lt;/p&gt;
-     * @namespace JC
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;../../modules/JC.Panel/0.3/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;see also&lt;/b&gt;: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;&lt;/p&gt;
+     * @namespace JC.Dialog
      * @class   alert
-     * @extends JC.Panel
+     * @extends JC.Dialog
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
-     * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
 &lt;pre&gt;function( _evtName, _panelIns ){
@@ -328,37 +322,39 @@
 }&lt;/pre&gt;
      * @return  &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
      */
-    JC.alert = 
-        function( _msg, _popupSrc, _status, _cb ){
-            if( typeof _popupSrc == &#x27;number&#x27; ){
-                _status = _popupSrc;
-                _popupSrc = null;
-            }
-            return _logic.popup( JC.alert.tpl || _logic.tpls.alert, _msg, _popupSrc, _status, _cb );
+    JC.Dialog.alert = 
+        function(_msg, _status, _cb){
+            if( !_msg ) return;
+            var _tpl = ( JC.Dialog.alert.tpl || _logic.tpls.alert )
+                        .replace(/\{msg\}/g, _msg)
+                        .replace(/\{status\}/g, _logic.getStatusClass(_status||&#x27;&#x27;) );
+            var _ins = JC.Dialog(_tpl);
+            _logic.fixWidth( _msg, _ins );
+            _cb &amp;&amp; _ins.on(&#x27;confirm&#x27;, _cb);
+
+            return _ins;
         };
     /**
-     * 自定义 JC.alert 的显示模板
+     * 自定义 JC.Dialog.alert 的显示模板
      * @property    tpl
      * @type    string
      * @default undefined
      * @static
      */
-    JC.alert.tpl;
+    JC.Dialog.alert.tpl;
     /**
-     * confirm 提示 popup
-     * &lt;br /&gt; 这个是不带 蒙板的 popup 弹框
+     * 会话框 confirm 提示
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../modules/JC.Panel/0.2/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     * &lt;p&gt;&lt;b&gt;see also&lt;/b&gt;: &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;&lt;/p&gt;
-     * @namespace JC
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;../../modules/JC.Panel/0.3/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;see also&lt;/b&gt;: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;&lt;/p&gt;
+     * @namespace JC.Dialog
      * @class   confirm
-     * @extends JC.Panel
+     * @extends JC.Dialog
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
-     * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
 &lt;pre&gt;function( _evtName, _panelIns ){
@@ -370,35 +366,33 @@
 }&lt;/pre&gt;
      * @return  &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
      */
-    JC.confirm = 
-        function( _msg, _popupSrc, _status, _cb, _cancelCb ){
-            if( typeof _popupSrc == &#x27;number&#x27; ){
-                _status = _popupSrc;
-                _popupSrc = null;
-            }
-            var _ins = _logic.popup( JC.confirm.tpl || _logic.tpls.confirm, _msg, _popupSrc, _status, _cb );
-            _ins &amp;&amp; _cancelCb &amp;&amp; _ins.on( &#x27;cancel&#x27;, _cancelCb );
+    JC.Dialog.confirm = 
+        function(_msg, _status, _cb, _cancelCb ){
+            if( !_msg ) return;
+            var _tpl = ( JC.Dialog.confirm.tpl || _logic.tpls.confirm )
+                        .replace(/\{msg\}/g, _msg)
+                        .replace(/\{status\}/g, _logic.getStatusClass(_status||&#x27;&#x27;) );
+            var _ins = JC.Dialog(_tpl);
+            _logic.fixWidth( _msg, _ins );
+            _cb &amp;&amp; _ins.on(&#x27;confirm&#x27;, _cb);
+            _cancelCb &amp;&amp; _ins.on( &#x27;cancel&#x27;, _cancelCb );
+
             return _ins;
         };
     /**
-     * 自定义 JC.confirm 的显示模板
+     * 自定义 JC.Dialog.confirm 的显示模板
      * @property    tpl
      * @type    string
      * @default undefined
      * @static
      */
-    JC.confirm.tpl;
-    /**
-     * 弹框逻辑处理方法集
-     * @property    _logic
-     * @for JC.alert
-     * @private
-     */
+    JC.Dialog.confirm.tpl;
+
     var _logic = {
         /**
          * 弹框最小宽度
          * @property    _logic.minWidth
-         * @for JC.alert
+         * @for JC.Dialog
          * @type        int
          * @default     180
          * @private
@@ -407,335 +401,16 @@
         /**
          * 弹框最大宽度
          * @property    _logic.maxWidth
-         * @for JC.alert
+         * @for JC.Dialog
          * @type        int
          * @default     500
          * @private
          */
         , maxWidth: 500
         /**
-         * 显示时 X轴的偏移值
-         * @property    _logic.xoffset
-         * @type    number
-         * @default 9
-         * @for JC.alert
-         * @private
-         */
-        , xoffset: 9
-        /**
-         * 显示时 Y轴的偏移值
-         * @property    _logic.yoffset
-         * @type    number
-         * @default 3
-         * @for JC.alert
-         * @private
-         */
-        , yoffset: 3
-        /**
-         * 设置弹框的唯一性
-         * @method  _logic.popupIdentifier
-         * @for JC.alert
-         * @private
-         * @param   {JC.Panel} _panel  
-         */
-        , popupIdentifier:
-            function( _panel ){
-                var _int;
-                if( !_panel ){
-                    $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).each( function(){
-                        var _p = $(this), _ins = Panel.getInstance( _p );
-                        if( !_ins ) return;
-                        _ins.hide();
-                        _ins.close();
-                    });
-                    //$(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).remove();
-                    $(&#x27;body &gt; div.UPanel_TMP&#x27;).remove();
-                }else{
-                    _panel.selector().addClass(&#x27;UPanelPopup_identifer&#x27;);
-                    _panel.selector().data(&#x27;PopupInstance&#x27;, _panel);
-                }
-            }
-        /**
-         * 弹框通用处理方法
-         * @method  _logic.popup
-         * @for JC.alert
-         * @private
-         * @param   {string}    _tpl        弹框模板
-         * @param   {string}    _msg        弹框提示
-         * @param   {selector}  _popupSrc   弹框事件源对象  
-         * @param   {int}       _status     弹框状态
-         * @param   {function}  _cb         confirm 回调
-         * @return  JC.Panel
-         */
-        , popup:
-        function( _tpl, _msg, _popupSrc, _status, _cb ){
-            if( !_msg ) return;
-            _logic.popupIdentifier();
-
-            _popupSrc &amp;&amp; ( _popupSrc = $(_popupSrc) );
-
-            var _tpl = _tpl
-                        .replace(/\{msg\}/g, _msg)
-                        .replace(/\{status\}/g, _logic.getStatusClass(_status||&#x27;&#x27;) );
-            var _ins = new JC.Panel(_tpl);
-            _logic.popupIdentifier( _ins );
-            _ins.selector().data(&#x27;popupSrc&#x27;, _popupSrc);
-            _logic.fixWidth( _msg, _ins );
-
-            _cb &amp;&amp; _ins.on(&#x27;confirm&#x27;, _cb);
-            if( !_popupSrc ) _ins.center();
-
-            _ins.on(&#x27;show_default&#x27;, function(){
-                //JC.log(&#x27;user show_default&#x27;);
-                if( _popupSrc &amp;&amp; _popupSrc.length ){
-                    _logic.showEffect( _ins, _popupSrc, function(){
-                        _ins.focusButton();
-                    });
-                    return false;
-                }
-            });
-
-            _ins.on(&#x27;close_default&#x27;, function(){
-                //JC.log(&#x27;user close_default&#x27;);
-                if( _popupSrc &amp;&amp; _popupSrc.length ){
-                    _logic.hideEffect( _ins, _popupSrc, function(){
-                        _ins.selector().remove();
-                        _ins = null;
-                    });
-                }else{
-                    _ins.selector().remove();
-                }
-                return false;
-            });
-
-            _ins.on(&#x27;hide_default&#x27;, function(){
-                //JC.log(&#x27;user hide_default&#x27;);
-                if( _popupSrc &amp;&amp; _popupSrc.length ){
-                    _logic.hideEffect( _ins, _popupSrc, function(){
-                        _ins.selector().hide();
-                    });
-                    return false;
-                }else{
-                    _ins.selector().hide();
-                }
-            });
-
-            if( _popupSrc &amp;&amp; _popupSrc.length )_ins.selector().css( { &#x27;left&#x27;: &#x27;-9999px&#x27;, &#x27;top&#x27;: &#x27;-9999px&#x27; } );
-
-            _ins.selector().css( &#x27;z-index&#x27;, window.ZINDEX_COUNT++ );
-            _ins.show();
-
-            return _ins;
-        }
-        /**
-         * 隐藏弹框缓动效果
-         * @method  _logic.hideEffect
-         * @for JC.alert
-         * @private
-         * @param   {JC.Panel}     _panel
-         * @param   {selector}      _popupSrc
-         * @param   {function}      _doneCb 缓动完成后的回调
-         */
-        , hideEffect:
-            function( _panel, _popupSrc, _doneCb ){
-                _popupSrc &amp;&amp; ( _popupSrc = $(_popupSrc) );
-                if( !(_popupSrc &amp;&amp; _popupSrc.length ) ) {
-                    _doneCb &amp;&amp; _doneCb( _panel );
-                    return;
-                }
-                if( !( _panel &amp;&amp; _panel.selector ) ) return;
-
-                var _poffset = _popupSrc.offset(), _selector = _panel.selector();
-                var _dom = _selector[0];
-
-                _dom.interval &amp;&amp; clearInterval( _dom.interval );
-                _dom.defaultWidth &amp;&amp; _selector.width( _dom.defaultWidth );
-                _dom.defaultHeight &amp;&amp; _selector.height( _dom.defaultHeight );
-
-                var _pw = _popupSrc.width(), _sh = _selector.height();
-                _dom.defaultWidth = _selector.width();
-                _dom.defaultHeight = _selector.height();
-
-                var _left = _logic.getLeft( _poffset.left, _pw, _selector.width() );
-                var _top = _logic.getTop( _poffset.top, _popupSrc.height(), _sh );
-                    _top = _top - _sh - _logic.yoffset;
-
-                _selector.height(0);
-                _selector.css( { &#x27;left&#x27;: _left  + &#x27;px&#x27; } );
-
-                _dom.interval = 
-                    JC.f.easyEffect( function( _curVal, _done ){
-                        _selector.css( {
-                            &#x27;top&#x27;: _top + _curVal + &#x27;px&#x27;
-                            , &#x27;height&#x27;: _sh - _curVal + &#x27;px&#x27;
-                        });
-
-                        if( _popupSrc &amp;&amp; !_popupSrc.is(&#x27;:visible&#x27;) ){
-                            clearInterval( _dom.interval );
-                            _doneCb &amp;&amp; _doneCb( _panel );
-                        }
-
-                        if( _sh === _curVal ) _selector.hide();
-                        _done &amp;&amp; _doneCb &amp;&amp; _doneCb( _panel );
-                    }, _sh );
-
-            }
-        /**
-         * 隐藏弹框缓动效果
-         * @method  _logic.showEffect
-         * @for JC.alert
-         * @private
-         * @param   {JC.Panel}     _panel
-         * @param   {selector}      _popupSrc
-         */
-        , showEffect:
-            function( _panel, _popupSrc, _doneCb ){
-                _popupSrc &amp;&amp; ( _popupSrc = $(_popupSrc) );
-                if( !(_popupSrc &amp;&amp; _popupSrc.length ) ) return;
-                if( !( _panel &amp;&amp; _panel.selector ) ) return;
-
-                var _poffset = _popupSrc.offset(), _selector = _panel.selector();
-                var _dom = _selector[0];
-
-                _dom.interval &amp;&amp; clearInterval( _dom.interval );
-                _dom.defaultWidth &amp;&amp; _selector.width( _dom.defaultWidth );
-                _dom.defaultHeight &amp;&amp; _selector.height( _dom.defaultHeight );
-
-                var _pw = _popupSrc.width(), _sh = _selector.height();
-                _dom.defaultWidth = _selector.width();
-                _dom.defaultHeight = _selector.height();
-
-                var _left = _logic.getLeft( _poffset.left, _pw, _selector.width() );
-                var _top = _logic.getTop( _poffset.top, _popupSrc.height(), _sh, _logic.xoffset );
-
-                _selector.height(0);
-                _selector.css( { &#x27;left&#x27;: _left  + &#x27;px&#x27; } );
-
-                //JC.log( _top, _poffset.top );
-
-                if( _top &gt; _poffset.top ){
-                    _dom.interval = 
-                        JC.f.easyEffect( function( _curVal, _done ){
-                            _selector.css( {
-                                &#x27;top&#x27;: _top - _sh - _logic.yoffset + &#x27;px&#x27;
-                                , &#x27;height&#x27;: _curVal + &#x27;px&#x27;
-                            });
-                            _done &amp;&amp; _doneCb &amp;&amp; _doneCb( _panel );
-                        }, _sh );
-
-                }else{
-                    _dom.interval = 
-                        JC.f.easyEffect( function( _curVal, _done ){
-                            _selector.css( {
-                                &#x27;top&#x27;: _top - _curVal - _logic.yoffset + &#x27;px&#x27;
-                                , &#x27;height&#x27;: _curVal + &#x27;px&#x27;
-                            });
-                            _done &amp;&amp; _doneCb &amp;&amp; _doneCb( _panel );
-                        }, _sh );
-                }
-
-            }
-        /**
-         * 设置 Panel 的默认X,Y轴
-         * @method  _logic.onresize
-         * @private
-         * @for JC.alert
-         * @param   {selector}  _panel
-         */
-        , onresize:
-            function( _panel ){
-                if(  !_panel.selector().is(&#x27;:visible&#x27;) ) return;
-                var _selector = _panel.selector(), _popupSrc = _selector.data(&#x27;popupSrc&#x27;);
-                if( !(_popupSrc &amp;&amp; _popupSrc.length) ){
-                    _panel.center();
-                }else{
-                    var _srcoffset = _popupSrc.offset();
-                    var _srcTop = _srcoffset.top
-                        , _srcHeight = _popupSrc.height()
-                        , _targetHeight = _selector.height()
-                        , _yoffset = 0
-                        
-                        , _srcLeft = _srcoffset.left
-                        , _srcWidth = _popupSrc.width()
-                        , _targetWidth = _selector.width()
-                        , _xoffset = 0
-                        ;
-
-                    var _left = _logic.getLeft( _srcLeft, _srcWidth
-                                , _targetWidth, _xoffset ) + _logic.xoffset;
-                    var _top = _logic.getTop( _srcTop, _srcHeight
-                                , _targetHeight, _yoffset ) - _targetHeight - _logic.yoffset;
-
-                    _selector.css({
-                        &#x27;left&#x27;: _left + &#x27;px&#x27;, &#x27;top&#x27;: _top + &#x27;px&#x27;
-                    });
-                }
-            }
-        /**
-         * 取得弹框最要显示的 y 轴
-         * @method  _logic.getTop
-         * @for JC.alert
-         * @private
-         * @param   {number}    _scrTop         滚动条Y位置
-         * @param   {number}    _srcHeight      事件源 高度
-         * @param   {number}    _targetHeight   弹框高度
-         * @param   {number}    _offset         Y轴偏移值
-         * @return  {number}
-         */
-        , getTop:
-            function( _srcTop, _srcHeight, _targetHeight, _offset  ){
-                var _r = _srcTop
-                    , _scrTop = $(document).scrollTop()
-                    , _maxTop = $(window).height() - _targetHeight;
-
-                _r - _targetHeight &lt; _scrTop &amp;&amp; ( _r = _srcTop + _srcHeight + _targetHeight + _offset );
-
-                return _r;
-            }
-        /**
-         * 取得弹框最要显示的 x 轴
-         * @method  _logic.getLeft
-         * @for JC.alert
-         * @private
-         * @param   {number}    _scrTop         滚动条Y位置
-         * @param   {number}    _srcHeight      事件源 高度
-         * @param   {number}    _targetHeight   弹框高度
-         * @param   {number}    _offset         Y轴偏移值
-         * @return  {number}
-         */
-        , getLeft:
-            function( _srcLeft, _srcWidth, _targetWidth, _offset  ){
-                _offset == undefined &amp;&amp; ( _offset = 5 );
-                var _r = _srcLeft + _srcWidth / 2 + _offset - _targetWidth / 2
-                    , _scrLeft = $(document).scrollLeft()
-                    , _maxLeft = $(window).width() + _scrLeft - _targetWidth;
-
-                _r &gt; _maxLeft &amp;&amp; ( _r = _maxLeft - 2 );
-                _r &lt; _scrLeft &amp;&amp; ( _r = _scrLeft + 1 );
-
-                return _r;
-            }
-        /**
-         * 修正弹框的默认显示宽度
-         * @method  _logic.fixWidth
-         * @for     JC.alert
-         * @private
-         * @param   {string}    _msg    查显示的文本
-         * @param   {JC.Panel} _panel
-         */
-        , fixWidth:
-            function( _msg, _panel ){
-                var _tmp = $(&#x27;&lt;div class=&quot;UPanel_TMP&quot; style=&quot;position:absolute; left:-9999px;top:-9999px;&quot;&gt;&#x27; + _msg + &#x27;&lt;/div&gt;&#x27;).appendTo(&#x27;body&#x27;), _w = _tmp.width() + 80;
-                    _tmp.remove();
-                _w &gt; _logic.maxWidth &amp;&amp; ( _w = _logic.maxWidth );
-                _w &lt; _logic.minWidth &amp;&amp; ( _w = _logic.minWidth );
-
-                _panel.selector().css(&#x27;width&#x27;, _w);
-            }
-        /**
          * 获取弹框的显示状态, 默认为0(成功)
          * @method  _logic.fixWidth
-         * @for     JC.alert
+         * @for     JC.Dialog
          * @private
          * @param   {int}   _status     弹框状态: 0:成功, 1:失败, 2:警告
          * @return  {int}
@@ -751,22 +426,38 @@
                 return _r;
             }
         /**
-         * 保存弹框的所有默认模板
+         * 修正弹框的默认显示宽度
+         * @method  _logic.fixWidth
+         * @for     JC.Dialog
+         * @private
+         * @param   {string}    _msg    查显示的文本
+         * @param   {JC.Panel} _panel
+         */
+        , fixWidth:
+            function( _msg, _panel ){
+                var _tmp = $(&#x27;&lt;div class=&quot;UPanel_TMP&quot; style=&quot;position:absolute; left:-9999px;top:-9999px;&quot;&gt;&#x27; + _msg + &#x27;&lt;/div&gt;&#x27;).appendTo(&#x27;body&#x27;), _w = _tmp.width() + 80;
+                _w &gt; _logic.maxWidth &amp;&amp; ( _w = _logic.maxWidth );
+                _w &lt; _logic.minWidth &amp;&amp; ( _w = _logic.minWidth );
+
+                _panel.selector().css(&#x27;width&#x27;, _w);
+            }
+        /**
+         * 保存会话弹框的所有默认模板
          * @property    _logic.tpls
          * @type        Object
-         * @for         JC.alert
+         * @for         JC.Dialog
          * @private
          */
         , tpls: {
             /**
-             *  msgbox 弹框的默认模板
+             *  msgbox 会话弹框的默认模板
              *  @property   _logic.tpls.msgbox
              *  @type       string
              *  @private
              */
             msgbox:
                 [
-                &#x27;&lt;div class=&quot;UPanel UPanelPopup {status}&quot; &gt;&#x27;
+                &#x27;&lt;div class=&quot;UPanel UPanelPopup {status}&quot; panelclickclose=&quot;true&quot; &gt;&#x27;
                 ,&#x27;    &lt;div class=&quot;UPContent&quot;&gt;&#x27;
                 ,&#x27;        &lt;div class=&quot;bd&quot;&gt;&#x27;
                 ,&#x27;            &lt;dl&gt;&#x27;
@@ -779,14 +470,14 @@
                 ,&#x27;&lt;/div&gt;&#x27;
                 ].join(&#x27;&#x27;)
             /**
-             *  alert 弹框的默认模板
+             *  alert 会话弹框的默认模板
              *  @property   _logic.tpls.alert
              *  @type       string
              *  @private
              */
             , alert:
                 [
-                &#x27;&lt;div class=&quot;UPanel UPanelPopup {status}&quot; &gt;&#x27;
+                &#x27;&lt;div class=&quot;UPanel UPanelPopup {status}&quot; panelclickclose=&quot;true&quot; &gt;&#x27;
                 ,&#x27;    &lt;div class=&quot;UPContent&quot;&gt;&#x27;
                 ,&#x27;        &lt;div class=&quot;bd&quot;&gt;&#x27;
                 ,&#x27;            &lt;dl&gt;&#x27;
@@ -802,14 +493,14 @@
                 ,&#x27;&lt;/div&gt;&#x27;
                 ].join(&#x27;&#x27;)
             /**
-             *  confirm 弹框的默认模板
+             *  confirm 会话弹框的默认模板
              *  @property   _logic.tpls.confirm
              *  @type       string
              *  @private
              */
             , confirm:
                 [
-                &#x27;&lt;div class=&quot;UPanel UPanelPopup {status}&quot; &gt;&#x27;
+                &#x27;&lt;div class=&quot;UPanel UPanelPopup {status}&quot; panelclickclose=&quot;true&quot; &gt;&#x27;
                 ,&#x27;    &lt;div class=&quot;UPContent&quot;&gt;&#x27;
                 ,&#x27;        &lt;div class=&quot;bd&quot;&gt;&#x27;
                 ,&#x27;            &lt;dl&gt;&#x27;
@@ -827,17 +518,8 @@
                 ].join(&#x27;&#x27;)
         }
     };
-    /**
-     * 响应窗口改变大小 
-     */
-    $(window).on(&#x27;resize&#x27;, function( _evt ){
-        $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).each( function(){
-            var _p = $(this);
-            _p.data(&#x27;PopupInstance&#x27;) &amp;&amp; _logic.onresize( _p.data(&#x27;PopupInstance&#x27;) );
-        });
-    });
 
-    return JC.Panel;
+    return JC.Dialog;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );

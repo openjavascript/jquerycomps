@@ -76,12 +76,20 @@ requirejs.config( {
         , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
         , 'JC.Scrollbar': 'modules/JC.Scrollbar/0.1/Scrollbar'
 
+        /*
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
-        , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
-        , 'JC.Panel.default': 'modules/JC.Panel/0.2/Panel.default'
-        , 'JC.Panel.popup': 'modules/JC.Panel/0.2/Panel.popup'
-        , 'JC.Dialog': 'modules/JC.Panel/0.2/Dialog'
-        , 'JC.Dialog.popup': 'modules/JC.Panel/0.2/Dialog.popup'
+        , 'JC.Panel':           'modules/JC.Panel/0.2/Panel'
+        , 'JC.Panel.default':   'modules/JC.Panel/0.2/Panel.default'
+        , 'JC.Panel.popup':     'modules/JC.Panel/0.2/Panel.popup'
+        , 'JC.Dialog':          'modules/JC.Panel/0.2/Dialog'
+        , 'JC.Dialog.popup':    'modules/JC.Panel/0.2/Dialog.popup'
+        */
+
+        , 'JC.Panel':           'modules/JC.Panel/0.3/Panel'
+        , 'JC.Panel.default':   'modules/JC.Panel/0.3/Panel.default'
+        , 'JC.Panel.popup':     'modules/JC.Panel/0.3/Panel.popup'
+        , 'JC.Dialog':          'modules/JC.Panel/0.3/Dialog'
+        , 'JC.Dialog.popup':    'modules/JC.Panel/0.3/Dialog.popup'
 
         , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
         //, 'JC.PopTips': 'modules/JC.PopTips/0.1/PopTips'
@@ -113,6 +121,7 @@ requirejs.config( {
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
         , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
         , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/0.1/InputSelect'
+        , 'Bizs.MultiChangeLogic': 'modules/Bizs.MultiChangeLogic/0.1/MultiChangeLogic'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
         , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'

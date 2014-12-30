@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>suches template</title>
+<style type='text/css'>
+    body{ width: 680px; margin: 20px auto; }
+    .cclear{zoom:1;}
+    .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+    .error{ color: red; }
+    input.error, select.error, textarea.error{ 
+        background-color: #fce1e1;
+        border: 1px solid #da9797;
+        box-shadow: 0 none;
+    }
+    input[type=text], input[type=password]{ width: 200px; }
+
+    dl.def > dd{
+        margin: 10px 0;
+    }
+
+    dl.def > dd > button {
+    }
+
+</style>
+<link href='../res/default/style.css' rel='stylesheet' />
+<script src="../../../../lib.js"></script>
+<script src="../../../../config.js"></script>
+<script>
+    JC.debug = true; 
+    requirejs( [ 'modules/JC.Panel/0.3/Panel.default' ], function( Panel ){
+        $('button.dom_panel').on( 'click', function( _evt ){
+            /**
+             * 注意, 如果是从DOM读取模板的话, 
+             * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
+             *
+             * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
+             *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+             *      //如果要强制从DOM清除, 可以调用 panel.dispose();
+             */
+            JC.hideAllPanel( 1 );
+
+            var panel = Panel.getInstance( $('div.dom_panel') ); 
+            if( !panel ){
+                panel = new JC.Panel( $('div.dom_panel') ); 
+                panel.clickClose();
+                panel.on( 'confirm', function( _evt, _panel ){
+                    JC.log( 'dom confirm' );
+                });
+
+                panel.on( 'cancel', function( _evt, _panel ){
+                    JC.log( 'dom cancel' );
+                });
+
+                panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+            }
+            panel.show( this ); //让Panel显示在 this 的上方或下方
+        });
+
+        $('button.string_panel').on( 'click', function( _evt ){
+            JC.hideAllPanel( 1 );
+            var panel = new JC.Panel( JC.f.scriptContent( '#js_tpl' ) ); 
+                panel.clickClose();
+                panel.center();
+                panel.show();
+
+                panel.on( 'confirm', function( _evt, _panel ){
+                    JC.log( 'string confirm' );
+                });
+
+                panel.on( 'cancel', function( _evt, _panel ){
+                    JC.log( 'string cancel' );
+                });
+
+                panel.on( 'close', function( _evt, _panel ){
+                    JC.log( 'string close' );
+                });
+        });
+
+        $('button.string_panel_with_src').on( 'click', function( _evt ){
+            JC.hideAllPanel( 1 );
+            var panel = new JC.Panel( JC.f.scriptContent( '#js_tpl' ), 'string_panel_with_src panel' ); 
+                panel.clickClose();
+                panel.show( this );
+
+                panel.on( 'confirm', function( _evt, _panel ){
+                    JC.log( 'string_panel_with_src confirm' );
+                });
+
+                panel.on( 'cancel', function( _evt, _panel ){
+                    JC.log( 'string_panel_with_src cancel' );
+                });
+
+                panel.on( 'close', function( _evt, _panel ){
+                    JC.log( 'string_panel_with_src close' );
+                });
+        });
+
+    }); 
+</script>
+
+</head>    
+<body>
+    <div style="height: 100px;"></div>
+    <dl class="def">
+        <dt>JC.Panel 示例</dt>
+        <dd>
+            <button type="button" class="dom_panel">dom panel</button>
+            <button type="button" class="string_panel">string panel</button>
+            <button type="button" class="string_panel_with_src">string panel with source</button>
+        </dd>
+
+    </dl>
+
+    <div class="UPanel dom_panel" style="display:none; width: 400px;" >
+        <div class="UPContent">
+            <div class="hd">dom panel</div>
+            <div class="bd">
+                <h2>test content</h2>
+                <div style="text-align:center" class="UButton">
+                    <button type="button" eventtype="confirm">确定</button>
+                    <button type="button" eventtype="cancel">取消</button>
+                </div>
+            </div>
+            <div class="ft">test footer</div>
+            <span class="close" eventtype="close"></span>
+        </div><!--end UPContent-->
+    </div>
+
+    <script type="text/template" id="js_tpl">
+        <div class="UPanel UPanelString" style="display:none; width: 400px;" >
+            <div class="UPContent">
+                <div class="hd">string panel</div>
+                <div class="bd">
+                    <h2>test content</h2>
+                    <div style="text-align:center" class="UButton">
+                        <button type="button" eventtype="confirm">确定</button>
+                        <button type="button" eventtype="cancel">取消</button>
+                    </div>
+                </div>
+                <div class="ft">test footer</div>
+                <span class="close" eventtype="close"></span>
+            </div><!--end UPContent-->
+        </div>
+    </script>
+
+    <div style="height:3000px;"></div>
+
+</body>
+</html>
+
