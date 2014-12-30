@@ -21,18 +21,22 @@
     var Dialog = window.Dialog = JC.Dialog = 
         function( _selector, _headers, _bodys, _footers ){
             if( _logic.timeout ) clearTimeout( _logic.timeout );
+            var _ins;
 
-            if( JC.Panel.getInstance( _selector ) ){
+            if( _ins = JC.Panel.getInstance( _selector ) ){
                 _logic.timeout = setTimeout( function(){
-                    JC.Panel.getInstance( _selector ).show(0);
+                    _ins.show(0);
                 }, _logic.showMs );
 
-                return JC.Panel.getInstance( _selector );
+                return _ins;
             }
 
-            _logic.dialogIdentifier();
+            if( !JC.Dialog.MULTI_MASK ){
+                _logic.dialogIdentifier();
+            }
+            //
 
-            var _ins = new JC.Panel( _selector, _headers, _bodys, _footers );
+            _ins = new JC.Panel( _selector, _headers, _bodys, _footers );
             _logic.dialogIdentifier( _ins );
 
             _logic.showMask();
@@ -52,9 +56,11 @@
 
                 setTimeout( function(){  
                     _logic.showMask(); 
-                    _ins.selector().css( { 'z-index': window.ZINDEX_COUNT++, 'display': 'block' } );
+                    _ins.selector().css( { 'z-index': window.ZINDEX_COUNT, 'display': 'block' } );
+                    window.ZINDEX_COUNT += 2;
                 }, 1 );
             });
+            window.ZINDEX_COUNT++;
             
             _logic.timeout = setTimeout( function(){
                 _ins.show( 0 );
@@ -62,6 +68,18 @@
 
             return _ins;
         };
+
+    Dialog.DISPLAY_LIST = [];
+
+    /**
+     * 是否支持多层蒙板
+     * @property    MULTI_MASK
+     * @type        boolean
+     * @default     true
+     * @for JC.Dialog
+     * @static
+     */
+    JC.Dialog.MULTI_MASK = true;
 
     /**
      * 显示或隐藏 蒙板
@@ -85,30 +103,13 @@
      */
     var _logic = {
         /**
-         * 延时处理的指针属性
-         * @property    _logic.timeout
-         * @type    setTimeout
-         * @private
-         * @for JC.Dialog
-         */
-        timeout: null
-        /**
-         * 延时显示弹框
-         * <br />延时是为了使用户绑定的 show 事件能够被执行
-         * @property    _logic.showMs
-         * @type    int     millisecond
-         * @private
-         * @for JC.Dialog
-         */
-        , showMs: 10
-        /**
          * 设置会话弹框的唯一性
          * @method  _logic.dialogIdentifier
          * @for JC.Dialog
          * @private
          * @param   {JC.Panel} _panel  
          */
-        , dialogIdentifier:
+        dialogIdentifier:
             function( _panel ){
                 if( !_panel ){
                     _logic.hideMask();
@@ -122,8 +123,62 @@
                 }else{
                     _panel.selector().addClass('UPanelDialog_identifer');
                     _panel.selector().data('DialogInstance', _panel);
+                    Dialog.DISPLAY_LIST.push( _panel );
                 }
             }
+        /**
+         * 隐藏蒙板
+         * @method  _logic.hideMask
+         * @private
+         * @for JC.Dialog
+         */
+        , hideMask:
+            function(){
+                var _mask, _iframemask;
+                if( !JC.Dialog.MULTI_MASK ){
+                    _mask = $('#UPanelMask');
+                    _iframemask = $('#UPanelMaskIfrmae');
+                    _mask.length && _mask.hide();
+                    _iframemask.length && _iframemask.hide();
+                    return;
+                }
+
+                JC.f.safeTimeout( function(){
+                    _mask = $('#UPanelMask');
+                    _iframemask = $('#UPanelMaskIfrmae');
+                    var _panel, _time = 1, _zindex, _newIndex;
+
+                    if( !( _mask.length || _iframemask.length ) ) return;
+
+                    for( var i = Dialog.DISPLAY_LIST.length - 1; i >= 0; i-- ){
+                        var _tmp = Dialog.DISPLAY_LIST[ i ];
+                        if( _tmp && _tmp.selector() && _tmp.selector().parent().length && _tmp.selector().is( ':visible' ) && _tmp.selector().offset().left >= -10 ){
+
+                            _panel = _tmp;
+                            //Dialog.DISPLAY_LIST = Dialog.DISPLAY_LIST.slice( 0, i );
+                            break;
+                        }
+                    }
+
+                    if( _panel ){
+                        //JC.log( _panel.selector().html () );
+                        _zindex = _panel.selector().css( 'z-index' ) || 0;
+                        _newIndex = _zindex - 1;
+                        if( _newIndex > 0 ){
+                            _mask.length && _mask.css( { 'z-index': _newIndex } );
+                            _iframemask.length && _iframemask.css( { 'z-index': _newIndex } );
+                        }else{
+                            _mask.length && _mask.hide();
+                            _iframemask.length && _iframemask.hide();
+                        }
+                    }else{
+                        _mask.length && _mask.hide();
+                        _iframemask.length && _iframemask.hide();
+                    }
+
+                }, null, 'JC.Dialogasdfaweasdfase', 1 );
+            }
+
         /**
          * 显示蒙板
          * @method  _logic.showMask
@@ -145,17 +200,22 @@
                 _mask.css('z-index', window.ZINDEX_COUNT++ );
             }
         /**
-         * 隐藏蒙板
-         * @method  _logic.hideMask
+         * 延时处理的指针属性
+         * @property    _logic.timeout
+         * @type    setTimeout
          * @private
          * @for JC.Dialog
          */
-        , hideMask:
-            function(){
-                var _mask = $('#UPanelMask'), _iframemask = $('#UPanelMaskIfrmae');
-                if( _mask.length ) _mask.hide();
-                if( _iframemask.length ) _iframemask.hide();
-            }
+        , timeout: null
+        /**
+         * 延时显示弹框
+         * <br />延时是为了使用户绑定的 show 事件能够被执行
+         * @property    _logic.showMs
+         * @type    int     millisecond
+         * @private
+         * @for JC.Dialog
+         */
+        , showMs: 10
         /**
          * 窗口改变大小时, 改变蒙板的大小,
          * <br />这个方法主要为了兼容 IE6

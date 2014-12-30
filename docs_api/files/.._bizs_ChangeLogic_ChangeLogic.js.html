@@ -402,12 +402,12 @@
                 _p._view.init();
 
                 _p._model.bclTrigger().on(&#x27;change&#x27;, function(_evt){
-                    //JC.log( &#x27;bclTrigger change&#x27;, new Date().getTime() );
                     _p.trigger( &#x27;item_change&#x27;, [ $(this), _evt ] );
                 });
 
                 _p.on( &#x27;item_change&#x27;, function( _evt, _item, _srcEvt ){
                     _item = $( _item );
+                   
                     _p._view.change( _item );
 
                     if( _p._model.ready() ){
@@ -424,6 +424,7 @@
                 });
 
                 if( _p._model.bclTriggerChangeOnInit() ){
+
                     ( _tmp = _p._model.bclTrigger( true ) ) 
                         &amp;&amp; !_tmp.prop( &#x27;disabled&#x27; )
                         &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
@@ -540,6 +541,7 @@
 
         , bclTrigger:
             function( _curItem ){
+
                 var _p = this, _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;bclTrigger&#x27;) ), _tmp;
                 if( _curItem ){
                     _r.each( function(){
@@ -556,10 +558,8 @@
         , bclTriggerChangeOnInit:
             function(){
                 var _r = true, _p = this;
-
                 _p.selector().is( &#x27;[bclTriggerChangeOnInit] &#x27; ) 
                     &amp;&amp; ( _r = JC.f.parseBool( _p.selector().attr( &#x27;bclTriggerChangeOnInit&#x27; ) ) );
-
                 return _r;
             }
 
@@ -580,12 +580,12 @@
                 _p.selector().attr(&#x27;bclDisableTarget&#x27;) 
                     &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;bclDisableTarget&#x27;) ) )
                     ;
-
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $(_triggerItem) ).length 
                     &amp;&amp; _triggerItem.attr(&#x27;bclTrigger&#x27;) 
                     &amp;&amp; ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr(&#x27;bclDisableTarget&#x27;) ) )
                     ;
+
                 return _r;
             }
 
@@ -617,12 +617,15 @@
                         &amp;&amp; _triggerItem.attr(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27; ){
                     _r = !_triggerItem.prop(&#x27;checked&#x27;);
                 }
+
+
                 return _r;
             }
 
         , bclDelimiter: 
             function( _trigger ){ 
                 var _r = &#x27;||&#x27;;
+
                 this.selector().is( &#x27;[bclDelimiter]&#x27; ) &amp;&amp; ( _r = this.selector().attr( &#x27;bclDelimiter&#x27; ) );
                 _trigger &amp;&amp; _trigger.is( &#x27;[bclDelimiter]&#x27; ) &amp;&amp; ( _r = _trigger.attr( &#x27;bclDelimiter&#x27; ) );
                 return _r;
@@ -770,6 +773,7 @@
 
         , change:
             function( _triggerItem ){
+            
                 _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
                 if( !( _triggerItem &amp;&amp; _triggerItem.length &amp;&amp; _triggerItem.is(&#x27;:visible&#x27;) ) ) return;
                 var _p = this
@@ -789,6 +793,7 @@
                         }
                     }
                 }
+
 
                 if( _bclDisableTarget &amp;&amp; _bclDisableTarget.length ){
                     _bclDisableTarget.each( function(){ 

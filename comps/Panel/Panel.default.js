@@ -96,6 +96,11 @@
      *          是否隐藏关闭按钮
      *          <br /><b>类型为 panel, dialog 时生效</b>
      *      </dd>
+     *
+     *      <dt>panelfixed = bool, default = false</dt>
+     *      <dd>
+     *          显示 panel 时, 是否居中显示
+     *      </dd>
      * </dl>
      * @namespace JC
      * @class Panel
@@ -104,9 +109,9 @@
      * @param   {string}            _headers    定义模板的 header 文字, 如果 _selector 不能解析为HTML, 视视为@param _bodys
      * @param   {string}            _bodys      定义模板的 body 文字, 如果 _selector 不能解析为HTML, 视视为@param _footers
      * @param   {string}            _footers    定义模板的 footer 文字
-     * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 75 team
-     * @date    2013-06-04
+     * @version dev 0.3, 2014-12-30, qiushaowei   <suches@btbtd.org> | 75 team
+     * @version dev 0.1, 2013-06-04, qiushaowei   <suches@btbtd.org> | 75 team
+     * @date    
      * @example
             <script src="../../../lib.js"></script>
             <script src="../../../config.js"></script>
@@ -163,6 +168,14 @@
             if( _selector && typeof _selector == 'string' ) return;
             return $(_selector).data('PanelInstace');
         };
+    /**
+     * 显示Panel时, 是否 fixed 居中
+     * @property    FIXED
+     * @type        bool
+     * @default     false
+     * @static
+     */
+    Panel.FIXED = false;
     /**
      * 显示Panel时, 是否 focus 到 按钮上
      * focusButton
@@ -841,6 +854,15 @@
                 typeof _ms == 'number' && ( _r = _ms );
                 return _r;
             }
+
+        , panelfixed: 
+            function(){
+                var _r = Panel.FIXED;
+                if( this.panel.is( '[panelfixed]' ) ){
+                    _r = JC.f.parseBool( this.panel.attr('panelfixed') );
+                }
+                return _r;
+            }
     };
      /**
      * 存储 Panel 的基础视图类
@@ -1048,7 +1070,25 @@
                     , _x, _y, _winw = $(window).width(), _winh = $(window).height()
                     , _scrleft = $(document).scrollLeft(), _scrtop = $(document).scrollTop()
                     , _iframe
+                    , _p = this
+                    , _tmpTop = 0
                     ;
+
+                if( _p._model.panelfixed() ){
+                    _layout.css( {'left': '-9999px', 'top': '-9999px'} ).show();
+                    if( _winh > _lh ){
+                        _tmpTop = ( _winh - _lh ) / 2;
+                        _tmpTop > 200 && ( _tmpTop = 200 );
+                    }
+                    _layout.css( {
+                        'position': 'fixed'
+                        , 'left': '0px'
+                        , 'right': '0px'
+                        , 'margin': 'auto'
+                        , 'top': _tmpTop
+                    });
+                    return;
+                }
 
                 if( window.parent && window.parent != window ){
                     try{

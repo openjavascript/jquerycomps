@@ -348,6 +348,11 @@
      *          是否隐藏关闭按钮
      *          &lt;br /&gt;&lt;b&gt;类型为 panel, dialog 时生效&lt;/b&gt;
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;panelfixed = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          显示 panel 时, 是否居中显示
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Panel
@@ -356,9 +361,9 @@
      * @param   {string}            _headers    定义模板的 header 文字, 如果 _selector 不能解析为HTML, 视视为@param _bodys
      * @param   {string}            _bodys      定义模板的 body 文字, 如果 _selector 不能解析为HTML, 视视为@param _footers
      * @param   {string}            _footers    定义模板的 footer 文字
-     * @version dev 0.1
-     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
-     * @date    2013-06-04
+     * @version dev 0.3, 2014-12-30, qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
+     * @version dev 0.1, 2013-06-04, qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
+     * @date    
      * @example
             &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
             &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
@@ -415,6 +420,14 @@
             if( _selector &amp;&amp; typeof _selector == &#x27;string&#x27; ) return;
             return $(_selector).data(&#x27;PanelInstace&#x27;);
         };
+    /**
+     * 显示Panel时, 是否 fixed 居中
+     * @property    FIXED
+     * @type        bool
+     * @default     false
+     * @static
+     */
+    Panel.FIXED = false;
     /**
      * 显示Panel时, 是否 focus 到 按钮上
      * focusButton
@@ -1093,6 +1106,15 @@
                 typeof _ms == &#x27;number&#x27; &amp;&amp; ( _r = _ms );
                 return _r;
             }
+
+        , panelfixed: 
+            function(){
+                var _r = Panel.FIXED;
+                if( this.panel.is( &#x27;[panelfixed]&#x27; ) ){
+                    _r = JC.f.parseBool( this.panel.attr(&#x27;panelfixed&#x27;) );
+                }
+                return _r;
+            }
     };
      /**
      * 存储 Panel 的基础视图类
@@ -1300,7 +1322,25 @@
                     , _x, _y, _winw = $(window).width(), _winh = $(window).height()
                     , _scrleft = $(document).scrollLeft(), _scrtop = $(document).scrollTop()
                     , _iframe
+                    , _p = this
+                    , _tmpTop = 0
                     ;
+
+                if( _p._model.panelfixed() ){
+                    _layout.css( {&#x27;left&#x27;: &#x27;-9999px&#x27;, &#x27;top&#x27;: &#x27;-9999px&#x27;} ).show();
+                    if( _winh &gt; _lh ){
+                        _tmpTop = ( _winh - _lh ) / 2;
+                        _tmpTop &gt; 200 &amp;&amp; ( _tmpTop = 200 );
+                    }
+                    _layout.css( {
+                        &#x27;position&#x27;: &#x27;fixed&#x27;
+                        , &#x27;left&#x27;: &#x27;0px&#x27;
+                        , &#x27;right&#x27;: &#x27;0px&#x27;
+                        , &#x27;margin&#x27;: &#x27;auto&#x27;
+                        , &#x27;top&#x27;: _tmpTop
+                    });
+                    return;
+                }
 
                 if( window.parent &amp;&amp; window.parent != window ){
                     try{
