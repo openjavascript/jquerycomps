@@ -174,7 +174,6 @@
                 if( _p._model.bclTriggerChangeOnInit() ){
 
                     ( _tmp = _p._model.bclTrigger( true ) ) 
-                        && (console.log("_tmp", _tmp))
                         && !_tmp.prop( 'disabled' )
                         && _tmp.trigger( 'change');
                 }
@@ -377,7 +376,6 @@
 
                 this.selector().is( '[bclDelimiter]' ) && ( _r = this.selector().attr( 'bclDelimiter' ) );
                 _trigger && _trigger.is( '[bclDelimiter]' ) && ( _r = _trigger.attr( 'bclDelimiter' ) );
-                 console.log("bclDelimiter", _r);
                 return _r;
             }
 
