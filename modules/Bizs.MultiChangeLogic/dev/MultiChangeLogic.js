@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
-    //发现一个bug但是不想改不能单单用is判断
 /**
  *
  * @namespace   Bizs
@@ -44,10 +43,10 @@
             _selector = $( _selector || document );
 
             if( _selector.length ){
-                if( _selector.hasClass( 'bizsMultiChangeLogic' )  ){
+                if( _selector.hasClass( 'js_bizsMultiChangeLogic' )  ){
                     _r.push( new MultiChangeLogic( _selector ) );
                 }else{
-                    _selector.find( '.bizsMultiChangeLogic' ).each( function(){
+                    _selector.find( '.js_bizsMultiChangeLogic' ).each( function(){
                         _r.push( new MultiChangeLogic( this ) );
                     });
                 }
@@ -63,7 +62,8 @@
         }, 
 
         _initHanlderEvent: function () {
-            var p = this;
+            var p = this,
+                tmp;
         
             //trigger Element change event
             p._model.bclTrigger().on('change', function () {
@@ -73,7 +73,6 @@
                 if ( $cleanElement.length ) {
                     $.each($cleanElement, function () {
                         var $this = $(this);
-
                         if ( /(input|textarea|select)/i.test($this.prop('nodeName').toLowerCase()) ) {
                             $this.val('');
                         } else {
@@ -83,87 +82,65 @@
                     });
                 }
 
-                if ( /(select)/i.test($el.prop('nodeName').toLowerCase()) ) {
-                    p.trigger('selectchange', [$el]);
-                } else if ( /(radio)/i.test($el.prop('type').toLowerCase() ) ) {
-                    p.trigger('radiochange', [$el]);
-                } else {
-                    p.trigger('checkboxchange', [$el]);
-                }
+                p.trigger('itemchange', [$el]);
 
             });
 
-            p.on('selectchange', function (evt, triggerElement) {
-                var $el = triggerElement;
+            p.on('itemchange', function (evt, triggerElement) {
 
-                if ($el.find('option:selected').is('[bcldisabled]')) {
-                    p._model.bclDisabledTarget().each(function () {
-                        $(this).prop('disabled', true);
-                    });
-                } else {
-                    p._model.bclDisabledTarget().each(function () {
-                        $(this).prop('disabled', false);
-                    });
-                }
-                
-                if ($el.find('option:selected').is('[bcldisplay]')) {
-                    p._model.bclHideTarget().each(function () {
-                        $(this).show();
-                    });
-                } else {
-                    p._model.bclHideTarget().each(function () {
-                        $(this).hide();
-                    });
-                } 
-
-            });
-
-            p.on('radiochange', function (evt, triggerElement) {
-                var $el = triggerElement,
+                    var $el = triggerElement,
                     $target,
-                    $siblings;
+                    $selfthidetarget,
+                    isDisable = p._model.isDisable($el),
+                    isDisplay = p._model.isDisplay($el);
+  //if ((triggerElement.prop('nodeName').toLowerCase() === 'input') && (triggerElement.attr('type').toLowerCase() === 'checkbox')) console.log(isDisplay);
+             
+                p._model.bclHideTarget().each(function () {
+                    var $this = $(this);
+                   
+                    $this[isDisplay? 'show': 'hide']();
+                });
 
-                if ( $el.is('[bcldisabled]') ) {
-                    p._model.bclDisabledTarget().each(function () {
-                        $(this).prop('disabled', true);
-                    });
+                p._model.bclDisabledTarget().each(function () {
+                    var $this = $(this);
                     
-                } else {
-                    p._model.bclDisabledTarget().each(function () {
-                        $(this).prop('disabled', false);
-                    });
-                }
+                    $this.prop('disabled', isDisable);
+                });
 
-                if ( $el.is('[bcldisplay]') ) {
-                    p._model.bclHideTarget().each(function () {
+           
+                if ( $el.attr('bclselfdisplaytarget') ) {
+                 
+                    $target = $( JC.f.parentSelector(triggerElement, $el.attr('bclselfdisplaytarget') ) );
+                   
+                    $.each($target, function () {
                         $(this).show();
                     });
-                   
-                } else {
-                    p._model.bclHideTarget().each(function () {
-                        $(this).hide();
-                    });
-                }
 
-                if ( $el.is('[bclselfdisplaytarget]') ) {
-                    $target = $( JC.f.parentSelector(triggerElement, $el.attr('bclselfdisplaytarget') ) );
-                    $target.show();
-
-                    if ( $el.is('[bclselfdisplaytargetsiblings]') ) {
-                        $siblings = $( JC.f.parentSelector(triggerElement, $el.attr('bclselfdisplaytargetsiblings')) );
-                        if ( $siblings.length ) {
-                            $siblings.each(function () {
-                                $(this).hide();
+                    if ( $el.attr('bclselfhidetarget') ) {
+                        $selfthidetarget = $( JC.f.parentSelector(triggerElement, $el.attr('bclselfhidetarget')) );
+                        if ( $selfthidetarget.length ) {
+                            $.each($selfthidetarget, function () {
+                                var $this = $(this);
+                                $this.hide();
                             });
                         }
                     }
                 } 
+
+                if ( $el.attr('bclselfdisplayscript') ) {
+                    $target = JC.f.scriptContent($el.attr('bclselfdisplayscript'));
+                    p._model.bclHideScriptBox() && $(p._model.bclHideScriptBox()).html($target);
+                }
                 
             });
 
-            p.on('checkboxchange', function (evt, triggerElement) {
 
-            });
+            //这个逻辑是处理onload后选中的项
+            if ( p._model.bclTriggerChangeOnInit() ) {
+                ( tmp = p._model.bclTrigger(true) )
+                    && (!tmp.prop('disabled'))
+                    && (tmp.trigger('change'));
+            }
 
 
         },
@@ -179,8 +156,21 @@
 
         },
 
-        bclTrigger: function () {
-            return $(JC.f.parentSelector(this.selector(), this.attrProp('bclTrigger')));
+        bclTrigger: function (curItem) {
+            var r = $(JC.f.parentSelector(this.selector(), this.attrProp('bclTrigger')));
+            
+            if ( curItem ) {
+
+                $.each(r, function () {
+                    var $this = $(this);
+                    if ( $this.prop('checked') || $this.prop('selected') ) {
+                        r = $this;
+                        return false;
+                    }
+                });
+            }
+
+            return r;
         },
 
         bclDisabledTarget: function () {
@@ -189,6 +179,7 @@
 
         bclHideTarget: function () {
             var r = $(JC.f.parentSelector(this.selector(), this.attrProp('bclHideTarget')));
+
             return r;
         },
 
@@ -197,8 +188,118 @@
         },
 
         bclTriggerChangeOnInit: function () {
-            var r = true;
-            this.selector().is('[bclTriggerChangeOnInit]') && (r = this.boolProp('bclTriggerChangeOnInit'));
+            var r = true,
+                attr = this.selector().attr('bclTriggerChangeOnInit');
+
+            attr && (r = this.boolProp('bclTriggerChangeOnInit'));
+            return r;
+        },
+
+        bclHideScriptBox: function () {
+            return this.attrProp('bclHideScriptBox');
+        },
+
+        bclDelimiter: function (triggerElement) {
+            var r = '||';
+                
+            this.selector().is( '[bclDelimiter]' ) 
+                && ( r = this.selector().attr( 'bclDelimiter' ) );
+            triggerElement 
+                && triggerElement.is( '[bclDelimiter]' ) 
+                && ( r = triggerElement.attr( 'bclDelimiter' ) );
+            
+            return r;
+        },
+
+        bclDelimeterItem: function (items, triggerElement) {
+           
+           return items.split(this.bclDelimiter(triggerElement)); 
+        },
+
+        isDisplay: function (triggerElement) {
+            var p = this,
+                $el = triggerElement,
+                $selectedItem,
+                r = false,
+                attr;
+
+            if (!$el.length) return false;
+
+            if (/(select)/i.test($el.prop('nodeName').toLowerCase())) {
+                //处理没有option的select
+                $selectedItem = $el.find(':selected');
+                if (!$selectedItem.length) return false;
+                
+                if ( !($el.attr('bcldisplay') || $selectedItem.attr('bcldisplay')) ) {
+                    if ( $el.attr('bcldisabled') ) {
+                        r = p.bclDelimeterItem( $el.attr('bcldisabled'), $el ).indexOf( $el.val() ) > -1;
+                    }
+
+                    if ( $selectedItem.attr('bcldisabled') ) {
+                        r = JC.f.parseBool( $selectedItem.attr('bcldisabled') );
+                    }
+                } else {
+                    if ( $el.attr('bcldisplay') ) {
+                        r = p.bclDelimeterItem($el.attr('bcldisplay'), $el).indexOf($el.val()) > - 1;
+                    }
+                    
+                    if ( $selectedItem.attr('bcldisplay') ) {
+                        r = JC.f.parseBool($selectedItem.attr('bcldisplay'));
+                    }
+                }
+
+            } else {
+                if ( p.attrProp('bcldisplay') ) {
+                    r = p.bclDelimeterItem(p.attrProp('bcldisplay'), p.selector()).indexOf($el.val()) > - 1;
+                }
+                attr = $el.attr('bcldisplay');
+                attr && (r = JC.f.parseBool(attr));
+
+                if ( /(checkbox)/i.test($el.attr('type').toLowerCase()) ) {
+                    r = $el.prop('checked');
+                }
+            }
+
+
+
+            return r;
+        },
+
+        isDisable: function (triggerElement) {
+            var p = this,
+                $el = triggerElement,
+                $selectedItem,
+                r = false;
+
+            if ( !$el.length ) return false;
+
+            if ( /(select)/i.test($el.prop('nodeName').toLowerCase()) ) {
+                //处理没有option的select
+                $selectedItem = $el.find(':selected');
+                if (!$selectedItem.length) return false;
+                
+                if ( $el.attr('bcldisabled') ) {
+                    r = p.bclDelimeterItem($el.attr('bcldisabled'), $el).indexOf($el.val()) > - 1;
+                }
+                
+                if ( $selectedItem.attr('bcldisabled') ) {
+                    r = JC.f.parseBool($selectedItem.attr('bcldisabled'));
+                }
+               
+            } else {
+                if ( p.attrProp('bcldisabled') ) {
+                    r = p.bclDelimeterItem(p.attrProp('bcldisabled'), p.selector()).indexOf($el.val()) > - 1;
+                }
+                
+                if ( $el.attr('bcldisabled') ) {
+                    r = JC.f.parseBool($el.attr('bcldisabled'));
+                }
+                
+                if ( /(checkbox)/i.test($el.attr('type').toLowerCase()) ) {
+                    r = !$el.prop('checked');
+                }
+            }
+
             return r;
         }
     });
