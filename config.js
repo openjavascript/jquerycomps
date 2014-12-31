@@ -12,13 +12,16 @@ requirejs.config( {
         'JC.common': 'modules/JC.common/0.3/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
-       
+        , 'DEV.JC.Panel':           'modules/JC.Panel/dev/Panel'
+        , 'DEV.JC.Panel.default':   'modules/JC.Panel/dev/Panel.default'
+        , 'DEV.JC.Panel.popup':     'modules/JC.Panel/dev/Panel.popup'
+        , 'DEV.JC.Dialog':          'modules/JC.Panel/dev/Dialog'
+        , 'DEV.JC.Dialog.popup':    'modules/JC.Panel/dev/Dialog.popup'
 
         , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
         , 'DEV.JC.AjaxUpload': 'modules/JC.AjaxUpload/dev/AjaxUpload'
         , 'DEV.JC.Suggest': 'modules/JC.Suggest/dev/Suggest'
         , 'DEV.Bizs.MultiChangeLogic': 'modules/Bizs.MultiChangeLogic/dev/MultiChangeLogic'
-      
 
         //, 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.2/AjaxUpload'
@@ -84,12 +87,20 @@ requirejs.config( {
         , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
         , 'JC.Scrollbar': 'modules/JC.Scrollbar/0.1/Scrollbar'
 
+        /*
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
-        , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
-        , 'JC.Panel.default': 'modules/JC.Panel/0.2/Panel.default'
-        , 'JC.Panel.popup': 'modules/JC.Panel/0.2/Panel.popup'
-        , 'JC.Dialog': 'modules/JC.Panel/0.2/Dialog'
-        , 'JC.Dialog.popup': 'modules/JC.Panel/0.2/Dialog.popup'
+        , 'JC.Panel':           'modules/JC.Panel/0.2/Panel'
+        , 'JC.Panel.default':   'modules/JC.Panel/0.2/Panel.default'
+        , 'JC.Panel.popup':     'modules/JC.Panel/0.2/Panel.popup'
+        , 'JC.Dialog':          'modules/JC.Panel/0.2/Dialog'
+        , 'JC.Dialog.popup':    'modules/JC.Panel/0.2/Dialog.popup'
+        */
+
+        , 'JC.Panel':           'modules/JC.Panel/0.3/Panel'
+        , 'JC.Panel.default':   'modules/JC.Panel/0.3/Panel.default'
+        , 'JC.Panel.popup':     'modules/JC.Panel/0.3/Panel.popup'
+        , 'JC.Dialog':          'modules/JC.Panel/0.3/Dialog'
+        , 'JC.Dialog.popup':    'modules/JC.Panel/0.3/Dialog.popup'
 
         , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
         //, 'JC.PopTips': 'modules/JC.PopTips/0.1/PopTips'

@@ -278,7 +278,7 @@ function (){
     return _r;
 };<pre>
      *              </dd>
-     *              <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = false</dd>
+     *              <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = true</dd>
      *              <dd><b>datavalidAjaxType:</b> ajax 请求类型, default = get</dd>
      *              <dd><b>datavalidRequestData:</b> ajax 请求数据, json data</dd>
      *              <dd>
@@ -339,6 +339,13 @@ function (){
      *              <dt>subdatatype = odd: 数值必须为奇数</dt>
      *          </dl>
      *      </dd>
+     *      <dt>exdatatype: 特殊数据类型, 以逗号分隔多个属性, 该类型只用于显示视觉效果, 不作为实际验证的判断</dt>
+     *      <dd>
+     *          <dl>
+     *              <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )(只用于显示视觉效果, 不作为实际验证的判断)</dt>
+                    <dd>其他参数与 subdatatype = datavalid 相同</dd>
+                </dl>
+            </dd>
      * </dl>
      * @namespace JC
      * @class Valid
@@ -3144,14 +3151,15 @@ function (){
         Valid.checkTimeout( $(this) );
     });
     /**
-     * 初始化 subdatatype = datavalid 相关事件
+     * 初始化 [ subdatatype = datavalid | exdatatype = datavalid ] 相关事件
      */
-    $(document).delegate( 'input[type=text][subdatatype]', 'keyup', function( _evt ){
-        var _sp = $(this);
+    $(document).delegate( 'input[type=text][subdatatype], input[type=text][exdatatype]', 'keyup', function( _evt ){
+        var _sp = $(this), _isEx;
 
-        var _isDatavalid = /datavalid/i.test( _sp.attr('subdatatype') );
+        var _isDatavalid = /datavalid/i.test( _sp.attr('exdatatype') || _sp.attr('subdatatype') );
         if( !_isDatavalid ) return;
         if( _sp.prop('disabled') || _sp.prop('readonly') ) return;
+        _sp.attr( 'exdatatype' ) && ( _isEx = true );
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;
@@ -3163,6 +3171,9 @@ function (){
         if( _sp.data( 'DataValidInited' ) ) return;
         _sp.data( 'DataValidInited', true );
         _sp.data( 'DataValidCache', {} );
+        !_sp.is( '[datavalidNoCache]' ) && _sp.attr( 'datavalidNoCache', true );
+
+        //JC.log( JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) ) );
 
         _sp.on( 'DataValidUpdate', function( _evt, _v, _data ){
             var _tmp, _json;
@@ -3241,7 +3252,7 @@ function (){
 
                 var _data = { 'key': _v, data: _d, 'text': _strData };
 
-                ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
+                !JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
                      && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
 
                 _sp.trigger( 'DataValidUpdate', [ _v, _data ] );
