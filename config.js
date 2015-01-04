@@ -132,6 +132,7 @@ requirejs.config( {
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
         , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
         , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/0.1/InputSelect'
+        , 'Bizs.MultiChangeLogic': 'modules/Bizs.MultiChangeLogic/0.1/MultiChangeLogic'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
         , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'
