@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>window.Bizs.ActionLogic - jquery components</title>
+    <title>Bizs.MultiChangeLogic - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -144,143 +144,52 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>window.Bizs.ActionLogic Class</h1>
+                        <h1>Bizs.MultiChangeLogic Class</h1>
 <div class="box meta">
         <div class="extends">
             Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
         </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:2</code></a>
+            Defined in: <a href="../files/.._bizs_MultiChangeLogic_MultiChangeLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;MultiChangeLogic&#x2F;MultiChangeLogic.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p><h2>node 点击操作逻辑</h2>
-应用场景
-<br/>点击后弹框( 脚本模板 )
-<br/>点击后弹框( AJAX )
-<br/>点击后弹框( Dom 模板 )
-<br/>点击后执行 AJAX 操作</p>
-<p><b>require</b>: 
-     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
-     , <a href='JC.Panel.html'>JC.Panel</a>
-</p>
-<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
-| <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>
-<p>a|button 需要 添加 class=&quot;js_bizsActionLogic&quot;</p>
-<p><h2>可用的 HTML 属性</h2></p>
-<dl>
-     <dt>balType = string, 操作类型 </dt>
-     <dd>
-         <dl>
-             <dt>类型:</dt>
-             <dd>panel: 弹框</dd>
-             <dd>link: 链接跳转</dd>
-             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>
-             <dd>ec: 展开或收起(expand and contract)</dd>
-             <dd>hit_value: 点击赋值</dd>
-         </dl>
-     </dd>
-     <dt>balUnHtmlEntity = bool, default = false</dt>
-     <dd>是否将 Panel 转义的 html 反转回来</dd>
-</dl>
-<h2>balType = panel 可用的 HTML 属性</h2>
-<dl>
-     <dt>balPanelTpl = script selector</dt>
-     <dd>脚本模板选择器</dd>
-     <dt>balAjaxHtml = url</dt>
-     <dd>返回 HTML 的 AJAX 模板</dd>
-     <dt>balAjaxData = url</dt>
-     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>
-     <dt>balCallback = function</dt>
-     <dd>
-         显示模板后的回调
-<pre>function balPanelInitCb( _panelIns ){
-   var _trigger = $(this);
-   //return true; //如果返回真的话, 表单提交后会关闭弹框
-}</pre>
-     </dd>
-</dl>
-<h2>balType = link 可用的 HTML 属性</h2>
-<dl>
-     <dt>balUrl = url</dt>
-     <dd>要跳转的目标 URL</dd>
-     <dt>balConfirmMsg = string</dt>
-     <dd>跳转前的二次确认提示信息</dd>
-     <dt>balConfirmPopupType = string, default = confirm</dt>
-     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>
-</dl>
-<h2>balType = ajaxaction 可用的 HTML 属性</h2>
-<dl>
-     <dt>balUrl = url</dt>
-     <dd>AJAX 操作的接口</dd>
-     <dt>balDoneUrl = url</dt>
-     <dd>AJAX 操作完成后跳转的URL</dd>
-     <dt>balConfirmMsg = string</dt>
-     <dd>操作前的二次确认提示信息</dd>
-     <dt>balErrorPopupType = string, default = dialog.alert</dt>
-     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
-     <dt>balSuccessPopupType = string, default = msgbox</dt>
-     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
-     <dt>balCallback = function, <b>window 变量域</b></dt>
-     <dd>
-         操作完成后的回调
-<pre>function ajaxDelCallback( _d, _ins ){
-   var _trigger = $(this);
-   if( _d &amp;&amp; !_d.errorno ){
-       JC.msgbox( _d.errmsg || &#39;操作成功&#39;, _trigger, 0, function(){
-           JC.f.reloadPage( &#39;?usercallback=ajaxaction&#39; );
-       });
-   }else{
-       JC.Dialog.alert( _d &amp;&amp; _d.errmsg ? _d.errmsg : &#39;操作失败, 请重试!&#39; , 1 );
-   }
-}
-</pre>
-     </dd>
-     <dt>balRequestData = json</dt>
-     <dd>ajax 请求发送的数据</dd>
-     <dt>balAjaxType = string, default = get</dt>
-     <dd>ajax 请求的类型</dd>
-     <dt>balDoneRemoveSelector = selector</dt>
-     <dd>ajax 操作完成后要删除的 node</dd>
-</dl>
-<h2>balType = ec( expand and contract) 可用的 HTML 属性</h2>
-<dl>
-     <dt>balTarget = selector</dt>
-     <dd>显示/隐藏的选择器</dd>
-     <dt>balExpandWord = string, default = &quot;展开&quot;</dt>
-     <dt>balExpandClass= string, default = &quot;js_ecExpand&quot;</dt>
-     <dt>balContractWord = string, default = &quot;收起&quot;</dt>
-     <dt>balContractClass = string, default = &quot;js_ecContract&quot;</dt>
-</dl>
-<h2>balType = hit_value 可用的 HTML 属性</h2>
-<dl>
-     <dt>balTarget = selector</dt>
-     <dd>显示/隐藏的选择器</dd>
-     <dt>balValue = string, default = &quot;&quot;</dt>
-     <dd>赋给 balTarget 的值</dd>
-</dl>
-<h2>balType = remove_element 可用的 HTML 属性</h2>
-<dl>
-     <dt>balDoneRemoveSelector = selector</dt>
-     <dd>点击操作完成后要删除的 node</dd>
-     <dt>balDoneBeforeRemoveCallback= function, <b>window 变量域</b></dt>
-     <dd>删除前的回调</dd>
-</dl>
 </div>
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_window.Bizs.ActionLogic" class="method item">
-    <h3 class="name"><code>window.Bizs.ActionLogic</code></h3>
-        <span class="paren">()</span>
+        <div id="method_Bizs.MultiChangeLogic" class="method item">
+    <h3 class="name"><code>Bizs.MultiChangeLogic</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:2</code></a>
+        <a href="../files/.._bizs_MultiChangeLogic_MultiChangeLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;MultiChangeLogic&#x2F;MultiChangeLogic.js:2</code></a>
         </p>
     </div>
     <div class="description">
     </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+            </div>
+        </div>
 </div>
     </div>
 <div id="classdocs" class="tabview">
@@ -307,18 +216,7 @@
                                 <a href="#method__initHanlderEvent">_initHanlderEvent</a>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_disableButton">disableButton</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getInstance">getInstance</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_init">init</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_isActionLogic">isActionLogic</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method inherited">
@@ -329,13 +227,6 @@
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_on">on</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_process">process</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_process">process</a>
-                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_selector">selector</a>
@@ -424,88 +315,6 @@
         <p>内部事件初始化方法</p>
     </div>
 </div>
-                    <div id="method_disableButton" class="method item">
-    <h3 class="name"><code>disableButton</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-                <li class="arg">
-                        <code>_durationMs</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l191"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:191</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>禁用按钮一定时间, 默认为1秒</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                        <p>要禁用button的选择器</p>
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_durationMs</code>
-                        <span class="type">Int</span>
-                    <div class="param-description">
-                        <p>禁用多少时间, 单位毫秒, 默认1秒</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method_getInstance" class="method item">
-    <h3 class="name"><code>getInstance</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type">ActionLogic instance</span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l160"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:160</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取或设置 ActionLogic 的实例</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">ActionLogic instance</span>:
-            </div>
-        </div>
-</div>
                     <div id="method_init" class="method item">
     <h3 class="name"><code>init</code></h3>
         <div class="args">
@@ -515,50 +324,18 @@
                 </li>
             </ul><span class="paren">)</span>
         </div>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l208"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:208</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>批量初始化 ActionLogic
-<br />页面加载完毕时, 已使用 事件代理 初始化
-<br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method_isActionLogic" class="method item">
-    <h3 class="name"><code>isActionLogic</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
         <span class="returns-inline">
-            <span class="type"></span>
+            <span class="type">Array of MultiChangeLogicInstance</span>
         </span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l176"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:176</code></a>
+        <a href="../files/.._bizs_MultiChangeLogic_MultiChangeLogic.js.html#l33"><code>..&#x2F;bizs&#x2F;MultiChangeLogic&#x2F;MultiChangeLogic.js:33</code></a>
         </p>
     </div>
     <div class="description">
-        <p>判断 selector 是否可以初始化 ActionLogic</p>
+        <p>初始化可识别的 MultiChangeLogic 实例</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -574,7 +351,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                        <span class="type">Array of MultiChangeLogicInstance</span>:
             </div>
         </div>
 </div>
@@ -712,68 +489,6 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                     <p>BaseMVCInstance</p>
-            </div>
-        </div>
-</div>
-                    <div id="method_process" class="method item">
-    <h3 class="name"><code>process</code></h3>
-        <span class="paren">()</span>
-        <span class="returns-inline">
-            <span class="type">ActionLogicInstance</span>
-        </span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l516"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:516</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>执行操作</p>
-    </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">ActionLogicInstance</span>:
-            </div>
-        </div>
-</div>
-                    <div id="method_process" class="method item">
-    <h3 class="name"><code>process</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type">Instance | Null</span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l228"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:228</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>初始化 ActionLogic, 并执行</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">Instance | Null</span>:
             </div>
         </div>
 </div>

@@ -3,6 +3,7 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [
         ".Bizs",
         ".JC",
+        "Bizs.MultiChangeLogic",
         "JC.AjaxTree",
         "JC.AjaxUpload",
         "JC.AutoChecked",
