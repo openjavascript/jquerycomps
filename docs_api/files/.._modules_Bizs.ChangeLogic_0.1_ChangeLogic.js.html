@@ -47,6 +47,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.MultiChangeLogic.html">Bizs.MultiChangeLogic</a></li>
+            
                 <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
             
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
@@ -432,7 +434,8 @@
                 });
 
                 if( _p._model.bclTriggerChangeOnInit() ){
-
+                //默认触发changeOnInit事件,获取选中的且没有disabled掉的trigger元素，
+                //触发该元素的change事件
                     ( _tmp = _p._model.bclTrigger( true ) ) 
                         &amp;&amp; !_tmp.prop( &#x27;disabled&#x27; )
                         &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
@@ -549,8 +552,12 @@
 
         , bclTrigger:
             function( _curItem ){
+                //_curItem为bool值
+                //如果_curItem为真，返回当前选中的元素，否者全部返回
+                var _p = this, 
+                    _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;bclTrigger&#x27;) ),
+                    _tmp;
 
-                var _p = this, _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;bclTrigger&#x27;) ), _tmp;
                 if( _curItem ){
                     _r.each( function(){
                         _tmp = $(this);
@@ -560,6 +567,7 @@
                         }
                     });
                 }
+
                 return _r;
             }
 
@@ -573,6 +581,7 @@
 
         , bclChangeCleanTarget: 
             function(){ 
+                //trigger change的时候需要清空的目标元素
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr(&#x27;bclChangeCleanTarget&#x27;) 
@@ -583,6 +592,9 @@
 
         , bclDisableTarget:
             function( _triggerItem ){
+                //默认返回全部的需要disabled的元素,
+                //如果有触发元素，且触发元素有bcltrigger属性，
+                //那么获取触发元素的目标disabled元素
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr(&#x27;bclDisableTarget&#x27;) 
@@ -599,14 +611,20 @@
 
         , bclDisable:
             function( _triggerItem ){
-                var _r = false, _selectedItem;
+                //默认返回false
+                var _r = false, 
+                    _selectedItem;
+
                 _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
+
                 if( !( _triggerItem &amp;&amp; _triggerItem.length ) ) return _r;
 
                 if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;select&#x27; ){
                     _selectedItem = _triggerItem.find( &#x27;:selected&#x27; );
+                    //没有option的情况
                     if( !_selectedItem.length ) return _r;
 
+                    //select有bcldisplay属性，或者option有bcldisplay属性的
                     if( _triggerItem.is(&#x27;[bclDisable]&#x27;) || _selectedItem.is( &#x27;[bclDisable]&#x27; ) ){
                         if( _triggerItem.is( &#x27;[bclDisable]&#x27; ) ){
                             _r = _triggerItem.attr(&#x27;bclDisable&#x27;) == _triggerItem.val();
@@ -631,9 +649,9 @@
             }
 
         , bclDelimiter: 
-            function( _trigger ){ 
+            function( _trigger ){
+                //获取分隔符 
                 var _r = &#x27;||&#x27;;
-
                 this.selector().is( &#x27;[bclDelimiter]&#x27; ) &amp;&amp; ( _r = this.selector().attr( &#x27;bclDelimiter&#x27; ) );
                 _trigger &amp;&amp; _trigger.is( &#x27;[bclDelimiter]&#x27; ) &amp;&amp; ( _r = _trigger.attr( &#x27;bclDelimiter&#x27; ) );
                 return _r;
@@ -641,11 +659,15 @@
 
         , delimiterItems: 
             function( _item, _trigger ){ 
+                //返回分隔的元素
                 return _item.split( this.bclDelimiter( _trigger ) );  
             }
 
         , bclDisplay:
             function( _triggerItem ){
+                //默认为false
+                //如果triggerItem为select，select 没有选中项返回false
+                //如果为checkbox，那么取其checked属性
                 var _r = false, _selectedItem, _p = this;
                 _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
                 if( !( _triggerItem &amp;&amp; _triggerItem.length ) ) return _r;
@@ -656,6 +678,7 @@
                     if( !( _triggerItem.is(&#x27;[bclDisplay]&#x27;) || _selectedItem.is( &#x27;[bclDisplay]&#x27; ) ) ){
                         if( _triggerItem.is( &#x27;[bclDisable]&#x27; ) ){
                             _r = _p.delimiterItems( _triggerItem.attr(&#x27;bclDisable&#x27;), _triggerItem ).indexOf( _triggerItem.val() ) &gt; -1;
+                
                         }
                         if( _selectedItem.is( &#x27;[bclDisable]&#x27; ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( &#x27;bclDisable&#x27; ) );
@@ -691,6 +714,8 @@
 
         , bclHideTarget:
             function( _triggerItem ){
+                //默认获取selector的bclHideTarget，
+                //如果有triggeritem,获取triggerItem的bclHideTarget
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr(&#x27;bclHideTarget&#x27;) 
@@ -781,8 +806,9 @@
 
         , change:
             function( _triggerItem ){
-            
+        
                 _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
+                //不可见
                 if( !( _triggerItem &amp;&amp; _triggerItem.length &amp;&amp; _triggerItem.is(&#x27;:visible&#x27;) ) ) return;
                 var _p = this
                     , _isDisable = _p._model.bclDisable( _triggerItem )

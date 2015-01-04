@@ -1,6 +1,7 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
+        "Bizs.MultiChangeLogic",
         "JC.AjaxTree",
         "JC.AjaxUpload",
         "JC.AutoChecked",
