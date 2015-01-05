@@ -1,7 +1,6 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "Bizs.MultiChangeLogic",
         "JC.AjaxTree",
         "JC.AjaxUpload",
         "JC.AutoChecked",
@@ -64,6 +63,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",
         "window.Bizs.MultiAutoComplete",
+        "window.Bizs.MultiChangeLogic",
         "window.Bizs.MultiDate",
         "window.Bizs.MultiSelect",
         "window.Bizs.MultiSelectTree",
