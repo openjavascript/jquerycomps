@@ -1,7 +1,7 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  *
- * @namespace   Bizs
+ * @namespace   window.Bizs
  * @class       MultiChangeLogic
  * @extends     JC.BaseMVC
  * @constructor
