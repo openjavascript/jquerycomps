@@ -88,13 +88,12 @@
 
             p.on('itemchange', function (evt, triggerElement) {
 
-                    var $el = triggerElement,
+                var $el = triggerElement,
                     $target,
                     $selfthidetarget,
                     isDisable = p._model.isDisable($el),
                     isDisplay = p._model.isDisplay($el);
-  //if ((triggerElement.prop('nodeName').toLowerCase() === 'input') && (triggerElement.attr('type').toLowerCase() === 'checkbox')) console.log(isDisplay);
-             
+
                 p._model.bclHideTarget().each(function () {
                     var $this = $(this);
                    
@@ -134,6 +133,9 @@
                 
             });
 
+            p.on('checkboxchange', function (evt, triggerElement) {
+
+            });
 
             //这个逻辑是处理onload后选中的项
             if ( p._model.bclTriggerChangeOnInit() ) {
@@ -230,22 +232,12 @@
                 $selectedItem = $el.find(':selected');
                 if (!$selectedItem.length) return false;
                 
-                if ( !($el.attr('bcldisplay') || $selectedItem.attr('bcldisplay')) ) {
-                    if ( $el.attr('bcldisabled') ) {
-                        r = p.bclDelimeterItem( $el.attr('bcldisabled'), $el ).indexOf( $el.val() ) > -1;
-                    }
-
-                    if ( $selectedItem.attr('bcldisabled') ) {
-                        r = JC.f.parseBool( $selectedItem.attr('bcldisabled') );
-                    }
-                } else {
-                    if ( $el.attr('bcldisplay') ) {
-                        r = p.bclDelimeterItem($el.attr('bcldisplay'), $el).indexOf($el.val()) > - 1;
-                    }
-                    
-                    if ( $selectedItem.attr('bcldisplay') ) {
-                        r = JC.f.parseBool($selectedItem.attr('bcldisplay'));
-                    }
+                if ( $el.attr('bcldisplay') ) {
+                    r = p.bclDelimeterItem($el.attr('bcldisplay'), $el).indexOf($el.val()) > - 1;
+                }
+                
+                if ( $selectedItem.attr('bcldisplay') ) {
+                    r = JC.f.parseBool($selectedItem.attr('bcldisplay'));
                 }
 
             } else {
@@ -255,12 +247,7 @@
                 attr = $el.attr('bcldisplay');
                 attr && (r = JC.f.parseBool(attr));
 
-                if ( /(checkbox)/i.test($el.attr('type').toLowerCase()) ) {
-                    r = $el.prop('checked');
-                }
             }
-
-
 
             return r;
         },
@@ -273,7 +260,7 @@
 
             if ( !$el.length ) return false;
 
-            if ( /(select)/i.test($el.prop('nodeName').toLowerCase()) ) {
+            if (/(select)/i.test($el.prop('nodeName').toLowerCase())) {
                 //处理没有option的select
                 $selectedItem = $el.find(':selected');
                 if (!$selectedItem.length) return false;
@@ -295,9 +282,6 @@
                     r = JC.f.parseBool($el.attr('bcldisabled'));
                 }
                 
-                if ( /(checkbox)/i.test($el.attr('type').toLowerCase()) ) {
-                    r = !$el.prop('checked');
-                }
             }
 
             return r;
