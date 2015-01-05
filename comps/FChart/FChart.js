@@ -264,11 +264,15 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
         , 'histogram': 'Histogram'
 
         , 'vbar': 'VHistogram'
+        , 'hbar': 'VHistogram'
         , 'vhistogram': 'VHistogram'
 
         , 'column': 'ZHistogram'
         , 'zbar': 'ZHistogram'
         , 'zhistogram': 'ZHistogram'
+
+
+        , 'hcolumn': 'VZHistogram'
 
         , 'mix': 'MixChart'
 
