@@ -217,8 +217,6 @@
                         _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
                     }
                 }
-
-                
             };
 
             window[_updateendcb] = function (_d,_dend, _ins) {
@@ -230,8 +228,6 @@
                     _temp = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate());
 
                 _curmindate && (_curmindate = JC.f.dateDetect(_curmindate));
-                //_d = JC.f.formatISODate(_d);
-                //
 
                 switch (_type) {
                     case 'week':
@@ -568,6 +564,10 @@
     
     DMultiDate.Model.prototype = {
         init: function () {
+        },
+
+        disableDateLimit:function(){
+            return this.boolProp('disabledatelimit');
         },
 
         lastIptBox: function(){

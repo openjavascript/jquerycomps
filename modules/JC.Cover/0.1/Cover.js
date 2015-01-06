@@ -270,13 +270,18 @@
             }
         , coverItem:
             function( cover ) {
-                cover.stop( false, true ).animate( { top : '0', left : '0' }, 
-                    _Model.ANIMATE_SPEED );
+                cover.stop( true, true )
+                    .fadeIn( _Model.ANIMATE_SPEED )
+                    .animate( { top : '0', left : '0' }, _Model.ANIMATE_SPEED );
             }
         , coverBack:
             function( cover ) {
-                cover.stop( false, true ).animate( { top : cover.data( 'covertop' ) + 'px',
-                    left : cover.data( 'coverleft' ) + 'px' }, _Model.ANIMATE_SPEED );
+                cover.stop( true, true )
+                     .animate( {
+                        top : cover.data( 'covertop' ) + 'px'
+                        , left : cover.data( 'coverleft' ) + 'px' 
+                     }, _Model.ANIMATE_SPEED )
+                     .fadeOut( _Model.ANIMATE_SPEED );
             }
         , link:
             function( target ) {
