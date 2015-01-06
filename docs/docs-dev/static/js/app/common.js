@@ -1,4 +1,7 @@
-;requirejs( [ 'JC.common', 'jquery.scrollFix' ], function( ){
+;requirejs( [ 'JC.common', 'JC.AutoFixed' ], function( ){
+
+    JC.AutoFixed.INIT_DELAY = 200;
+
     JWIN.on( 'GO_MAIN_TOP', function( _evt, _ms ){
         _ms = _ms || 0;
         JC.f.safeTimeout( function(){
@@ -21,7 +24,7 @@
         $.cookie( 'hideheader', 1, { expires: 30 } );
     });
 
-    $(document).on( 'mouseover', '[hover]', function( e ){
+    JDOC.on( 'mouseover', '[hover]', function( e ){
         var _ele = $( e.target );
         _ele.addClass( _ele.attr( 'hover' ) );
     }).on( 'mouseleave', '[hover]', function( e ){ 
@@ -44,8 +47,14 @@
         } );
     } );
 
-    var _bodyNav = $( '#bodynav' );
-    if( _bodyNav.length ){
-        _bodyNav.scrollFix( 50 );
-    }
+    /*
+    JDOC.delegate( '#bodynav a[href]', 'click', function( _evt ){
+        var _p = $( this ), _header = $( '#mainHeader' );
+        if( !( _header.length ) ) return;
+        JC.f.safeTimeout( function(){
+            JDOC.scrollTop( JDOC.scrollTop() - _header.height() );
+        }, null, 'bodynav_stasdfasd', 1 );
+    });
+    */
+
 });

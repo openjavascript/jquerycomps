@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true;
+
+            requirejs( [ 'JC.Calendar', 'JC.Valid', 'Bizs.ChangeLogic' ]
+            , function( Calendar, Valid, ChangeLogic ){
+            });
+
+            function bclDoneCallback( _triggerItem, _boxItem ){
+                var _ins = this;
+                JC.log( 'bclDoneCallback', new Date().getTime() );
+            }
+
+            function bclEnableCallback( _triggerItem, _boxItem ){
+                var _ins = this;
+                JC.log( 'bclEnableCallback', new Date().getTime() );
+            }
+
+            function bclDisableCallback( _triggerItem, _boxItem ){
+                var _ins = this;
+                JC.log( 'bclDisableCallback', new Date().getTime() );
+            }
+        </script>
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt> ChangeLogic 禁用逻辑演示 1 </dt>
+            <dd>
+<table>
+     <tr>
+        <th> <span class="red">*</span>退款原因：</th>
+        <td>
+          <div class="js_bizChangeLogic" 
+            bclTrigger="(td input[type=radio]" 
+            bclHideTarget="(td input[type=text], (table tr.js_hideItem"
+            >
+            <label ><input type="radio" name="test" value="1" checked
+                bclDisplay="true"
+                >审核未通过</label>  
+              <label ><input type="radio" name="test" value="21"
+                bclDisplay="true"
+                  >违规操作被动退款</label>  
+              <label ><input type="radio" name="test" value="11"
+                bclDisplay="true"
+                  >客户终止</label>  
+              <label ><input type="radio" name="test" class="js_vreturn" value="2"  
+                bclDisplay="true"
+                bclShowToggleFilter=".js_hideItem"
+                  >虚拟信用回款退款</label>  
+              <label ><input type="radio" name="test" value="-1" bclDisplay="false">其他</label>  
+              <input type="text" class="ipt" reqmsg="原因" errmsg="120个字以内" maxlength="120" style="display:none;" bclHideToggle="true" >
+          </div>
+        </td>
+     </tr>
+     <tr class="js_hideItem">
+       <th>
+         <span class="red">*</span>退款银行账户名称：
+       </th>
+       <td>
+         <input type="text" class="ipt txt-w280" maxlength="120" reqmsg="银行账户名称" errmsg="最多可输入120个字符">
+       </td>
+     </tr>
+     <tr class="js_hideItem">
+       <th>
+         <span class="red">*</span>退款银行账户号码：
+       </th>
+       <td>
+         <input type="text" class="ipt txt-w280" datatype="bankcard" reqmsg="银行账户号码" errmsg="9 ~ 25 位数字">
+       </td>
+     </tr>
+     
+    <tr class="js_hideItem">
+       <th>
+         <span class="red">*</span>开户行：
+       </th>
+       <td>
+         <input type="text" class="ipt txt-w280" maxlength="120" reqmsg="开户行" errmsg="最多可输入120个字符">
+       </td>
+     </tr>
+     <tr class="js_hideItem">
+       <th>
+         <span class="red">*</span>联系人：
+       </th>
+       <td>
+         <input type="text" class="ipt txt-w280" datatype="allname" reqmsg="联系人" errmsg="长度 2-32个字节">
+       </td>
+     </tr>
+     <tr class="js_hideItem">
+       <th>
+         <span class="red">*</span>联系电话：
+       </th>
+       <td>
+         <input type="text" class="ipt txt-w280" datatype="mobilecode" reqmsg="联系电话" errmsg="手机号码">
+       </td>
+     </tr>
+    <tr>
+      <th><span class="red">*</span><label class="gray">上传确认邮件：</label></th>
+      <td>
+        <input type="file" reqmsg="确认邮件" emel="submit-err" class="file-1" name="confirm_file">
+        <span class="gray">请上传2M以内的.msg .msgx .zip .rar .rtf .msgx .zip .rar .rtf</span>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <label class="gray">备注：</label>
+      </th>
+      <td>
+        <textarea name="remark" maxlength="240" title="最多可以填写240字" errmsg="最大长度240字" emel="submit-error" class="txt txt-w400"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>
+         <button type="submit" class="btn btn-1">提交申请</button>
+         <a type="button" class="btn btn-2" href="/ka/order">取消</a>
+             
+         <em id="submit-err"></em>
+      </td>
+    </tr>
+
+   </table>
+
+
+            </dd>
+
+        </dl>
+
+
+
+    </body>
+</html>
+

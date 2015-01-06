@@ -51,6 +51,7 @@
 	        , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.2/AjaxUpload'
 	        , 'JC.AjaxTree': 'modules/JC.AjaxTree/0.1/AjaxTree'
 	        , 'JC.AutoChecked': 'modules/JC.AutoChecked/0.1/AutoChecked'
+	        , 'JC.AutoFixed': 'modules/JC.AutoFixed/0.1/AutoFixed'
 	        , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
 	        , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
 
@@ -68,6 +69,9 @@
 
 	        , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
 	        , 'JC.DragSelect': 'modules/JC.DragSelect/0.1/DragSelect'
+
+	        , 'JC.ExampleComponent': 'modules/JC.ExampleComponent/0.1/ExampleComponent'
+	        , 'Bizs.ExampleComponent': 'modules/Bizs.ExampleComponent/0.1/ExampleComponent'
 
 	        , 'JC.FChart': 'modules/JC.FChart/0.1/FChart'
 	        , 'JC.Form': 'modules/JC.Form/0.2/Form'

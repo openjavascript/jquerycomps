@@ -278,7 +278,7 @@ function (){
     return _r;
 };<pre>
      *              </dd>
-     *              <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = false</dd>
+     *              <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = true</dd>
      *              <dd><b>datavalidAjaxType:</b> ajax 请求类型, default = get</dd>
      *              <dd><b>datavalidRequestData:</b> ajax 请求数据, json data</dd>
      *              <dd>
@@ -329,6 +329,23 @@ function (){
      *              </dd>
      *          </dl>
      *      </dd>
+     *      <dd>
+     *          <dl>
+     *              <dt>subdatatype = even: 数值必须为偶数</dt>
+     *          </dl>
+     *      </dd>
+     *      <dd>
+     *          <dl>
+     *              <dt>subdatatype = odd: 数值必须为奇数</dt>
+     *          </dl>
+     *      </dd>
+     *      <dt>exdatatype: 特殊数据类型, 以逗号分隔多个属性, 该类型只用于显示视觉效果, 不作为实际验证的判断</dt>
+     *      <dd>
+     *          <dl>
+     *              <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )(只用于显示视觉效果, 不作为实际验证的判断)</dt>
+                    <dd>其他参数与 subdatatype = datavalid 相同</dd>
+                </dl>
+            </dd>
      * </dl>
      * @namespace JC
      * @class Valid
@@ -1350,11 +1367,28 @@ function (){
 
                         _toNEl.val( $.trim( _toNEl.val() ) );
                         _fromNEl.val( $.trim( _fromNEl.val() ) );
+
+                        if( _r && _toNEl && _toNEl.length && _toNEl.attr( 'subdatatype' ) && /\beven\b/.test( _toNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.even( _toNEl ) );
+                        }
+                        if( _r && _toNEl && _toNEl.length && _toNEl.attr( 'subdatatype' ) && /\bodd\b/.test( _toNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.odd( _toNEl ) );
+                        }
+                        if( _r && _fromNEl && _fromNEl.length && _fromNEl.attr( 'subdatatype' ) && /\beven\b/.test( _fromNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.even( _fromNEl ) );
+                        }
+                        if( _r && _fromNEl && _fromNEl.length && _fromNEl.attr( 'subdatatype' ) && /\bodd\b/.test( _fromNEl.attr( 'subdatatype' ) ) ){
+                            _r && ( _r = _p.odd( _fromNEl ) );
+                        }
+                        if( !_r ){
+                            return false;
+                        }
                         
                         if( _toNEl[0] != _fromNEl[0] && _toNEl.val().length && _fromNEl.val().length ){
 
                             _r && ( _r = _p.n( _toNEl, true ) );
                             _r && ( _r = _p.n( _fromNEl, true ) );
+
 
                             _r && ( +_fromNEl.val() ) > ( +_toNEl.val() ) && ( _r = false );
 
@@ -2287,6 +2321,52 @@ function (){
 
                 return _r;
             }
+        /**
+         * 数值必须为偶数
+         * @param   {selector}  _item
+         */
+        , 'even':
+            function( _item ){
+                var _p = this, _r = true
+                    , _v = JC.f.parseFinance( _item.val().trim(), 9 ) || 0
+                    ;
+
+                if( isNaN( _v ) ){
+                    _r = false;
+                }else if( _v % 2 !== 0 ){
+                    _r = false;
+                }
+
+                !_r && JC.log( 'even:', _r, JC.f.gid() );
+
+                //!_r && _item.attr( 'datatypestatus', 'false' );
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'evenmsg', true ] );
+
+                return _r;
+            }
+        /**
+         * 数值必须为奇数
+         * @param   {selector}  _item
+         */
+        , 'odd':
+            function( _item ){
+                var _p = this, _r = true
+                    , _v = JC.f.parseFinance( _item.val().trim(), 9 ) || 0
+                    ;
+
+                if( isNaN( _v ) ){
+                    _r = false;
+                }else if( _v % 2 === 0 ){
+                    _r = false;
+                }
+
+                //!_r && _item.attr( 'datatypestatus', 'false' );
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'oddmsg', true ] );
+
+                return _r;
+            }
+
+
         , ucheck:
             function( _item ){
                 var _r = true, _p = this;
@@ -2616,7 +2696,8 @@ function (){
                 return _r;
             }
         /**
-         * 这里需要优化检查, 目前会重复检查
+         * 这里需要优化检查, 目前会重复检查(2次)
+         * 
          */
         , checkedType:
             function( _item, _type ){
@@ -2631,19 +2712,31 @@ function (){
                     , _count = 0
                     , _finder = _item
                     , _pntIsLabel = _item.parent().prop('nodeName').toLowerCase() == 'label' 
-                    , _finderKey = _type + 'finder';
+                    , _finderKey = _type + 'finder'
+                    , _KEY = 'checkedType_' + _type 
+                    , _isReturn
                     ;
 
-                //JC.log( _item.attr('name') + ', ' + _item.val() );
+                if( _p.checkRepeatProcess( _item, _KEY, true ) && !_item.data( 'Last' + _type ) ) {
+                    return !_item.data( 'isErrorVck' ); 
+                }
+                //JC.log( 'checkedType', JC.f.gid() );
 
                 if( _item.is( '[datatarget]' ) ){
                     _items = JC.f.parentSelector( _item, _item.attr('datatarget') );                    
                     _tmp = [];
                     _items.each( function(){
                         var _sp = $(this);
+                        if( 
                             ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
                             && !_sp.prop('disabled')
-                            && _tmp.push( _sp );
+                        ){
+                            _tmp.push( _sp );
+                            if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
+                                _isReturn = true;
+                            }
+                        }
+
                     });
                     _items = $( _tmp );
                 }else{
@@ -2659,10 +2752,17 @@ function (){
                     _tmp.each( function(){
                         var _sp = $(this);
                         var _re = new RegExp( _type, 'i' );
-                        _re.test( _sp.attr('datatype') ) 
-                            && ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
-                            && !_sp.prop('disabled')
-                            && _items.push( _sp );
+
+                        if( 
+                            _re.test( _sp.attr('datatype') ) 
+                                && ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
+                                && !_sp.prop('disabled')
+                          ){
+                            _items.push( _sp );
+                            if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
+                                _isReturn = true;
+                            }
+                        }
                     });
                     _items = $( _items );
                }
@@ -2695,6 +2795,17 @@ function (){
                         }
                     }
 
+                    if( !_r ){
+                        _item.data( 'isErrorVck', true );
+                        _items.each( function(){
+                            $( this ).data( 'isErrorVck', true );
+                        });
+                    }else{
+                        _item.data( 'isErrorVck', false );
+                        _items.each( function(){
+                            $( this ).data( 'isErrorVck', false );
+                        });
+                    }
                     !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                }
 
@@ -2983,7 +3094,7 @@ function (){
         Valid.checkTimeout( _p );
     });
     $(document).delegate( 'input', 'focus', function($evt){
-        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        var _p = $(this), _ins = Valid.getInstance(), _v = ( _p.val()||'').trim();
         if( _p.attr( 'type' ) ) return;
         if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
         _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
@@ -3006,7 +3117,7 @@ function (){
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea'
                             +', select, input[type=file], input[type=checkbox], input[type=radio]', 'focus', function($evt){
-        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        var _p = $(this), _ins = Valid.getInstance(), _v = ( _p.val() || '' ).trim();
         if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
         _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
         !_v && Valid.setValid( _p );
@@ -3040,14 +3151,15 @@ function (){
         Valid.checkTimeout( $(this) );
     });
     /**
-     * 初始化 subdatatype = datavalid 相关事件
+     * 初始化 [ subdatatype = datavalid | exdatatype = datavalid ] 相关事件
      */
-    $(document).delegate( 'input[type=text][subdatatype]', 'keyup', function( _evt ){
-        var _sp = $(this);
+    $(document).delegate( 'input[type=text][subdatatype], input[type=text][exdatatype]', 'keyup', function( _evt ){
+        var _sp = $(this), _isEx;
 
-        var _isDatavalid = /datavalid/i.test( _sp.attr('subdatatype') );
+        var _isDatavalid = /datavalid/i.test( _sp.attr('exdatatype') || _sp.attr('subdatatype') );
         if( !_isDatavalid ) return;
         if( _sp.prop('disabled') || _sp.prop('readonly') ) return;
+        _sp.attr( 'exdatatype' ) && ( _isEx = true );
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;
@@ -3059,6 +3171,9 @@ function (){
         if( _sp.data( 'DataValidInited' ) ) return;
         _sp.data( 'DataValidInited', true );
         _sp.data( 'DataValidCache', {} );
+        !_sp.is( '[datavalidNoCache]' ) && _sp.attr( 'datavalidNoCache', true );
+
+        //JC.log( JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) ) );
 
         _sp.on( 'DataValidUpdate', function( _evt, _v, _data ){
             var _tmp, _json;
@@ -3137,7 +3252,7 @@ function (){
 
                 var _data = { 'key': _v, data: _d, 'text': _strData };
 
-                ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
+                !JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
                      && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
 
                 _sp.trigger( 'DataValidUpdate', [ _v, _data ] );

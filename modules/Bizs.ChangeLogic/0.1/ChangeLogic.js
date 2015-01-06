@@ -76,6 +76,9 @@
  *
  *      <dt>bclHideTargetSub = selector</dt>
  *      <dd>根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node</dd>
+ *
+ *      <dt>bclShowToggleFilter = selector | html attr</dt>
+ *      <dd>显示的时候, 如果匹配到 filter, 那么将会隐藏</dd>
  * </dl>
  *
  * <h2>hide target 的 HTML 属性</h2>
@@ -83,7 +86,7 @@
  *      <dt>bclHideToggle = bool, default = false</dt>
  *      <dd>显示或显示的时候, 是否与他项相反</dd>
  *
- *      <dt>bclDisableTarget = bool, default = false</dt>
+ *      <dt>bclDisableToggle= bool, default = false</dt>
  *      <dd>disabled 的时候, 是否与他项相反</dd>
  * </dl>
  *
@@ -147,23 +150,30 @@
                 _p._view.init();
 
                 _p._model.bclTrigger().on('change', function(_evt){
-                    //JC.log( 'bclTrigger change', new Date().getTime() );
                     _p.trigger( 'item_change', [ $(this), _evt ] );
                 });
 
                 _p.on( 'item_change', function( _evt, _item, _srcEvt ){
                     _item = $( _item );
+                   
                     _p._view.change( _item );
 
                     if( _p._model.ready() ){
                         _p._model.bclChangeCleanTarget() 
                             && _p._model.bclChangeCleanTarget().each( function(){
-                                $( this ).html( '' );
+                                if (/(input|textarea)/i.test( $(this).prop( 'nodeName' ).toLowerCase() )) {
+                                    $( this ).val( '' );
+                                } else {
+                                    $( this ).html( '' );
+                                }
+
                             });
                     }
                 });
 
                 if( _p._model.bclTriggerChangeOnInit() ){
+                //默认触发changeOnInit事件,获取选中的且没有disabled掉的trigger元素，
+                //触发该元素的change事件
                     ( _tmp = _p._model.bclTrigger( true ) ) 
                         && !_tmp.prop( 'disabled' )
                         && _tmp.trigger( 'change');
@@ -280,7 +290,12 @@
 
         , bclTrigger:
             function( _curItem ){
-                var _p = this, _r = JC.f.parentSelector( this.selector(), this.selector().attr('bclTrigger') ), _tmp;
+                //_curItem为bool值
+                //如果_curItem为真，返回当前选中的元素，否者全部返回
+                var _p = this, 
+                    _r = JC.f.parentSelector( this.selector(), this.selector().attr('bclTrigger') ),
+                    _tmp;
+
                 if( _curItem ){
                     _r.each( function(){
                         _tmp = $(this);
@@ -290,21 +305,21 @@
                         }
                     });
                 }
+
                 return _r;
             }
 
         , bclTriggerChangeOnInit:
             function(){
                 var _r = true, _p = this;
-
                 _p.selector().is( '[bclTriggerChangeOnInit] ' ) 
                     && ( _r = JC.f.parseBool( _p.selector().attr( 'bclTriggerChangeOnInit' ) ) );
-
                 return _r;
             }
 
         , bclChangeCleanTarget: 
             function(){ 
+                //trigger change的时候需要清空的目标元素
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr('bclChangeCleanTarget') 
@@ -315,30 +330,39 @@
 
         , bclDisableTarget:
             function( _triggerItem ){
+                //默认返回全部的需要disabled的元素,
+                //如果有触发元素，且触发元素有bcltrigger属性，
+                //那么获取触发元素的目标disabled元素
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr('bclDisableTarget') 
                     && ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr('bclDisableTarget') ) )
                     ;
-
                 _triggerItem 
                     && ( _triggerItem = $(_triggerItem) ).length 
                     && _triggerItem.attr('bclTrigger') 
                     && ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr('bclDisableTarget') ) )
                     ;
+
                 return _r;
             }
 
         , bclDisable:
             function( _triggerItem ){
-                var _r = false, _selectedItem;
+                //默认返回false
+                var _r = false, 
+                    _selectedItem;
+
                 _triggerItem && ( _triggerItem = $( _triggerItem ) );
+
                 if( !( _triggerItem && _triggerItem.length ) ) return _r;
 
                 if( _triggerItem.prop('nodeName').toLowerCase() == 'select' ){
                     _selectedItem = _triggerItem.find( ':selected' );
+                    //没有option的情况
                     if( !_selectedItem.length ) return _r;
 
+                    //select有bcldisplay属性，或者option有bcldisplay属性的
                     if( _triggerItem.is('[bclDisable]') || _selectedItem.is( '[bclDisable]' ) ){
                         if( _triggerItem.is( '[bclDisable]' ) ){
                             _r = _triggerItem.attr('bclDisable') == _triggerItem.val();
@@ -357,11 +381,14 @@
                         && _triggerItem.attr('type').toLowerCase() == 'checkbox' ){
                     _r = !_triggerItem.prop('checked');
                 }
+
+
                 return _r;
             }
 
         , bclDelimiter: 
-            function( _trigger ){ 
+            function( _trigger ){
+                //获取分隔符 
                 var _r = '||';
                 this.selector().is( '[bclDelimiter]' ) && ( _r = this.selector().attr( 'bclDelimiter' ) );
                 _trigger && _trigger.is( '[bclDelimiter]' ) && ( _r = _trigger.attr( 'bclDelimiter' ) );
@@ -370,11 +397,15 @@
 
         , delimiterItems: 
             function( _item, _trigger ){ 
+                //返回分隔的元素
                 return _item.split( this.bclDelimiter( _trigger ) );  
             }
 
         , bclDisplay:
             function( _triggerItem ){
+                //默认为false
+                //如果triggerItem为select，select 没有选中项返回false
+                //如果为checkbox，那么取其checked属性
                 var _r = false, _selectedItem, _p = this;
                 _triggerItem && ( _triggerItem = $( _triggerItem ) );
                 if( !( _triggerItem && _triggerItem.length ) ) return _r;
@@ -385,6 +416,7 @@
                     if( !( _triggerItem.is('[bclDisplay]') || _selectedItem.is( '[bclDisplay]' ) ) ){
                         if( _triggerItem.is( '[bclDisable]' ) ){
                             _r = _p.delimiterItems( _triggerItem.attr('bclDisable'), _triggerItem ).indexOf( _triggerItem.val() ) > -1;
+                
                         }
                         if( _selectedItem.is( '[bclDisable]' ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( 'bclDisable' ) );
@@ -420,6 +452,8 @@
 
         , bclHideTarget:
             function( _triggerItem ){
+                //默认获取selector的bclHideTarget，
+                //如果有triggeritem,获取triggerItem的bclHideTarget
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr('bclHideTarget') 
@@ -431,6 +465,13 @@
                     && _triggerItem.attr('bclHideTarget') 
                     && ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr('bclHideTarget') ) )
                     ;
+                return _r;
+            }
+
+        , bclShowToggleFilter:
+            function( _triggerItem ){
+                var _r = '';
+                _triggerItem.attr( 'bclShowToggleFilter' ) && ( _r = _triggerItem.attr( 'bclShowToggleFilter' ) );;
                 return _r;
             }
 
@@ -503,7 +544,9 @@
 
         , change:
             function( _triggerItem ){
+        
                 _triggerItem && ( _triggerItem = $( _triggerItem ) );
+                //不可见
                 if( !( _triggerItem && _triggerItem.length && _triggerItem.is(':visible') ) ) return;
                 var _p = this
                     , _isDisable = _p._model.bclDisable( _triggerItem )
@@ -523,6 +566,7 @@
                     }
                 }
 
+
                 if( _bclDisableTarget && _bclDisableTarget.length ){
                     _bclDisableTarget.each( function(){ 
                         var _sp = $( this );
@@ -540,7 +584,7 @@
                             if( _isDisable ){
                                 _starget.hide();
                             }else{
-                                if( _sp.prop('checked') ){
+                               if( _sp.prop('checked') ){
                                     _starget.show();
                                 }else{
                                     _starget.hide();
@@ -552,8 +596,20 @@
 
                 if( _bclHideTarget &&  _bclHideTarget.length  ){
                     _bclHideTarget.each( function(){
-                        var _display = _p._model.bclHideToggle( $(this) ) ? !_bclDisplay : _bclDisplay;
-                        _display ? $(this).show() : $(this).hide();
+                        var _display = _p._model.bclHideToggle( $(this) ) ? !_bclDisplay : _bclDisplay, _sp = $( this );
+                        if( _display ){
+                            if( _p._model.bclShowToggleFilter( _triggerItem ) ){
+                                if( _sp.is( _p._model.bclShowToggleFilter( _triggerItem ) ) ){
+                                    _sp.hide();
+                                }else{
+                                    _sp.show();
+                                }
+                            }else{
+                                _sp.show();
+                            }
+                        }else{
+                            _sp.hide();
+                        };
                         //JC.log( _display, new Date().getTime() );
                     });
                 }

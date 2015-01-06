@@ -1,27 +1,30 @@
 {
-	"basePath":"../../tpl/demo/"
-	, "demoPage":"demo.html"
-	, "detailPage":"detail.html"
-	, "extraMenu": [
-		{
-			"name":"API"
-			, "url":"../../docs_api/index.html"
-		}
-		, {
-			"name":"Download"
-			, "url":"http://github.com/openjavascript/jquerycomps/archive/requirejs_master.zip"
-		}
-	]
-	, "websiteLink": [
-		{
-			"name":"奇舞团"
-			, "url":"http://qiwoo.org/"
-		}
-		, {
-			"name":"btbtd.org"
-			, "url":"http://btbtd.org/"
-		}
-	]
+    "basePath":"../../tpl/demo/"
+    , "demoPage":"demo.html"
+    , "detailPage":"detail.html"
+    , "extraMenu": [
+        {
+            "name":"API"
+            , "url":"../../docs_api/index.html"
+        }
+        , {
+            "name":"Download"
+            , "url":"//github.com/openjavascript/jquerycomps/archive/requirejs_master.zip"
+        }
+    ]
+    , "websiteLink": [
+        {
+            "name":"奇舞团"
+            , "url":"//qiwoo.org/"
+        }
+        , {
+            "name":"btbtd.org"
+            , "url":"//btbtd.org/"
+        }
+    ]
+    , "global": {
+        "JCCommonLastVersion": "0.3"
+    }
 	, "compsList": [
 		{
 			"name":"Base"
@@ -37,7 +40,6 @@
                         "JC 组件通用静态方法和属性 ( JC.common, 别名: JC.f ) "
                         , "所有 JC 组件都会依赖这个静态类"
                     ]
-                    , "api":"../../docs_api/classes/JC.common.html"
                     , "output": "common.js"
                     , "data": [
                        {
@@ -74,7 +76,6 @@
                         , "新的 JC 组件 和 Biz(业务)组件 全部继承自 JC.BaseMVC"
                         , "旧的 JC/Biz 组件将会逐渐升级为继承自 JC.BaseMVC"
                     ]
-                    , "api":"../../docs_api/classes/JC.BaseMVC.html"
                     , "output": "BaseMVC.js"
                     , "data": [
                         {
@@ -103,8 +104,29 @@
 						"JC.AjaxTree AJAX树菜单组件"
 						, "响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 JC.AutoComplete 实例"
 					]
-                    , "api":"../../docs_api/classes/JC.AjaxTree.html"
                     , "output": "AjaxTree.js"
+                    , "data": [
+                        {
+                            "version":"0.1"
+                            , "require":[
+                                {
+                                    "name":"JSON"
+                                }
+                                , {
+                                    "name":"JC.BaseMVC"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                , {
+                    "name": "JC.ExampleComponent"
+                    , "subtitle":"example subtitle"
+                    , "desc":[
+                        "example desc"
+                        , "example desc1"
+                    ]
+                    , "output": "ExampleComponent.js"
                     , "data": [
                         {
                             "version":"0.1"
@@ -112,14 +134,12 @@
                                 {
                                     "name":"JC.BaseMVC"
                                 }
-                                , {
-                                    "name":"JSON"
-                                }
                             ]
                         }
                     ]
                 }
 
+<<<<<<< HEAD
                 , {
                     "name": "JC.Cover"
                     , "subtitle":"遮罩"
@@ -162,6 +182,8 @@
                     ]
                 }
 
+=======
+>>>>>>> e0f2af5c533712fa094607baf045a18ea26d093c
                 /*
                 , {
                     "name": "JC.NSlider"
@@ -170,7 +192,6 @@
                         "JC.NSlider 轮播图组件"
                         , "支持单图轮播，多图同页轮播，无缝循环轮播，自动滑动。"
                     ]
-                    , "api":"../../docs_api/classes/JC.NSlider.html"
                     , "output": "NSlider.js"
                     , "data": [
                         {
@@ -202,7 +223,6 @@
                         , "点击后弹框( Dom 模板 ) "
                         , "点击后执行 AJAX 操作"
 					]
-                    , "api":"../../docs_api/classes/window.Bizs.ActionLogic.html"
                     , "output": "ActionLogic.js"
                     , "data": [
                         {
@@ -219,6 +239,75 @@
                         }
                     ]
                 }
+                ,{
+                    "name": "Bizs.DMultiDate"
+                    , "subtitle":"单、双复合日历业务逻辑组件"
+                    , "desc":[
+                       "根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期；"
+                       , "通过html属性可以配置最长可以选择多少个天、周、月、季。"
+                       , "自动初始化 class = \"js_autoDMultiDate\"的HTML标签"
+                   ]
+                    , "output": "DMultiDate.js"
+                    , "data": [
+                        {
+                            "version":"0.1"
+                            , "noSimpleDemo": true
+                            , "require":[
+                                {
+                                    "name":"JC.BaseMVC"
+                                }
+                                , {
+                                    "name":"JC.Calendar"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                , {
+                    "name": "Bizs.ExampleComponent"
+                    , "subtitle":"example subtitle"
+                    , "desc":[
+                        "example desc"
+                        , "example desc1"
+                    ]
+                    , "output": "ExampleComponent.js"
+                    , "data": [
+                        {
+                            "version":"0.1"
+                            , "require":[
+                                {
+                                    "name":"JC.BaseMVC"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                /*
+                ,{
+                    "name": "Bizs.MultiDate"
+                    , "subtitle":"单复合日历业务逻辑组件"
+                    , "desc":[
+                       "根据select选项弹出日、周、月、季日历，并计算出起始日期和结束日期；"
+                       , "通过html属性可以配置最长可以选择多少个天、周、月、季。"
+                       , "自动初始化 class = \"js_autoDMultiDate\"的HTML标签"
+                   ]
+                    , "output": "DMultiDate.js"
+                    , "data": [
+                        {
+                            "version":"0.1"
+                            , "noSimpleDemo": true
+                            , "require":[
+                                {
+                                    "name":"JC.BaseMVC"
+                                }
+                                , {
+                                    "name":"JC.Calendar"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                */
             ]
         }
         , {
@@ -236,7 +325,7 @@
                     , "data": [
                         {
                             "version": "2005-2012"
-                            , "outlink": "http://www.movable-type.co.uk/scripts/aes.html"
+                            , "outlink": "//www.movable-type.co.uk/scripts/aes.html"
                         }
                     ]
                 }
@@ -246,7 +335,7 @@
                     , "data": [
                         {
                             "version": "1.9.1"
-                            , "outlink": "http://www.jquery.com"
+                            , "outlink": "//www.jquery.com"
                         }
                     ]
                 }, {
@@ -255,7 +344,8 @@
                     , "data": [
                         {
                             "version": "2"
-                            , "outlink": "http://www.json.org"
+                            , "outlink": "//www.json.org"
+                            , "output": "json.js"
                         }
                     ]
                 }

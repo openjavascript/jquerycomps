@@ -621,7 +621,7 @@
                     .removeAttr('fulldateformat');
             } else {
                 _el.eq(0).attr('fulldateformat', '{0}');
-                _el.eq(1).attr('fulldateformat', '{1}');
+                _el.eq(1).attr('fulldateformat', '{0}');
 
                 _el.attr('dateformat', _p.dateformartType(_setter))
                    .attr('dateparse', 'parsedate' + _setter);   

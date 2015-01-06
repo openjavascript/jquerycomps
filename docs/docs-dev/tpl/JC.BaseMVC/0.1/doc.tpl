@@ -4,13 +4,12 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/doc/body_main.tpl" propertyAttr=1 methodAttr=1 }}
 
     <!-- 外链形式 start -->
     <textarea class="detail-codetpl" type="text/template">
-        <script src="{{$URL_ROOT}}/JC.common/0.3/common.js" />
-        <script src="{{$URL_ROOT}}/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}" />
+        <script src="{{$URL_ROOT}}/modules/JC.common/{{$JCCommonLastVersion}}/common.js" />
+        <script src="{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/{{$OUTPUT}}" />
     </textarea>
     <!-- 外链形式 end -->
 
@@ -80,7 +79,8 @@
             Returns:
                 BaseMVCInstance  
     </textarea>
-</div>
 
 {{/block}}
 
+{{block name="body_footer_js" append}}
+{{/block}}

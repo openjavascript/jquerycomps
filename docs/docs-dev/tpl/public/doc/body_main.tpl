@@ -1,6 +1,4 @@
 
-<div id="bodynav" class="body-nav"></div>
-
 <div class="detail-attr">
     <h3 id="navmark-desc" class="detail-blockname ">组件简介</h3>
     <div class="detail-ct">
@@ -17,7 +15,7 @@
         <div class="detail-version">
             {{foreach from=$allVersionComps['data'] item=comp}}
                 {{if !$comp.hide|default:'' }}
-                <a href="#" class="detail-versionlink {{if $comp.nowVersion|default:'' }}detail-nowVersion{{/if}}" data-name="{{$allVersionComps.name}}" data-version="{{$comp.version}}">
+                <a href="{{$PROJECT_ROOT}}/viewer.php?module={{$allVersionComps.name}}&version={{$comp.version}}&file=doc.tpl" class="detail-versionlink {{if $comp.nowVersion|default:'' }}detail-nowVersion{{/if}}" >
                 {{$comp.version}}
                 </a>
                 {{/if}}
@@ -29,14 +27,14 @@
                 {{if sizeof( $requireComps ) > 0 }}
                     {{foreach from=$requireComps item=comp}}
                     {{if $comp.outlink|default:'' }}
-                        <a href="{{$comp.outlink|default:''}}" target="_blank" 
+                        <a href="{{$comp.outlink|default:''}}" target="_out" 
                             data-name="{{$comp.name}}"
                             >
                             {{$comp.name}}
                         </a>
                     {{else}}
                         {{if !$comp.hide|default:''}}
-                        <a href="#" class="detail-requirelink"
+                        <a href="{{$PROJECT_ROOT}}/viewer.php?module={{$comp.name}}&version={{$comp.version}}&file=doc.tpl" class="detail-requirelink"
                             data-name="{{$comp.name}}"
                             >
                             {{$comp.name}}

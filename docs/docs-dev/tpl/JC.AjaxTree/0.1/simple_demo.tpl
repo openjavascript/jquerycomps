@@ -1,9 +1,9 @@
 {{extends file="public/simple_demo/base.tpl"}}
 
 {{block name="html_header_css" append}}
-<!-- start JC style -->
-<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
-<!-- end JC style -->
+<style class="show-css">
+@import url( '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' );
+</style>
 <style>
     .ajaxtree-demo1 {
         margin-left: 50px;
@@ -13,19 +13,9 @@
 {{/block}}
 
 {{block name="body_main"}}
-{{include file="public/simple_demo/body_header.tpl"}}
-<div class="codeview-wrap">
-    <div class="codeview-tabbar">
-        <a href="#" class="codeview-css">CSS</a>
-        <a href="#" class="codeview-js">JS</a>
-        <a href="#" class="codeview-html">HTML</a>
-        <a href="#" class="codeview-page selected">PAGE</a>
-    </div>
     <div class="codeview-view">
         <div class="codeview-cssview">
-<textArea style="display:none;">
-<link href='{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css' rel='stylesheet' />
-</textArea>
+            <textArea style="display:none;"></textArea>
         </div>
         <div class="codeview-jsview">
             <textArea style="display:none;"></textArea>
@@ -87,8 +77,9 @@
             </div>
         </div>
     </div>
-</div>
+{{/block}}
 
+{{block name="body_footer_js" append}}
 <script type="text/template" class="show-html">
 <dl class="ajaxtree-demo1">
     <dt>默认树 - Tree 示例</dt>
@@ -178,6 +169,5 @@
     });
 
 </script>
-{{include file="public/simple_demo/body_footer.tpl"}}
-{{/block}}
 
+{{/block}}

@@ -24,11 +24,13 @@
 				return;
 			}
 
+            JC.log( 'test', JC.f.gid() );
+
 			_sdemoView.find( 'iframe' )
-				.attr( 'src', _sdemoBtn.attr( 'data-url' ) ).load( function(){
+				.attr( 'src', JC.f.addUrlParams( _sdemoBtn.attr( 'data-url' ), { rnd: JC.f.ts() } ) ).load( function(){
 					_sdemoView.velocity( { opacity: '0' }, 0 ).show();
 					$( 'html,body' ).stop().animate({
-						scrollTop: _sdemoView.offset().top - 20
+						scrollTop: _sdemoView.offset().top - $( '#mainHeader' ).height()
 					}, function(){
 						_sdemoView.velocity( { opacity: '1' } );
 					});
@@ -47,7 +49,7 @@
 				_sdemoView.hide();
 			});
 			$( 'html,body' ).stop().animate({
-				scrollTop: _parent.offset().top + 1
+				scrollTop: _parent.offset().top - $( '#mainHeader' ).height()
 			});
 		});
 	}
