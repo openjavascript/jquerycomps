@@ -374,6 +374,11 @@
                     if( _item.content ){
                         _columns.push( '<ul>' );
                         $.each( _item.content, function( _sk, _sitem ){
+
+                            if( !_sitem ){
+                                return;
+                            }
+
                             var _isChecked = '', _dftchk = '', _class = '';
 
                             _sitem.isdefault && ( _class = 'js_isDefaultItem' );
