@@ -2,7 +2,11 @@
 
 {{block name="html_header_css" append}}
 <style class="show-css">
-@import url( '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css'  );
+    @import url( '{{$URL_ROOT}}/modules/{{$COMP_NAME}}/{{$COMP_VERSION}}/res/default/style.css'  );
+
+    .css_test button{
+        margin: auto 3px;
+    }
 </style>
 {{/block}}
 
@@ -29,16 +33,19 @@
             </dl>
 
             <dl style="padding: 20px;">
-                <dt>Half Star:</dt>
+                <dt>Cancel Button & Half Star:</dt>
                 <dd>
-                    <span class="js_compRate css_test" totalnum="10" score="4" half="true"></span>
+                    <span class="js_compRate" totalnum="10" score="4.5" half="true" cancel="true"></span>
                 </dd>
             </dl>
 
             <dl style="padding: 20px;">
-                <dt>Cancel Button:</dt>
-                <dd>
-                    <span class="js_compRate css_test" totalnum="10" score="6" half="true" cancel="true"></span>
+                <dt>Custom Style:</dt>
+                <dd class="css_test">
+                    <p><span>色：</span><span class="js_compRate" totalnum="5" score="7" maxscore="21" half="true" ></span></p>
+                    <p><span>香：</span><span class="js_compRate" totalnum="5" score="13" maxscore="21" half="true" ></span></p>
+                    <p><span>味：</span><span class="js_compRate" totalnum="5" score="9" maxscore="21" half="true" ></span></p>
+                    <p><span>总：</span><span class="js_compRate" totalnum="5" score="11" maxscore="21" half="true" ></span></p>
                 </dd>
             </dl>
         </div>
