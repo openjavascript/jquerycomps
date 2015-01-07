@@ -5,7 +5,6 @@
 {{/block}}
 
 {{block name="body_main"}}
-<div class="wrap">
     {{include file="public/demo/body_main.tpl"}}
 
     <div class="detail-demo">
@@ -28,8 +27,6 @@
             </div>
         </div>
     </div>
-</div>
-
 <script type="text/javascript">
 </script>
 {{/block}}
