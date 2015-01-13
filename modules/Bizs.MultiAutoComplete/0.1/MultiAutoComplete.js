@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.AutoComplete', 'JC.AutoChecked', 'JC.Placeholder', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.MultiAutoComplete', [ 'JC.AutoComplete', 'JC.AutoChecked', 'JC.Placeholder', 'JC.Panel' ], function(){
 /**
  * 级联 Suggest
  *

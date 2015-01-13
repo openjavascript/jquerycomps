@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.Panel.default' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Dialog', [ 'JC.Panel.default' ], function(){
     var isIE6 = !!window.ActiveXObject && !window.XMLHttpRequest;
     /**
      * 带蒙板的会话弹框

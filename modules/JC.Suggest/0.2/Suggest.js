@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Suggest', [ 'JC.BaseMVC' ], function(){
     window.Suggest = JC.Suggest = Suggest;
     JC.use && !window.JSON && JC.use( 'plugins.json2' );
     /**

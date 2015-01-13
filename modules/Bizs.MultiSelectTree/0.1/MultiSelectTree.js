@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.Tree' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.MultiSelectTree', [ 'JC.common', 'JC.Tree' ], function(){
 /**
  * MultiSelect<br />
  * 多选树<br/>

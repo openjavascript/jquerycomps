@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.BizExample', [ 'JC.BaseMVC' ], function(){
     var _jdoc = $( document ), _jwin = $( window );
 
     Bizs.BizExample = BizExample;

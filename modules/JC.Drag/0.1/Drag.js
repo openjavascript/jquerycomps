@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Drag', [ 'JC.BaseMVC' ], function(){
 /**
  * 响应式 Drag and Drop 功能
  * <br />对 [ div | button ].js_compDrag 生效

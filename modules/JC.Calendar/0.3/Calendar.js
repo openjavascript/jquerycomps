@@ -1,5 +1,5 @@
 ;(function(define, _win) { 'use strict'; 
-    define( [ 'JC.Calendar.date', 'JC.Calendar.week', 'JC.Calendar.month'
+    define(  'JC.Calendar', [ 'JC.Calendar.date', 'JC.Calendar.week', 'JC.Calendar.month'
                 , 'JC.Calendar.season', 'JC.Calendar.year', 'JC.Calendar.monthday'
             ], function(){
     /**

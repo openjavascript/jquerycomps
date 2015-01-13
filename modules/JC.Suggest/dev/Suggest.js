@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Suggest', [ 'JC.BaseMVC', 'plugins.json2' ], function(){
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类

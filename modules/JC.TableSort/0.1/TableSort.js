@@ -1,4 +1,4 @@
-;(function (define, _win) { 'use strict'; define(['JC.BaseMVC'], function () {
+;(function (define, _win) { 'use strict'; define( 'JC.TableSort', ['JC.BaseMVC'], function () {
 /**
  * TableSort 表格列排序功能
  *

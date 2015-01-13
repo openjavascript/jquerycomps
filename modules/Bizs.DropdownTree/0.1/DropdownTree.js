@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.DropdownTree', [ 'JC.BaseMVC', 'JC.Tree' ], function(){
 /**
  * 树菜单 形式模拟下拉框
  *

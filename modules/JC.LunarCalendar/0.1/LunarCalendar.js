@@ -1,4 +1,5 @@
 ;(function(define, _win) { 'use strict'; define( 
+            'JC.LunarCalendar',
             [ 
                 'JC.LunarCalendar.default' 
                 , 'JC.LunarCalendar.getFestival' 

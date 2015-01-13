@@ -1,0 +1,1361 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            dd{ margin-bottom: 2px; }
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../nginx_config.js"></script>
+        <script>
+            JC.debug = true; 
+
+            requirejs( ['JC.Valid', 'JC.Calendar' ], function( Valid, Calendar ){
+
+                $(document).delegate( 'button.js_clear_error', 'click', function( _evt ){
+                    window.console && console.clear && console.clear();
+                    JC.Valid.clearError( 'form.js_valid' );
+                });
+
+                $('form.js_valid').on('submit', function( _evt ){
+                    window.console && console.clear && console.clear();
+                    _evt.preventDefault();
+
+                    if( !JC.Valid.check( 'form.js_valid' ) ){
+                        _evt.preventDefault();
+                        return false;
+                    }
+                });
+            });
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid" validmsg="true" >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
+            </div>
+            <dl class="fm-items">
+                <dt>JC.Valid 示例</dt>
+                <dd>
+                    <dl>
+                        <dt>datatype = reqmsg, 必填信息</dt>
+                        <dd>
+                            <div>
+                                <label>max 120: </label>
+                                <input type="text" name="company_name" 
+                                maxlength="120" 
+                                reqmsg="公司名称" 
+                                errmsg="最大长度120字" 
+                                /> 
+                            </div>
+                            <div>
+                                <select name="company_type" 
+                                    reqmsg="公司行业" 
+                                    focusmsg="请选择行业" 
+                                    >
+                                    <option value="">请选择</option>
+                                    <option value="1">互联网</option>
+                                    <option value="2">教育</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select name="company_type1" multiple rows="3" reqmsg="公司行业" >
+                                    <option value="">请选择</option>
+                                    <option value="1">互联网</option>
+                                    <option value="2">教育</option>
+                                </select>
+                            </div>
+                            <div>
+                                <input type='file' name='company_file' value='' reqmsg="文件" />
+                            </div>
+                            <div>
+                                <textarea name="company_desc" 
+                                    datatype="text" 
+                                    reqmsg="简介" 
+                                    errmsg="最大长度500" 
+                                    maxlength="500" 
+                                ></textarea>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = reqmsg(必填信息), validmsg(成功提示), focusmsg(focus 提示) </dt>
+                        <dd>
+                            <label>max 120:</label>
+                            <input type="text" name="company_name" 
+                            maxlength="120" 
+                            reqmsg="公司名称" 
+                            errmsg="最大长度120字"
+                            focusmsg="长度1-120"
+                            validmsg="false"
+                            />
+                            <em class="validmsg"></em>
+                            <em class="focusmsg"></em>
+                            <em class="errormsg"></em>
+                        </dd>
+                        <dd>
+                            <label>max 120:</label>
+                            <input type="text" name="company_name" disabled 
+                            maxlength="120" 
+                            reqmsg="公司名称" 
+                            errmsg="最大长度120字"
+                            focusmsg="长度1-120"
+                            validmsg="false"
+                            />
+                            <em class="validmsg"></em>
+                            <em class="focusmsg"></em>
+                            <em class="errormsg"></em>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = bytetext, 单字节算一个, 双字节及以上算两个 </dt>
+                        <dd>
+                            <label>8-40字符</label>
+                            <input type="text" name="company_name" 
+                            minlength="8" maxlength="40" 
+                            reqmsg="公司名称" 
+                            errmsg="长度8-40个字符, 英文=1字符, 汉字=2字符" 
+                            datatype="bytetext"
+                            focusmsg="请填写公司名称" 
+                            validmsg="true"
+                            /> 
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = domain, 域名, 允许带 http[s]</dt>
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_domain" 
+                                datatype="domain" 
+                                reqmsg="域名" 
+                                errmsg="请填写正确的域名"
+                                focusmsg="请填写您的域名"
+                                maxlength="240"
+                                />
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = stricdomain, 域名严格检查, 不允许带 http[s], 且结束不能带反斜扛"/"</dt>
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_domain" 
+                            datatype="stricdomain" 
+                            reqmsg="域名" 
+                            errmsg="请填写正确的域名"
+                            maxlength="240"
+                            />
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = url, 网址</dt>
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            maxlength="240"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" value="a.com" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            maxlength="240"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" value="a.com/" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            maxlength="240"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" value="http://a.com" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            maxlength="240"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" value="http://www.a.com" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            maxlength="240"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" value="a.comccccccccc" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            maxlength="240"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            maxlength="240"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_url" 
+                            datatype="url" 
+                            errmsg="请填写正确的网址"
+                            focusmsg="请填写URL"
+                            />
+                            <em class="focusmsg" style="font-weight:bold"></em>
+                        </dd>
+
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = email, 电子邮箱</dt>
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_email" 
+                            reqmsg="邮箱" 
+                            errmsg="请填写正确的邮箱"
+                            focusmsg="请填写邮箱"
+                            datatype="email" 
+                            maxlength="60"
+                            />
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = zipcode, 邮编</dt>
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_zipcode" 
+                            datatype="zipcode" 
+                            errmsg="请填写正确的邮编"
+                            focusmsg="请填写邮编"
+                            />
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = taxcode, 纳税人识别号, 长度: 15, 18, 20</dt>
+                        <dd>
+                            <label></label>
+                            <input type="text" name="" 
+                            datatype="taxcode" 
+                            reqmsg="纳税人识别号"
+                            errmsg="请填写正确的纳税人识别号"
+                            focusmsg="请填写纳税人识别号"
+                            />
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = reg, 自定义正则表达式</dt>
+                        <dd>
+                            <div>
+                                <label>/^[\s\S]{2,120}$/i:</label>
+                                <input type="text" name="company_addr" 
+                                datatype="reg" 
+                                reg-pattern="/^[\s\S]{2,120}$/i" 
+                                errmsg="请填写正确的地址"
+                                focusmsg="请填写地址"
+                                />
+                            </div>
+                            <div>
+                                <label>reg-/^[\s\S]{2,120}$/i:</label>
+                                <input type="text" name="company_addr" 
+                                datatype="reg-/^[\s\S]{2,120}$/i" 
+                                errmsg="请填写正确的地址"
+                                focusmsg="请填写地址"
+                                >
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = n, 整数</dt>
+                        <dd>
+                            <div>
+                                <label>0 - pow(10, 10 ):</label>
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的正整数" 
+                                datatype="n" 
+                                reqmsg="正整数"  
+                                />
+                                </div>
+                            <div>
+                                <label>-1000000 ~ 1000000:</label>
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的数字, -1000000 ~ 1000000" 
+                                datatype="n" 
+                                minvalue="-1000000" 
+                                maxvalue="1000000" 
+                                />
+                            </div>
+                            <div>
+                                <label>1 ~ 100:</label>
+                                <input type="text" name="company_n1" 
+                                errmsg="请填写正确的数字, 范围1-100" 
+                                datatype="n" 
+                                minvalue="1" 
+                                maxvalue="100" 
+                                />
+                            </div>
+                            <div>
+                                <label>n-7.2</label>
+                                <input type="text" name="company_n2" 
+                                errmsg="0.01 ~ 9999999.99" 
+                                datatype="n-7.2" 
+                                />
+                            </div>
+                            <div>
+                                <label>0.00 ~ 999999999999.99:</label>
+                                <input type="text" name="company_n" 
+                                value="999999999999.99"
+                                errmsg="请填写正确的正整数" 
+                                datatype="n-12.2" 
+                                reqmsg="数字"  
+                                placeholder="0.00 ~ 999999999999.99"
+                                />
+                            </div>
+                            <div>
+                                <label>0.00 ~ 999999999999.99:</label>
+                                <input type="text" name="company_n" 
+                                value="00"
+                                errmsg="请填写正确的正整数" 
+                                datatype="n-12.2" 
+                                reqmsg="数字"  
+                                placeholder="0.00 ~ 999999999999.99"
+                                />
+                            </div>
+                            <div>
+                                <label>0.00 ~ 999999999999.99:</label>
+                                <input type="text" name="company_n" 
+                                value="000"
+                                errmsg="请填写正确的正整数" 
+                                datatype="n-12.2" 
+                                reqmsg="数字"  
+                                placeholder="0.00 ~ 999999999999.99"
+                                />
+                            </div>
+                            <div>
+                                <label>-100 ~ 0</label>
+                                <input type="text" name="company_n2" value="2"  
+                                errmsg="-100 ~ 0" 
+                                datatype="n"
+                                minvalue="-100"
+                                maxvalue="0"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+
+                <dd>
+                    <dl>
+                        <dt>datatype = nrange, 数值范围</dt>
+                        <dd>
+                            <div>
+                                <label>nrange-7.2</label>
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" 
+                                datatype="nrange-7.2" 
+                                minvalue="-1000000.00" 
+                                maxvalue="1000000" 
+                                />
+                                <input type="text" name="company_n" 
+                                errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" 
+                                datatype="nrange-7.2" 
+                                minvalue="-1000000.00" 
+                                maxvalue="1000000" 
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <label></label>
+                                大<input type="text" name="company_n10" 
+                                    fromNEl="/input:last"
+                                    errmsg="请填写正确的数值范围" 
+                                    datatype="nrange" 
+                                    />
+                                - 小<input type="text" name="company_n11" 
+                                    toNEl="/input:first"
+                                    errmsg="请填写正确的数值范围" 
+                                    datatype="nrange" 
+                                    />
+                                <b style="color:red">注意: 这个是大小颠倒位置的nrange</b>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_n12" 
+                                errmsg="请填写正确的数值范围" 
+                                datatype="nrange" 
+                                />
+                                <input type="text" name="company_n13" 
+                                errmsg="请填写正确的数值范围" 
+                                datatype="nrange" 
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <select 
+                                    datatype="nrange" 
+                                    reqmsg="起始数值和结束数值"
+                                    >
+                                    <option value="">请选择</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                                <select 
+                                    datatype="nrange" 
+                                    reqmsg="起始数值和结束数值" 
+                                    errmsg="起始数值不能大于结束数值"
+                                    >
+                                    <option value="">请选择</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = d, ISO 日期, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD</dt>
+                        <dd>
+                            <label></label>
+                            <input type="text" name="company_d" value="2013-05-15" 
+                                errmsg="2013-05-01 - 2020-05-20" 
+                                datatype="date" 
+                                minvalue="2013-05-01" 
+                                maxvalue="2020-05-20" 
+                                />
+                            <em class="validmsg"></em>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = daterange, 日期范围, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_daterange" 
+                                    errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" 
+                                    datatype="daterange" 
+                                    validmsg="false"
+                                    />
+                                - <input type="text" name="company_daterange" 
+                                    errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" 
+                                    datatype="daterange" 
+                                    validmsg="false" 
+                                    />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_daterange1_1" value="2013-06-16" 
+                                    errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" 
+                                    datatype="daterange" 
+                                    toDateEl="/input:last" 
+                                    validmsg="false" 
+                                    />
+                                - <input type="text" name="company_daterange1_2" value="2013-06-08" 
+                                    errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" 
+                                    datatype="daterange" 
+                                    fromDateEl="/input:first" 
+                                    validmsg="false" 
+                                    />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_daterange2_1" value="2013-06-16" 
+                                    errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                                    datatype="daterange" 
+                                    />
+                                - <input type="text" name="company_daterange2_2" value="2013-06-08" 
+                                    errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                                    datatype="daterange" 
+                                    />
+                                <span>自动初始化</span>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = countrycode, 地区代码(国家代码), 1 ~ 6位数字</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                                datatype="countrycode" 
+                                errmsg="请填写正确的地区代码" 
+                                validmsg="false" 
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = phonezone, 电话区号, 3 ~ 4位数字</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                datatype="phonezone" 
+                                errmsg="请填写正确的电话区号" 
+                                validmsg="false" 
+                                />
+                            </div>
+                            <div>
+                                <label>phonezone-2,4</label>
+                                <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                datatype="phonezone-2,4" 
+                                errmsg="请填写正确的电话区号" 
+                                validmsg="false" 
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = phoneext, 电话分机号, 1 ~ 6位数字</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                                datatype="phoneext" 
+                                errmsg="请填写正确的分机号" 
+                                validmsg="false" 
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = phonecode, 电话号码, 7 ~ 8位数字</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type='text' name='company_countrycode2' value='' size="9" 
+                                datatype="phonecode" 
+                                errmsg="请填写正确的电话区号" 
+                                validmsg="false" 
+                                />
+                            </div>
+                            <div>
+                                <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                                datatype="countrycode" 
+                                errmsg="请填写正确的地区代码" 
+                                validmsg="false" 
+                                placeholder="地区代码"
+                                />
+                                - 
+                                <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                datatype="phonezone-2,4" 
+                                errmsg="请填写正确的电话区号" 
+                                validmsg="false" 
+                                placeholder="区号"
+                                />
+                                - 
+                                <input type='text' name='countrycode3' style="width:80px;" value='' size="8" 
+                                datatype="phonecode"
+                                errmsg="请检查电话号码格式" 
+                                placeholder="电话号码"
+                                />
+                                - 
+                                <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                                datatype="phoneext" 
+                                errmsg="请填写正确的分机号" 
+                                validmsg="false" 
+                                placeholder="分机号"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = mobilecode | mobile, 手机号码, 11位数字</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="" 
+                                datatype="mobile" 
+                                errmsg="请填写正确的手机号码"
+                                placeholder="手机号码"
+                                />
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" name="" 
+                                datatype="mobilecode" 
+                                errmsg="请填写正确的手机号码"
+                                placeholder="手机号码"
+                                />
+                            </div>
+
+                        </dd>
+                    </dl>
+                </dd>
+      
+                <dd>
+                    <dl>
+                        <dt>datatype = phone, [区号]电话号码</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_mobilezone" 
+                                datatype="phone" 
+                                errmsg="请填写正确的电话号码"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = phoneall, [地区代码][区号]电话号码[#分机号]</dt>
+                        <dd>
+                            <div> 
+                                <label></label>
+                                <input type="text" name="company_mobilezone" 
+                                datatype="phoneall" 
+                                errmsg="请填写正确的电话号码"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = mobilezonecode, [地区代码]手机号</dt>
+                        <dd>
+                            <label></label>
+                            <div>
+                                <input type="text" name="company_mobilezone" 
+                                datatype="mobilezonecode" 
+                                errmsg="请填写正确的手机号码"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = mobilephone( phone | mobilecode, 手机号码或电话号码 )</dt>
+                        <dd>
+                            <label></label>
+                            <div>
+                                <input type="text" name="company_mobilephone" 
+                                datatype="mobilephone"
+                                errmsg="请填写正确的手机/电话号码"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = mobilephoneall( phoneall | mobilezonecode, 手机号码或电话号码 )</dt>
+                        <dd>
+                            <label></label>
+                            <div>
+                                <input type="text" name="company_mobilephoneall" 
+                                datatype="mobilephoneall"
+                                errmsg="请填写正确的手机/电话号码"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = vcode, 验证码, 默认 4位</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_vcode" style="width: 40px;"
+                                datatype="vcode" 
+                                reqmsg="验证码" 
+                                errmsg="请填写正确的验证码"
+                                />
+                            </div>
+                            <div>
+                                <label>vcode-5</label>
+                                <input type="text" name="company_vcode" style="width: 40px;"
+                                datatype="vcode-5" 
+                                errmsg="请填写正确的验证码"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = cnname, 中文姓名</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_cnname" 
+                                datatype="cnname" 
+                                reqmsg="姓名" 
+                                errmsg="请填写正确的姓名"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = username, 用户名, [\w-]{2,30}</dt>
+                        <dd>
+                            <input type="text" name="company_username" 
+                            datatype="username" 
+                            reqmsg="用户名" 
+                            errmsg="请填写正确的用户名"
+                            />
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = idnumber, 身份证号码</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_idnumber" 
+                                datatype="idnumber" 
+                                errmsg="请填写正确的身份证号码"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype = bankcard, 银行卡号</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="123456789012345" 
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="123456789012345"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="1234567890123456"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="12345678901234567"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="123456789012345678"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="1234567890123456789"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="1234 5678 9012 3456789"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="1234 5678 9012 3456"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_bankcard" value="1234     5678 9012    3456"  
+                                datatype="bankcard" 
+                                errmsg="请填写正确的银行卡号"
+                                />
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>datatype= file, fileext=文件扩展名(逗号分隔)</dt>
+                        <dd>
+                        文件: <input type="file" 
+                                reqmsg="文件" 
+                                errmsg="允许上传的文件类型: .gif, .jpg, .jpeg, .png"
+                                datatype="file" 
+                                fileext=".gif, .jpg, .jpeg, .png" 
+                                />
+                                <label>.gif, .jpg, .jpeg, .png</label>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>trim case</dt>
+                        <dd>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_name" value=" d" 
+                                maxlength="120" 
+                                reqmsg="请输入内容" 
+                                errmsg="最大长度120" 
+                                /> <em>公司名称描述</em>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_name" value="d " 
+                                maxlength="120" 
+                                reqmsg="请输入内容" 
+                                errmsg="最大长度120" 
+                                /> <em>公司名称描述</em>
+                            </div>
+                            <div>
+                                <label></label>
+                                <input type="text" name="company_name" value=" d " 
+                                minlength="2" 
+                                maxlength="120" 
+                                reqmsg="请输入内容" 
+                                errmsg="请检查格式,长度2-120" 
+                                /> <em>公司名称描述</em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>subdatatype = reconfirm, 输入的内容必须保持一值</dt>
+                        <dd>
+                            <div>
+                                <label>用户密码:</label>
+                                <input type="password" name="company_pwd" 
+                                datatype="text" 
+                                subdatatype="reconfirm" 
+                                datatarget="/input:last" 
+                                reconfirmmsg="用户密码和确认密码不一致"
+                                minlength="6" 
+                                maxlength="15" 
+                                reqmsg="用户密码" 
+                                errmsg="请填写正确的用户密码"
+                                />
+                                <label>确认密码:</label>
+                                <input type="password" name="company_repwd" 
+                                datatype="text" 
+                                subdatatype="reconfirm" 
+                                datatarget="/input:first" 
+                                reconfirmmsg="确认密码和用户密码不一致"
+                                minlength="6" 
+                                maxlength="15" 
+                                reqmsg="确认密码" 
+                                errmsg="请填写正确的确认密码"
+                                />
+                                <em class="error"></em>
+                            </div>
+                            <div>
+                                <label>用户密码:</label>
+                                <input type="password" name="company_pwd_auto" 
+                                    datatype="text" 
+                                    subdatatype="reconfirm" 
+                                    reqmsg="用户密码" 
+                                    errmsg="长度6-15" 
+                                    reconfirmmsg="用户密码和确认密码不一致" 
+                                    minlength="6" 
+                                    maxlength="15"
+                                    />
+                                <label>确认密码:</label>
+                                <input type="password" name="company_pwd_auto" 
+                                    datatype="text" 
+                                    subdatatype="reconfirm" 
+                                    reqmsg="用户密码" 
+                                    errmsg="长度6-15" 
+                                    reconfirmmsg="用户密码和确认密码不一致" 
+                                    minlength="6" 
+                                    maxlength="15"
+                                    />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>subdatatype = alternative, 2填1/N填1</dt>
+                        <dd>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <label>电话号码:</label>
+                                        <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                                        datatype="countrycode" 
+                                        errmsg="请填写正确的地区代码" 
+                                        validmsg="false" 
+                                        placeholder="地区代码"
+                                        />
+                                        - 
+                                        <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                        datatype="phonezone-2,4" 
+                                        errmsg="请填写正确的电话区号" 
+                                        validmsg="false" 
+                                        placeholder="区号"
+                                        />
+                                        - 
+                                        <input type='text' name='' style="width:80px;" value='' size="8" 
+                                        datatype="phonecode"
+                                        subdatatype="alternative" 
+                                        datatarget="<ul input[datatype=mobilecode]" 
+                                        alternativemsg="电话号码和手机号码至少填写一个" 
+                                        errmsg="请检查电话号码格式" 
+                                        placeholder="电话号码"
+                                        />
+                                        - 
+                                        <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                                        datatype="phoneext" 
+                                        errmsg="请填写正确的分机号" 
+                                        validmsg="false" 
+                                        placeholder="分机号"
+                                        />
+                                        <em class="error"></em>
+                                        <em class="validmsg"></em>
+                                    </li>
+                                    <li>
+                                        <label>手机号码:</label>
+                                        <input type="text" name="" 
+                                        datatype="mobilecode" 
+                                        subdatatype="alternative" 
+                                        datatarget="<ul input[datatype=phonecode]" 
+                                        alternativemsg=" " 
+                                        errmsg="请填写正确的手机号码"
+                                        placeholder="手机号码"
+                                        />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <span>数值1</span>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    /> 
+                                <span>数值2</span>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    /> 
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <span>数值1</span>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    datatarget="/input.test"
+                                    /> 
+                                <span>数值2</span>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    datatarget="/input.test"
+                                    /> 
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>subdatatype = unique, N 个 Control 的值必须保持唯一性, 不能有重复</dt>
+
+                        <dd>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                                <em class="error"></em>
+                                <div></div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                                <em class="error"></em>
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <hr />
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="URL"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                            </div>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="URL"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                            </div>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="URL"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <hr />
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" 
+                                datatype="daterange" 
+                                subdatatype="unique"  
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期范围"
+                                uniquemsg="日期不能重复"
+                                />
+                                <input type="text" placeholder="日期" 
+                                datatype="daterange" 
+                                subdatatype="unique"  
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期范围"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <hr />
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" 
+                                datatype="date" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" 
+                                datatype="date" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" 
+                                datatype="date" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                        <dd>
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                            </select>
+                            <em class="error"></em>
+                            <em class="validmsg"></em>
+                        </dd>
+                        <dd>
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                                <option value="4">www.taobao.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                                <option value="4">www.taobao.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                                <option value="4">www.taobao.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                                <option value="4">www.taobao.com</option>
+                            </select>
+
+                            <em class="error"></em>
+                            <em class="validmsg"></em>
+                        </dd>
+
+                    </dl>
+                </dd>
+
+            </dl>
+
+            <div style="position:fixed; bottom: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
+            </div>
+        </form>
+
+    </body>
+</html>
+

@@ -72,7 +72,11 @@
         <script>
             JC.debug = true;
 
-            requirejs( [ '../AjaxUpload.js', 'JC.Panel', 'JC.Valid'
+            requirejs.config({ 
+                paths: { 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload' }
+            });
+
+            requirejs( [ 'JC.AjaxUpload', 'JC.Panel', 'JC.Valid'
                 , 'Bizs.FormLogic', 'Bizs.CommonModify', 'Bizs.DisableLogic' ]
                 , function( AjaxUpload, Panel, Valid, FormLogic, CommonModify, DisableLogic ){
                     AjaxUpload.randomFrame = true;

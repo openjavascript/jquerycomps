@@ -1,4 +1,4 @@
-(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'SWFUpload' ], function(){
+(function(define, _win) { 'use strict'; define( 'JC.AjaxUpload', [ 'JC.BaseMVC', 'JC.Panel', 'SWFUpload' ], function(){
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 

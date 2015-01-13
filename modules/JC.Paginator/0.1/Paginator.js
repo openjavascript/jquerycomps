@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.Paginator', [ 'JC.BaseMVC' ], function(){
 /**
  * Paginator 分页
  * <p>实现的功能上一页，下一页，数字页，...显示页码，跳转到n页，每页显示n条记录，</p>

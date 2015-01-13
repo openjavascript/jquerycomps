@@ -727,7 +727,7 @@ defaults.parser = function (code, options) {
 
 // RequireJS && SeaJS
 if (typeof define === 'function') {
-    define(function() {
+    define( 'artTemplate', [], function() {
         return template;
     });
 

@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.MultiSelect', [ 'JC.BaseMVC' ], function(){
 //Todo:对于已选中的数据，自动铺出数据列表，展示数据
 /**
  * 模拟多选下拉框

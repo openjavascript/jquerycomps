@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'Bizs.MultiselectPanel', [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * 二级分类复选弹框
  *

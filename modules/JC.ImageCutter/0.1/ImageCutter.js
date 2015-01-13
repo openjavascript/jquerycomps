@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.ImageCutter', [ 'JC.BaseMVC' ], function(){
 /**
  * 图片裁切组件
  * <br />借助 PHP GD 库进行图片裁切( 不仅限于 PHP GD )

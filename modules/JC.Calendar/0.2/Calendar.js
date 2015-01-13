@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Calendar', [ 'JC.common' ], function(){
 //TODO: minvalue, maxvalue 添加默认日期属性识别属性
 ;(function($){
     /**
