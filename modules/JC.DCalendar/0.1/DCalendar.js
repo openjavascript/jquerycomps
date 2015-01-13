@@ -1,5 +1,5 @@
 ;(function(define, _win) { 'use strict'; 
-    define( [ 'JC.DCalendar.date'
+    define( 'JC.DCalendar', [ 'JC.DCalendar.date'
             ], function(){
     /**
      * 这个判断是为了向后兼容 JC 0.1

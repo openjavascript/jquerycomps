@@ -115,6 +115,8 @@
             
                 <li><a href="../classes/JC.msgbox.html">JC.msgbox</a></li>
             
+                <li><a href="../classes/JC.NSlider.html">JC.NSlider</a></li>
+            
                 <li><a href="../classes/JC.NumericStepper.html">JC.NumericStepper</a></li>
             
                 <li><a href="../classes/JC.Paginator.html">JC.Paginator</a></li>
@@ -260,7 +262,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( &#x27;JC.Rate&#x27;, [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
  *  JC.Rate 星形评分组件
  *
@@ -377,7 +379,7 @@
                 if( _model.getReadOnly() ){ return; }
 
                 var halfFlag = _model.getHalfFlag();
-                if( halfFlag ){
+                if( halfFlag ) {
                     _children.on( &#x27;mousemove&#x27;, function( e ) {
                         var target = $( e.target );
                         if( target.hasClass( &#x27;rate-score&#x27; ) ) {
@@ -515,7 +517,7 @@
             }
         , getMaxScore:
             function() {
-                return this.intProp( &#x27;maxScore&#x27; ) || 5 ;
+                return this.intProp( &#x27;maxScore&#x27; ) || this.getTotalNum();
             }
         , getMinScore:
             function() {
@@ -618,11 +620,17 @@
 
                 _selector &amp;&amp; ( _selector = $( _selector ) );
                 _selector.css( { &#x27;cursor&#x27;: &#x27;pointer&#x27; , &#x27;font-size&#x27;: &#x27;12px&#x27; });
-                cancelFlag &amp;&amp; _selector.prepend( $( imgHtml ).attr( &#x27;class&#x27;, &#x27;rate-cancel cancel-off&#x27; ) );
+                cancelFlag &amp;&amp; _selector.prepend( 
+                    $( imgHtml ).attr( { 
+                        &#x27;class&#x27; : &#x27;rate-cancel cancel-off&#x27;
+                        , &#x27;title&#x27; : &#x27;清除分数&#x27; 
+                    } )
+                );
+
                 var _tmp = [], _tmpStr, _tmpTitle;
 
                 for( var i = 0; i&lt;totalNum; i++ ) {
-                    _tmpTitle = &#x27;&#x27;
+                    _tmpTitle = &#x27;&#x27;;
                     if( i &lt; hintsLen &amp;&amp; hints[ i ] != &#x27;&#x27; ){
                         _tmpTitle = hints[ i ];
                     }
@@ -655,7 +663,8 @@
                 cancelFlag &amp;&amp; _p.lightCancel(false);
                 if( !target || typeof target != &#x27;number&#x27; || target &lt; 0 ) {
                     _model.selector().children( &#x27;.rate-score&#x27; )
-                        .removeClass( &#x27;star-on&#x27; ).addClass( &#x27;star-off&#x27; );
+                        .removeClass( &#x27;star-on star-half&#x27; )
+                        .addClass( &#x27;star-off&#x27; );
                     return;
                 }
                 var star, lightStarNum = parseInt( target ),
@@ -678,7 +687,7 @@
                 }
             }
         /**
-        * 清除按钮动态变化方法
+        * 清除按钮hover方法
         * @param   {boolean}    flag
         */
         , lightCancel:

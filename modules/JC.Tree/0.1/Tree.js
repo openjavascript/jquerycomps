@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Tree', [ 'JC.common' ], function(){
     window.Tree = JC.Tree = Tree;
     /**
      * 树菜单类 JC.Tree

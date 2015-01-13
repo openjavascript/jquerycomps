@@ -115,6 +115,8 @@
             
                 <li><a href="../classes/JC.msgbox.html">JC.msgbox</a></li>
             
+                <li><a href="../classes/JC.NSlider.html">JC.NSlider</a></li>
+            
                 <li><a href="../classes/JC.NumericStepper.html">JC.NumericStepper</a></li>
             
                 <li><a href="../classes/JC.Paginator.html">JC.Paginator</a></li>
@@ -260,7 +262,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Calendar&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( &#x27;Bizs.DMultiDate&#x27;, [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Calendar&#x27; ], function(){
     window.Bizs.DMultiDate = DMultiDate;
     /**
      * DMultiDate 复合日历业务逻辑
@@ -479,8 +481,6 @@
                         _p._model.setHiddenEnddate(JC.f.formatISODate(_dend));
                     }
                 }
-
-                
             };
 
             window[_updateendcb] = function (_d,_dend, _ins) {
@@ -492,8 +492,6 @@
                     _temp = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate());
 
                 _curmindate &amp;&amp; (_curmindate = JC.f.dateDetect(_curmindate));
-                //_d = JC.f.formatISODate(_d);
-                //
 
                 switch (_type) {
                     case &#x27;week&#x27;:
@@ -830,6 +828,10 @@
     
     DMultiDate.Model.prototype = {
         init: function () {
+        },
+
+        disableDateLimit:function(){
+            return this.boolProp(&#x27;disabledatelimit&#x27;);
         },
 
         lastIptBox: function(){

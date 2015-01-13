@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.CRMSchedulePopup', [ 'JC.BaseMVC' ], function(){
 /**
  * CRMSchedule 的弹框
  * @version dev 0.1 2013-12-13

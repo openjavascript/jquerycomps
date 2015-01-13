@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Tips', [ 'JC.common' ], function(){
     window.Tips = JC.Tips = Tips;
     /**
      * Tips 提示信息类

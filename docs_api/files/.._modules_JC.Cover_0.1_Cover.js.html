@@ -115,6 +115,8 @@
             
                 <li><a href="../classes/JC.msgbox.html">JC.msgbox</a></li>
             
+                <li><a href="../classes/JC.NSlider.html">JC.NSlider</a></li>
+            
                 <li><a href="../classes/JC.NumericStepper.html">JC.NumericStepper</a></li>
             
                 <li><a href="../classes/JC.Paginator.html">JC.Paginator</a></li>
@@ -260,7 +262,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( &#x27;JC.Cover&#x27;, [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
  * 组件用途简述
  *
@@ -532,13 +534,18 @@
             }
         , coverItem:
             function( cover ) {
-                cover.stop( false, true ).animate( { top : &#x27;0&#x27;, left : &#x27;0&#x27; }, 
-                    _Model.ANIMATE_SPEED );
+                cover.stop( true, true )
+                    .fadeIn( _Model.ANIMATE_SPEED )
+                    .animate( { top : &#x27;0&#x27;, left : &#x27;0&#x27; }, _Model.ANIMATE_SPEED );
             }
         , coverBack:
             function( cover ) {
-                cover.stop( false, true ).animate( { top : cover.data( &#x27;covertop&#x27; ) + &#x27;px&#x27;,
-                    left : cover.data( &#x27;coverleft&#x27; ) + &#x27;px&#x27; }, _Model.ANIMATE_SPEED );
+                cover.stop( true, true )
+                     .animate( {
+                        top : cover.data( &#x27;covertop&#x27; ) + &#x27;px&#x27;
+                        , left : cover.data( &#x27;coverleft&#x27; ) + &#x27;px&#x27; 
+                     }, _Model.ANIMATE_SPEED )
+                     .fadeOut( _Model.ANIMATE_SPEED );
             }
         , link:
             function( target ) {

@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Panel', [ 'JC.common' ], function(){
 //TODO: html popup add trigger ref
 ;(function($){
     window.JC = window.JC || {log:function(){}};

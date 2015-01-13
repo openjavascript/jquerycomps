@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.TableFreeze', [ 'JC.BaseMVC' ], function(){
 
 //Todo: IE下resize，缩小窗口时tr的高度每一行隔了一像素。
 //Todo: 鼠标hover效果性能优化

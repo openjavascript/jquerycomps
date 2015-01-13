@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.TableFreeze', [ 'JC.BaseMVC' ], function(){
 /**
  * TableFreeze 表格固定指定列功能
  *

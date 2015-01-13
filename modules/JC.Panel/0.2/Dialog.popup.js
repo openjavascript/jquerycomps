@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.Dialog' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Dialog.popup', [ 'JC.Dialog' ], function(){
     /**
      * 会话框 msgbox 提示 (不带按钮)
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>

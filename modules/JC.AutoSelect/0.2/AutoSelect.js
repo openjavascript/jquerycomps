@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.AutoSelect', [ 'JC.common' ], function(){
 //TODO: 添加数据缓存逻辑
     /**
      * <h2>select 级联下拉框无限联动</h2>

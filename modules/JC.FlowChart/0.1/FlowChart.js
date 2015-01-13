@@ -1,7 +1,7 @@
 /**
  * 支持 多对多 关系( 目前只支持 一对多 和 多对一 )
  */
- ;(function(define, _win) { 'use strict'; define( [ 'Raphael', 'JC.BaseMVC', 'JC.PopTips' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.FlowChart', [ 'Raphael', 'JC.BaseMVC', 'JC.PopTips' ], function(){
 /**
  * <dl>
  *      <dt>JC 流程图</dt>

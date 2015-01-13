@@ -1,4 +1,4 @@
-;(function (define, _win) { 'use strict'; define(['JC.BaseMVC'], function () {
+;(function (define, _win) { 'use strict'; define( 'JC.Scrollbar', ['JC.BaseMVC'], function () {
 /** 模拟滚动条组件，组件会自动初始化带有class为js_compScrollbar的标签
  * <p>
  *      <b>require:</b>

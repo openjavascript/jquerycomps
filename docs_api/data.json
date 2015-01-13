@@ -542,6 +542,26 @@
             "fors": {},
             "namespaces": {}
         },
+        "../modules/JC.NSlider/0.1/NSlider.js": {
+            "name": "../modules/JC.NSlider/0.1/NSlider.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
+        "../modules/JC.NSlider/0.2/NSlider.js": {
+            "name": "../modules/JC.NSlider/0.2/NSlider.js",
+            "modules": {},
+            "classes": {
+                "JC.NSlider": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.NumericStepper/0.1/NumericStepper.js": {
             "name": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
             "modules": {},
@@ -910,6 +930,13 @@
             "namespaces": {
                 "window": 1
             }
+        },
+        "../nginx_config.js": {
+            "name": "../nginx_config.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {},
@@ -1939,6 +1966,34 @@
                     "description": "",
                     "type": "Date"
                 }
+            ]
+        },
+        "JC.NSlider": {
+            "name": "JC.NSlider",
+            "shortname": "JC.NSlider",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 2,
+            "description": "组件用途简述\n\n<p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NSlider.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.NSlider/0.1/_demo/' target='_blank'>demo link</a></p>\n\n<h2> 可用的 html attribute </h2>\n\n<dl>\n     <dt>slidersubitems = selector</dt>\n     <dd>指定具体子元素是那些，支持JC的选择器扩展</dd>\n\n     <dt>sliderdirection = String default = 'horizontal'</dt>\n     <dd>滚动的方向, 默认 horizontal, { horizontal, vertical }</dd>\n\n     <dt>sliderloop = boolean default = false</dt>\n     <dd>是否循环滚动</dd>\n\n     <dt>sliderautomove = boolean default = false</dt>\n     <dd>是否自动滚动</dd>\n\n     <dt>sliderprev = selector</dt>\n     <dd>后( 左 | 上 )移的触发元素selector, 控制slider向后( 左 | 上 )滚动</dd>\n\n     <dt>slidernext = selector</dt>\n     <dd>前( 右 | 下 )移的触发元素selector, 控制slider向前( 右 | 下 )滚动</dd>\n\n     <dt>sliderhowmanyitem = int default = 1</dt>\n     <dd>每次滚动多少个子元素, 默认1</dd>\n\n     <dt>sliderstepms = int default = 10</dt>\n     <dd>滚动效果运动的间隔时间(毫秒), 默认 10ms</dd>\n\n     <dt>sliderdurationms = int default = 300</dt>\n     <dd>滚动效果的总时间(毫秒), 默认 300ms</dd>\n\n     <dt>sliderautomovems = int default = 2000</dt>\n     <dd>自动滚动的间隔(毫秒), 默认 2000ms</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-12-04",
+            "author": "pengjunkai <pengjunkai@360.cn> | 75 Team",
+            "date": "2014-12-04",
+            "example": [
+                "\n       <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />\n       <script src=\"../../../lib.js\"></script>\n       <script src=\"../../../config.js\"></script>\n       <script>\n           JC.debug = true;\n           requirejs( [ 'JC.NSlider' ] );\n       </script>\n       <table class=\"hslide_wra\" style=\"margin: 0 auto;\">\n           <tr>\n               <td class=\"hslide_left\">\n                   <a href=\"javascript:\" hidefocus=\"true\" style=\"outline:none;\" class=\"js_slideleft\">左边滚动</a>\n               </td>\n               <td class=\"hslide_mid\">\n                   <dl \n                       style=\"width:360px; height: 230px; margin:0 5px;\"\n                       class=\"hslide_list hslide_list2 clearfix js_slideList js_NSlider\" \n                       slidersubitems=\"/dd\"\n                       slidernav=\"single\" slidernavtype=\"icon\"\n                       sliderprev=\"(table a.js_slideleft\" \n                       slidernext=\"(table a.js_slideright\" \n                       sliderdirection=\"horizontal\" sliderhowmanyitem=\"1\" \n                       sliderinitedcb=\"sliderinitedcb\"\n                       sliderloop=\"true\" sliderdurationms=\"300\"\n                       sliderautomove=\"true\" sliderautomovems=\"2500\"\n                       >\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                           <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions0\"> \n                           </span>\n                       </a>\n                       </dd>\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                           <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions1\"> \n                           </span>\n                       </a>\n                       </dd>\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                           <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions2\"> \n                           </span>\n                       </a>\n                       </dd>\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                           <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions3\"> \n                           </span>\n                       </a>\n                       </dd>\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                          <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions4\"> \n                           </span>\n                       </a>\n                       </dd>\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                           <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions5\"> \n                           </span>\n                       </a>\n                       </dd>\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                           <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions6\"> \n                           </span>\n                       </a>\n                       </dd>\n                       <dd class=\"tipsItem\">\n                       <a href=\"http://v.ku6.com/film/index_106123.html?from=my\" target=\"_blank\"> \n                           <span class=\"pc\">\n                               <img alt=\"minions\" src=\"data/images/minions.jpg\" title=\"minions7\"> \n                           </span>\n                       </a>\n                       </dd>\n                   </dl>\n               </td>\n               <td class=\"hslide_right\">\n                   <a href=\"javascript:\" hidefocus=\"true\" style=\"outline:none;\" class=\"js_slideright\">右边滚动</a>\n               </td>\n           </tr>\n       </table>"
             ]
         },
         "JC.NumericStepper": {
@@ -3522,7 +3577,7 @@
         },
         {
             "file": "../modules/Bizs.DMultiDate/0.1/DMultiDate.js",
-            "line": 532,
+            "line": 528,
             "description": "获取或设置 DMultiDate 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3543,7 +3598,7 @@
         },
         {
             "file": "../modules/Bizs.DMultiDate/0.1/DMultiDate.js",
-            "line": 548,
+            "line": 544,
             "description": "判断 selector 是否可以初始化 DMultiDate",
             "itemtype": "method",
             "name": "isDMultiDate",
@@ -10580,10 +10635,676 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 8,
+            "line": 9,
             "description": "这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
-            "class": "JC.NumericStepper",
+            "class": "JC.NSlider",
             "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 158,
+            "description": "初始化数据模型",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 162,
+            "description": "初始化视图模型( 根据不同的滚动方向, 初始化不同的视图类 )",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 391,
+            "description": "JC.NSlider 在滚动前 selector 触发的事件",
+            "itemtype": "event",
+            "name": "beforeMove",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"beforeMove\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider beforeMove' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 406,
+            "description": "JC.NSlider 在滚动后 selector 触发的事件",
+            "itemtype": "event",
+            "name": "afterMove",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"afterMove\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider afterMove' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 421,
+            "description": "JC.NSlider 点击向前滚动按钮后 selector 触发的事件",
+            "itemtype": "event",
+            "name": "slidPrev",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"slidPrev\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider slidPrev' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 436,
+            "description": "JC.NSlider 点击向后滚动按钮后 selector 触发的事件",
+            "itemtype": "event",
+            "name": "slidNext",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"slidNext\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider slidNext' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 463,
+            "description": "获取/设置自动移动的方向\n<br /> true = 向右|向下, false = 向左|向上",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 473,
+            "description": "获取每次移动多少项",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 478,
+            "description": "获取一次可展示的个数",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 523,
+            "description": "获取每次移动间隔的毫秒数",
+            "default": "10",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 529,
+            "description": "获取每次移动持续的毫秒数",
+            "default": "300",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 535,
+            "description": "获取自动滚动的间隔",
+            "default": "2000",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 545,
+            "description": "获取滑动导航的配置",
+            "return": {
+                "description": "int"
+            },
+            "default": "0",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 551,
+            "description": "获取滑动导航的配置",
+            "return": {
+                "description": "int"
+            },
+            "default": "0",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 557,
+            "description": "获取划动的所有项",
+            "itemtype": "method",
+            "name": "subitems",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 565,
+            "description": "获取/设置当前索引位置",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 576,
+            "description": "获取指定页的所有划动项",
+            "params": [
+                {
+                    "name": "_index",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "array"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 677,
+            "description": "获取/设置 划动的 interval 对象",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Interval"
+                }
+            ],
+            "return": {
+                "description": "interval"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 686,
+            "description": "清除划动的 interval",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 692,
+            "description": "获取/设置 自动划动的 timeout",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Timeout"
+                }
+            ],
+            "return": {
+                "description": "timeout"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 701,
+            "description": "清除自动划动的 timeout",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.1/NSlider.js",
+            "line": 707,
+            "description": "获取/设置当前鼠标是否位于 slider 及其控件上面",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Bool"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 158,
+            "description": "初始化数据模型",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 162,
+            "description": "初始化视图模型( 根据不同的滚动方向, 初始化不同的视图类 )",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 421,
+            "description": "JC.NSlider 在滚动前 selector 触发的事件",
+            "itemtype": "event",
+            "name": "beforeMove",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"beforeMove\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider beforeMove' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 436,
+            "description": "JC.NSlider 在滚动后 selector 触发的事件",
+            "itemtype": "event",
+            "name": "afterMove",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"afterMove\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider afterMove' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 451,
+            "description": "JC.NSlider 点击向前滚动按钮后 selector 触发的事件",
+            "itemtype": "event",
+            "name": "slidPrev",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"slidPrev\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider slidPrev' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 466,
+            "description": "JC.NSlider 点击向后滚动按钮后 selector 触发的事件",
+            "itemtype": "event",
+            "name": "slidNext",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_target",
+                    "description": "",
+                    "type": "Target"
+                },
+                {
+                    "name": "_coverIns",
+                    "description": "",
+                    "type": "CoverInstance"
+                }
+            ],
+            "example": [
+                "\n   <pre>\n   $( document ).delegate( \".nslider_callback\", \"slidNext\", function( _evt, _target, _coverIns ) {\n       JC.log( 'slider slidNext' );\n   } );\n   </pre>"
+            ],
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 493,
+            "description": "获取/设置自动移动的方向\n<br /> true = 向右|向下, false = 向左|向上",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 503,
+            "description": "获取每次移动多少项",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 508,
+            "description": "获取一次可展示的个数",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 553,
+            "description": "获取每次移动间隔的毫秒数",
+            "default": "10",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 559,
+            "description": "获取每次移动持续的毫秒数",
+            "default": "300",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 565,
+            "description": "获取自动滚动的间隔",
+            "default": "2000",
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 575,
+            "description": "获取滑动导航的配置",
+            "return": {
+                "description": "int"
+            },
+            "default": "0",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 581,
+            "description": "获取滑动导航的配置",
+            "return": {
+                "description": "int"
+            },
+            "default": "0",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 587,
+            "description": "获取划动的所有项",
+            "itemtype": "method",
+            "name": "subitems",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 595,
+            "description": "获取/设置当前索引位置",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 606,
+            "description": "获取指定页的所有划动项",
+            "params": [
+                {
+                    "name": "_index",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "array"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 758,
+            "description": "获取/设置 划动的 interval 对象",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Interval"
+                }
+            ],
+            "return": {
+                "description": "interval"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 767,
+            "description": "清除划动的 interval",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 773,
+            "description": "获取/设置 自动划动的 timeout",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Timeout"
+                }
+            ],
+            "return": {
+                "description": "timeout"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 782,
+            "description": "清除自动划动的 timeout",
+            "class": "JC.NSlider",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NSlider/0.2/NSlider.js",
+            "line": 788,
+            "description": "获取/设置当前鼠标是否位于 slider 及其控件上面",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Bool"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.NSlider",
+            "namespace": "JC"
         },
         {
             "file": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
@@ -12648,7 +13369,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 384,
+            "line": 390,
             "description": "星星动态变化方法",
             "params": [
                 {
@@ -12662,8 +13383,8 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 418,
-            "description": "清除按钮动态变化方法",
+            "line": 425,
+            "description": "清除按钮hover方法",
             "params": [
                 {
                     "name": "flag",
@@ -12676,14 +13397,14 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 433,
+            "line": 440,
             "description": "清除标记的分数为默认最小分数",
             "class": "JC.Rate",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 443,
+            "line": 450,
             "description": "处理星星class更改的方法",
             "params": [
                 {
@@ -12697,7 +13418,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 454,
+            "line": 461,
             "description": "记录当前选中的分数",
             "params": [
                 {
@@ -21489,6 +22210,25 @@
             ],
             "class": "window.jQuery",
             "namespace": "window"
+        },
+        {
+            "file": "../nginx_config.js",
+            "line": 7,
+            "description": "requirejs config.js for JC Project",
+            "class": "",
+            "namespace": "window"
+        },
+        {
+            "file": "../nginx_config.js",
+            "line": 266,
+            "description": "取当前脚本标签的 src路径",
+            "static": 1,
+            "return": {
+                "description": "脚本所在目录的完整路径",
+                "type": "String"
+            },
+            "class": "",
+            "namespace": "window"
         }
     ],
     "warnings": [
@@ -21695,6 +22435,22 @@
         {
             "message": "unknown tag: date",
             "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:6"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:2"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:2"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -22614,7 +23370,143 @@
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:8"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:9"
+        },
+        {
+            "message": "Missing item type\n初始化数据模型",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:158"
+        },
+        {
+            "message": "Missing item type\n初始化视图模型( 根据不同的滚动方向, 初始化不同的视图类 )",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:162"
+        },
+        {
+            "message": "Missing item type\n获取/设置自动移动的方向\n<br /> true = 向右|向下, false = 向左|向上",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:463"
+        },
+        {
+            "message": "Missing item type\n获取每次移动多少项",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:473"
+        },
+        {
+            "message": "Missing item type\n获取一次可展示的个数",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:478"
+        },
+        {
+            "message": "Missing item type\n获取每次移动间隔的毫秒数",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:523"
+        },
+        {
+            "message": "Missing item type\n获取每次移动持续的毫秒数",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:529"
+        },
+        {
+            "message": "Missing item type\n获取自动滚动的间隔",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:535"
+        },
+        {
+            "message": "Missing item type\n获取滑动导航的配置",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:545"
+        },
+        {
+            "message": "Missing item type\n获取滑动导航的配置",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:551"
+        },
+        {
+            "message": "Missing item type\n获取/设置当前索引位置",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:565"
+        },
+        {
+            "message": "Missing item type\n获取指定页的所有划动项",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:576"
+        },
+        {
+            "message": "Missing item type\n获取/设置 划动的 interval 对象",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:677"
+        },
+        {
+            "message": "Missing item type\n清除划动的 interval",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:686"
+        },
+        {
+            "message": "Missing item type\n获取/设置 自动划动的 timeout",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:692"
+        },
+        {
+            "message": "Missing item type\n清除自动划动的 timeout",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:701"
+        },
+        {
+            "message": "Missing item type\n获取/设置当前鼠标是否位于 slider 及其控件上面",
+            "line": " ../modules/JC.NSlider/0.1/NSlider.js:707"
+        },
+        {
+            "message": "Missing item type\n初始化数据模型",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:158"
+        },
+        {
+            "message": "Missing item type\n初始化视图模型( 根据不同的滚动方向, 初始化不同的视图类 )",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:162"
+        },
+        {
+            "message": "Missing item type\n获取/设置自动移动的方向\n<br /> true = 向右|向下, false = 向左|向上",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:493"
+        },
+        {
+            "message": "Missing item type\n获取每次移动多少项",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:503"
+        },
+        {
+            "message": "Missing item type\n获取一次可展示的个数",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:508"
+        },
+        {
+            "message": "Missing item type\n获取每次移动间隔的毫秒数",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:553"
+        },
+        {
+            "message": "Missing item type\n获取每次移动持续的毫秒数",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:559"
+        },
+        {
+            "message": "Missing item type\n获取自动滚动的间隔",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:565"
+        },
+        {
+            "message": "Missing item type\n获取滑动导航的配置",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:575"
+        },
+        {
+            "message": "Missing item type\n获取滑动导航的配置",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:581"
+        },
+        {
+            "message": "Missing item type\n获取/设置当前索引位置",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:595"
+        },
+        {
+            "message": "Missing item type\n获取指定页的所有划动项",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:606"
+        },
+        {
+            "message": "Missing item type\n获取/设置 划动的 interval 对象",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:758"
+        },
+        {
+            "message": "Missing item type\n清除划动的 interval",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:767"
+        },
+        {
+            "message": "Missing item type\n获取/设置 自动划动的 timeout",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:773"
+        },
+        {
+            "message": "Missing item type\n清除自动划动的 timeout",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:782"
+        },
+        {
+            "message": "Missing item type\n获取/设置当前鼠标是否位于 slider 及其控件上面",
+            "line": " ../modules/JC.NSlider/0.2/NSlider.js:788"
         },
         {
             "message": "Missing item type\n显示表格内容",
@@ -22702,23 +23594,23 @@
         },
         {
             "message": "Missing item type\n星星动态变化方法",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:384"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:390"
         },
         {
-            "message": "Missing item type\n清除按钮动态变化方法",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:418"
+            "message": "Missing item type\n清除按钮hover方法",
+            "line": " ../modules/JC.Rate/0.1/Rate.js:425"
         },
         {
             "message": "Missing item type\n清除标记的分数为默认最小分数",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:433"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:440"
         },
         {
             "message": "Missing item type\n处理星星class更改的方法",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:443"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:450"
         },
         {
             "message": "Missing item type\n记录当前选中的分数",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:454"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:461"
         },
         {
             "message": "Missing item type\n初始化数据模型",
@@ -23887,6 +24779,14 @@
         {
             "message": "Missing item type\nUtility function for retrieving the text value of an array of DOM nodes",
             "line": " ../lib.js:6568"
+        },
+        {
+            "message": "Missing item type\nrequirejs config.js for JC Project",
+            "line": " ../nginx_config.js:7"
+        },
+        {
+            "message": "Missing item type\n取当前脚本标签的 src路径",
+            "line": " ../nginx_config.js:266"
         }
     ]
 }

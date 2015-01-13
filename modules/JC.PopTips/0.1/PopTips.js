@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.PopTips', [ 'JC.BaseMVC' ], function(){
 /**
  * PopTips 带箭头的气泡提示框功能
  * <p>

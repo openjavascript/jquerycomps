@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.AutoChecked', [ 'JC.common' ], function(){
     /**
      * 全选/反选
      * <p><b>require</b>: 

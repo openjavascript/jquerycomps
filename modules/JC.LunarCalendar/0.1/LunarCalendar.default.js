@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.LunarCalendar.default', [ 'JC.BaseMVC' ], function(){
     ///
     /// TODO: 添加事件响应机制
     ///

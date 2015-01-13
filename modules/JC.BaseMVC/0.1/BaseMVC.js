@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.BaseMVC', [ 'JC.common' ], function(){
     window.BaseMVC = JC.BaseMVC = BaseMVC;
     /**
      * MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)
