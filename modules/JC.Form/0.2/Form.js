@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.AutoSelect', 'JC.AutoChecked', 'JC.FormFillUrl' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Form', [ 'JC.AutoSelect', 'JC.AutoChecked', 'JC.FormFillUrl' ], function(){
     /**
      * 表单常用功能类 JC.Form
      * <h1 style="color: red;">这个组件将不再维护, 相关功能请使用抽取出来的对应组件</h1>

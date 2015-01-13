@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.Panel.default' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Panel.popup', [ 'JC.Panel.default' ], function(){
     /**
      * msgbox 提示 popup
      * <br /> 这个是不带蒙板 不带按钮的 popup 弹框

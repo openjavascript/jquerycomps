@@ -3,7 +3,7 @@
 //TODO: 完善 clean 接口
 //TODO: 添加 minImage 属性
 //TODO: 静态化 事件名 和 操作属性 Model.xxx
-;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.ImageCutter', [ 'JC.Drag' ], function(){
 /**
  * 组件用途简述
  *

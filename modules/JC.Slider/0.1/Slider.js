@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Slider', [ 'JC.common' ], function(){
     window.Slider = JC.Slider = Slider;
     /**
      * Slider 划动菜单类

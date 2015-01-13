@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Tab', [ 'JC.common' ], function(){
     window.Tab = JC.Tab = Tab;
     JC.f.addAutoInit && JC.f.addAutoInit( Tab );
     /**

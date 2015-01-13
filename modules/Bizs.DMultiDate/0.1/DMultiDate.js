@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Calendar' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.DMultiDate', [ 'JC.BaseMVC', 'JC.Calendar' ], function(){
     window.Bizs.DMultiDate = DMultiDate;
     /**
      * DMultiDate 复合日历业务逻辑

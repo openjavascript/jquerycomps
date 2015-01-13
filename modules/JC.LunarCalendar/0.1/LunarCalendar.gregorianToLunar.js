@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.LunarCalendar.default' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.LunarCalendar.gregorianToLunar', [ 'JC.LunarCalendar.default' ], function(){
     /**
      * 从公历日期获得农历日期
      * <br /> 返回的数据格式

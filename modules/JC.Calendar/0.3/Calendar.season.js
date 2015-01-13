@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.Calendar.date' ], function(){
+;(function(define, _win) { 'use strict'; define(  'JC.Calendar.season', [ 'JC.Calendar.date' ], function(){
     //
     /// SEASON CODE
     //

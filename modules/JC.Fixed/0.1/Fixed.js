@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Fixed', [ 'JC.common' ], function(){
 //TODO: 添加回调处理
 //TODO: 添加值运动 
 //TODO: 完善注释

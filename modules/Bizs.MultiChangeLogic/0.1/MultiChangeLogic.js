@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.MultiChangeLogic', [ 'JC.BaseMVC' ], function(){
 /**
  *
  * @namespace   window.Bizs

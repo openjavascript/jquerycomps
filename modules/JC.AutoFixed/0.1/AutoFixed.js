@@ -1,5 +1,5 @@
 //TODO: 兼容 不支持 css position = fixed 的浏览器
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.AutoFixed', [ 'JC.BaseMVC' ], function(){
 /**
  * 自动 Fixed ( JC.AutoFixed )
  *

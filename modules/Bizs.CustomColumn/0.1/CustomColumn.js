@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.Panel', 'JC.Valid', 'Bizs.FormLogic' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.CustomColumn', [ 'JC.Panel', 'JC.Valid', 'Bizs.FormLogic' ], function(){
  if( JC.use ){
      !JC.Panel && JC.use( 'JC.Panel' );
      !JC.Valid && JC.use( 'JC.Valid' );

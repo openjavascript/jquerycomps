@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.ActionLogic', [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
  * 应用场景

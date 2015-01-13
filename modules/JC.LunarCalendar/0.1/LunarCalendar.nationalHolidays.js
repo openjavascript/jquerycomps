@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.LunarCalendar.default' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.LunarCalendar.nationalHolidays', [ 'JC.LunarCalendar.default' ], function(){
     var o = JC.LunarCalendar.nationalHolidays = JC.LunarCalendar.nationalHolidays || {};
     //2013 元旦
     o['20130101'] = { 'isHoliday': true };

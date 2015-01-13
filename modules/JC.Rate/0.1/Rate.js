@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Rate', [ 'JC.BaseMVC' ], function(){
 /**
  *  JC.Rate 星形评分组件
  *

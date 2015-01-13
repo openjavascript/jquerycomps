@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.AjaxUpload' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'Bizs.MultiUpload', [ 'JC.AjaxUpload' ], function(){
 /**
  * 上传多个文件, 基于 JC.AjaxUpload
  *

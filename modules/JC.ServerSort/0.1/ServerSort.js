@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.ServerSort', [ 'JC.BaseMVC' ], function(){
 /**
  * 数据库全表排序逻辑
  *

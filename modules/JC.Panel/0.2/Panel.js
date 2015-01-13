@@ -1,5 +1,5 @@
 ;(function(define, _win) { 'use strict'; 
-    define( [ 'JC.Panel.default', 'JC.Panel.popup', 'JC.Dialog', 'JC.Dialog.popup' ], function(){
+    define( 'JC.Panel', [ 'JC.Panel.default', 'JC.Panel.popup', 'JC.Dialog', 'JC.Dialog.popup' ], function(){
     /**
      * 这个判断是为了向后兼容 JC 0.1
      * 使用 requirejs 的项目可以移除这段判断代码
