@@ -9598,7 +9598,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 })( window );
 ;
-;(function(define, _win) { 'use strict'; define( [], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.common', [], function(){
     window.JWIN = window.JWIN || $( window );
     window.JDOC = window.JDOC || $( document );
     /**
