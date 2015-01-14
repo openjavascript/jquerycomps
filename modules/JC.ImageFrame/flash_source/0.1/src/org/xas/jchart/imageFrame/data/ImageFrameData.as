@@ -36,7 +36,7 @@ package org.xas.jchart.imageFrame.data
 					zoomSpeed: .5
 				}
 				, series:[ {
-					imgPath : 'D:/data/h2_600x415.jpg'
+					imgPath : 'http://p3.qhimg.com/d/inn/c420544b/h2_600x415.jpg'
 				} ]
 				, toolbar:{
 					enable: true
@@ -46,11 +46,11 @@ package org.xas.jchart.imageFrame.data
 							, text: '还原图片'
 						}
 						, {
-							btnType: 'rotationLeft'
+							btnType: 'rotationRight'
 							, text: '顺时针旋转'
 						}
 						, {
-							btnType: 'rotationRight'
+							btnType: 'rotationLeft'
 							, text: '逆时针旋转'
 						}
 						, {

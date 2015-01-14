@@ -22,12 +22,12 @@ package
 	import org.xas.jchart.imageFrame.MainFacade;
 	import org.xas.jchart.imageFrame.data.ImageFrameData;
 	   
-	//[SWF(frameRate="30", width="790", height="230")]
+	//[SWF(frameRate="30", width="790", height="230")] 
 	//[SWF(frameRate="30", width="385", height="225")] 
 	//[SWF(frameRate="30", width="600", height="425")]
 	//[SWF(frameRate="30", width="590", height="360")] 
 	//[SWF(frameRate="30", width="1400", height="460")]   
-	[SWF(frameRate="30", width="800", height="600")]
+	[SWF(frameRate="30", width="800", height="600")] 
 	public class ImageFrame extends Sprite { 
 		private var _inited: Boolean = false;
 		private var _timer:Timer;
@@ -39,6 +39,7 @@ package
 		
 		public function ImageFrame(){
 			flash.system.Security.allowDomain("*");
+			flash.system.Security.allowInsecureDomain( "*" );
 			_ins = this;
 			
 			this.root.stage.scaleMode = StageScaleMode.NO_SCALE;
