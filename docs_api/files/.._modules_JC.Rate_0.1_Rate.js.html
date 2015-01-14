@@ -409,9 +409,10 @@
                 });
 
                 _children.on( &#x27;mouseleave&#x27;, function( e ) {
-                    var markScore = _model.getMarkScore(),
-                        markStarNum = _model.scoreToStarNum( markScore );
-                        _p.trigger( _Model.LIGHT_STAR, markStarNum );
+                    _p.trigger( 
+                        _Model.LIGHT_STAR
+                        , _model.scoreToStarNum( _model.getMarkScore() ) 
+                    );
                 } );
 
                 _children.on( &#x27;click&#x27;, function( e ) {
@@ -551,8 +552,7 @@
         */
         , getMarkScore:
             function() {
-                var score = $( this._selector ).children( &#x27;.&#x27; + _Model.RATE_HIDDEN ).val();
-                return parseInt( typeof score == &#x27;undefined&#x27; ? 0 : score );
+                return $( this._selector ).children( &#x27;.&#x27; + _Model.RATE_HIDDEN ).val() || 0;
             }
         /**
         * 根据分数计算对应星星的个数
@@ -561,12 +561,12 @@
         */
         , scoreToStarNum:
             function( score ) {
+
                 var _p = this,
                     maxScore = _p.getMaxScore(),
                     minScore = _p.getMinScore(),
-                    totalNum = _p.getTotalNum(),
-                    average = ( maxScore - minScore ) / totalNum,
-                    starNum =  ( score - minScore ) / average;
+                    starNum =  ( score - minScore ) * _p.getTotalNum() / ( maxScore - minScore );
+
                 if( _p.getHalfFlag() ) {
                     var tp = parseInt( starNum );
                     starNum = ( starNum - tp &gt; 0.5 ) ? tp + 1 : starNum;
