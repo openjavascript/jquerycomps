@@ -481,6 +481,31 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
     FChart.Model.UPDATE_CHART_DATA = &#x27;update_data&#x27;;
 
     /**
+     * flash swf 路径映射
+     * &lt;br /&gt;你还可以使用其他属性进行定义路径映射
+     *      1. window.FCHART_SWF_FILE_MAP
+     *      2. JC.FCHART_SWF_FILE_MAP
+     * @property    Model.SWF_FILE_MAP
+     * @type        {object}
+     * @default     null
+     * @static
+     * @example
+        requirejs( [ &#x27;JC.FChart&#x27; ], function( FChart ){
+            FChart[&#x27;Model&#x27;].SWF_FILE_MAP = {
+                &#x27;bar&#x27;: &#x27;http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/Histogram.swf&#x27;
+                , &#x27;vbar&#x27;: &#x27;http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/VHistogram.swf&#x27;
+                , &#x27;line&#x27;: &#x27;http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/CurveGram.swf&#x27;
+                , &#x27;stack&#x27;: &#x27;http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/Stack.swf&#x27;
+                , &#x27;mix&#x27;: &#x27;http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/MixChart.swf&#x27;
+
+                , &#x27;column&#x27;: &#x27;http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/ZHistogram.swf&#x27;
+                , &#x27;hcolumn&#x27;: &#x27;http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/VZHistogram.swf&#x27;
+            };
+        });
+     */
+    FChart.Model.SWF_FILE_MAP = null;
+
+    /**
      * flash swf 路径
      * &lt;br /&gt;{0} = JC.PATH
      * &lt;br /&gt;{1} = chart file name
@@ -552,6 +577,8 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
 
         , &#x27;ddount&#x27;: &#x27;DDount&#x27;
         , &#x27;ndount&#x27;: &#x27;NDount&#x27;
+
+        , &#x27;stack&#x27;: &#x27;Stack&#x27;
 
         , &#x27;rate&#x27;: &#x27;Rate&#x27;
     };
@@ -705,6 +732,43 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
                         , _p.type() 
                         , FChart.Model.VERSION 
                     );
+
+                _r = this.checkFileMap() || _r;
+
+
+                return _r;
+            }
+       
+        , checkFileMap:
+            function(){
+                var _r = &#x27;&#x27;;
+                if( window.FCHART_SWF_FILE_MAP ){
+                   this.chartType() in window.FCHART_SWF_FILE_MAP 
+                       &amp;&amp; ( _r = window.FCHART_SWF_FILE_MAP[ this.chartType() ] );
+
+                   this.type() in window.FCHART_SWF_FILE_MAP 
+                       &amp;&amp; ( _r = window.FCHART_SWF_FILE_MAP[ this.type() ] );
+                }
+
+
+                if( JC.FCHART_SWF_FILE_MAP ){
+                   this.chartType() in JC.FCHART_SWF_FILE_MAP 
+                       &amp;&amp; ( _r = JC.FCHART_SWF_FILE_MAP[ this.chartType() ] );
+
+                   this.type() in JC.FCHART_SWF_FILE_MAP 
+                       &amp;&amp; ( _r = JC.FCHART_SWF_FILE_MAP[ this.type() ] );
+                }
+
+                if( FChart.Model.SWF_FILE_MAP ){
+                   this.chartType() in FChart.Model.SWF_FILE_MAP 
+                       &amp;&amp; ( _r = FChart.Model.SWF_FILE_MAP[ this.chartType() ] );
+
+                   this.type() in FChart.Model.SWF_FILE_MAP 
+                       &amp;&amp; ( _r = FChart.Model.SWF_FILE_MAP[ this.type() ] );
+                }
+
+                _r &amp;&amp; ( _r = JC.f.printf( &#x27;{0}?v={1}&#x27;, _r, FChart.Model.VERSION ) );
+
                 return _r;
             }
     });
@@ -723,7 +787,7 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
                 if( !this._model.type() ) return;
                 var _p = this
                     , _path =  _p._model.path()
-                    , _fpath =  _path.replace( /[\/]+/g, &#x27;/&#x27; )
+                    , _fpath =  _path.replace( /([^\:]|)[\/]+/g, &#x27;$1/&#x27; )
                     , _element = $( &#x27;#&#x27; + _p._model.gid() )
                     , _dataStr = JSON.stringify( _data ) 
                     ; 

@@ -23,7 +23,7 @@
     </script>
 </head>    
 <body>
-    <h2>JC.FChart - pie chart 示例</h2>
+    <h2>JC.FChart - stack chart 示例</h2>
 
     <div class="js_jchartTest"></div>
 
@@ -32,49 +32,50 @@
         <dd>
             <div class="legend-update">
                 屏蔽 ： 
-                <label><input type="checkbox" data-index="0" checked="checked" />Firefox</label>
-                <label><input type="checkbox" data-index="1" checked="checked" />IE</label>
-                <label><input type="checkbox" data-index="2" checked="checked" />Chrome</label>
-                <label><input type="checkbox" data-index="3" checked="checked" />Safari</label>
-                <label><input type="checkbox" data-index="4" checked="checked" />Opera</label>
-                <label><input type="checkbox" data-index="5" checked="checked" />Others</label>
+                <label><input type="checkbox" data-index="0" checked="checked" />Temperature</label>
+                <label><input type="checkbox" data-index="1" checked="checked" />Rainfall</label>
             </div>
             <div class="js_compFChart"
-                chartScriptData="/script"
+                chartScriptData="|script"
                 chartWidth="600"
-                chartHeight="500"
+                chartHeight="400"
                 >
                 <script type="text/template">
                     {
                         chart: {
-                            type: 'pie' 
+                            type: 'stack' 
                         }, 
                         title: {
-                            text:'浏览器使用份额'
+                            text:'Chart Title'
                         },
                         subtitle: {
-                            text: 'for PC'
+                            text: 'sub title'
                         }, 
+                        xAxis: {
+                            categories: [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ]
+                        }, 
+                        yAxis: {
+                            title: {
+                                text: '(Vertical Title - 中文)'
+                            }
+                        },
                         series:[{
-                            name: 'Browser share',
-                            data: [
-                                ['Firefox',   45.0],
-                                ['IE',       26.8],
-                                {
-                                    name: 'Chrome',
-                                    y: 12.8,
-                                    selected: true
-                                },
-                                ['Safari',    8.5],
-                                ['Opera',     6.2],
-                                ['Others',   50]
-                            ]
-                        }]
-                        , legend: {
+                            name: 'Temperature'
+                            , data: [-50, 0, 3, -20, -20, 27, 28, 32, 30, 25, 15, -58]
+                            , style: { 'stroke': '#ff7100' } 
+                            , pointStyle: {}
+                        }, {
+                            name: 'Rainfall',
+                            data: [20, 21, 20, 100, 200, 210, 220, 100, 20, 10, 20, 10]
+                        }],
+                        credits: {
+                            enabled: true
+                            , text: 'fchart.openjavascript.org'
+                            , href: 'http://fchart.openjavascript.org/'
+                        },
+                        displayAllLabel: true,
+                        legend: {
                             enabled: false
-                        }
-                        , animation: {
-                            "enabled": true
                         }
                     }
                 </script>
