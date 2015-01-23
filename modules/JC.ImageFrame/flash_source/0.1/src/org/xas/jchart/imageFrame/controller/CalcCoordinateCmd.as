@@ -13,6 +13,8 @@ package org.xas.jchart.imageFrame.controller
 	import org.xas.jchart.common.data.test.MapData;
 	import org.xas.jchart.common.event.JChartEvent;
 	import org.xas.jchart.common.view.mediator.*;
+	import org.xas.jchart.common.view.mediator.BgMediator.BaseBgMediator;
+	import org.xas.jchart.common.view.mediator.GraphicBgMediator.BaseGraphicBgMediator;
 	import org.xas.jchart.imageFrame.view.mediator.GraphicMediator;
 	import org.xas.jchart.imageFrame.view.mediator.ToolbarMediator;
 	
@@ -38,7 +40,7 @@ package org.xas.jchart.imageFrame.controller
 			_c.maxX = _c.x + _config.stageWidth - 5;
 			_c.maxY = _c.y + _config.stageHeight - 5;
 			
-			facade.registerMediator( new BgMediator( ) );
+			facade.registerMediator( new BaseBgMediator( ) );
 			var _yPad:Number = _c.minY;
 			
 			if( _config.cd ){
@@ -99,8 +101,8 @@ package org.xas.jchart.imageFrame.controller
 			return facade.retrieveMediator( CreditMediator.name ) as CreditMediator;
 		}
 		
-		private function get pGraphicBgMediator():GraphicBgMediator{
-			return facade.retrieveMediator( GraphicBgMediator.name ) as GraphicBgMediator;
+		private function get pGraphicBgMediator():BaseGraphicBgMediator{
+			return facade.retrieveMediator( BaseGraphicBgMediator.name ) as BaseGraphicBgMediator;
 		}
 		
 		private function get mainMediator():MainMediator{
