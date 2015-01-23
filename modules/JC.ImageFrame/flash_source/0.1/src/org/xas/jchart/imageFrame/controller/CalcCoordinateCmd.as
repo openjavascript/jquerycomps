@@ -14,7 +14,10 @@ package org.xas.jchart.imageFrame.controller
 	import org.xas.jchart.common.event.JChartEvent;
 	import org.xas.jchart.common.view.mediator.*;
 	import org.xas.jchart.common.view.mediator.BgMediator.BaseBgMediator;
+	import org.xas.jchart.common.view.mediator.CreditMediator.BaseCreditMediator;
 	import org.xas.jchart.common.view.mediator.GraphicBgMediator.BaseGraphicBgMediator;
+	import org.xas.jchart.common.view.mediator.SubtitleMediator.BaseSubtitleMediator;
+	import org.xas.jchart.common.view.mediator.TitleMediator.BaseTitleMediator;
 	import org.xas.jchart.imageFrame.view.mediator.GraphicMediator;
 	import org.xas.jchart.imageFrame.view.mediator.ToolbarMediator;
 	
@@ -47,20 +50,20 @@ package org.xas.jchart.imageFrame.controller
 				
 				//标题
 				if( _config.cd.title && _config.cd.title.text ){
-					facade.registerMediator( new TitleMediator( _config.cd.title.text ) )
+					facade.registerMediator( new BaseTitleMediator( _config.cd.title.text ) )
 					_config.c.title = { x: _config.stageWidth / 2, y: _c.minY, item: pTitleMediator };
 					_config.c.minY += pTitleMediator.view.height;
 				}
 				
 				//副标题
 				if( _config.cd.subtitle && _config.cd.subtitle.text ){
-					facade.registerMediator( new SubtitleMediator( _config.cd.subtitle.text ) );
+					facade.registerMediator( new BaseSubtitleMediator( _config.cd.subtitle.text ) );
 					_config.c.subtitle = { x: _config.stageWidth / 2, y: _c.minY, item: pSubtitleMediator };
 					_config.c.minY += pSubtitleMediator.view.height + 5;
 				}
 				
 				if( _config.cd.credits && _config.cd.credits.enabled && ( _config.cd.credits.text || _config.cd.credits.href ) ){
-					facade.registerMediator( new CreditMediator( _config.cd.credits.text, _config.cd.credits.href ) );
+					facade.registerMediator( new BaseCreditMediator( _config.cd.credits.text, _config.cd.credits.href ) );
 					_config.c.credits = { x: _config.c.maxX, y: _config.c.maxY, item: pCreditMediator };
 					_config.c.maxY -= pCreditMediator.view.height;
 				}
@@ -89,16 +92,16 @@ package org.xas.jchart.imageFrame.controller
 			
 		}
 		
-		private function get pSubtitleMediator():SubtitleMediator{
-			return facade.retrieveMediator( SubtitleMediator.name ) as SubtitleMediator;
+		private function get pSubtitleMediator():BaseSubtitleMediator{
+			return facade.retrieveMediator( BaseSubtitleMediator.name ) as BaseSubtitleMediator;
 		}
 		
-		private function get pTitleMediator():TitleMediator{
-			return facade.retrieveMediator( TitleMediator.name ) as TitleMediator;
+		private function get pTitleMediator():BaseTitleMediator{
+			return facade.retrieveMediator( BaseTitleMediator.name ) as BaseTitleMediator;
 		}
 		
-		private function get pCreditMediator():CreditMediator{
-			return facade.retrieveMediator( CreditMediator.name ) as CreditMediator;
+		private function get pCreditMediator():BaseCreditMediator{
+			return facade.retrieveMediator( BaseCreditMediator.name ) as BaseCreditMediator;
 		}
 		
 		private function get pGraphicBgMediator():BaseGraphicBgMediator{
