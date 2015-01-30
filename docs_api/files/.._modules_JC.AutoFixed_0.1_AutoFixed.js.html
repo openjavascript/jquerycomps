@@ -298,6 +298,15 @@
  *      &lt;dd&gt;
  *          是否修正 html 锚点定位问题( 该问题通常出现在 position fixed top = 0 )
  *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;data-highlightTrigger = selector&lt;/dt&gt;
+ *      &lt;dd&gt;滚动时响应滚动条所在锚点的内容高亮显示&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;data-highlightAnchorLayout = selector, default = data-highlightTrigger&lt;/dt&gt;
+ *      &lt;dd&gt;指定计算位置为锚点的某个父容器 y + height&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;data-highlightClass = css class name, default = cur&lt;/dt&gt;
+ *      &lt;dd&gt;当前高亮的css class&lt;/dd&gt;
  *  &lt;/dl&gt; 
  *
  * @namespace   JC
@@ -345,7 +354,7 @@
                 if( _selector.hasClass( &#x27;js_compAutoFixed&#x27; )  ){
                     _r.push( new AutoFixed( _selector ) );
                 }else{
-                    _selector.find( &#x27;div.js_compAutoFixed&#x27; ).each( function(){
+                    _selector.find( &#x27;div.js_compAutoFixed, ul.js_compAutoFixed, dl.js_compAutoFixed&#x27; ).each( function(){
                         _r.push( new AutoFixed( this ) );
                     });
                 }
@@ -401,7 +410,7 @@
                 });
 
                 JWIN.on( &#x27;resize&#x27;, function( _evt ){
-                    var _cloneItem = _p._model.cloneItem(), _realWidth, _height, _ds, _winSize;
+                    var _cloneItem = _p._model.cloneItem(), _realWidth, _height, _ds, _winSize, _x, _css;
                     if( !_cloneItem ) {
                         _p._model.normalClass() 
                             &amp;&amp; _p.selector().removeClass( _p._model.normalClass() )
@@ -424,7 +433,14 @@
                             return;
                         }
                         _realWidth = _cloneItem.width();
-                        _p.selector().css( { &#x27;width&#x27;: _realWidth, &#x27;height&#x27;: _height } );
+                        _css = { &#x27;width&#x27;: _realWidth, &#x27;height&#x27;: _height, left: _cloneItem.offset().left };
+                        if( _ds.right != &#x27;auto&#x27; ){
+                            _css.right = _winSize.width - ( _cloneItem.offset().left + _cloneItem.width() );
+                        }else{
+                            _css.left = _cloneItem.offset().left;
+                        }
+
+                        _p.selector().css( _css );
                     }
                     _p._model.defaultStyle().width = _realWidth;
                 });
@@ -468,6 +484,7 @@
                         _css.right = _winSize.width - ( _cloneItem.offset().left + _cloneItem.width() );
                     }else{
                         _css.left = _left;
+                        _css.left = _cloneItem.offset().left;
                     }
                     _p.selector().css( _css );
 
@@ -522,6 +539,49 @@
                 _p.on( &#x27;UN_CLONE_ITEM&#x27;, function(){
                     _p._model.cloneItem( null );
                 });
+
+                if( _p._model.highlightTrigger() &amp;&amp; _p._model.highlightTrigger().length ){
+                    var _clickTs = JC.f.ts();
+                    _p._model.highlightTrigger().on( &#x27;click&#x27;, function(){
+                        _clickTs = JC.f.ts();
+                        _p.trigger( &#x27;setCurHighlight&#x27;, [ this ] );
+                    });
+
+                    _p.on( &#x27;setCurHighlight&#x27;, function( _evt, _src ){
+                        _src = $( _src );
+                        if( !( _src &amp;&amp; _src.length ) ) return;
+                        _p._model.lastHighlightItem() &amp;&amp; _p._model.lastHighlightItem().removeClass( _p._model.highlightClass() );
+                        _src.addClass( _p._model.highlightClass() );
+                        _p._model.lastHighlightItem( _src );
+
+                    });
+
+                    JWIN.on( &#x27;scroll&#x27;, function( _evt ){
+                        if( JC.f.ts() - _clickTs &lt; 200 ) return;
+                        var _st = JDOC.scrollTop(), _curItem;
+                        _p._model.highlightTrigger().each( function(){
+                            var _src = $( this )
+                                , _anchorName = _src.attr( &#x27;href&#x27; ).replace( /^\#/, &#x27;&#x27; )
+                                , _anchor
+                                , _anchorOffset
+                                ;
+                            if( !_anchorName ) return;
+                            _anchor = $( JC.f.printf( &#x27;a[name={0}]&#x27;, _anchorName ) ).first();
+                            if( !_anchor.length ) return;
+                            _anchorOffset = _p._model.anchorOffset( _anchor );
+
+                            if( _anchorOffset.top &gt; _st ){
+                                _curItem = _src;
+                                return false;
+                            }
+                        });
+                        if( _curItem ){
+                            //JC.log( &#x27;_curItem&#x27;, _curItem.attr( &#x27;name&#x27; ) );
+                            _p.trigger( &#x27;setCurHighlight&#x27;, [ _curItem ] );
+                        }
+                    });
+
+                }
             }
 
         , _inited:
@@ -542,6 +602,41 @@
             function(){
                 !this._gid &amp;&amp; ( this._gid = JC.f.gid() );
                 return this._gid;
+            }
+
+        , lastHighlightItem:
+            function( _setter ){
+                _setter &amp;&amp; ( this._lastHighlightItem = _setter );
+                return this._lastHighlightItem;
+            }
+
+        , highlightTrigger: 
+            function(){
+                return this.selectorProp( &#x27;data-highlightTrigger&#x27; );
+            }
+
+        , highlightClass:
+            function(){
+                return this.attrProp( &#x27;data-highlightClass&#x27; ) || &#x27;cur&#x27;;
+            }
+        , anchorOffset: 
+            function( _a ){
+                var _r = _a.offset(), _layout = this.highlightAnchorLayout( _a ), _tmp;
+
+                if( _layout &amp;&amp; _layout.length ){
+                    _r = _layout.offset();
+                    _r.top += _layout.height();
+                }
+
+                return _r;
+            }
+        , highlightAnchorLayout:
+            function( _a ){
+                var _r;
+                if( this.is( &#x27;[data-highlightAnchorLayout]&#x27; ) ){
+                     _r = JC.f.parentSelector( _a, this.attrProp( &#x27;data-highlightAnchorLayout&#x27; ) );
+                }
+                return _r;
             }
 
         , defaultStyle:
