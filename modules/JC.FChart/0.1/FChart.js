@@ -315,6 +315,7 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
         , 'ndount': 'NDount'
 
         , 'stack': 'Stack'
+        , 'hstack': 'HStack'
 
         , 'rate': 'Rate'
     };

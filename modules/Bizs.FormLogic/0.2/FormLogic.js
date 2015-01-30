@@ -411,7 +411,7 @@ window.parent
     FormLogic.processErrorCb;
     /**
      * 全局返回数据处理回调
-     * <br />所有提交结果都会调用
+     * <br />所有换回结果都会调用
      * <br />arg: _data[string of result]
      * @property    GLOBAL_AJAX_CHECK
      * @type        function  
@@ -419,6 +419,18 @@ window.parent
      * @static
      */
     FormLogic.GLOBAL_AJAX_CHECK;
+
+    /**
+     * 全局数据解析函数
+     * <br />所有换回结果都会调用
+     * <br />arg: _data[string of result]
+     * @property    GLOBAL_AJAX_CHECK
+     * @type        function  
+     * @default     null
+     * @return      Object
+     * @static
+     */
+    FormLogic.DATA_PARSE;
 
     FormLogic._currentIns;
 
@@ -552,6 +564,8 @@ window.parent
                     var _resetBtn = _p._model.selector().find('button[type=reset], input[type=reset]');
 
                     _p._model.formSubmitDisable() && _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
+
+                    _p._model.dataParse() && ( _data = _p._model.dataParse()( _data ) );
 
                     var _json, _fatalError, _resultType = _p._model.formAjaxResultType();
                     if( Object.prototype.toString.call( _data ) == '[object Object]' ){
@@ -1027,6 +1041,13 @@ window.parent
                 _r = _p.userFormAjaxDone() || _r;
                 return _r;
             }
+        , dataParse:
+            function(){
+                var _p = this, _r = FormLogic.DATA_PARSE;
+                _r = _p.windowProp( 'formDataParse' ) || _r; 
+                return _r;
+            }
+
         , userFormAjaxDone:
             function(){
                 var _p = this, _r

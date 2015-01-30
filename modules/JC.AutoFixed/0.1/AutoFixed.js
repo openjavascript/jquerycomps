@@ -34,6 +34,15 @@
  *      <dd>
  *          是否修正 html 锚点定位问题( 该问题通常出现在 position fixed top = 0 )
  *      </dd>
+ *
+ *      <dt>data-highlightTrigger = selector</dt>
+ *      <dd>滚动时响应滚动条所在锚点的内容高亮显示</dd>
+ *
+ *      <dt>data-highlightAnchorLayout = selector, default = data-highlightTrigger</dt>
+ *      <dd>指定计算位置为锚点的某个父容器 y + height</dd>
+ *
+ *      <dt>data-highlightClass = css class name, default = cur</dt>
+ *      <dd>当前高亮的css class</dd>
  *  </dl> 
  *
  * @namespace   JC
@@ -81,7 +90,7 @@
                 if( _selector.hasClass( 'js_compAutoFixed' )  ){
                     _r.push( new AutoFixed( _selector ) );
                 }else{
-                    _selector.find( 'div.js_compAutoFixed' ).each( function(){
+                    _selector.find( 'div.js_compAutoFixed, ul.js_compAutoFixed, dl.js_compAutoFixed' ).each( function(){
                         _r.push( new AutoFixed( this ) );
                     });
                 }
@@ -137,7 +146,7 @@
                 });
 
                 JWIN.on( 'resize', function( _evt ){
-                    var _cloneItem = _p._model.cloneItem(), _realWidth, _height, _ds, _winSize;
+                    var _cloneItem = _p._model.cloneItem(), _realWidth, _height, _ds, _winSize, _x, _css;
                     if( !_cloneItem ) {
                         _p._model.normalClass() 
                             && _p.selector().removeClass( _p._model.normalClass() )
@@ -160,7 +169,14 @@
                             return;
                         }
                         _realWidth = _cloneItem.width();
-                        _p.selector().css( { 'width': _realWidth, 'height': _height } );
+                        _css = { 'width': _realWidth, 'height': _height, left: _cloneItem.offset().left };
+                        if( _ds.right != 'auto' ){
+                            _css.right = _winSize.width - ( _cloneItem.offset().left + _cloneItem.width() );
+                        }else{
+                            _css.left = _cloneItem.offset().left;
+                        }
+
+                        _p.selector().css( _css );
                     }
                     _p._model.defaultStyle().width = _realWidth;
                 });
@@ -204,6 +220,7 @@
                         _css.right = _winSize.width - ( _cloneItem.offset().left + _cloneItem.width() );
                     }else{
                         _css.left = _left;
+                        _css.left = _cloneItem.offset().left;
                     }
                     _p.selector().css( _css );
 
@@ -258,6 +275,49 @@
                 _p.on( 'UN_CLONE_ITEM', function(){
                     _p._model.cloneItem( null );
                 });
+
+                if( _p._model.highlightTrigger() && _p._model.highlightTrigger().length ){
+                    var _clickTs = JC.f.ts();
+                    _p._model.highlightTrigger().on( 'click', function(){
+                        _clickTs = JC.f.ts();
+                        _p.trigger( 'setCurHighlight', [ this ] );
+                    });
+
+                    _p.on( 'setCurHighlight', function( _evt, _src ){
+                        _src = $( _src );
+                        if( !( _src && _src.length ) ) return;
+                        _p._model.lastHighlightItem() && _p._model.lastHighlightItem().removeClass( _p._model.highlightClass() );
+                        _src.addClass( _p._model.highlightClass() );
+                        _p._model.lastHighlightItem( _src );
+
+                    });
+
+                    JWIN.on( 'scroll', function( _evt ){
+                        if( JC.f.ts() - _clickTs < 200 ) return;
+                        var _st = JDOC.scrollTop(), _curItem;
+                        _p._model.highlightTrigger().each( function(){
+                            var _src = $( this )
+                                , _anchorName = _src.attr( 'href' ).replace( /^\#/, '' )
+                                , _anchor
+                                , _anchorOffset
+                                ;
+                            if( !_anchorName ) return;
+                            _anchor = $( JC.f.printf( 'a[name={0}]', _anchorName ) ).first();
+                            if( !_anchor.length ) return;
+                            _anchorOffset = _p._model.anchorOffset( _anchor );
+
+                            if( _anchorOffset.top > _st ){
+                                _curItem = _src;
+                                return false;
+                            }
+                        });
+                        if( _curItem ){
+                            //JC.log( '_curItem', _curItem.attr( 'name' ) );
+                            _p.trigger( 'setCurHighlight', [ _curItem ] );
+                        }
+                    });
+
+                }
             }
 
         , _inited:
@@ -278,6 +338,41 @@
             function(){
                 !this._gid && ( this._gid = JC.f.gid() );
                 return this._gid;
+            }
+
+        , lastHighlightItem:
+            function( _setter ){
+                _setter && ( this._lastHighlightItem = _setter );
+                return this._lastHighlightItem;
+            }
+
+        , highlightTrigger: 
+            function(){
+                return this.selectorProp( 'data-highlightTrigger' );
+            }
+
+        , highlightClass:
+            function(){
+                return this.attrProp( 'data-highlightClass' ) || 'cur';
+            }
+        , anchorOffset: 
+            function( _a ){
+                var _r = _a.offset(), _layout = this.highlightAnchorLayout( _a ), _tmp;
+
+                if( _layout && _layout.length ){
+                    _r = _layout.offset();
+                    _r.top += _layout.height();
+                }
+
+                return _r;
+            }
+        , highlightAnchorLayout:
+            function( _a ){
+                var _r;
+                if( this.is( '[data-highlightAnchorLayout]' ) ){
+                     _r = JC.f.parentSelector( _a, this.attrProp( 'data-highlightAnchorLayout' ) );
+                }
+                return _r;
             }
 
         , defaultStyle:
