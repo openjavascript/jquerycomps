@@ -1412,7 +1412,7 @@
             "namespace": "JC",
             "file": "../comps/AutoFixed/AutoFixed.js",
             "line": 3,
-            "description": "自动 Fixed ( JC.AutoFixed )\n\n <p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoFixed.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AutoFixed/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compAutoFixed\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>data-normalClass = css class name</dt>\n     <dd>正常状态下附加的 css<dd>\n\n     <dt>data-fixedClass = css class name</dt>\n     <dd>fixed 状态下附加的 css<dd>\n\n     <dt>data-cloneItemClass = css class name</dt>\n     <dd>fixed源 克隆对象附加的 css( 仅对 position = static 的克隆源生效 )<dd>\n\n     <dt>data-fixedTopPx = number, default = 0</dt>\n     <dd>\n         滚动到多少像素式开始执行 fixed\n     </dd>\n\n     <dt>data-fixAnchor = bool</dt>\n     <dd>\n         是否修正 html 锚点定位问题( 该问题通常出现在 position fixed top = 0 )\n     </dd>\n </dl>",
+            "description": "自动 Fixed ( JC.AutoFixed )\n\n <p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoFixed.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AutoFixed/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compAutoFixed\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>data-normalClass = css class name</dt>\n     <dd>正常状态下附加的 css<dd>\n\n     <dt>data-fixedClass = css class name</dt>\n     <dd>fixed 状态下附加的 css<dd>\n\n     <dt>data-cloneItemClass = css class name</dt>\n     <dd>fixed源 克隆对象附加的 css( 仅对 position = static 的克隆源生效 )<dd>\n\n     <dt>data-fixedTopPx = number, default = 0</dt>\n     <dd>\n         滚动到多少像素式开始执行 fixed\n     </dd>\n\n     <dt>data-fixAnchor = bool</dt>\n     <dd>\n         是否修正 html 锚点定位问题( 该问题通常出现在 position fixed top = 0 )\n     </dd>\n\n     <dt>data-highlightTrigger = selector</dt>\n     <dd>滚动时响应滚动条所在锚点的内容高亮显示</dd>\n\n     <dt>data-highlightAnchorLayout = selector, default = data-highlightTrigger</dt>\n     <dd>指定计算位置为锚点的某个父容器 y + height</dd>\n\n     <dt>data-highlightClass = css class name, default = cur</dt>\n     <dd>当前高亮的css class</dd>\n </dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -3671,7 +3671,7 @@
         {
             "file": "../bizs/FormLogic/FormLogic.js",
             "line": 412,
-            "description": "全局返回数据处理回调\n<br />所有提交结果都会调用\n<br />arg: _data[string of result]",
+            "description": "全局返回数据处理回调\n<br />所有换回结果都会调用\n<br />arg: _data[string of result]",
             "itemtype": "property",
             "name": "GLOBAL_AJAX_CHECK",
             "type": "function",
@@ -3682,35 +3682,50 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 441,
+            "line": 423,
+            "description": "全局数据解析函数\n<br />所有换回结果都会调用\n<br />arg: _data[string of result]",
+            "itemtype": "property",
+            "name": "GLOBAL_AJAX_CHECK",
+            "type": "function",
+            "default": "null",
+            "return": {
+                "description": "Object"
+            },
+            "static": 1,
+            "class": "window.Bizs.FormLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/FormLogic/FormLogic.js",
+            "line": 453,
             "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 539,
+            "line": 551,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 548,
+            "line": 560,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 596,
+            "line": 610,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 924,
+            "line": 938,
             "description": "这个回调的 this 指针是 window",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
@@ -5308,7 +5323,7 @@
         },
         {
             "file": "../comps/AutoFixed/AutoFixed.js",
-            "line": 68,
+            "line": 77,
             "description": "初始化可识别的 AutoFixed 实例",
             "itemtype": "method",
             "name": "init",
@@ -5329,7 +5344,7 @@
         },
         {
             "file": "../comps/AutoFixed/AutoFixed.js",
-            "line": 91,
+            "line": 100,
             "description": "初始化时是否添加延时",
             "itemtype": "property",
             "name": "INIT_DELAY",
@@ -8102,126 +8117,126 @@
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 336,
+            "line": 337,
             "description": "解析图表默认数据",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 358,
+            "line": 359,
             "description": "保存图表数据",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 369,
+            "line": 370,
             "description": "图表宽度",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 380,
+            "line": 381,
             "description": "图表高度",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 391,
+            "line": 392,
             "description": "图表宽度",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 402,
+            "line": 403,
             "description": "设置或保存图表的宽高",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 410,
+            "line": 411,
             "description": "图表画布",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 416,
+            "line": 417,
             "description": "画布圆角弧度",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 420,
+            "line": 421,
             "description": "清除图表数据",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 437,
+            "line": 438,
             "description": "清除图表状态",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 518,
+            "line": 519,
             "description": "渲染图表外观",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 558,
+            "line": 559,
             "description": "图表高度",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 562,
+            "line": 563,
             "description": "图表高度",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 566,
+            "line": 567,
             "description": "图表画布",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 570,
+            "line": 571,
             "description": "初始化的选择器",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 577,
+            "line": 578,
             "description": "清除图表数据",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 587,
+            "line": 588,
             "description": "清除图表状态",
             "class": "JC.FChart",
             "namespace": "JC"
         },
         {
             "file": "../comps/FChart/FChart.js",
-            "line": 593,
+            "line": 594,
             "description": "更新图表数据",
             "class": "JC.FChart",
             "namespace": "JC"
@@ -20538,23 +20553,23 @@
         },
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
-            "line": " ../bizs/FormLogic/FormLogic.js:441"
+            "line": " ../bizs/FormLogic/FormLogic.js:453"
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:539"
+            "line": " ../bizs/FormLogic/FormLogic.js:551"
         },
         {
             "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
-            "line": " ../bizs/FormLogic/FormLogic.js:548"
+            "line": " ../bizs/FormLogic/FormLogic.js:560"
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:596"
+            "line": " ../bizs/FormLogic/FormLogic.js:610"
         },
         {
             "message": "Missing item type\n这个回调的 this 指针是 window",
-            "line": " ../bizs/FormLogic/FormLogic.js:924"
+            "line": " ../bizs/FormLogic/FormLogic.js:938"
         },
         {
             "message": "Missing item type\n展现树需要的数据",
@@ -20822,75 +20837,75 @@
         },
         {
             "message": "Missing item type\n解析图表默认数据",
-            "line": " ../comps/FChart/FChart.js:336"
+            "line": " ../comps/FChart/FChart.js:337"
         },
         {
             "message": "Missing item type\n保存图表数据",
-            "line": " ../comps/FChart/FChart.js:358"
+            "line": " ../comps/FChart/FChart.js:359"
         },
         {
             "message": "Missing item type\n图表宽度",
-            "line": " ../comps/FChart/FChart.js:369"
+            "line": " ../comps/FChart/FChart.js:370"
         },
         {
             "message": "Missing item type\n图表高度",
-            "line": " ../comps/FChart/FChart.js:380"
+            "line": " ../comps/FChart/FChart.js:381"
         },
         {
             "message": "Missing item type\n图表宽度",
-            "line": " ../comps/FChart/FChart.js:391"
+            "line": " ../comps/FChart/FChart.js:392"
         },
         {
             "message": "Missing item type\n设置或保存图表的宽高",
-            "line": " ../comps/FChart/FChart.js:402"
+            "line": " ../comps/FChart/FChart.js:403"
         },
         {
             "message": "Missing item type\n图表画布",
-            "line": " ../comps/FChart/FChart.js:410"
+            "line": " ../comps/FChart/FChart.js:411"
         },
         {
             "message": "Missing item type\n画布圆角弧度",
-            "line": " ../comps/FChart/FChart.js:416"
+            "line": " ../comps/FChart/FChart.js:417"
         },
         {
             "message": "Missing item type\n清除图表数据",
-            "line": " ../comps/FChart/FChart.js:420"
+            "line": " ../comps/FChart/FChart.js:421"
         },
         {
             "message": "Missing item type\n清除图表状态",
-            "line": " ../comps/FChart/FChart.js:437"
+            "line": " ../comps/FChart/FChart.js:438"
         },
         {
             "message": "Missing item type\n渲染图表外观",
-            "line": " ../comps/FChart/FChart.js:518"
+            "line": " ../comps/FChart/FChart.js:519"
         },
         {
             "message": "Missing item type\n图表高度",
-            "line": " ../comps/FChart/FChart.js:558"
+            "line": " ../comps/FChart/FChart.js:559"
         },
         {
             "message": "Missing item type\n图表高度",
-            "line": " ../comps/FChart/FChart.js:562"
+            "line": " ../comps/FChart/FChart.js:563"
         },
         {
             "message": "Missing item type\n图表画布",
-            "line": " ../comps/FChart/FChart.js:566"
+            "line": " ../comps/FChart/FChart.js:567"
         },
         {
             "message": "Missing item type\n初始化的选择器",
-            "line": " ../comps/FChart/FChart.js:570"
+            "line": " ../comps/FChart/FChart.js:571"
         },
         {
             "message": "Missing item type\n清除图表数据",
-            "line": " ../comps/FChart/FChart.js:577"
+            "line": " ../comps/FChart/FChart.js:578"
         },
         {
             "message": "Missing item type\n清除图表状态",
-            "line": " ../comps/FChart/FChart.js:587"
+            "line": " ../comps/FChart/FChart.js:588"
         },
         {
             "message": "Missing item type\n更新图表数据",
-            "line": " ../comps/FChart/FChart.js:593"
+            "line": " ../comps/FChart/FChart.js:594"
         },
         {
             "message": "Missing item type\n支持 多对多 关系( 目前只支持 一对多 和 多对一 )",
