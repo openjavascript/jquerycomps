@@ -572,7 +572,7 @@
     function padChar( _str, _len, _char ){
         _len  = _len || 2; _char = _char || "0"; 
         _str += '';
-        if( _str.length >_str ) return _str;
+        if( _str.length >_len ) return _str;
         _str = new Array( _len + 1 ).join( _char ) + _str
         return _str.slice( _str.length - _len );
     }
