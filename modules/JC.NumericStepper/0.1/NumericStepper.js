@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.NumericStepper', [ 'JC.BaseMVC' ], function(){
 /**
  * 数值加减
  * <br />响应式初始化

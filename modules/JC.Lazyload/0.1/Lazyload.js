@@ -1,4 +1,4 @@
-;(function (define, _win) { 'use strict'; define(['JC.BaseMVC'], function () {
+;(function (define, _win) { 'use strict'; define( 'JC.Lazyload', ['JC.BaseMVC'], function () {
 //Todo:  支持tab的click事件加载
 //Todo: 替换图片src之前需要回调
 /**

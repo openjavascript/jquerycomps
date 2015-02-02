@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Tab', [ 'JC.BaseMVC' ], function(){
     window.Tab = JC.Tab = Tab;
     JC.f.addAutoInit && JC.f.addAutoInit( Tab );
     /**

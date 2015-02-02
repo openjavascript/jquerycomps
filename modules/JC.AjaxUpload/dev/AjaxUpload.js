@@ -1,6 +1,6 @@
 //TODO: 添加文件大小判断
 //TODO: 0.2 添加 flash 上传支持
-(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'SWFUpload' ], function(){
+(function(define, _win) { 'use strict'; define( 'JC.AjaxUpload', [ 'JC.BaseMVC', 'JC.Panel', 'SWFUpload' ], function(){
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 

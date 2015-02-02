@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Rate', [ 'JC.BaseMVC' ], function(){
 /**
  *  JC.Rate 星形评分组件
  *
@@ -115,7 +115,7 @@
                 if( _model.getReadOnly() ){ return; }
 
                 var halfFlag = _model.getHalfFlag();
-                if( halfFlag ){
+                if( halfFlag ) {
                     _children.on( 'mousemove', function( e ) {
                         var target = $( e.target );
                         if( target.hasClass( 'rate-score' ) ) {
@@ -145,9 +145,10 @@
                 });
 
                 _children.on( 'mouseleave', function( e ) {
-                    var markScore = _model.getMarkScore(),
-                        markStarNum = _model.scoreToStarNum( markScore );
-                        _p.trigger( _Model.LIGHT_STAR, markStarNum );
+                    _p.trigger( 
+                        _Model.LIGHT_STAR
+                        , _model.scoreToStarNum( _model.getMarkScore() ) 
+                    );
                 } );
 
                 _children.on( 'click', function( e ) {
@@ -253,7 +254,7 @@
             }
         , getMaxScore:
             function() {
-                return this.intProp( 'maxScore' ) || 5 ;
+                return this.intProp( 'maxScore' ) || this.getTotalNum();
             }
         , getMinScore:
             function() {
@@ -287,8 +288,7 @@
         */
         , getMarkScore:
             function() {
-                var score = $( this._selector ).children( '.' + _Model.RATE_HIDDEN ).val();
-                return parseInt( typeof score == 'undefined' ? 0 : score );
+                return $( this._selector ).children( '.' + _Model.RATE_HIDDEN ).val() || 0;
             }
         /**
         * 根据分数计算对应星星的个数
@@ -297,12 +297,12 @@
         */
         , scoreToStarNum:
             function( score ) {
+
                 var _p = this,
                     maxScore = _p.getMaxScore(),
                     minScore = _p.getMinScore(),
-                    totalNum = _p.getTotalNum(),
-                    average = ( maxScore - minScore ) / totalNum,
-                    starNum =  ( score - minScore ) / average;
+                    starNum =  ( score - minScore ) * _p.getTotalNum() / ( maxScore - minScore );
+
                 if( _p.getHalfFlag() ) {
                     var tp = parseInt( starNum );
                     starNum = ( starNum - tp > 0.5 ) ? tp + 1 : starNum;
@@ -356,11 +356,17 @@
 
                 _selector && ( _selector = $( _selector ) );
                 _selector.css( { 'cursor': 'pointer' , 'font-size': '12px' });
-                cancelFlag && _selector.prepend( $( imgHtml ).attr( 'class', 'rate-cancel cancel-off' ) );
+                cancelFlag && _selector.prepend( 
+                    $( imgHtml ).attr( { 
+                        'class' : 'rate-cancel cancel-off'
+                        , 'title' : '清除分数' 
+                    } )
+                );
+
                 var _tmp = [], _tmpStr, _tmpTitle;
 
                 for( var i = 0; i<totalNum; i++ ) {
-                    _tmpTitle = ''
+                    _tmpTitle = '';
                     if( i < hintsLen && hints[ i ] != '' ){
                         _tmpTitle = hints[ i ];
                     }
@@ -393,7 +399,8 @@
                 cancelFlag && _p.lightCancel(false);
                 if( !target || typeof target != 'number' || target < 0 ) {
                     _model.selector().children( '.rate-score' )
-                        .removeClass( 'star-on' ).addClass( 'star-off' );
+                        .removeClass( 'star-on star-half' )
+                        .addClass( 'star-off' );
                     return;
                 }
                 var star, lightStarNum = parseInt( target ),
@@ -416,7 +423,7 @@
                 }
             }
         /**
-        * 清除按钮动态变化方法
+        * 清除按钮hover方法
         * @param   {boolean}    flag
         */
         , lightCancel:

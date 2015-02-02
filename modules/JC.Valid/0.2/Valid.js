@@ -2,7 +2,7 @@
 //TODO: checkbox, radio 错误时, input 添加高亮显示
 //TODO: daterange 支持一对多关系
 //TODO: datavalid 添加自定义 ajax 数据 和 方法 
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Valid', [ 'JC.common' ], function(){
     /**
      * <b>表单验证</b> (单例模式)
      * <br />全局访问请使用 JC.Valid 或 Valid

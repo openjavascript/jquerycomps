@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips', 'JC.DragSelect' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.CRMSchedule', [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips', 'JC.DragSelect' ], function(){
 /**
  * CRM 排期日期选择组件
  *

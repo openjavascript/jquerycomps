@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.FrameUtil', [ 'JC.common' ], function(){
 /**
  *  <h2>iframe 自适应 与 数据交互 工具类</h2>
  *

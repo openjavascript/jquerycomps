@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'swfobject', 'plugins.json2', 'jquery.mousewheel'  ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.FChart', [ 'JC.BaseMVC', 'swfobject', 'plugins.json2', 'jquery.mousewheel'  ], function(){
 
 JC.use && !window.swfobject && JC.use( 'plugins.swfobject' );
 JC.use && !window.JSON && JC.use( 'plugins.jsons' );
@@ -217,6 +217,31 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
     FChart.Model.UPDATE_CHART_DATA = 'update_data';
 
     /**
+     * flash swf 路径映射
+     * <br />你还可以使用其他属性进行定义路径映射
+     *      1. window.FCHART_SWF_FILE_MAP
+     *      2. JC.FCHART_SWF_FILE_MAP
+     * @property    Model.SWF_FILE_MAP
+     * @type        {object}
+     * @default     null
+     * @static
+     * @example
+        requirejs( [ 'JC.FChart' ], function( FChart ){
+            FChart['Model'].SWF_FILE_MAP = {
+                'bar': 'http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/Histogram.swf'
+                , 'vbar': 'http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/VHistogram.swf'
+                , 'line': 'http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/CurveGram.swf'
+                , 'stack': 'http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/Stack.swf'
+                , 'mix': 'http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/MixChart.swf'
+
+                , 'column': 'http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/ZHistogram.swf'
+                , 'hcolumn': 'http://fchart.openjavascript.org/modules/JC.FChart/0.1/swf/VZHistogram.swf'
+            };
+        });
+     */
+    FChart.Model.SWF_FILE_MAP = null;
+
+    /**
      * flash swf 路径
      * <br />{0} = JC.PATH
      * <br />{1} = chart file name
@@ -264,11 +289,15 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
         , 'histogram': 'Histogram'
 
         , 'vbar': 'VHistogram'
+        , 'hbar': 'VHistogram'
         , 'vhistogram': 'VHistogram'
 
         , 'column': 'ZHistogram'
         , 'zbar': 'ZHistogram'
         , 'zhistogram': 'ZHistogram'
+
+
+        , 'hcolumn': 'VZHistogram'
 
         , 'mix': 'MixChart'
 
@@ -281,6 +310,12 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
         , 'piegraph': 'PieGraph'
 
         , 'dount': 'Dount'
+
+        , 'ddount': 'DDount'
+        , 'ndount': 'NDount'
+
+        , 'stack': 'Stack'
+        , 'hstack': 'HStack'
 
         , 'rate': 'Rate'
     };
@@ -434,6 +469,43 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
                         , _p.type() 
                         , FChart.Model.VERSION 
                     );
+
+                _r = this.checkFileMap() || _r;
+
+
+                return _r;
+            }
+       
+        , checkFileMap:
+            function(){
+                var _r = '';
+                if( window.FCHART_SWF_FILE_MAP ){
+                   this.chartType() in window.FCHART_SWF_FILE_MAP 
+                       && ( _r = window.FCHART_SWF_FILE_MAP[ this.chartType() ] );
+
+                   this.type() in window.FCHART_SWF_FILE_MAP 
+                       && ( _r = window.FCHART_SWF_FILE_MAP[ this.type() ] );
+                }
+
+
+                if( JC.FCHART_SWF_FILE_MAP ){
+                   this.chartType() in JC.FCHART_SWF_FILE_MAP 
+                       && ( _r = JC.FCHART_SWF_FILE_MAP[ this.chartType() ] );
+
+                   this.type() in JC.FCHART_SWF_FILE_MAP 
+                       && ( _r = JC.FCHART_SWF_FILE_MAP[ this.type() ] );
+                }
+
+                if( FChart.Model.SWF_FILE_MAP ){
+                   this.chartType() in FChart.Model.SWF_FILE_MAP 
+                       && ( _r = FChart.Model.SWF_FILE_MAP[ this.chartType() ] );
+
+                   this.type() in FChart.Model.SWF_FILE_MAP 
+                       && ( _r = FChart.Model.SWF_FILE_MAP[ this.type() ] );
+                }
+
+                _r && ( _r = JC.f.printf( '{0}?v={1}', _r, FChart.Model.VERSION ) );
+
                 return _r;
             }
     });
@@ -452,7 +524,7 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
                 if( !this._model.type() ) return;
                 var _p = this
                     , _path =  _p._model.path()
-                    , _fpath =  _path.replace( /[\/]+/g, '/' )
+                    , _fpath =  _path.replace( /([^\:]|)[\/]+/g, '$1/' )
                     , _element = $( '#' + _p._model.gid() )
                     , _dataStr = JSON.stringify( _data ) 
                     ; 

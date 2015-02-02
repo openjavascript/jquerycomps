@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.DragSelect', [ 'JC.BaseMVC' ], function(){
 /**
  * DOM标签拖动选择
  *

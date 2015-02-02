@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.CommonModify', [ 'JC.BaseMVC' ], function(){
 /**
  * <h2>Dom 通用 添加删除 逻辑</h2>
  * <br/>应用场景

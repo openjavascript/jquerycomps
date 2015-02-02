@@ -1,5 +1,5 @@
 //TODO: 完善 select 的相关判断逻辑
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.ChangeLogic', [ 'JC.BaseMVC' ], function(){
 /**
  * <h2>input[type=radio|type=checkbox], select change 事件的响应逻辑</h2>
  * <br/>应用场景</br>

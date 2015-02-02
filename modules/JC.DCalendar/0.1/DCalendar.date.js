@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( ['JC.BaseMVC'], function () {
+;(function(define, _win) { 'use strict'; define( 'JC.DCalendar.date', ['JC.BaseMVC'], function () {
 /**
  * 双日历日期选择组件
  * <p>

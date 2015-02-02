@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Suggest', [ 'JC.common' ], function(){
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类

@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.CompExampleMoreAdvance', [ 'JC.BaseMVC' ], function(){
 /**
  * 组件用途简述
  *

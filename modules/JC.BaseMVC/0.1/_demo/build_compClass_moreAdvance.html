@@ -15,7 +15,12 @@
         <script src="../../../../config.js"></script>
         <script>
             JC.debug = true;
-            requirejs( [ './data/CompExampleMoreAdvance.js' ], function( CompExampleMoreAdvance ){
+
+            requirejs.config({ 
+                paths: { 'JC.CompExampleMoreAdvance': 'modules/JC.BaseMVC/0.1/_demo/data/CompExampleMoreAdvance' }
+            });
+
+            requirejs( [ 'JC.CompExampleMoreAdvance' ], function( CompExampleMoreAdvance ){
             });
         </script>
         <base target="_blank" />

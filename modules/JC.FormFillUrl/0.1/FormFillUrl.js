@@ -1,5 +1,5 @@
 //TODO: 支持 或 忽略 多选下拉框
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.FormFillUrl', [ 'JC.BaseMVC' ], function(){
 /**
  * FormFillUrl 表单自动填充 URL 参数
  *

@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.InputSelect', [ 'JC.BaseMVC' ], function(){
 /**
  * 输入下拉框
  * 可以输入数据也可以通过点下拉箭头选择数据。

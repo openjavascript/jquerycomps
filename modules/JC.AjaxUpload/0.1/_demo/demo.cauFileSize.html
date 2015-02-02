@@ -74,7 +74,12 @@
                     return _params;
                 };
 
-            requirejs( ['../AjaxUpload.js', 'JC.Valid' ], function( AjaxUpload ){
+
+            requirejs.config({ 
+                paths: { 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload' }
+            });
+
+            requirejs( ['JC.AjaxUpload', 'JC.Valid' ], function( AjaxUpload ){
             });
 
             $(document).delegate( 'button.js_updateData', 'click', function( _evt ){

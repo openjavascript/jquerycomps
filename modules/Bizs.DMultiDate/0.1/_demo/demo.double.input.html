@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+            dl dd{ margin: 10px 0; }
+            .js_multidateBox{ display: none;}
+        </style>
+        <link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true; 
+
+            requirejs( [ 'JC.Tips', 'JC.Calendar', 'JC.Form', 'Bizs.DMultiDate', 'Bizs.FormLogic', 'JC.Valid' ]
+            , function( Tips, Calendar, JCForm, DMultiDate, FormLogic ) {
+                
+            }
+            );
+        </script>
+    </head>
+    <body>
+        <br /><br />
+        <form action='' method='get' class="js_autoFillUrlForm">
+            <br>
+            <br>
+            <br>
+            <br>
+            <dl>
+                <dt>JC.Calendar  multidate不是必填 示例</dt>
+                <dd>
+                <div class="js_autoDMultiDate" 
+                    mddayrange="31"
+                    mdweekrange="12"
+                    mdmonthrange="12"
+                    mdseasonrange="8"
+                    hiddendateiso="true"
+                    >
+                    <select name="dataspan" class="dataspan">
+                        <option value="day">日数据</option>
+                        <option value="week" selected="selected">周数据</option>
+                        <option value="month">月数据</option>
+                        <option value="season">季数据</option>
+                    </select>
+                    <input type="text" class="js_multidate" name="date1"
+                    multidate="date"
+                    datatype="daterange" 
+                    currentcanselect="true" 
+                    size="20" readonly=""
+                    errmsg="请正确的时间范围"
+                    emel="/em">
+                    <input type="text" class="js_multidate" name="date2"
+                    multidate="date"
+                    datatype="daterange" 
+                    currentcanselect="true" 
+                    size="20" readonly=""
+                    errmsg="请正确的时间范围"
+                    emel="/em">
+                    <em></em>
+                    <input type="hidden" name="startdate" class="js_startdate" value="" />
+                    <input type="hidden" name="enddate" class="js_enddate" value="" />
+                </div>
+
+                <button type="submit">submit</button>
+                <button type="reset" onclick="location.href='?'">reset</button>
+                </dd>
+            </dl>
+        </form>
+
+
+    </body>
+</html>
+

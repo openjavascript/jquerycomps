@@ -39,7 +39,11 @@
     <script>
         JC.debug = true;
 
-        requirejs( [ '../ExampleComponent.js' ], function(){
+        requirejs.config({ 
+            paths: { 'JC.ExampleComponent': 'modules/JC.ExampleComponent/0.1/ExampleComponent' }
+        });
+
+        requirejs( [ 'JC.ExampleComponent' ], function(){
         });
     </script>
 </head>    

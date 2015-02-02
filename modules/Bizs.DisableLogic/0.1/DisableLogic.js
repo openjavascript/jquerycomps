@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.DisableLogic', [ 'JC.BaseMVC' ], function(){
 /**
  * <h2 style="color:red">这个应用将不再维护, 请使用 <a href='window.Bizs.ChangeLogic.html' style="color:red">Bizs.ChangeLogic</a> </h2>
  * <h2>Form Control禁用启用逻辑</h2>

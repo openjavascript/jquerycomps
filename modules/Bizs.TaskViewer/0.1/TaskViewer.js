@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.TaskViewer', [ 'JC.BaseMVC' ], function(){
     /**
      * TaskViewer 日历任务展示面板
      *

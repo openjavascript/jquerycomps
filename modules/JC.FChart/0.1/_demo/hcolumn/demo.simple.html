@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        .defDl > dd{
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+    </style>
+    <script src="../../../../../lib.js"></script>
+    <script src="../../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'JC.FChart' ], function(){
+        });
+    </script>
+</head>    
+<body>
+    <h2>JC.FChart - hcolumn chart 示例</h2>
+
+    <div class="js_jchartTest"></div>
+
+    <dl class="defDl">
+        <dt></dt>
+        <dd>
+            <div class="js_compFChart"
+                chartScriptData="|script"
+                chartWidth="1200"
+                chartHeight="600"
+                >
+                <script type="text/template">
+                    {
+                        chart: {
+                            type: 'hcolumn' 
+                        }, 
+                        subtitle: {
+                        }, 
+                        xAxis: {
+                            categories: [ "iphone", "samsung", "huawei", "mi", "meizu" ]
+                        }, 
+                        yAxis: {
+                            format: '{0}'
+                        },
+                        tooltip: {                  
+                            "pointFormat": "{0}",
+                            "headerFormat": "{0}"
+                        },
+                        series:[{
+                            name: 'Phone'
+                            , data: [ 27000, 23600, 16200, 14100, 8400 ]
+                            , format: '{0}台 占{1}%'
+                        }, {
+                            name: 'Computer',
+                            data: [19170, 32060, 13600, 7000, 14800 ]
+                            , format: '{0}台 约占{1}%'
+                        }],
+                        credits: {
+                            enabled: false
+                            , text: 'fchart.openjavascript.org'
+                            , href: 'http://fchart.openjavascript.org/'
+                        },
+                        displayAllLabel: true,
+                        legend: {
+                            enabled: true
+                        },
+                        animation: {
+                            enabled: true
+                            , duration: .75
+                        }
+                    }
+                </script>
+            </div>
+        </dd>
+    </dl>
+</body>
+</html>
+
+

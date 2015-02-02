@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.AjaxTree', [ 'JC.BaseMVC', 'plugins.json2' ], function(){
     JC.use 
         && !window.JSON 
         && JC.use( 'plugins.json2' )

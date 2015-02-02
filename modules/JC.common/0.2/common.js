@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.Common', [], function(){
     window.JWIN = window.JWIN || $( window );
     window.JDOC = window.JDOC || $( document );
     /**

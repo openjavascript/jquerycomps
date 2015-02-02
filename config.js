@@ -62,6 +62,7 @@ requirejs.config( {
         , 'JC.FrameUtil': 'modules/JC.FrameUtil/0.1/FrameUtil'
 
         , 'JC.ImageCutter': 'modules/JC.ImageCutter/0.1/ImageCutter'
+        , 'JC.ImageFrame': 'modules/JC.ImageFrame/0.1/ImageFrame'
 
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
         , 'JC.LunarCalendar.default': 'modules/JC.LunarCalendar/0.1/LunarCalendar.default'
@@ -138,6 +139,7 @@ requirejs.config( {
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
         , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
         , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/0.1/InputSelect'
+        , 'Bizs.MultiChangeLogic': 'modules/Bizs.MultiChangeLogic/0.1/MultiChangeLogic'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
         , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'

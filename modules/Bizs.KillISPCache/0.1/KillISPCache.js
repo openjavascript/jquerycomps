@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( 'Bizs.KillISPCache', [ 'JC.BaseMVC' ], function(){
     /**
      * 应用场景
      * <br /><b>ISP 缓存问题 引起的用户串号</b>

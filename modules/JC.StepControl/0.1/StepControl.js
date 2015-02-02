@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Valid' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.StepControl', [ 'JC.BaseMVC', 'JC.Valid' ], function(){
 /**
  * 组件用途简述
  *
