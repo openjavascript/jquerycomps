@@ -12,6 +12,12 @@ requirejs.config( {
         'JC.common': 'modules/JC.common/0.3/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
+        , 'DEV.Bizs.DMultiDate':            'modules/Bizs.DMultiDate/dev/DMultiDate'
+        , 'DEV.Bizs.DMultiDate.default':    'modules/Bizs.DMultiDate/dev/DMultiDate.default'
+        , 'DEV.Bizs.DMultiDate.single':     'modules/Bizs.DMultiDate/dev/DMultiDate.single'
+        , 'DEV.Bizs.DMultiDate.double':     'modules/Bizs.DMultiDate/dev/DMultiDate.double'
+        , 'DEV.Bizs.DMultiDate.custom':     'modules/Bizs.DMultiDate/dev/DMultiDate.custom'
+
         , 'DEV.JC.Panel':           'modules/JC.Panel/dev/Panel'
         , 'DEV.JC.Panel.default':   'modules/JC.Panel/dev/Panel.default'
         , 'DEV.JC.Panel.popup':     'modules/JC.Panel/dev/Panel.popup'
@@ -128,7 +134,7 @@ requirejs.config( {
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
         , 'Bizs.MultiselectPanel': 'modules/Bizs.MultiselectPanel/0.1/MultiselectPanel'
         , 'Bizs.MultiSelectTree': 'modules/Bizs.MultiSelectTree/0.1/MultiSelectTree'
-        , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
+        //, 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
         , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
         , 'Bizs.InputSelect': 'modules/Bizs.InputSelect/0.1/InputSelect'
