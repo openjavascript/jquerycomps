@@ -79,7 +79,9 @@
         , noticeSize:
             function( _type ){
                 try{
+                
                 _type = FU.type( _type );
+            
                 if( ! FU.parent() ) return FU;
                     var _ext = { 'type': _type };
                     FU.parent().jEventHost.trigger( 'size', [ FU.info( _ext ) ] );
@@ -96,6 +98,7 @@
          */
         , autoNoticeSize:
             function( _ms, _type ){
+
                 typeof _ms == 'undefined' && ( _ms = FU.autoUpdateSizeMs );
 
                 $( FU ).data( 'FUI_noticeSize' ) && clearInterval( $( FU ).data( 'FUI_noticeSize' ) );
@@ -226,7 +229,6 @@
                     };
 
                 _ext && ( _r = JC.f.extendObject( _r, _ext ) );
-
                 return _r;
             }
         /**
@@ -237,7 +239,6 @@
         , parent:
             function(){
                 var _r;
-
                 if( window.parent 
                         && window.parent != window 
                         && window.parent.$ 
@@ -254,8 +255,8 @@
                         , 'id': window.parent.JC.FrameUtil.id()
                         , 'FrameUtil': window.parent.JC.FrameUtil
                     };
-                }
 
+                }
                 return _r;
             }
        /**
@@ -319,6 +320,7 @@
         , type:
             function( _type, _plus, _frame ){
                 if( !_type ){
+
                     _frame && ( _frame = $( _frame ) );
                     if( _frame && _frame.length ){
                         _type = JC.f.getUrlParam( _frame.attr( 'jsAction' ) || '',  'jsAction' );

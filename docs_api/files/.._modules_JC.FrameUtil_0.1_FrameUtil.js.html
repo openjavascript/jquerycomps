@@ -343,7 +343,9 @@
         , noticeSize:
             function( _type ){
                 try{
+                
                 _type = FU.type( _type );
+            
                 if( ! FU.parent() ) return FU;
                     var _ext = { &#x27;type&#x27;: _type };
                     FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.info( _ext ) ] );
@@ -360,6 +362,7 @@
          */
         , autoNoticeSize:
             function( _ms, _type ){
+
                 typeof _ms == &#x27;undefined&#x27; &amp;&amp; ( _ms = FU.autoUpdateSizeMs );
 
                 $( FU ).data( &#x27;FUI_noticeSize&#x27; ) &amp;&amp; clearInterval( $( FU ).data( &#x27;FUI_noticeSize&#x27; ) );
@@ -490,7 +493,6 @@
                     };
 
                 _ext &amp;&amp; ( _r = JC.f.extendObject( _r, _ext ) );
-
                 return _r;
             }
         /**
@@ -501,7 +503,6 @@
         , parent:
             function(){
                 var _r;
-
                 if( window.parent 
                         &amp;&amp; window.parent != window 
                         &amp;&amp; window.parent.$ 
@@ -518,8 +519,8 @@
                         , &#x27;id&#x27;: window.parent.JC.FrameUtil.id()
                         , &#x27;FrameUtil&#x27;: window.parent.JC.FrameUtil
                     };
-                }
 
+                }
                 return _r;
             }
        /**
@@ -583,6 +584,7 @@
         , type:
             function( _type, _plus, _frame ){
                 if( !_type ){
+
                     _frame &amp;&amp; ( _frame = $( _frame ) );
                     if( _frame &amp;&amp; _frame.length ){
                         _type = JC.f.getUrlParam( _frame.attr( &#x27;jsAction&#x27; ) || &#x27;&#x27;,  &#x27;jsAction&#x27; );
