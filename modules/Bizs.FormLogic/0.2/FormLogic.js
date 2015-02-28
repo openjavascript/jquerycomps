@@ -424,7 +424,7 @@ window.parent
      * 全局数据解析函数
      * <br />所有换回结果都会调用
      * <br />arg: _data[string of result]
-     * @property    GLOBAL_AJAX_CHECK
+     * @property    DATA_PARSE
      * @type        function  
      * @default     null
      * @return      Object
