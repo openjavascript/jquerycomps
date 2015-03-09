@@ -101,6 +101,14 @@ var _configMap = {
         , '?'
     ].join('')
 
+    , 'PluginsAlg': [
+        , '??'
+        , 'plugins/Base64/0.1/Base64.js'
+        , ',plugins/md5/0.1/md5.js'
+        , ',plugins/Aes/0.1/Aes.js' 
+        , '?'
+    ].join('')
+
     , 'tpl': [
         , '??'
         , '?'
@@ -245,9 +253,9 @@ requirejs.config( {
         , 'plugins.JSON2': 'modules/JSON/2/JSON'
         , 'plugins.json2': 'modules/JSON/2/JSON'
 
-        , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
-        , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
-        , 'plugins.md5': 'plugins/md5/0.1/md5'
+        , 'plugins.Aes': _configMap[ 'PluginsAlg' ]
+        , 'plugins.Base64': _configMap[ 'PluginsAlg' ]
+        , 'plugins.md5': _configMap[ 'PluginsAlg' ]
 
         , 'plugins.requirejs.domReady': 'plugins/requirejs.domReady/2.0.1/domReady'
 
