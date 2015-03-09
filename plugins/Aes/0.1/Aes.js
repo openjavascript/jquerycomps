@@ -460,5 +460,6 @@
       return strUni;
     }
 
+    typeof define=="function"&&define.amd && define( 'plugins.Aes', function(){return Aes});
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 }());
