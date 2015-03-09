@@ -280,26 +280,35 @@
                     var _clickTs = JC.f.ts();
                     _p._model.highlightTrigger().on( 'click', function(){
                         _clickTs = JC.f.ts();
-                        _p.trigger( 'setCurHighlight', [ this ] );
+                        var _eles = _p._model.findTargetAnchorAndLayout( $( this )) || {};
+                        _p.trigger( 'setCurHighlight', [ this, _eles.layout ] );
                     });
 
-                    _p.on( 'setCurHighlight', function( _evt, _src ){
+                    _p.on( 'setCurHighlight', function( _evt, _src, _layout ){
                         _src = $( _src );
                         if( !( _src && _src.length ) ) return;
                         _p._model.lastHighlightItem() && _p._model.lastHighlightItem().removeClass( _p._model.highlightClass() );
                         _src.addClass( _p._model.highlightClass() );
                         _p._model.lastHighlightItem( _src );
 
+                        if( _layout && _layout.length ){
+                            _p._model.lastHighlightLayout() && _p._model.lastHighlightLayout().removeClass( _p._model.highlightLayoutClass() );
+                            _layout.addClass( _p._model.highlightLayoutClass() );
+                            _p._model.lastHighlightLayout( _layout );
+                        }
+
                     });
 
                     JWIN.on( 'scroll', function( _evt ){
                         if( JC.f.ts() - _clickTs < 200 ) return;
-                        var _st = JDOC.scrollTop(), _curItem;
+                        var _st = JDOC.scrollTop()
+                            , _curItem
+                            , _anchorOffset
+                            ;
                         _p._model.highlightTrigger().each( function(){
                             var _src = $( this )
                                 , _anchorName = _src.attr( 'href' ).replace( /^\#/, '' )
                                 , _anchor
-                                , _anchorOffset
                                 ;
                             if( !_anchorName ) return;
                             _anchor = $( JC.f.printf( 'a[name={0}]', _anchorName ) ).first();
@@ -311,9 +320,10 @@
                                 return false;
                             }
                         });
+                        _anchorOffset = _anchorOffset || {};
                         if( _curItem ){
                             //JC.log( '_curItem', _curItem.attr( 'name' ) );
-                            _p.trigger( 'setCurHighlight', [ _curItem ] );
+                            _p.trigger( 'setCurHighlight', [ _curItem, _anchorOffset.layout ] );
                         }
                     });
 
@@ -334,10 +344,37 @@
                 //JC.log( 'AutoFixed.Model.init:', new Date().getTime() );
             }
 
+        , findTargetAnchorAndLayout:
+            function( _trigger ){
+              var _src = $( _trigger )
+                    , _anchorName = _src.attr( 'href' ).replace( /^\#/, '' )
+                    , _anchor
+                    , _anchorOffset
+                    , _r = null
+                    ;
+                if( !_anchorName ) return _r;
+                _anchor = $( JC.f.printf( 'a[name={0}]', _anchorName ) ).first();
+                if( !_anchor.length ) return _r;
+                _r = { trigger: _src, target: _anchor, layout: this.highlightAnchorLayout( _anchor ) };
+
+                return _r;
+            }
+
         , gid: 
             function(){
                 !this._gid && ( this._gid = JC.f.gid() );
                 return this._gid;
+            }
+
+        , lastHighlightLayout:
+            function( _setter ){
+                _setter && ( this._lastHighlightLayout = _setter );
+                return this._lastHighlightLayout;
+            }
+
+        , highlightLayoutClass:
+            function(){
+                return this.attrProp( 'data-highlightLayoutClass' ) || this.highlightClass() || 'cur';
             }
 
         , lastHighlightItem:
@@ -346,15 +383,16 @@
                 return this._lastHighlightItem;
             }
 
+        , highlightClass:
+            function(){
+                return this.attrProp( 'data-highlightClass' ) || 'cur';
+            }
+
         , highlightTrigger: 
             function(){
                 return this.selectorProp( 'data-highlightTrigger' );
             }
 
-        , highlightClass:
-            function(){
-                return this.attrProp( 'data-highlightClass' ) || 'cur';
-            }
         , anchorOffset: 
             function( _a ){
                 var _r = _a.offset(), _layout = this.highlightAnchorLayout( _a ), _tmp;
@@ -363,6 +401,7 @@
                     _r = _layout.offset();
                     _r.top += _layout.height();
                 }
+                _r.layout = _layout;
 
                 return _r;
             }
