@@ -20,6 +20,7 @@
      */
     var Dialog = window.Dialog = JC.Dialog = 
         function( _selector, _headers, _bodys, _footers ){
+
             if( _logic.timeout ) clearTimeout( _logic.timeout );
             var _ins;
 
