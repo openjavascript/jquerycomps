@@ -137,6 +137,11 @@
         typeof _headers == 'string' && ( _headers = _headers.trim().replace( /[\r\n]+/g, '') ); 
         typeof _bodys == 'string' && ( _bodys = _bodys.trim().replace( /[\r\n]+/g, '') ); 
 
+        if( typeof _selector == 'string' ){
+            /<html>/i.test( _selector ) && ( _selector = '<div>error with html tag</div>' );
+        }
+
+
         if( Panel.getInstance( _selector ) ) return Panel.getInstance( _selector );
         /**
          * 存放数据的model层, see <a href='JC.Panel.Model.html'>Panel.Model</a>
