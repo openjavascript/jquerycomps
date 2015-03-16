@@ -137,6 +137,11 @@
         typeof _headers == 'string' && ( _headers = _headers.trim().replace( /[\r\n]+/g, '') ); 
         typeof _bodys == 'string' && ( _bodys = _bodys.trim().replace( /[\r\n]+/g, '') ); 
 
+        if( typeof _selector == 'string' && /<html>/i.test( _selector )  ){
+            _headers = '<div style="color:red;">' + JC.f.filterXSS( _selector ) + '</div>';
+            _selector = '错误：内容不能包含 HTML 和 BODY 标签';
+        }
+
         if( Panel.getInstance( _selector ) ) return Panel.getInstance( _selector );
         /**
          * 存放数据的model层, see <a href='JC.Panel.Model.html'>Panel.Model</a>

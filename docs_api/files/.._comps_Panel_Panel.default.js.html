@@ -391,6 +391,11 @@
         typeof _headers == &#x27;string&#x27; &amp;&amp; ( _headers = _headers.trim().replace( /[\r\n]+/g, &#x27;&#x27;) ); 
         typeof _bodys == &#x27;string&#x27; &amp;&amp; ( _bodys = _bodys.trim().replace( /[\r\n]+/g, &#x27;&#x27;) ); 
 
+        if( typeof _selector == &#x27;string&#x27; &amp;&amp; /&lt;html&gt;/i.test( _selector )  ){
+            _headers = &#x27;&lt;div style=&quot;color:red;&quot;&gt;&#x27; + JC.f.filterXSS( _selector ) + &#x27;&lt;/div&gt;&#x27;;
+            _selector = &#x27;错误：内容不能包含 HTML 和 BODY 标签&#x27;;
+        }
+
         if( Panel.getInstance( _selector ) ) return Panel.getInstance( _selector );
         /**
          * 存放数据的model层, see &lt;a href=&#x27;JC.Panel.Model.html&#x27;&gt;Panel.Model&lt;/a&gt;
