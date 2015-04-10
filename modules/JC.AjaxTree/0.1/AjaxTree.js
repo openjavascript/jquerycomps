@@ -311,6 +311,52 @@
                 this._view.close( _nodeId );
                 return this;
             }
+
+        /**
+         * 新增节点方法
+         * @method  add
+         * @param   {string}    _parentId    父节点ID
+         * @param   {object}    _data        新增的数据对象（ 对象会通过ajax请求传递，ajax的url读取dom属性“data-addUrl” ）
+         * @param   {boolean}   _needFresh   是否刷新父节点
+         * @param   {function}   _cb         添加请求完毕后的回调函数，请求结果为第一个参数
+         */
+        , add:
+            function( _parentId, _data, _needFresh, _cb ) {
+
+                if( !_parentId ) {
+                    return;
+                }
+
+                var _p = this;
+
+                $.ajax( {
+                    type: "POST"
+                    , url: this._model.addUrl() || ''
+                    , data: {
+                        parentId: _parentId
+                        , data: _data
+                    }
+                    , dataType: "json"
+                    , success: function( _data ) {
+                        if( _data ) {
+                            _p._view.refreshNode( _parentId );
+
+                            _cb && _cb( _data );
+                        }
+                    }
+                } );
+            }
+
+        /**
+         * 刷新某个节点
+         * @method  refreshNode
+         * @param   {string}    _nodeId    节点ID
+         */
+        , refreshNode:
+            function( _nodeId ) {
+                this._view.refreshNode( _nodeId );
+            }
+
         /**
          * 获取树的 ID 前缀
          * <br />每个树都会有自己的随机ID前缀
@@ -494,6 +540,7 @@
             function( _id, _cb ){
                 _id = _id || '';
                 var _url = JC.f.printf( this.data().url, _id );
+
                 $.ajax({
                     type: "GET",
                     url: _url,
@@ -514,6 +561,11 @@
             function(){
                 return this.attrProp( 'data-rootId' ) || '';
             }
+
+        , addUrl:
+            function(){
+                return this.attrProp( 'data-addUrl' ) || '';
+            }
     });
 
     JC.f.extendObject( AjaxTree.View.prototype, {
@@ -532,12 +584,13 @@
          */
         , _process:
             function( _data, _parentNode ){
+
                 var _p = this;
                 if( !( _data && _data.length ) ) return;
                 for( var i = 0, j = _data.length, _item, _isLast; i < j; i++ ){
                     _item = _data[ i ];
                     _isLast = i === j - 1;
-                    
+
                     if( 'folder' == _item[ _p._model.typeIndex() ] ){
                         this._initFolder( _parentNode, _item, _isLast );
                     }else{
@@ -805,6 +858,26 @@
                     });
                 }
             }
+
+        /**
+         * 更新树的具体节点
+         * @param   {string}    _nodeId
+         */
+        , refreshNode: function( _nodeId ) {
+            var _p = this
+                , _model = _p._model
+                , _node = _model.getNodeById( _nodeId )
+                , _nodeUl = _node.siblings('ul')
+                , _pntLi = _node.parent('li');
+
+            _node.closest( 'li' ).children('ul').children().remove();
+
+            _p._model.ajaxData( _nodeId, function( _data ){
+                _pntLi.addClass('folder_open').removeClass('folder_closed');
+                _p.hideDataLoading( _node );
+                _p._process( _data.data, _nodeUl.show() );
+            });
+        }
 
         , showDataLoading: function( _node ){
             _node.siblings('span').removeClass('folder_img_closed').addClass('folder_img_loading');
