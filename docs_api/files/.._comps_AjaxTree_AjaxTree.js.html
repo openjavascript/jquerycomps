@@ -252,7 +252,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;plugins.json2&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( &#x27;JC.AjaxTree&#x27;, [ &#x27;JC.BaseMVC&#x27;, &#x27;plugins.json2&#x27; ], function(){
     JC.use 
         &amp;&amp; !window.JSON 
         &amp;&amp; JC.use( &#x27;plugins.json2&#x27; )
@@ -794,6 +794,7 @@
             function( _id, _cb ){
                 _id = _id || &#x27;&#x27;;
                 var _url = JC.f.printf( this.data().url, _id );
+
                 $.ajax({
                     type: &quot;GET&quot;,
                     url: _url,
@@ -837,12 +838,13 @@
          */
         , _process:
             function( _data, _parentNode ){
+
                 var _p = this;
                 if( !( _data &amp;&amp; _data.length ) ) return;
                 for( var i = 0, j = _data.length, _item, _isLast; i &lt; j; i++ ){
                     _item = _data[ i ];
                     _isLast = i === j - 1;
-                    
+
                     if( &#x27;folder&#x27; == _item[ _p._model.typeIndex() ] ){
                         this._initFolder( _parentNode, _item, _isLast );
                     }else{

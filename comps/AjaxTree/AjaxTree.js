@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
+;(function(define, _win) { 'use strict'; define( 'JC.AjaxTree', [ 'JC.BaseMVC', 'plugins.json2' ], function(){
     JC.use 
         && !window.JSON 
         && JC.use( 'plugins.json2' )
@@ -540,6 +540,7 @@
             function( _id, _cb ){
                 _id = _id || '';
                 var _url = JC.f.printf( this.data().url, _id );
+
                 $.ajax({
                     type: "GET",
                     url: _url,
@@ -583,12 +584,13 @@
          */
         , _process:
             function( _data, _parentNode ){
+
                 var _p = this;
                 if( !( _data && _data.length ) ) return;
                 for( var i = 0, j = _data.length, _item, _isLast; i < j; i++ ){
                     _item = _data[ i ];
                     _isLast = i === j - 1;
-                    
+
                     if( 'folder' == _item[ _p._model.typeIndex() ] ){
                         this._initFolder( _parentNode, _item, _isLast );
                     }else{
