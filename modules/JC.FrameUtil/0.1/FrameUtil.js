@@ -79,8 +79,10 @@
         , noticeSize:
             function( _type ){
                 try{
-                    _type = FU.type( _type );
-                    if( ! FU.parent() ) return FU;
+                
+                _type = FU.type( _type );
+            
+                if( ! FU.parent() ) return FU;
                     var _ext = { 'type': _type };
                     FU.parent().jEventHost.trigger( 'size', [ FU.info( _ext ) ] );
                 }catch(ex){
@@ -124,6 +126,26 @@
                 $( FU.eventHost ).on( _name, _cb );
                 return FU;
             }
+
+        /**
+         * 订阅 父级frame 的事件
+         * <br />目前有以下事件:
+         * <br />close: 关闭
+         * <br />size: 更新大小
+         * <br />data: json 数据
+         * @method  subscribeParentEvent
+         * @param   {string}    _name
+         * @param   {function}  _cb
+         */
+        , subscribeParentEvent:
+            function( _name, _cb ){
+                if( !_name ) return FU;
+
+                FU.parent() && 
+                    FU.parent().jEventHost.on( _name, _cb );
+                return FU;
+            }
+
         /**
          * 通知父级有数据交互
          * @method  noticeData
@@ -185,9 +207,9 @@
         , noticeChildData:
             function( _params, _type ){
                 if( !(_params) ) return FU;
-                _params.type = FU.type( _type ) || _params.type;
+                // _params.type = FU.type( _type ) || _params.type;
 
-                FU.info().jEventHost.trigger( 'childData', FU.info( _params ) );
+                FU.info().jEventHost.trigger( _type ? _type : 'childData', FU.info( _params ) );
                 return FU;
             }
         /**
