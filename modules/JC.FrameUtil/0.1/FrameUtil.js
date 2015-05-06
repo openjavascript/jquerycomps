@@ -79,10 +79,8 @@
         , noticeSize:
             function( _type ){
                 try{
-                
-                _type = FU.type( _type );
-            
-                if( ! FU.parent() ) return FU;
+                    _type = FU.type( _type );
+                    if( ! FU.parent() ) return FU;
                     var _ext = { 'type': _type };
                     FU.parent().jEventHost.trigger( 'size', [ FU.info( _ext ) ] );
                 }catch(ex){
