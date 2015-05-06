@@ -801,8 +801,7 @@
                         ( 
                             this._model.width() - 
                             Math.floor( this._model.width() / this._model.itemwidth() ) * this._model.itemwidth()
-                        )
-                        / ( this._model.totalpage() - 1 );
+                        ) / ( this._model.totalpage() - 1 );
         this._itemspace = parseInt( this._itemspace );
 
         this._init();
@@ -873,10 +872,12 @@
                 }
 
                 _oldpointer === (_p._model.totalpage() - 1 ) 
+                    && _p._model.totalpage() > 2
                     && _newpointer === 0 
                     && ( _begin = this._model.width() + this._itemspace, _isPlus = false );
 
                 _oldpointer === 0 
+                    && _p._model.totalpage() > 2
                     && _newpointer === (_p._model.totalpage() - 1 ) 
                     && ( _begin = -( this._model.width() + this._itemspace ), _isPlus = true );
 

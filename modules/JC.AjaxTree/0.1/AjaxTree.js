@@ -312,6 +312,14 @@
                 return this;
             }
 
+        /**
+         * 新增节点方法
+         * @method  add
+         * @param   {string}    _parentId    父节点ID
+         * @param   {object}    _data        新增的数据对象（ 对象会通过ajax请求传递，ajax的url读取dom属性“data-addUrl” ）
+         * @param   {boolean}   _needFresh   是否刷新父节点
+         * @param   {function}   _cb         添加请求完毕后的回调函数，请求结果为第一个参数
+         */
         , add:
             function( _parentId, _data, _needFresh, _cb ) {
 
@@ -330,9 +338,6 @@
                     }
                     , dataType: "json"
                     , success: function( _data ) {
-
-                        console.log( _data );
-
                         if( _data ) {
                             _p._view.refreshNode( _parentId );
 
@@ -342,6 +347,11 @@
                 } );
             }
 
+        /**
+         * 刷新某个节点
+         * @method  refreshNode
+         * @param   {string}    _nodeId    节点ID
+         */
         , refreshNode:
             function( _nodeId ) {
                 this._view.refreshNode( _nodeId );
@@ -849,6 +859,10 @@
                 }
             }
 
+        /**
+         * 更新树的具体节点
+         * @param   {string}    _nodeId
+         */
         , refreshNode: function( _nodeId ) {
             var _p = this
                 , _model = _p._model
