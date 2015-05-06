@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        * {
+        }
+        html {
+            overflow-y: hidden;
+            height: 100px;
+        }
+        legend {
+            margin: 10px 0;
+        }
+
+    </style>
+
+</head>    
+<body>
+    <p></p>
+
+    <script src="../../../../../lib.js"></script>
+    <script src="../../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'Bizs.CommonModify', 'JC.FrameUtil' ], function(){
+            JC.FrameUtil.autoNoticeSize();
+
+            JC.FrameUtil.subscribeParentEvent( 'childData', function( _evt, _params ) {
+
+                if( _params && _params.data ) {
+                    $('p').html( _params.data );
+                }
+
+            } );
+
+            JC.FrameUtil.subscribeParentEvent( 'event2', function( _evt, _params ) {
+
+                if( _params && _params.data ) {
+                    $('p').html( _params.data );
+                }
+
+            } );
+
+            JC.FrameUtil.subscribeParentEvent( 'event3', function( _evt, _params ) {
+
+                if( _params && _params.data ) {
+                    $('p').html( _params.data );
+                }
+
+            } );
+        });
+
+    </script>
+</body>
+</html>
+
+
