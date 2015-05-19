@@ -647,6 +647,10 @@
                         , _colspan = _td.attr('colspan')
                         , _rowspan = _td.attr('rowspan');
 
+                    if( _tdIdx >= _numList[ _trIdx ] ) {
+                        return false;
+                    }
+
                     if( _colspan ) {
                         _colspan = parseInt( _colspan, 10 );
 
@@ -659,10 +663,6 @@
                         for( var _i = 1; _i < _rowspan; _i++ ) {
                             _numList[ _trIdx + _i ] -= ( _colspan ? _colspan : 1 );
                         }
-                    }
-
-                    if( _tdIdx >= _numList[ _trIdx ] ) {
-                        return false;
                     }
 
                     _td.appendTo( _tr );
