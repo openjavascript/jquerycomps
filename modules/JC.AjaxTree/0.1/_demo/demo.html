@@ -106,6 +106,9 @@
                 <script>
 
                 $( document ).delegate( 'div.js_labelTest', 'renderItem', function( _evt, _item, _data ){
+                    if( _data[1] == '0' ) {
+                        return;
+                    }
                     _item.html( JC.f.printf( '<label data-id="{0}"><input type="checkbox"  value="{0}"/>{1}</label>', _data[1], _data[2] ) );
                 });
                 </script>

@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.TableFreeze', [ 'JC.BaseMVC' ], function(){
 
 //Todo: IE下resize，缩小窗口时tr的高度每一行隔了一像素。
 //Todo: 鼠标hover效果性能优化
@@ -11,8 +11,8 @@
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- *   | <a href='http://jc.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>
- *   | <a href='../../comps/TableFreeze/_demo' target='_blank'>demo link</a></p>
+ *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>
+ *   | <a href='../../modules/JC.TableFreeze/0.2/_demo' target='_blank'>demo link</a></p>
  *  
  *<h2>页面只要引用本文件, 默认会自动初始化div为class="js_compTableFreeze"下的表格</h2>
  *<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>
@@ -280,17 +280,18 @@
 
             if ( _p._model.needHoverClass() ) {
                 _p._model.selector().addClass('needHoverClass');
-                
+
                 if ( _p._model.needProcess() ) {
                     //_hoverClass = _p._model.hoverClass();
                     _hoverClass = "compTFHover";
                     //.js-fixed-table>table>tbody>tr,.js-roll-table>table>tbody>tr
                     $(document)
                         .delegate('tbody .CTF', 'mouseenter', function () {
+
                             var _sp = $(this),
                                 _item = 'tbody .' + _sp.attr('data-ctf'),
                                 _trs = _sp.parents('.js_compTableFreeze').find(_item);
-                                
+
                             _trs.addClass(_hoverClass).attr('status', '1'); 
 
                         } )
@@ -302,14 +303,18 @@
                             _trs.removeClass(_hoverClass); 
                             
                         });
-
                 }
+            }
 
+            if( _p._model.fixHeader() ) {
+                $( document ).on( 'scroll', function( e ) {
+                    _p._view.scrollView( $(document).scrollTop() );
+                } );
             }
         }, 
 
         _inited: function () {
-            JC.log('TableFreeze inited', new Date().getTime());
+            // JC.log('TableFreeze inited', new Date().getTime());
         },
 
         update: function () {
@@ -350,11 +355,65 @@
         },
 
         /**
+         * 冻结类型:prev, both, last; 默认为prev
+         */
+        freezeColType: function () {
+            var _r = this.stringProp('freezeColType') || 'prev' 
+
+            !( _r === 'prev' || _r === 'both' || _r === 'last' ) && ( _r = 'prev' );
+
+            return _r;
+        },
+
+        /**
+         * 冻结类型:prev, both, last; 默认为prev
+         */
+        freezeRowType: function () {
+            var _r = this.stringProp('freezeRowType') || 'prev' 
+
+            !( _r === 'prev' || _r === 'both' || _r === 'last' ) && ( _r = 'prev' );
+
+            return _r;
+        },
+
+        /**
          * 冻结列数:num,num 默认为1
          */
         freezeCols: function () {
             var _p = this,
                 _r = _p.attrProp('freezeCols'),
+                _type = _p.freezeType(),
+                _t = [];
+
+            if ( !_r ) {
+                ( _type !== 'both' ) && ( _r = 1 );
+                ( _type === 'both' ) && ( _r =  [1, 1] );
+               return _r;
+            }
+            
+            _t = _r.split(',');
+            _t[0] = + _t[0];
+            _t[1] = + _t[1];
+
+            if ( _type === 'both' ) {
+                if ( _t[0] === 0 && _t[1] === 0 ) {
+                    _r = 0;
+                } else {
+                    _r = _t.slice();
+                }
+            } else {
+                _r = _t[0];
+            }
+
+            return _r
+        },
+
+        /**
+         * 冻结行数:num,num 默认为1
+         */
+        freezeRows: function () {
+            var _p = this,
+                _r = _p.attrProp('freezeRows'),
                 _type = _p.freezeType(),
                 _t = [];
 
@@ -393,6 +452,45 @@
         },
 
         /**
+         * 滚动区域的宽度默认120%
+         */
+        scrollHeight: function () {
+            return this.sourceTable.find('tbody').offsetHeight();
+        },
+
+        viewHeight: function () {
+            return this.attrProp('viewHeight');
+        },
+
+        fixHeader: function() {
+            return this.boolProp('fixHeader');
+        },
+
+        offsetTop: function() {
+            if( !this._offsetTop ) {
+                this._offsetTop = this.selector().offset().top
+            }
+
+            return this._offsetTop;
+        },
+
+        tableHeight: function() {
+            if( !this._tableHeight ) {
+                this._tableHeight = this.selector().outerHeight();
+            }
+
+            return this._tableHeight;
+        },
+
+        theadHeight: function() {
+            if( !this._theadHeight ) {
+                this._theadHeight = this.selector().find( 'thead' ).outerHeight();
+            }
+
+            return this._theadHeight;
+        },
+
+        /**
          * tr 是否需要hover效果,默认为true
          */
         needHoverClass: function () {
@@ -421,20 +519,24 @@
         },
 
         colnum: function () {
-            var _table = this.sourceTable,
-                _tr = _table.find('tr:eq(0)'),
-                _col = _tr.find('>th, >td'),
-                _r = _col.length;
+            if( !this._colnum ) {
+                var _table = this.sourceTable,
+                    _tr = _table.find('tr:eq(0)'),
+                    _col = _tr.find('>th, >td'),
+                    _r = _col.length;
 
-            _col.each( function () {
-                var _sp = $(this),
-                    _colspan = _sp.prop('colspan');
+                _col.each( function () {
+                    var _sp = $(this),
+                        _colspan = _sp.prop('colspan');
 
-                ( _sp.prop('colspan') ) && ( _r += ( _colspan - 1 ) );
-                
-            } );
+                    ( _sp.prop('colspan') ) && ( _r += ( _colspan - 1 ) );
+                    
+                } );
 
-            return _r;
+                this._colnum = _r;
+            }
+
+            return this._colnum;
         },
 
         colnumWidth: function ( _table ) {
@@ -450,6 +552,7 @@
         },
 
         trElement: function ( _table ) {
+
             var _thead = _table.find('>thead'),
                 _tbody = _table.find('>tbody'),
                 _theadTr,
@@ -483,8 +586,7 @@
                 _freezeType = _p.freezeType(),
                 _selector = _p.selector(),
                 //_table = _p.selector().find('>table'),
-                _table = _p.sourceTable,
-                _r = true;
+                _table = _p.sourceTable;
 
             if ( _table.find('tr').length === 0 ) {
                 return false;
@@ -502,7 +604,7 @@
                 return false;
             }
 
-            return _r;
+            return true;
         },
 
         layout: function ( _freezeType ) {
@@ -534,9 +636,18 @@
                     _leftClass = "js-fixed-table compTFPrevFixed";
                     _rightClass = "js-roll-table compTFPrevRoll";
             }
-            
+
             _theadObj.html('{0}').appendTo(_tableObj);
             _tbodyObj.html('{1}').appendTo(_tableObj);
+
+            if( this.fixHeader() ) {
+                _tableObj.css( { 'position': 'relative' } );
+                _theadObj.css( { 
+                    'position': 'absolute' 
+                    , 'top': '0'
+                } );
+            }
+
             _secondTempTpl = _tableObj.clone().find('thead').html("{2}").end().find('tbody').html("{3}").end();
             if ( !_midClass ) {
                 _tpl = '<div class="' + _leftClass + '">' + _tableObj[0].outerHTML +'</div>'
@@ -582,7 +693,7 @@
             }
 
             _p.selector().append(_tpl);
-            
+
         },
     
         getTpl: function ( _freezeType, _freezeCols, _trs, _colNum ) {
@@ -625,111 +736,79 @@
         },
 
         getTr: function ( _trs, _col ) {
-
+           
             var _row = {},
                 _temp = [],
                 _p = this;
 
-            var _numList = [];
-            for( var _i = 0; _i < _trs.length; _i++ ) {
-                _numList[ _i ] = _col;
-            }
-
-            _trs.each( function ( _trIdx ) {
+            _trs.each( function (_ix) {
                 var _sp = $(this),
-                    _clasname = 'CTF CTF' + _trIdx,
+                    _clasname = 'CTF CTF' + _ix,
+                    _leftTr = _sp[0].cloneNode(false),
+                    _rightTr = _sp[0].cloneNode(false),
+                    _midTr = _sp[0].cloneNode(false),
                     _tds = _sp.find('>th,>td'),
+                    _leftTd = [],
+                    _rightTd = [],
+                    _midTd = [],
                     _cix = 0,
-                    _tr = _sp[0].cloneNode( false );
-
-                $.each( _tds, function ( _tdIdx, _sitem ) {
-                    var _td = $( this )
-                        , _colspan = _td.attr('colspan')
-                        , _rowspan = _td.attr('rowspan');
-
-                    if( _colspan ) {
-                        _colspan = parseInt( _colspan, 10 );
-
-                        _numList[ _trIdx ] -= ( _colspan - 1 );
+                    _mcix = 0,
+                    _tr = _sp[0].cloneNode(false);
+                
+                _tds.each( function ( _six, _sitem ) {
+                    
+                    var _sp = $(this), 
+                        _colspan = _sp.attr('colspan'),
+                        _rowspan = _sp.attr('rowspan'),
+                        _obj = {},
+                        _key;
+                    
+                    if ( _cix >= _col ) {
+                      return false;
                     }
 
-                    if( _rowspan ) {
-                        _rowspan = parseInt( _rowspan, 10 );
+                    if ( typeof _rowspan != 'undefined' ) {
+                        _rowspan = parseInt(_rowspan, 10);
 
-                        for( var _i = 1; _i < _rowspan; _i++ ) {
-                            _numList[ _trIdx + _i ] -= ( _colspan ? _colspan : 1 );
+                        _obj = {
+                            six: _six,
+                            rowspan: _rowspan,
+                            colspan: _colspan
+                        };
+
+                        for ( var i = 1; i < _rowspan; i++ ) {
+                            
+                            if (_colspan) {
+                                _colspan = parseInt(_colspan, 10);
+                                for (var j = 0; j < _colspan; j++) {        
+                                    _six === 0 ? _row[(_ix + i) + ( _six + 1 + j ).toString()] = _obj: _row[(_ix + i) + ( _six + j ).toString()] = _obj;
+                                }
+                            } else {
+                                _six === 0 ? _row[(_ix + i) + ( _six + 1 ).toString()] = _obj: _row[(_ix + i) + ( _six ).toString()] = _obj;
+                            }
+                        }
+                    }
+                    
+                    if ( typeof _colspan === 'undefined' ) {
+                        _cix = _cix + 1;
+                    } else {
+                        _cix += parseInt(_colspan, 10);
+                    }
+
+                    _key = _ix + (_six + 1).toString();
+                    
+                    if ( _key in _row  ) {
+                        _cix = _cix + 1;
+                        if (_row[_key].colspan) {
+                            return;
                         }
                     }
 
-                    if( _tdIdx >= _numList[ _trIdx ] ) {
-                        return false;
-                    }
-
-                    _td.appendTo( _tr );
+                    _sp.appendTo( _tr );
                 } );
 
-                $( _tr ).attr( 'data-ctf', 'CTF' + _trIdx ).addClass( _clasname );
-
-                _temp.push( $( _tr )[0].outerHTML );
-
-                // _tds.each( function ( _six, _sitem ) {
-                //     var _sp = $(this), 
-                //         _colspan = _sp.attr('colspan'),
-                //         _rowspan = _sp.attr('rowspan'),
-                //         _obj = {},
-                //         _key = _ix + (_six + 1).toString();
-
-                //     // if( _key in _row  ) {
-                //     //     console.log( 'in' );
-                //     //     _cix++;
-                //     //     _six--;
-                //     //     return;
-                //     // }
-
-                //     if ( _cix >= _col ) {
-                //         return false;
-                //     }
-
-                //     if ( typeof _rowspan != 'undefined' ) {
-                //         _rowspan = parseInt(_rowspan, 10);
-
-                //         _obj = {
-                //             six: _six,
-                //             rowspan: _rowspan,
-                //             colspan: _colspan
-                //         };
-
-                //         for ( var i = 1; i < _rowspan; i++ ) {
-
-                //             if (_colspan) {
-                //                 _colspan = parseInt(_colspan, 10);
-                //                 for (var j = 0; j < _colspan; j++) {
-                //                     _row[ _six === 0 ? (_ix + i) + ( _six + 1 + j ).toString() : (_ix + i) + ( _six + j ).toString() ] = _obj;
-                //                 }
-                //             } else {
-                //                 _row[ _six === 0 ? ( _ix + i ) + ( _six + 1 ).toString() : ( _ix + i ) + ( _six ).toString() ] = _obj;
-                //             }
-                //         }
-                //     }
-                    
-                //     if ( typeof _colspan === 'undefined' ) {
-                //         _cix = _cix + 1;
-                //     } else {
-                //         _cix += parseInt(_colspan, 10);
-                //     }
-
-                //     if ( _key in _row ) {
-                //         _cix = _cix + 1;
-                //         if (_row[_key].colspan) {
-                //             return;
-                //         }
-                //     }
-
-                //     _sp.appendTo( _tr );
-                // } );
-
-                // $( _tr ).attr('data-ctf', 'CTF' + _ix).addClass(_clasname);
-                // _temp.push( $( _tr )[0].outerHTML );
+                $(_tr).attr('data-ctf', 'CTF' + _ix).addClass(_clasname);
+                _temp.push($(_tr)[0].outerHTML);
             } );
 
             return _temp;
@@ -744,6 +823,45 @@
             }
 
             return _sum;
+        },
+
+        checkFixHeaderWidth: function() {
+
+            var _p = this
+                , _tables = _p.selector().find( 'table' )
+                , _tmpTable
+                , _tmpTh
+                , _tmpTd
+                ;
+
+            $.each( _tables, function( _i, _table ) {
+                _tmpTable = $( _table );
+
+                $.each( _tmpTable.find( 'th' ), function( _idx, _th ) {
+                    _tmpTh = $( _th );
+                    _tmpTd = _tmpTable.find( 'tr' ).eq( 1 ).find( 'td' ).eq( _idx );
+
+                    var _maxWidth = Math.max( _tmpTh.outerWidth(), _tmpTd.outerWidth() );
+
+                    _tmpTh.outerWidth( _maxWidth + 'px' );
+
+                    $.each( _tmpTable.find( 'tr' ), function( _j, _tr ) {
+                        $( _tr ).find( 'td' ).eq( _idx ).outerWidth( _maxWidth + 'px' );
+                    } );
+                } );
+            } );
+        },
+
+        checkFixScroll: function() {
+            var _p = this
+                , _selector = _p.selector()
+                , _tmpTable;
+
+                $.each( _selector.find( 'table' ), function( _i, _table ) {
+
+                    _tmpTable = $( _table );
+                    $( '<tr style="height:' + ( _tmpTable.find( 'thead' ).outerHeight() - 1 ) + 'px;"></tr>' ).prependTo( _tmpTable.find( 'tbody' ) );
+                } );
         },
 
         /**
@@ -777,12 +895,18 @@
 
         update: function () {
             var _p = this,
-                _selector = _p._model.selector(),
-                _needProcess = _p._model.needProcess();
+                _selector = _p._model.selector();
 
-            if ( _needProcess ) {
+            if ( _p._model.needProcess() ) {
                 _p._model.creatTpl();
                 _p.fixWidth();
+
+                if( _p._model.fixHeader() ) {
+                    _p._model.checkFixHeaderWidth();
+                    _p.initScroll();
+                    _p._model.checkFixScroll();
+                }
+
                 //fix empty cell
                 _p.selector().find('td:empty').html('&nbsp;');
                 _p.fixHeight();
@@ -806,13 +930,13 @@
             switch ( _freezeType ) {
                 case 'prev' : 
                     {
-                        _leftWidth = _p._model.getSum( _colWidth.slice( 0, _freezeCols ) );
+                        _leftWidth = _p._model.getSum(_colWidth.slice(0, _freezeCols));
                         _rightWidth = _totalWidth - _leftWidth;
 
-                        _selector.find( '>.js-fixed-table' ).width( Math.floor( _leftWidth / _totalWidth * 100 ) + '%' )
+                        _selector.find('>.js-fixed-table').width(_leftWidth / _totalWidth * 100 + '%')
                             .end()
-                            .find( '>.js-roll-table' ).width( Math.ceil( _rightWidth / _totalWidth * 100 ) + '%' )
-                            .find( '>table' ).width( _scrollWidth );
+                            .find('>.js-roll-table').width(_rightWidth / _totalWidth * 100 + '%')
+                            .find('>table').width(_scrollWidth);
 
                         break;
                     }
@@ -847,7 +971,7 @@
 
                         break;
                     }
-            } 
+            }
 
         },
 
@@ -878,8 +1002,43 @@
             return;
         },
 
-        highlight: function () {
-            console.log("highlight");
+        initScroll: function ( _h ) {
+            var _p = this
+                , _model = this._model
+                , _selector = this.selector()
+                , _scrollTable = _model.selector().find( '.compTFBothRoll' )
+                , _scroll = '<div class="tfz-scroll" style="width:' + _scrollTable.width() + 'px;"><span class="tfz-sup"></span><a class="tfz-sblock"></a><span class="tfz-sdown"></span></div>'
+
+            // _scrollTable.css( { 'overflow-x': 'hidden' } );
+
+            // _scrollTable.find( 'thead' ).append( _scroll );
+        },
+
+        scrollView: function( _scrollTop ) {
+            var _p = this
+                , _model = _p._model
+                , _selector = _model.selector();
+
+            if( _model.offsetTop() < _scrollTop && 
+                _scrollTop < _model.offsetTop() + _model.tableHeight() - _model.theadHeight() ) {
+                
+                _p.changePosition( 'fixed' );
+            } else {
+                _p.changePosition( 'absolute' );
+            }
+        },
+
+        changePosition: function( _pos ) {
+            var _p = this
+                , _selector = _p._model.selector();
+
+            _selector.find( 'thead' ).css( {
+                'position': _pos
+            } );
+
+            // _selector.find( 'thead' ).css( {
+            //     'top': _top + 'px'
+            // } );
         }
 
     });
@@ -907,8 +1066,7 @@
             }, 80 ));
 
         }
-
-    });
+    } );
  
     return JC.TableFreeze;
 });}( typeof define === 'function' && define.amd ? define : 
