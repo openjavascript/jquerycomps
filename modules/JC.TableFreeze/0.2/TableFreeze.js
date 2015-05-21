@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( 'JC.TableFreeze', [ 'JC.BaseMVC' ], function(){
 
 //Todo: IE下resize，缩小窗口时tr的高度每一行隔了一像素。
 //Todo: 鼠标hover效果性能优化
@@ -11,8 +11,8 @@
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- *   | <a href='http://jc.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>
- *   | <a href='../../comps/TableFreeze/_demo' target='_blank'>demo link</a></p>
+ *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>
+ *   | <a href='../../modules/JC.TableFreeze/0.2/_demo' target='_blank'>demo link</a></p>
  *  
  *<h2>页面只要引用本文件, 默认会自动初始化div为class="js_compTableFreeze"下的表格</h2>
  *<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>
@@ -809,9 +809,9 @@
                         _leftWidth = _p._model.getSum( _colWidth.slice( 0, _freezeCols ) );
                         _rightWidth = _totalWidth - _leftWidth;
 
-                        _selector.find( '>.js-fixed-table' ).width( Math.floor( _leftWidth / _totalWidth * 100 ) + '%' )
+                        _selector.find( '>.js-fixed-table' ).width( _leftWidth / _totalWidth * 100 + '%' )
                             .end()
-                            .find( '>.js-roll-table' ).width( Math.ceil( _rightWidth / _totalWidth * 100 ) + '%' )
+                            .find( '>.js-roll-table' ).width( _rightWidth / _totalWidth * 100 + '%' )
                             .find( '>table' ).width( _scrollWidth );
 
                         break;

@@ -26,7 +26,7 @@
  *    <dd>
  *       声明表格列冻结的类型：
  *       <p><b>prev：</b>左边的列固定，其他滚动</p>
- *       <p><b>next：</b>右边的列固定，其他滚动</p>
+ *       <p><b>last：</b>右边的列固定，其他滚动</p>
  *       <p><b>both：</b>两边的列固定，其他滚动</p>
  *    </dd>
  *
@@ -56,6 +56,12 @@
  *    <dd>
  *        声明表格索引值为奇数行的背景色的className: （表格行隔行换色）
  *        <p>如果为空则不指定隔行背景色</p>
+ *    </dd>
+ *    
+ *    <dt>fixHeader = boolean</dt>
+ *    <dd>
+ *        声明在窗口滚动导致table显示不完全的时候，表头是否跟随屏幕滚动：（0.3新特性）
+ *        <p>默认值为false</p>
  *    </dd>
  *
  *    <dt>beforeCreateTableCallback = function</dt>
@@ -268,7 +274,8 @@
 
         _initHanlderEvent: function () {
             var _p = this,
-                _hoverClass;
+                _hoverClass,
+                _selector = _p._model.selector();
 
             _p._model.beforeCreateTableCallback()
                     && _p._model.beforeCreateTableCallback().call( _p, _p.selector() );
@@ -285,32 +292,106 @@
                     //_hoverClass = _p._model.hoverClass();
                     _hoverClass = "compTFHover";
                     //.js-fixed-table>table>tbody>tr,.js-roll-table>table>tbody>tr
-                    $(document)
-                        .delegate('tbody .CTF', 'mouseenter', function () {
+                    JDOC.delegate('tbody .CTF', 'mouseenter', function () {
+                        var _sp = $(this),
+                            _item = 'tbody .' + _sp.attr('data-ctf'),
+                            _trs = _sp.parents('.js_compTableFreeze').find(_item);
 
-                            var _sp = $(this),
-                                _item = 'tbody .' + _sp.attr('data-ctf'),
-                                _trs = _sp.parents('.js_compTableFreeze').find(_item);
+                        _trs.addClass(_hoverClass).attr('status', '1'); 
 
-                            _trs.addClass(_hoverClass).attr('status', '1'); 
+                    } ).delegate('tbody .CTF', 'mouseleave', function () {
+                        var _sp = $(this),
+                            _item = 'tbody .' + _sp.attr('data-ctf'),
+                            _trs = _sp.parents('.js_compTableFreeze').find(_item);
 
-                        } )
-                        .delegate('tbody .CTF', 'mouseleave', function () {
-                            var _sp = $(this),
-                                _item = 'tbody .' + _sp.attr('data-ctf'),
-                                _trs = _sp.parents('.js_compTableFreeze').find(_item);
-
-                            _trs.removeClass(_hoverClass); 
-                            
-                        });
+                        _trs.removeClass(_hoverClass); 
+                    });
                 }
             }
 
             if( _p._model.fixHeader() ) {
-                $( document ).on( 'scroll', function( e ) {
-                    _p._view.scrollView( $(document).scrollTop() );
+                JWIN.on( 'scroll', function( e ) {
+                    _p._view.scrollView( JDOC.scrollTop() );
                 } );
             }
+
+            //scroll Event
+            var _scrollPointX;
+            var _basePointX;
+            var _movePointX;
+
+            _selector.on( 'mouseenter', function( e ) {
+                e.preventDefault();
+
+                $( this ).addClass( 'tbfz-mouseenter' );
+            } ).on( 'mouseleave', function( e ) {
+                e.preventDefault();
+
+                $( this ).removeClass( 'tbfz-mouseenter' );
+            } );
+
+            _selector.on( 'mousedown', '.tbfz-scroller', function( e ) {
+                e.preventDefault();
+
+                $( this ).addClass( 'mousedown' );
+
+                _scrollPointX = null;
+                _basePointX = e.clientX;
+
+                JDOC.on( 'mousemove', function( e ) {
+                    e.preventDefault();
+
+                    _movePointX = e.clientX - _basePointX;
+
+                    if( !_scrollPointX ) {
+                        _scrollPointX = _movePointX;
+                    }
+
+                    var _relativeMove = _movePointX - _scrollPointX;
+
+                    if( _relativeMove == 0 ) {
+                        return;
+                    }
+
+                    _p._view.scrollMove( _relativeMove );
+                    _scrollPointX = _movePointX;
+                } ).on( 'mouseup', function( e ) {
+                    e.preventDefault();
+
+                    _selector.find( '.tbfz-scroller' ).removeClass( 'mousedown' );
+
+                    JDOC.off( 'mousemove' ).off( 'mouseup' );
+                } );
+            } ).on( 'mouseenter', '.tbfz-scrollbox', function( e ) {
+                e.preventDefault();
+
+                $( this ).addClass( 'tbfz-scroll-mouseenter' );
+            } ).on( 'mouseleave', '.tbfz-scrollbox', function( e ) {
+                e.preventDefault();
+
+                $( this ).removeClass( 'tbfz-scroll-mouseenter' );
+            } );
+
+            _selector.on( 'mousedown', '.tbfz-sup-btn, .tbfz-sdown-btn', function( e ) {
+                e.preventDefault();
+
+                var _moveStep = _p._model.scrollDistance();
+
+                _moveStep = $( this ).hasClass( 'tbfz-sup-btn' ) ? 0 - _moveStep : _moveStep;
+
+                _p._view.scrollMove( _moveStep );
+                
+                var _timer = setInterval( function() {
+                    _p._view.scrollMove( _moveStep );
+                }, 100 );
+
+                JDOC.on( 'mouseup', function( e ) {
+                    e.preventDefault();
+
+                    clearInterval( _timer );
+                } );
+            } );
+
         }, 
 
         _inited: function () {
@@ -355,65 +436,11 @@
         },
 
         /**
-         * 冻结类型:prev, both, last; 默认为prev
-         */
-        freezeColType: function () {
-            var _r = this.stringProp('freezeColType') || 'prev' 
-
-            !( _r === 'prev' || _r === 'both' || _r === 'last' ) && ( _r = 'prev' );
-
-            return _r;
-        },
-
-        /**
-         * 冻结类型:prev, both, last; 默认为prev
-         */
-        freezeRowType: function () {
-            var _r = this.stringProp('freezeRowType') || 'prev' 
-
-            !( _r === 'prev' || _r === 'both' || _r === 'last' ) && ( _r = 'prev' );
-
-            return _r;
-        },
-
-        /**
          * 冻结列数:num,num 默认为1
          */
         freezeCols: function () {
             var _p = this,
                 _r = _p.attrProp('freezeCols'),
-                _type = _p.freezeType(),
-                _t = [];
-
-            if ( !_r ) {
-                ( _type !== 'both' ) && ( _r = 1 );
-                ( _type === 'both' ) && ( _r =  [1, 1] );
-               return _r;
-            }
-            
-            _t = _r.split(',');
-            _t[0] = + _t[0];
-            _t[1] = + _t[1];
-
-            if ( _type === 'both' ) {
-                if ( _t[0] === 0 && _t[1] === 0 ) {
-                    _r = 0;
-                } else {
-                    _r = _t.slice();
-                }
-            } else {
-                _r = _t[0];
-            }
-
-            return _r
-        },
-
-        /**
-         * 冻结行数:num,num 默认为1
-         */
-        freezeRows: function () {
-            var _p = this,
-                _r = _p.attrProp('freezeRows'),
                 _type = _p.freezeType(),
                 _t = [];
 
@@ -463,7 +490,11 @@
         },
 
         fixHeader: function() {
-            return this.boolProp('fixHeader');
+            if( !this._fixHeader ) {
+                this._fixHeader = this.boolProp('fixHeader');
+            }
+
+            return this._fixHeader;
         },
 
         offsetTop: function() {
@@ -488,6 +519,14 @@
             }
 
             return this._theadHeight;
+        },
+
+        scrollDistance: function() {
+            if( !this._scrollDistance ) {
+                this._scrollDistance = this.attrProp( 'scrollDistance' ) || 3;
+            }
+
+            return this._scrollDistance;
         },
 
         /**
@@ -519,24 +558,20 @@
         },
 
         colnum: function () {
-            if( !this._colnum ) {
-                var _table = this.sourceTable,
-                    _tr = _table.find('tr:eq(0)'),
-                    _col = _tr.find('>th, >td'),
-                    _r = _col.length;
+            var _table = this.sourceTable,
+                _tr = _table.find('tr:eq(0)'),
+                _col = _tr.find('>th, >td'),
+                _r = _col.length;
 
-                _col.each( function () {
-                    var _sp = $(this),
-                        _colspan = _sp.prop('colspan');
+            _col.each( function () {
+                var _sp = $(this),
+                    _colspan = _sp.prop('colspan');
 
-                    ( _sp.prop('colspan') ) && ( _r += ( _colspan - 1 ) );
-                    
-                } );
+                ( _sp.prop('colspan') ) && ( _r += ( _colspan - 1 ) );
+                
+            } );
 
-                this._colnum = _r;
-            }
-
-            return this._colnum;
+            return _r;
         },
 
         colnumWidth: function ( _table ) {
@@ -586,7 +621,8 @@
                 _freezeType = _p.freezeType(),
                 _selector = _p.selector(),
                 //_table = _p.selector().find('>table'),
-                _table = _p.sourceTable;
+                _table = _p.sourceTable,
+                _r = true;
 
             if ( _table.find('tr').length === 0 ) {
                 return false;
@@ -604,7 +640,7 @@
                 return false;
             }
 
-            return true;
+            return _r;
         },
 
         layout: function ( _freezeType ) {
@@ -636,17 +672,9 @@
                     _leftClass = "js-fixed-table compTFPrevFixed";
                     _rightClass = "js-roll-table compTFPrevRoll";
             }
-
+            
             _theadObj.html('{0}').appendTo(_tableObj);
             _tbodyObj.html('{1}').appendTo(_tableObj);
-
-            if( this.fixHeader() ) {
-                _tableObj.css( { 'position': 'relative' } );
-                _theadObj.css( { 
-                    'position': 'absolute' 
-                    , 'top': '0'
-                } );
-            }
 
             _secondTempTpl = _tableObj.clone().find('thead').html("{2}").end().find('tbody').html("{3}").end();
             if ( !_midClass ) {
@@ -736,79 +764,52 @@
         },
 
         getTr: function ( _trs, _col ) {
-           
+
             var _row = {},
                 _temp = [],
                 _p = this;
 
-            _trs.each( function (_ix) {
+            var _numList = [];
+            for( var _i = 0; _i < _trs.length; _i++ ) {
+                _numList[ _i ] = _col;
+            }
+
+            _trs.each( function ( _trIdx ) {
                 var _sp = $(this),
-                    _clasname = 'CTF CTF' + _ix,
-                    _leftTr = _sp[0].cloneNode(false),
-                    _rightTr = _sp[0].cloneNode(false),
-                    _midTr = _sp[0].cloneNode(false),
+                    _clasname = 'CTF CTF' + _trIdx,
                     _tds = _sp.find('>th,>td'),
-                    _leftTd = [],
-                    _rightTd = [],
-                    _midTd = [],
                     _cix = 0,
-                    _mcix = 0,
-                    _tr = _sp[0].cloneNode(false);
-                
-                _tds.each( function ( _six, _sitem ) {
-                    
-                    var _sp = $(this), 
-                        _colspan = _sp.attr('colspan'),
-                        _rowspan = _sp.attr('rowspan'),
-                        _obj = {},
-                        _key;
-                    
-                    if ( _cix >= _col ) {
-                      return false;
+                    _tr = _sp[0].cloneNode( false );
+
+                $.each( _tds, function ( _tdIdx, _sitem ) {
+                    var _td = $( this )
+                        , _colspan = _td.attr('colspan')
+                        , _rowspan = _td.attr('rowspan');
+
+                    if( _tdIdx >= _numList[ _trIdx ] ) {
+                        return false;
                     }
 
-                    if ( typeof _rowspan != 'undefined' ) {
-                        _rowspan = parseInt(_rowspan, 10);
+                    if( _colspan ) {
+                        _colspan = parseInt( _colspan, 10 );
 
-                        _obj = {
-                            six: _six,
-                            rowspan: _rowspan,
-                            colspan: _colspan
-                        };
-
-                        for ( var i = 1; i < _rowspan; i++ ) {
-                            
-                            if (_colspan) {
-                                _colspan = parseInt(_colspan, 10);
-                                for (var j = 0; j < _colspan; j++) {        
-                                    _six === 0 ? _row[(_ix + i) + ( _six + 1 + j ).toString()] = _obj: _row[(_ix + i) + ( _six + j ).toString()] = _obj;
-                                }
-                            } else {
-                                _six === 0 ? _row[(_ix + i) + ( _six + 1 ).toString()] = _obj: _row[(_ix + i) + ( _six ).toString()] = _obj;
-                            }
-                        }
-                    }
-                    
-                    if ( typeof _colspan === 'undefined' ) {
-                        _cix = _cix + 1;
-                    } else {
-                        _cix += parseInt(_colspan, 10);
+                        _numList[ _trIdx ] -= ( _colspan - 1 );
                     }
 
-                    _key = _ix + (_six + 1).toString();
-                    
-                    if ( _key in _row  ) {
-                        _cix = _cix + 1;
-                        if (_row[_key].colspan) {
-                            return;
+                    if( _rowspan ) {
+                        _rowspan = parseInt( _rowspan, 10 );
+
+                        for( var _i = 1; _i < _rowspan; _i++ ) {
+                            _numList[ _trIdx + _i ] -= ( _colspan ? _colspan : 1 );
                         }
                     }
 
-                    _sp.appendTo( _tr );
+                    _td.appendTo( _tr );
                 } );
 
-                $(_tr).attr('data-ctf', 'CTF' + _ix).addClass(_clasname);
-                _temp.push($(_tr)[0].outerHTML);
+                $( _tr ).attr( 'data-ctf', 'CTF' + _trIdx ).addClass( _clasname );
+
+                _temp.push( $( _tr )[0].outerHTML );
             } );
 
             return _temp;
@@ -823,45 +824,6 @@
             }
 
             return _sum;
-        },
-
-        checkFixHeaderWidth: function() {
-
-            var _p = this
-                , _tables = _p.selector().find( 'table' )
-                , _tmpTable
-                , _tmpTh
-                , _tmpTd
-                ;
-
-            $.each( _tables, function( _i, _table ) {
-                _tmpTable = $( _table );
-
-                $.each( _tmpTable.find( 'th' ), function( _idx, _th ) {
-                    _tmpTh = $( _th );
-                    _tmpTd = _tmpTable.find( 'tr' ).eq( 1 ).find( 'td' ).eq( _idx );
-
-                    var _maxWidth = Math.max( _tmpTh.outerWidth(), _tmpTd.outerWidth() );
-
-                    _tmpTh.outerWidth( _maxWidth + 'px' );
-
-                    $.each( _tmpTable.find( 'tr' ), function( _j, _tr ) {
-                        $( _tr ).find( 'td' ).eq( _idx ).outerWidth( _maxWidth + 'px' );
-                    } );
-                } );
-            } );
-        },
-
-        checkFixScroll: function() {
-            var _p = this
-                , _selector = _p.selector()
-                , _tmpTable;
-
-                $.each( _selector.find( 'table' ), function( _i, _table ) {
-
-                    _tmpTable = $( _table );
-                    $( '<tr style="height:' + ( _tmpTable.find( 'thead' ).outerHeight() - 1 ) + 'px;"></tr>' ).prependTo( _tmpTable.find( 'tbody' ) );
-                } );
         },
 
         /**
@@ -895,23 +857,18 @@
 
         update: function () {
             var _p = this,
-                _selector = _p._model.selector();
+                _selector = _p._model.selector(),
+                _needProcess = _p._model.needProcess();
 
-            if ( _p._model.needProcess() ) {
+            if ( _needProcess ) {
                 _p._model.creatTpl();
                 _p.fixWidth();
-
-                if( _p._model.fixHeader() ) {
-                    _p._model.checkFixHeaderWidth();
-                    _p.initScroll();
-                    _p._model.checkFixScroll();
-                }
-
                 //fix empty cell
                 _p.selector().find('td:empty').html('&nbsp;');
                 _p.fixHeight();
-            }
 
+                _p.initScroll();
+            }
         },
 
         fixWidth: function () {
@@ -930,13 +887,13 @@
             switch ( _freezeType ) {
                 case 'prev' : 
                     {
-                        _leftWidth = _p._model.getSum(_colWidth.slice(0, _freezeCols));
+                        _leftWidth = _p._model.getSum( _colWidth.slice( 0, _freezeCols ) );
                         _rightWidth = _totalWidth - _leftWidth;
 
-                        _selector.find('>.js-fixed-table').width(_leftWidth / _totalWidth * 100 + '%')
+                        _selector.find( '>.js-fixed-table' ).width( _leftWidth / _totalWidth * 100 + '%' )
                             .end()
-                            .find('>.js-roll-table').width(_rightWidth / _totalWidth * 100 + '%')
-                            .find('>table').width(_scrollWidth);
+                            .find( '>.js-roll-table' ).width( _rightWidth / _totalWidth * 100 + '%' )
+                            .find( '>table' ).width( _scrollWidth );
 
                         break;
                     }
@@ -971,7 +928,7 @@
 
                         break;
                     }
-            }
+            } 
 
         },
 
@@ -1002,43 +959,112 @@
             return;
         },
 
-        initScroll: function ( _h ) {
+        initScroll: function() {
             var _p = this
-                , _model = this._model
-                , _selector = this.selector()
-                , _scrollTable = _model.selector().find( '.compTFBothRoll' )
-                , _scroll = '<div class="tfz-scroll" style="width:' + _scrollTable.width() + 'px;"><span class="tfz-sup"></span><a class="tfz-sblock"></a><span class="tfz-sdown"></span></div>'
+                , _model = _p._model
+                , _selector = _model.selector()
+                , _scrollTable = _selector.find( '.js-roll-table' )
+                , _scrollTableWidth = _scrollTable.outerWidth()
+                , _scrollBox = '<div class="tbfz-scrollbox" style="{0}">'+
+                    '<a class="tbfz-sup-btn"><i>&lt;</i></a><a class="tbfz-scroller"></a><a class="tbfz-sdown-btn"><i>&gt;</i></a></div>'
+                , _style;
 
-            // _scrollTable.css( { 'overflow-x': 'hidden' } );
+            _selector.css( 'position', 'relative' );
 
-            // _scrollTable.find( 'thead' ).append( _scroll );
+            _style = ' width:' + _scrollTableWidth + 'px; ' + 'left:0; top:' + 
+                ( _scrollTable.find( 'thead' ).outerHeight() ) + 'px;left:' + _scrollTable.position().left + 'px;';
+            
+            _selector.append( JC.f.printf( _scrollBox, _style ) );
+
+            var _btnWidth = _scrollTableWidth * _scrollTableWidth / _scrollTable[0].scrollWidth;
+            var _leftBtnWidth = _selector.find( '.tbfz-sup-btn' ).width();
+
+            _selector.find( '.tbfz-scroller' ).css( 'width', _btnWidth + 'px' );
+
+            _p._scrollRange = [ _selector.find( '.tbfz-sup-btn' ).width()
+                , _scrollTableWidth - _btnWidth - _leftBtnWidth ];
+
+            _p._scrollRate = Math.ceil( 
+                ( _scrollTable[0].scrollWidth - _scrollTableWidth ) / 
+                ( _scrollTableWidth - _btnWidth - _leftBtnWidth * 2 ) 
+            );
         },
 
         scrollView: function( _scrollTop ) {
             var _p = this
-                , _model = _p._model
-                , _selector = _model.selector();
+                , _model = _p._model;
 
-            if( _model.offsetTop() < _scrollTop && 
-                _scrollTop < _model.offsetTop() + _model.tableHeight() - _model.theadHeight() ) {
+            ( _model.offsetTop() < _scrollTop && _scrollTop < _model.offsetTop() + _model.tableHeight() - _model.theadHeight() ) 
+                ? _p.beginFix() : _p.endFix();
+        },
+
+        scrollMove: function( _move ) {
+
+            var _p = this
+                , _model = _p._model
+                , _selector = _model.selector()
+                , _btn = _selector.find( '.tbfz-scroller' )
+                , _btnMove = parseInt( _btn.css( 'left' ) ) + _move
+                , _scrollMove = _move * _p._scrollRate
+                , _scrollBox = _selector.find( '.tbfz-scrollbox' )
+                , _table = _selector.find( '.js-roll-table' );
+
+            if( _btnMove <= _p._scrollRange[0] || _btnMove >= _p._scrollRange[1] ) {
+                return;
+            }
+
+            _btn.css( 'left', _btnMove  + 'px' );
+
+            _table.scrollLeft( _table.scrollLeft() + _scrollMove );
+        },
+
+        beginFix: function() {
+            var _p = this
+                , _selector = _p._model.selector()
+                , _addSelector;
+
+            if( !_p._beginFix ) {
+
+                var _fixHeader = $( '<div class="js-tbfz-fixHeader"></div>' );
+                _fixHeader.css( {
+                    'position': 'fixed'
+                    , 'top': 0
+                    , 'left': _selector.offset().left
+                    , 'width': _selector.outerWidth() + 'px'
+                } );
                 
-                _p.changePosition( 'fixed' );
-            } else {
-                _p.changePosition( 'absolute' );
+                _addSelector = _selector.children().clone();
+                _addSelector.find( 'tbody' ).remove();
+
+                _fixHeader.append( _addSelector );
+
+                var _thArr = _selector.find( 'th' )
+                    , _thArrClone = _addSelector.find( 'th' )
+                    , _tmpTh;
+
+                $.each( _thArrClone, function( _idx, _th ) {
+                    _tmpTh = $( _th );
+
+                    _tmpTh.html( '<div style="width:' + _thArr.eq( _idx ).width() + 'px;">' + _tmpTh.html() + '</div>' );
+                } );
+
+                _selector.append( _fixHeader );
+
+                console.log( _fixHeader.find( '.js-roll-table' ).length );
+
+                _fixHeader.find( '.js-roll-table' ).scrollLeft( _selector.find( '.js-roll-table' ).eq( 0 ).scrollLeft() );
+
+                _p._beginFix = true;
             }
         },
 
-        changePosition: function( _pos ) {
+        endFix: function() {
             var _p = this
                 , _selector = _p._model.selector();
 
-            _selector.find( 'thead' ).css( {
-                'position': _pos
-            } );
+            _selector.find( '.js-tbfz-fixHeader' ).remove();
 
-            // _selector.find( 'thead' ).css( {
-            //     'top': _top + 'px'
-            // } );
+            _p._beginFix = false;
         }
 
     });

@@ -86,7 +86,7 @@ requirejs.config( {
         //, 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
         , 'JC.Tab': 'modules/JC.Tab/0.2/Tab'
 
-        , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
+        , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.3/TableFreeze'
         , 'JC.TableSort': 'modules/JC.TableSort/0.1/TableSort'
         , 'JC.Selectable': 'modules/JC.SelectAble/dev/Selectable'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
