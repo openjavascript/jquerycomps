@@ -12,7 +12,7 @@
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>
- *   | <a href='../../modules/JC.TableFreeze/0.2/_demo' target='_blank'>demo link</a></p>
+ *   | <a href='../../modules/JC.TableFreeze/0.3/_demo' target='_blank'>demo link</a></p>
  *  
  *<h2>页面只要引用本文件, 默认会自动初始化div为class="js_compTableFreeze"下的表格</h2>
  *<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>
@@ -41,7 +41,7 @@
  *        </p>
  *    </dd>
  *
- *    <dt>scrollWidth = num</dt>
+ *    <dt>scrollWidth = number</dt>
  *    <dd>
  *        声明表格滚动部分的宽度，默认120%
  *    </dd>
@@ -62,6 +62,11 @@
  *    <dd>
  *        声明在窗口滚动导致table显示不完全的时候，表头是否跟随屏幕滚动：（0.3新特性）
  *        <p>默认值为false</p>
+ *    </dd>
+ *    <dt>scrollDistance = number</dt>
+ *    <dd>
+ *        声明点击滚动条左右按钮的时候，滚动区域滚动的宽度：（0.3新特性）
+ *        <p>默认值为3</p>
  *    </dd>
  *
  *    <dt>beforeCreateTableCallback = function</dt>
@@ -523,7 +528,7 @@
 
         scrollDistance: function() {
             if( !this._scrollDistance ) {
-                this._scrollDistance = this.attrProp( 'scrollDistance' ) || 3;
+                this._scrollDistance = this.intProp( 'scrollDistance' ) || 3;
             }
 
             return this._scrollDistance;
