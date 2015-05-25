@@ -625,80 +625,111 @@
         },
 
         getTr: function ( _trs, _col ) {
-           
+
             var _row = {},
                 _temp = [],
                 _p = this;
-            _trs.each( function (_ix) {
+
+            var _numList = [];
+            for( var _i = 0; _i < _trs.length; _i++ ) {
+                _numList[ _i ] = _col;
+            }
+
+            _trs.each( function ( _trIdx ) {
                 var _sp = $(this),
-                    _clasname = 'CTF CTF' + _ix,
-                    _leftTr = _sp[0].cloneNode(false),
-                    _rightTr = _sp[0].cloneNode(false),
-                    _midTr = _sp[0].cloneNode(false),
+                    _clasname = 'CTF CTF' + _trIdx,
                     _tds = _sp.find('>th,>td'),
-                    _leftTd = [],
-                    _rightTd = [],
-                    _midTd = [],
                     _cix = 0,
-                    _mcix = 0,
-                    _tr = _sp[0].cloneNode(false);
-                
-                _tds.each( function ( _six, _sitem ) {
-                    
-                    var _sp = $(this), 
-                        _colspan = _sp.attr('colspan'),
-                        _rowspan = _sp.attr('rowspan'),
-                        _obj = {},
-                        _key;
-                    
-                    if ( _cix >= _col ) {
-                      return false;
+                    _tr = _sp[0].cloneNode( false );
+
+                $.each( _tds, function ( _tdIdx, _sitem ) {
+                    var _td = $( this )
+                        , _colspan = _td.attr('colspan')
+                        , _rowspan = _td.attr('rowspan');
+
+                    if( _tdIdx >= _numList[ _trIdx ] ) {
+                        return false;
                     }
 
-                    if ( typeof _rowspan != 'undefined' ) {
-                        _rowspan = parseInt(_rowspan, 10);
+                    if( _colspan ) {
+                        _colspan = parseInt( _colspan, 10 );
 
-                        _obj = {
-                            six: _six,
-                            rowspan: _rowspan,
-                            colspan: _colspan
-                        };
-
-                        for ( var i = 1; i < _rowspan; i++ ) {
-                            
-                            if (_colspan) {
-                                _colspan = parseInt(_colspan, 10);
-                                for (var j = 0; j < _colspan; j++) {        
-                                    _six === 0 ? _row[(_ix + i) + ( _six + 1 + j ).toString()] = _obj: _row[(_ix + i) + ( _six + j ).toString()] = _obj;
-                                }
-                            } else {
-                                _six === 0 ? _row[(_ix + i) + ( _six + 1 ).toString()] = _obj: _row[(_ix + i) + ( _six ).toString()] = _obj;
-                            }
-                        }
-
-                    }
-                    
-                    if ( typeof _colspan === 'undefined' ) {
-                        _cix = _cix + 1;
-                    } else {
-                        _cix += parseInt(_colspan, 10);
+                        _numList[ _trIdx ] -= ( _colspan - 1 );
                     }
 
-                    _key = _ix + (_six + 1).toString();
-                    
-                    if ( _key in _row  ) {
-                        _cix = _cix + 1;
-                        if (_row[_key].colspan) {
-                            return;
+                    if( _rowspan ) {
+                        _rowspan = parseInt( _rowspan, 10 );
+
+                        for( var _i = 1; _i < _rowspan; _i++ ) {
+                            _numList[ _trIdx + _i ] -= ( _colspan ? _colspan : 1 );
                         }
                     }
 
-                    _sp.appendTo( _tr );
+                    _td.appendTo( _tr );
+                } );
 
-                });
+                $( _tr ).attr( 'data-ctf', 'CTF' + _trIdx ).addClass( _clasname );
 
-                $(_tr).attr('data-ctf', 'CTF' + _ix).addClass(_clasname);
-                _temp.push($(_tr)[0].outerHTML);
+                _temp.push( $( _tr )[0].outerHTML );
+
+                // _tds.each( function ( _six, _sitem ) {
+                //     var _sp = $(this), 
+                //         _colspan = _sp.attr('colspan'),
+                //         _rowspan = _sp.attr('rowspan'),
+                //         _obj = {},
+                //         _key = _ix + (_six + 1).toString();
+
+                //     // if( _key in _row  ) {
+                //     //     console.log( 'in' );
+                //     //     _cix++;
+                //     //     _six--;
+                //     //     return;
+                //     // }
+
+                //     if ( _cix >= _col ) {
+                //         return false;
+                //     }
+
+                //     if ( typeof _rowspan != 'undefined' ) {
+                //         _rowspan = parseInt(_rowspan, 10);
+
+                //         _obj = {
+                //             six: _six,
+                //             rowspan: _rowspan,
+                //             colspan: _colspan
+                //         };
+
+                //         for ( var i = 1; i < _rowspan; i++ ) {
+
+                //             if (_colspan) {
+                //                 _colspan = parseInt(_colspan, 10);
+                //                 for (var j = 0; j < _colspan; j++) {
+                //                     _row[ _six === 0 ? (_ix + i) + ( _six + 1 + j ).toString() : (_ix + i) + ( _six + j ).toString() ] = _obj;
+                //                 }
+                //             } else {
+                //                 _row[ _six === 0 ? ( _ix + i ) + ( _six + 1 ).toString() : ( _ix + i ) + ( _six ).toString() ] = _obj;
+                //             }
+                //         }
+                //     }
+                    
+                //     if ( typeof _colspan === 'undefined' ) {
+                //         _cix = _cix + 1;
+                //     } else {
+                //         _cix += parseInt(_colspan, 10);
+                //     }
+
+                //     if ( _key in _row ) {
+                //         _cix = _cix + 1;
+                //         if (_row[_key].colspan) {
+                //             return;
+                //         }
+                //     }
+
+                //     _sp.appendTo( _tr );
+                // } );
+
+                // $( _tr ).attr('data-ctf', 'CTF' + _ix).addClass(_clasname);
+                // _temp.push( $( _tr )[0].outerHTML );
             } );
 
             return _temp;
@@ -775,13 +806,13 @@
             switch ( _freezeType ) {
                 case 'prev' : 
                     {
-                        _leftWidth = _p._model.getSum(_colWidth.slice(0, _freezeCols));
+                        _leftWidth = _p._model.getSum( _colWidth.slice( 0, _freezeCols ) );
                         _rightWidth = _totalWidth - _leftWidth;
 
-                        _selector.find('>.js-fixed-table').width(_leftWidth / _totalWidth * 100 + '%')
+                        _selector.find( '>.js-fixed-table' ).width( _leftWidth / _totalWidth * 100 + '%' )
                             .end()
-                            .find('>.js-roll-table').width(_rightWidth / _totalWidth * 100 + '%')
-                            .find('>table').width(_scrollWidth);
+                            .find( '>.js-roll-table' ).width( _rightWidth / _totalWidth * 100 + '%' )
+                            .find( '>table' ).width( _scrollWidth );
 
                         break;
                     }
