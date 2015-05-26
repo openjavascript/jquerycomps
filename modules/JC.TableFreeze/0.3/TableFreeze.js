@@ -310,7 +310,7 @@
                             _trs = _sp.parents('.js_compTableFreeze').find(_item);
 
                         _trs.removeClass(_hoverClass); 
-                    });
+                    } );
                 }
             }
 
@@ -621,31 +621,34 @@
             
             //Todo: 正则判断freezeCols的值是否合法
 
-            var _p = this,
-                _freezeCols = _p.freezeCols(),
-                _freezeType = _p.freezeType(),
-                _selector = _p.selector(),
-                //_table = _p.selector().find('>table'),
-                _table = _p.sourceTable,
-                _r = true;
+            var _p = this;
+            
+            if( _p._needProcess == undefined ) {
+                var _freezeCols = _p.freezeCols(),
+                    _freezeType = _p.freezeType(),
+                    _selector = _p.selector(),
+                    _table = _p.sourceTable;
 
-            if ( _table.find('tr').length === 0 ) {
-                return false;
+                _p._needProcess = true;
+
+                if ( _table.find('tr').length === 0 ) {
+                    _p._needProcess = false;
+                }
+
+                //全部滚动，在这里处理滚动有耦合
+                if ( _freezeCols === 0 ) {
+                    _selector.css('overflow-x', 'auto')
+                        .find('>table').css('width', _p.scrollWidth());
+                    _p._needProcess = false;
+                }
+
+                //全部冻结
+                if ( _freezeType === 'both' && ( _freezeCols[0] + _freezeCols[1] >= _p.colnum() ) ) {
+                    _p._needProcess = false;
+                }
             }
 
-            //全部滚动，在这里处理滚动有耦合
-            if ( _freezeCols === 0 ) {
-                _selector.css('overflow-x', 'auto')
-                    .find('>table').css('width', _p.scrollWidth());
-                return false;
-            }
-
-            //全部冻结
-            if ( _freezeType === 'both' && ( _freezeCols[0] + _freezeCols[1] >= _p.colnum() ) ) {
-                return false;
-            }
-
-            return _r;
+            return _p._needProcess;
         },
 
         layout: function ( _freezeType ) {
@@ -831,6 +834,10 @@
             return _sum;
         },
 
+        getScrollbtnWidth: function() {
+            return this.selector().find( '.tbfz-sup-btn' ).outerWidth();
+        },
+
         /**
          * TableFreeze调用前的回调
          */
@@ -982,17 +989,14 @@
             _selector.append( JC.f.printf( _scrollBox, _style ) );
 
             var _btnWidth = _scrollTableWidth * _scrollTableWidth / _scrollTable[0].scrollWidth;
-            var _leftBtnWidth = _selector.find( '.tbfz-sup-btn' ).width();
+            var _leftBtnWidth = _model.getScrollbtnWidth();
 
             _selector.find( '.tbfz-scroller' ).css( 'width', _btnWidth + 'px' );
 
-            _p._scrollRange = [ _selector.find( '.tbfz-sup-btn' ).width()
-                , _scrollTableWidth - _btnWidth - _leftBtnWidth ];
+            _p._scrollRange = [ _model.getScrollbtnWidth(), _scrollTableWidth - _btnWidth - _leftBtnWidth ];
 
-            _p._scrollRate = Math.ceil( 
-                ( _scrollTable[0].scrollWidth - _scrollTableWidth ) / 
-                ( _scrollTableWidth - _btnWidth - _leftBtnWidth * 2 ) 
-            );
+            _p._scrollTotal = _scrollTable[0].scrollWidth - _scrollTableWidth;
+            _p._slideTotal = _scrollTableWidth - _btnWidth - _leftBtnWidth * 2;
         },
 
         scrollView: function( _scrollTop ) {
@@ -1010,8 +1014,6 @@
                 , _selector = _model.selector()
                 , _btn = _selector.find( '.tbfz-scroller' )
                 , _btnMove = parseInt( _btn.css( 'left' ) ) + _move
-                , _scrollMove = _move * _p._scrollRate
-                , _scrollBox = _selector.find( '.tbfz-scrollbox' )
                 , _table = _selector.find( '.js-roll-table' );
 
             if( _btnMove <= _p._scrollRange[0] || _btnMove >= _p._scrollRange[1] ) {
@@ -1020,7 +1022,10 @@
 
             _btn.css( 'left', _btnMove  + 'px' );
 
-            _table.scrollLeft( _table.scrollLeft() + _scrollMove );
+            _table.scrollLeft( 
+                ( _btnMove - _model.getScrollbtnWidth() ) / 
+                _p._slideTotal * _p._scrollTotal
+            );
         },
 
         beginFix: function() {
@@ -1054,8 +1059,6 @@
                 } );
 
                 _selector.append( _fixHeader );
-
-                console.log( _fixHeader.find( '.js-roll-table' ).length );
 
                 _fixHeader.find( '.js-roll-table' ).scrollLeft( _selector.find( '.js-roll-table' ).eq( 0 ).scrollLeft() );
 
