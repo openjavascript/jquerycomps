@@ -503,11 +503,7 @@
         },
 
         offsetTop: function() {
-            if( !this._offsetTop ) {
-                this._offsetTop = this.selector().offset().top
-            }
-
-            return this._offsetTop;
+            return this.selector().offset().top;
         },
 
         tableHeight: function() {
@@ -622,7 +618,7 @@
             //Todo: 正则判断freezeCols的值是否合法
 
             var _p = this;
-            
+
             if( _p._needProcess == undefined ) {
                 var _freezeCols = _p.freezeCols(),
                     _freezeType = _p.freezeType(),
@@ -995,7 +991,7 @@
 
             _p._scrollRange = [ _model.getScrollbtnWidth(), _scrollTableWidth - _btnWidth - _leftBtnWidth ];
 
-            _p._scrollTotal = _scrollTable[0].scrollWidth - _scrollTableWidth;
+            // _p._scrollTotal = _scrollTable[0].scrollWidth - _scrollTableWidth;
             _p._slideTotal = _scrollTableWidth - _btnWidth - _leftBtnWidth * 2;
         },
 
@@ -1014,7 +1010,10 @@
                 , _selector = _model.selector()
                 , _btn = _selector.find( '.tbfz-scroller' )
                 , _btnMove = parseInt( _btn.css( 'left' ) ) + _move
-                , _table = _selector.find( '.js-roll-table' );
+                , _table = _selector.find( '.js-roll-table' )
+
+                , _scrollTable = _selector.find( '.js-roll-table' )
+                , _scrollTableWidth = _scrollTable.outerWidth();
 
             if( _btnMove <= _p._scrollRange[0] || _btnMove >= _p._scrollRange[1] ) {
                 return;
@@ -1024,7 +1023,7 @@
 
             _table.scrollLeft( 
                 ( _btnMove - _model.getScrollbtnWidth() ) / 
-                _p._slideTotal * _p._scrollTotal
+                _p._slideTotal * ( _scrollTable[0].scrollWidth - _scrollTableWidth )
             );
         },
 
