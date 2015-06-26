@@ -71,6 +71,13 @@
                     }
                 });
 
+                $( '.js_test' ).on( 'click', function() {
+                    var _p = $(this)
+                        , _target = JC.f.parentSelector( _p, _p.attr('target') );
+
+                    JC.Valid.setError( _target, 'test' );
+                } )
+
                 $(document).delegate( 'button.js_setError', 'click', function( _evt ){
                     var _p = $(this)
                         , _target = JC.f.parentSelector( _p, _p.attr('target') )
@@ -144,6 +151,10 @@
                 <button type="submit">Save</button>
                 <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
+            <div>
+                <input name="id" type="hidden" class="js_idlist" emel="p.starttime-err" errmsg="请选择订单" />
+                <button type="button" class="js_test" >hidden test</button>
+            </div>
             <dl class="fm-items">
                 <dt>JC.Valid 示例, setError</dt>
                 <dd>
@@ -186,7 +197,7 @@
             <dl class="fm-items">
                 <dt>JC.Valid 示例, setValid</dt>
                 <dd>
-                    内容: <input type="text" reqmsg="内容" value="test" />
+                    内容: <input type="hidden" reqmsg="内容" value="test" />
                     <button type="button" class="js_setError" target="/input" msgkey=" test msg" >set error</button>
                     <button type="button" class="js_setValid" target="/input" >set valid</button>
                     <button type="button" class="js_setFocusMsg" target="/input" >setFocusMsg</button>

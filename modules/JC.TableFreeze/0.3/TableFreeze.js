@@ -12,7 +12,7 @@
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>
- *   | <a href='../../modules/JC.TableFreeze/0.2/_demo' target='_blank'>demo link</a></p>
+ *   | <a href='../../modules/JC.TableFreeze/0.3/_demo' target='_blank'>demo link</a></p>
  *  
  *<h2>页面只要引用本文件, 默认会自动初始化div为class="js_compTableFreeze"下的表格</h2>
  *<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>
@@ -26,7 +26,7 @@
  *    <dd>
  *       声明表格列冻结的类型：
  *       <p><b>prev：</b>左边的列固定，其他滚动</p>
- *       <p><b>next：</b>右边的列固定，其他滚动</p>
+ *       <p><b>last：</b>右边的列固定，其他滚动</p>
  *       <p><b>both：</b>两边的列固定，其他滚动</p>
  *    </dd>
  *
@@ -41,7 +41,7 @@
  *        </p>
  *    </dd>
  *
- *    <dt>scrollWidth = num</dt>
+ *    <dt>scrollWidth = number</dt>
  *    <dd>
  *        声明表格滚动部分的宽度，默认120%
  *    </dd>
@@ -56,6 +56,17 @@
  *    <dd>
  *        声明表格索引值为奇数行的背景色的className: （表格行隔行换色）
  *        <p>如果为空则不指定隔行背景色</p>
+ *    </dd>
+ *    
+ *    <dt>fixHeader = boolean</dt>
+ *    <dd>
+ *        声明在窗口滚动导致table显示不完全的时候，表头是否跟随屏幕滚动：（0.3新特性）
+ *        <p>默认值为false</p>
+ *    </dd>
+ *    <dt>scrollDistance = number</dt>
+ *    <dd>
+ *        声明点击滚动条左右按钮的时候，滚动区域滚动的宽度：（0.3新特性）
+ *        <p>默认值为3</p>
  *    </dd>
  *
  *    <dt>beforeCreateTableCallback = function</dt>
@@ -268,7 +279,8 @@
 
         _initHanlderEvent: function () {
             var _p = this,
-                _hoverClass;
+                _hoverClass,
+                _selector = _p._model.selector();
 
             _p._model.beforeCreateTableCallback()
                     && _p._model.beforeCreateTableCallback().call( _p, _p.selector() );
@@ -280,36 +292,115 @@
 
             if ( _p._model.needHoverClass() ) {
                 _p._model.selector().addClass('needHoverClass');
-                
+
                 if ( _p._model.needProcess() ) {
                     //_hoverClass = _p._model.hoverClass();
                     _hoverClass = "compTFHover";
                     //.js-fixed-table>table>tbody>tr,.js-roll-table>table>tbody>tr
-                    $(document)
-                        .delegate('tbody .CTF', 'mouseenter', function () {
-                            var _sp = $(this),
-                                _item = 'tbody .' + _sp.attr('data-ctf'),
-                                _trs = _sp.parents('.js_compTableFreeze').find(_item);
-                                
-                            _trs.addClass(_hoverClass).attr('status', '1'); 
+                    JDOC.delegate('tbody .CTF', 'mouseenter', function () {
+                        var _sp = $(this),
+                            _item = 'tbody .' + _sp.attr('data-ctf'),
+                            _trs = _sp.parents('.js_compTableFreeze').find(_item);
 
-                        } )
-                        .delegate('tbody .CTF', 'mouseleave', function () {
-                            var _sp = $(this),
-                                _item = 'tbody .' + _sp.attr('data-ctf'),
-                                _trs = _sp.parents('.js_compTableFreeze').find(_item);
+                        _trs.addClass(_hoverClass).attr('status', '1'); 
 
-                            _trs.removeClass(_hoverClass); 
-                            
-                        });
+                    } ).delegate('tbody .CTF', 'mouseleave', function () {
+                        var _sp = $(this),
+                            _item = 'tbody .' + _sp.attr('data-ctf'),
+                            _trs = _sp.parents('.js_compTableFreeze').find(_item);
 
+                        _trs.removeClass(_hoverClass); 
+                    } );
                 }
-
             }
+
+            if( _p._model.fixHeader() ) {
+                JWIN.on( 'scroll', function( e ) {
+                    _p._view.scrollView( JDOC.scrollTop() );
+                } );
+            }
+
+            //scroll Event
+            var _scrollPointX;
+            var _basePointX;
+            var _movePointX;
+
+            _selector.on( 'mouseenter', function( e ) {
+                e.preventDefault();
+
+                $( this ).addClass( 'tbfz-mouseenter' );
+            } ).on( 'mouseleave', function( e ) {
+                e.preventDefault();
+
+                $( this ).removeClass( 'tbfz-mouseenter' );
+            } );
+
+            _selector.on( 'mousedown', '.tbfz-scroller', function( e ) {
+                e.preventDefault();
+
+                $( this ).addClass( 'mousedown' );
+
+                _scrollPointX = null;
+                _basePointX = e.clientX;
+
+                JDOC.on( 'mousemove', function( e ) {
+                    e.preventDefault();
+
+                    _movePointX = e.clientX - _basePointX;
+
+                    if( !_scrollPointX ) {
+                        _scrollPointX = _movePointX;
+                    }
+
+                    var _relativeMove = _movePointX - _scrollPointX;
+
+                    if( _relativeMove == 0 ) {
+                        return;
+                    }
+
+                    _p._view.scrollMove( _relativeMove );
+                    _scrollPointX = _movePointX;
+                } ).on( 'mouseup', function( e ) {
+                    e.preventDefault();
+
+                    _selector.find( '.tbfz-scroller' ).removeClass( 'mousedown' );
+
+                    JDOC.off( 'mousemove' ).off( 'mouseup' );
+                } );
+            } ).on( 'mouseenter', '.tbfz-scrollbox', function( e ) {
+                e.preventDefault();
+
+                $( this ).addClass( 'tbfz-scroll-mouseenter' );
+            } ).on( 'mouseleave', '.tbfz-scrollbox', function( e ) {
+                e.preventDefault();
+
+                $( this ).removeClass( 'tbfz-scroll-mouseenter' );
+            } );
+
+            _selector.on( 'mousedown', '.tbfz-sup-btn, .tbfz-sdown-btn', function( e ) {
+                e.preventDefault();
+
+                var _moveStep = _p._model.scrollDistance();
+
+                _moveStep = $( this ).hasClass( 'tbfz-sup-btn' ) ? 0 - _moveStep : _moveStep;
+
+                _p._view.scrollMove( _moveStep );
+                
+                var _timer = setInterval( function() {
+                    _p._view.scrollMove( _moveStep );
+                }, 100 );
+
+                JDOC.on( 'mouseup', function( e ) {
+                    e.preventDefault();
+
+                    clearInterval( _timer );
+                } );
+            } );
+
         }, 
 
         _inited: function () {
-            JC.log('TableFreeze inited', new Date().getTime());
+            // JC.log('TableFreeze inited', new Date().getTime());
         },
 
         update: function () {
@@ -393,6 +484,53 @@
         },
 
         /**
+         * 滚动区域的宽度默认120%
+         */
+        scrollHeight: function () {
+            return this.sourceTable.find('tbody').offsetHeight();
+        },
+
+        viewHeight: function () {
+            return this.attrProp('viewHeight');
+        },
+
+        fixHeader: function() {
+            if( !this._fixHeader ) {
+                this._fixHeader = this.boolProp('fixHeader');
+            }
+
+            return this._fixHeader;
+        },
+
+        offsetTop: function() {
+            return this.selector().offset().top;
+        },
+
+        tableHeight: function() {
+            if( !this._tableHeight ) {
+                this._tableHeight = this.selector().outerHeight();
+            }
+
+            return this._tableHeight;
+        },
+
+        theadHeight: function() {
+            if( !this._theadHeight ) {
+                this._theadHeight = this.selector().find( 'thead' ).outerHeight();
+            }
+
+            return this._theadHeight;
+        },
+
+        scrollDistance: function() {
+            if( !this._scrollDistance ) {
+                this._scrollDistance = this.intProp( 'scrollDistance' ) || 3;
+            }
+
+            return this._scrollDistance;
+        },
+
+        /**
          * tr 是否需要hover效果,默认为true
          */
         needHoverClass: function () {
@@ -450,6 +588,7 @@
         },
 
         trElement: function ( _table ) {
+
             var _thead = _table.find('>thead'),
                 _tbody = _table.find('>tbody'),
                 _theadTr,
@@ -478,31 +617,34 @@
             
             //Todo: 正则判断freezeCols的值是否合法
 
-            var _p = this,
-                _freezeCols = _p.freezeCols(),
-                _freezeType = _p.freezeType(),
-                _selector = _p.selector(),
-                //_table = _p.selector().find('>table'),
-                _table = _p.sourceTable,
-                _r = true;
+            var _p = this;
 
-            if ( _table.find('tr').length === 0 ) {
-                return false;
+            if( _p._needProcess == undefined ) {
+                var _freezeCols = _p.freezeCols(),
+                    _freezeType = _p.freezeType(),
+                    _selector = _p.selector(),
+                    _table = _p.sourceTable;
+
+                _p._needProcess = true;
+
+                if ( _table.find('tr').length === 0 ) {
+                    _p._needProcess = false;
+                }
+
+                //全部滚动，在这里处理滚动有耦合
+                if ( _freezeCols === 0 ) {
+                    _selector.css('overflow-x', 'auto')
+                        .find('>table').css('width', _p.scrollWidth());
+                    _p._needProcess = false;
+                }
+
+                //全部冻结
+                if ( _freezeType === 'both' && ( _freezeCols[0] + _freezeCols[1] >= _p.colnum() ) ) {
+                    _p._needProcess = false;
+                }
             }
 
-            //全部滚动，在这里处理滚动有耦合
-            if ( _freezeCols === 0 ) {
-                _selector.css('overflow-x', 'auto')
-                    .find('>table').css('width', _p.scrollWidth());
-                return false;
-            }
-
-            //全部冻结
-            if ( _freezeType === 'both' && ( _freezeCols[0] + _freezeCols[1] >= _p.colnum() ) ) {
-                return false;
-            }
-
-            return _r;
+            return _p._needProcess;
         },
 
         layout: function ( _freezeType ) {
@@ -537,6 +679,7 @@
             
             _theadObj.html('{0}').appendTo(_tableObj);
             _tbodyObj.html('{1}').appendTo(_tableObj);
+
             _secondTempTpl = _tableObj.clone().find('thead').html("{2}").end().find('tbody').html("{3}").end();
             if ( !_midClass ) {
                 _tpl = '<div class="' + _leftClass + '">' + _tableObj[0].outerHTML +'</div>'
@@ -582,7 +725,7 @@
             }
 
             _p.selector().append(_tpl);
-            
+
         },
     
         getTpl: function ( _freezeType, _freezeCols, _trs, _colNum ) {
@@ -671,65 +814,6 @@
                 $( _tr ).attr( 'data-ctf', 'CTF' + _trIdx ).addClass( _clasname );
 
                 _temp.push( $( _tr )[0].outerHTML );
-
-                // _tds.each( function ( _six, _sitem ) {
-                //     var _sp = $(this), 
-                //         _colspan = _sp.attr('colspan'),
-                //         _rowspan = _sp.attr('rowspan'),
-                //         _obj = {},
-                //         _key = _ix + (_six + 1).toString();
-
-                //     // if( _key in _row  ) {
-                //     //     console.log( 'in' );
-                //     //     _cix++;
-                //     //     _six--;
-                //     //     return;
-                //     // }
-
-                //     if ( _cix >= _col ) {
-                //         return false;
-                //     }
-
-                //     if ( typeof _rowspan != 'undefined' ) {
-                //         _rowspan = parseInt(_rowspan, 10);
-
-                //         _obj = {
-                //             six: _six,
-                //             rowspan: _rowspan,
-                //             colspan: _colspan
-                //         };
-
-                //         for ( var i = 1; i < _rowspan; i++ ) {
-
-                //             if (_colspan) {
-                //                 _colspan = parseInt(_colspan, 10);
-                //                 for (var j = 0; j < _colspan; j++) {
-                //                     _row[ _six === 0 ? (_ix + i) + ( _six + 1 + j ).toString() : (_ix + i) + ( _six + j ).toString() ] = _obj;
-                //                 }
-                //             } else {
-                //                 _row[ _six === 0 ? ( _ix + i ) + ( _six + 1 ).toString() : ( _ix + i ) + ( _six ).toString() ] = _obj;
-                //             }
-                //         }
-                //     }
-                    
-                //     if ( typeof _colspan === 'undefined' ) {
-                //         _cix = _cix + 1;
-                //     } else {
-                //         _cix += parseInt(_colspan, 10);
-                //     }
-
-                //     if ( _key in _row ) {
-                //         _cix = _cix + 1;
-                //         if (_row[_key].colspan) {
-                //             return;
-                //         }
-                //     }
-
-                //     _sp.appendTo( _tr );
-                // } );
-
-                // $( _tr ).attr('data-ctf', 'CTF' + _ix).addClass(_clasname);
-                // _temp.push( $( _tr )[0].outerHTML );
             } );
 
             return _temp;
@@ -744,6 +828,10 @@
             }
 
             return _sum;
+        },
+
+        getScrollbtnWidth: function() {
+            return this.selector().find( '.tbfz-sup-btn' ).outerWidth();
         },
 
         /**
@@ -786,8 +874,9 @@
                 //fix empty cell
                 _p.selector().find('td:empty').html('&nbsp;');
                 _p.fixHeight();
-            }
 
+                _p.initScroll();
+            }
         },
 
         fixWidth: function () {
@@ -878,8 +967,111 @@
             return;
         },
 
-        highlight: function () {
-            console.log("highlight");
+        initScroll: function() {
+            var _p = this
+                , _model = _p._model
+                , _selector = _model.selector()
+                , _scrollTable = _selector.find( '.js-roll-table' )
+                , _scrollTableWidth = _scrollTable.outerWidth()
+                , _scrollBox = '<div class="tbfz-scrollbox" style="{0}">'+
+                    '<a class="tbfz-sup-btn"><i>&lt;</i></a><a class="tbfz-scroller"></a><a class="tbfz-sdown-btn"><i>&gt;</i></a></div>'
+                , _style;
+
+            _selector.css( 'position', 'relative' );
+
+            _style = ' width:' + _scrollTableWidth + 'px; ' + 'left:0; top:' + 
+                ( _scrollTable.find( 'thead' ).outerHeight() ) + 'px;left:' + _scrollTable.position().left + 'px;';
+            
+            _selector.append( JC.f.printf( _scrollBox, _style ) );
+
+            var _btnWidth = _scrollTableWidth * _scrollTableWidth / _scrollTable[0].scrollWidth;
+            var _leftBtnWidth = _model.getScrollbtnWidth();
+
+            _selector.find( '.tbfz-scroller' ).css( 'width', _btnWidth + 'px' );
+
+            _p._scrollRange = [ _model.getScrollbtnWidth(), _scrollTableWidth - _btnWidth - _leftBtnWidth ];
+
+            // _p._scrollTotal = _scrollTable[0].scrollWidth - _scrollTableWidth;
+            _p._slideTotal = _scrollTableWidth - _btnWidth - _leftBtnWidth * 2;
+        },
+
+        scrollView: function( _scrollTop ) {
+            var _p = this
+                , _model = _p._model;
+
+            ( _model.offsetTop() < _scrollTop && _scrollTop < _model.offsetTop() + _model.tableHeight() - _model.theadHeight() ) 
+                ? _p.beginFix() : _p.endFix();
+        },
+
+        scrollMove: function( _move ) {
+
+            var _p = this
+                , _model = _p._model
+                , _selector = _model.selector()
+                , _btn = _selector.find( '.tbfz-scroller' )
+                , _btnMove = parseInt( _btn.css( 'left' ) ) + _move
+                , _table = _selector.find( '.js-roll-table' )
+
+                , _scrollTable = _selector.find( '.js-roll-table' )
+                , _scrollTableWidth = _scrollTable.outerWidth();
+
+            if( _btnMove <= _p._scrollRange[0] || _btnMove >= _p._scrollRange[1] ) {
+                return;
+            }
+
+            _btn.css( 'left', _btnMove  + 'px' );
+
+            _table.scrollLeft( 
+                ( _btnMove - _model.getScrollbtnWidth() ) / 
+                _p._slideTotal * ( _scrollTable[0].scrollWidth - _scrollTableWidth )
+            );
+        },
+
+        beginFix: function() {
+            var _p = this
+                , _selector = _p._model.selector()
+                , _addSelector;
+
+            if( !_p._beginFix ) {
+
+                var _fixHeader = $( '<div class="js-tbfz-fixHeader"></div>' );
+                _fixHeader.css( {
+                    'position': 'fixed'
+                    , 'top': 0
+                    , 'left': _selector.offset().left
+                    , 'width': _selector.outerWidth() + 'px'
+                } );
+                
+                _addSelector = _selector.children().clone();
+                _addSelector.find( 'tbody' ).remove();
+
+                _fixHeader.append( _addSelector );
+
+                var _thArr = _selector.find( 'th' )
+                    , _thArrClone = _addSelector.find( 'th' )
+                    , _tmpTh;
+
+                $.each( _thArrClone, function( _idx, _th ) {
+                    _tmpTh = $( _th );
+
+                    _tmpTh.html( '<div style="width:' + _thArr.eq( _idx ).width() + 'px;">' + _tmpTh.html() + '</div>' );
+                } );
+
+                _selector.append( _fixHeader );
+
+                _fixHeader.find( '.js-roll-table' ).scrollLeft( _selector.find( '.js-roll-table' ).eq( 0 ).scrollLeft() );
+
+                _p._beginFix = true;
+            }
+        },
+
+        endFix: function() {
+            var _p = this
+                , _selector = _p._model.selector();
+
+            _selector.find( '.js-tbfz-fixHeader' ).remove();
+
+            _p._beginFix = false;
         }
 
     });
@@ -907,8 +1099,7 @@
             }, 80 ));
 
         }
-
-    });
+    } );
  
     return JC.TableFreeze;
 });}( typeof define === 'function' && define.amd ? define : 
