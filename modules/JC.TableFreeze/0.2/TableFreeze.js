@@ -629,6 +629,7 @@
             var _row = {},
                 _temp = [],
                 _p = this;
+
             _trs.each( function (_ix) {
                 var _sp = $(this),
                     _clasname = 'CTF CTF' + _ix,
@@ -650,7 +651,7 @@
                         _rowspan = _sp.attr('rowspan'),
                         _obj = {},
                         _key;
-                    
+                   
                     if ( _cix >= _col ) {
                       return false;
                     }
