@@ -367,6 +367,23 @@
                         });
 
                 _p.trigger('SelectBeforeInited');
+
+                var $triggerUpdateEl;
+                if (_p._model.triggerUpdateEl()) {
+                   _p._model.first().attr('selectignoreinitrequest', true);
+                   $triggerUpdateEl = JC.f.parentSelector(_p._model.first(), _p._model.triggerUpdateEl());
+                }
+
+                if ($triggerUpdateEl && $triggerUpdateEl.length) {
+                    $triggerUpdateEl.on('click', function () {
+                        if (!_p._model.first().data('triggered')) {
+                            _p._model.first().attr('selectignoreinitrequest', false);
+                            _p._update( _p._model.first(), _p._firstInitCb );
+                            _p._model.first().data('triggered', 1);
+                        } 
+                    });
+                }
+                
                 
                 if( _p._model.selectignoreinitrequest() ){
                     _p._model.triggerInitChange() && _p._model.first().trigger('change');
@@ -825,6 +842,10 @@
                     this.randomurl( _selector ) && ( _r = JC.f.addUrlParams( _r, {'rnd': new Date().getTime() } ) );
                     _cb && ( _r = _cb.call( _selector, _r, _pid ) );
                 return _r;
+            }
+        , triggerUpdateEl:
+            function () {
+                return this.first().attr('triggerUpdateEl') || ''
             }
 
         , _userdatafilter:

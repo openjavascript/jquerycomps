@@ -1,13 +1,13 @@
- ;(function(define, _win) { 'use strict'; define( 'JC.PopTips', [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * PopTips 带箭头的气泡提示框功能
  * <p>
  *      <b>require</b>: 
- *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>
- * | <a href='../../modules/JC.PopTips/0.2/_demo' target='_blank'>demo link</a></p>
+ * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>
+ * | <a href='../../comps/PopTips/_demo' target='_blank'>demo link</a></p>
  *
  * <h2>页面只要引用本文件, 默认会自动初始化span|em|a|b为class="js_compPoptips"的提示气泡</h2>
  * <p></p>
@@ -37,7 +37,7 @@
  *
  *    <dt>theme = yellow | blue | white | green, <a href="../../modules/JC.PopTips/0.1/res/default/style.html" target="_blank">查看</a> </dt>
  *    <dd>
- *       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 blue.
+ *       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.
  *       <p><b>yellow：</b>黄色<br/>
  *       <b>blue：</b>蓝色<br/>
  *       <b>white：</b>白色<br/>
@@ -124,7 +124,7 @@
  * @example
 	<span class="js_compPopTips" style="margin-top:50px; margin-left:200px; display:inline-block;"  
 		content="1.这个tip显示在右边<br>2.古希腊学者亚里士多<br>3.古希腊学者亚里士多<br>4.古希腊学者亚里士多"  
-		theme="blue" 
+		theme="yellow" 
 		arrowposition="left"
 		triggerType="click"
 		>
@@ -136,7 +136,7 @@
 	</span>
   */
     JC.PopTips = PopTips;
- 
+    JC.f.addAutoInit && JC.f.addAutoInit( PopTips );
     function PopTips( _selector ){
         _selector && ( _selector = $( _selector ) );
         
@@ -230,8 +230,8 @@
                 _timerOut = null,
                 _tipsTimerIn = null,
                 _tipsTimerOut = null;
-
             if ( _p._model.triggerType() == 'hover' ) {
+
                  _p._model.selector()
                 .on('mouseenter', function () {
                     clearTimeout( _tipsTimerIn );
@@ -307,8 +307,7 @@
             //JC.log( 'PopTips _inited', new Date().getTime() );
            var _p = $(this);
 
-           _p.trigger('CPopTipsUpdate');
-
+          
         },
 
         /**
@@ -349,7 +348,7 @@
         theme: function () {
             var _r = this.stringProp('theme');
             
-            !_r && ( _r = 'blue' );
+            !_r && ( _r = 'yellow' );
 
             return _r;
 
@@ -796,6 +795,8 @@
             _p._model.setPosition( _offset, _arrowPosition );
 
             _p._model.layout().data('CPopTipsIns', _p);
+            _p.trigger('CPopTipsUpdate');
+
         },
 
         show: function () {
