@@ -3276,18 +3276,9 @@ function (){
         });
 
         _sp.on( 'blur', function( _evt, _ignoreProcess ){
-
+            //JC.log( 'datavalid', new Date().getTime() );
             if( _ignoreProcess ) return;
-
-            /* datavalid-oriValue是后期编写，为了处理 valid组件在suggest组件下触发多次blur而引起的多次请求问题 --彭俊凯 */
-            var _sp = $( this )
-                , _oriVal = _sp.attr( 'datavalid-oriValue' );
-
-            if( _oriVal && _oriVal != _sp.val() ) {
-                _sp.trigger( 'DataValidVerify' );
-            }
-
-            _sp.attr( 'datavalid-oriValue', _sp.val() );
+            _sp.trigger( 'DataValidVerify' );
         });
     });
 
