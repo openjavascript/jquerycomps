@@ -1196,11 +1196,17 @@ function (){
             function( _item, _noError ){
                 var _p = this, _r = true
                     , _valStr = _item.val().trim()
-                    , _val = +_valStr
+                    , _val
                     ,_min = 0
                     , _pow = 10
                     , _max = Math.pow( 10, _pow )
                     , _n, _f, _tmp;
+
+                if( /,/g.test( _valStr ) ) {
+                    _valStr = _valStr.replace( /,/g, '' );
+                    _item.val( _valStr );
+                }
+                _val = +_valStr;
 
                 _p.isMinvalue( _item ) && ( _min = _p.minvalue( _item, /\./.test( _item.attr('minvalue') ) ) || _min );
 
@@ -1268,11 +1274,17 @@ function (){
             function( _item, _noError ){
                 var _p = this, _r = true
                     , _valStr = _item.val().trim()
-                    , _val = +_valStr
+                    , _val
                     ,_min = 0
                     , _pow = 10
                     , _max = Math.pow( 10, _pow )
                     , _n, _f, _tmp;
+
+                if( /,/g.test( _valStr ) ) {
+                    _valStr = _valStr.replace( /,/g, '' );
+                    _item.val( _valStr );
+                }
+                _val = +_valStr;
 
                 _p.isMinvalue( _item ) && ( _min = _p.minvalue( _item, /\./.test( _item.attr('minvalue') ) ) || _min );
 
