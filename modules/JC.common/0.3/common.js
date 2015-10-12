@@ -786,12 +786,13 @@
             _d.setDate( _d.getDate() + 6 );
             _tmp.end = _d.getTime() + _dayOffset;
             //_tmp.end = formatISODate(_d);
+            _r.push( _tmp );
             _d.setDate( _d.getDate() + 1 );
             if( _d.getFullYear() > _year ) {
                 _d = new Date( _d.getFullYear(), 0, 1 );
                 if( _d.getDay() < 2 ) break;
              }
-            _r.push( _tmp );
+            
         }
         return _r;
     }
