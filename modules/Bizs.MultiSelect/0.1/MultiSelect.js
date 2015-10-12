@@ -104,6 +104,9 @@ return _json;
         <div class="js_box"><ul><li>北京天地在线广告有限公司</li> <li>河南天地在线广告有限公司</li></ul></div>
       </div>
  */
+
+    var _jdoc = $( document ), _jwin = $( window );
+
     Bizs.MultiSelect = MultiSelect;
 
     function MultiSelect( _selector ){
@@ -118,9 +121,17 @@ return _json;
         this._view = new MultiSelect.View( this._model );
 
         this._init();
-
-        //JC.log( MultiSelect.Model._instanceName, 'all inited', new Date().getTime() );
     }
+
+    MultiSelect.getInstance = function ( _selector, _setter ) {
+        if( typeof _selector == 'string' && !/</.test( _selector ) ) 
+            _selector = $(_selector);
+        if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
+        typeof _setter != 'undefined' && _selector.data( MultiSelect.Model._instanceName, _setter );
+
+        return _selector.data( MultiSelect.Model._instanceName );
+    };
+
     /**
      * 初始化可识别的 MultiSelect 实例
      * @method  init
@@ -128,22 +139,28 @@ return _json;
      * @static
      * @return  {Array of MultiSelectInstance}
      */
-    MultiSelect.init =
-        function( _selector ){
-            var _r = [];
-            _selector = $( _selector || document );
+    MultiSelect.init = function( _selector ){
+        var _r = [];
+        _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
-                if( _selector.hasClass( 'js_bizMultiSelect' )  ){
-                    _r.push( new MultiSelect( _selector ) );
-                }else{
-                    _selector.find( 'div.js_bizMultiSelect' ).each( function(){
-                        _r.push( new MultiSelect( this ) );
-                    });
-                }
+        if( _selector && _selector.length ){
+            if( _selector.hasClass( 'js_bizMultiSelect' )  ){
+                _r.push( new MultiSelect( _selector ) );
+            }else{
+                _selector.find( 'div.js_bizMultiSelect' ).each( function(){
+                    _r.push( new MultiSelect( this ) );
+                });
             }
-            return _r;
-        };
+        }
+        return _r;
+    };
+
+    MultiSelect.update = function( _selector, _data ) {
+        var _ins = MultiSelect.getInstance( _selector );
+            !_ins && ( _ins = new MultiSelect( _selector ) );
+            _ins && _ins.update( _data );
+        return _ins;
+    };
 
     /**
      * 定义全局数据过滤函数
@@ -158,7 +175,7 @@ return _json;
 
     JC.f.extendObject( MultiSelect.prototype, {
         _beforeInit: function () {
-            //JC.log( 'MultiSelect _beforeInit', new Date().getTime() );
+            // JC.log( 'MultiSelect _beforeInit', new Date().getTime() );
         },
 
         _initHanlderEvent: function () {
@@ -166,7 +183,29 @@ return _json;
         },
 
         _inited: function () {
+            var _p = this,
+                enterFlag,
+                _selector = this.selector();
 
+            _selector.on( 'click', function( e ) {
+                enterFlag = true;
+                _p.show();
+
+                _jwin.on( 'click', function( e ) {
+                    if( !enterFlag ) {
+                        _p.hide();
+                    }
+
+                } );
+            } );
+
+            _selector.on( 'mouseenter', function( e ) {
+                enterFlag = true;
+            } );
+
+            _selector.on( 'mouseleave', function( e ) {
+                enterFlag = false;
+            } );
         },
 
         show: function () {
@@ -177,6 +216,10 @@ return _json;
         hide: function () {
             this._view.hide();
             return this;
+        },
+
+        update: function( data ) {
+            this._model.update( data );
         }
            
     });
@@ -185,7 +228,7 @@ return _json;
     MultiSelect.Model.SHOW = 'SHOW';
     JC.f.extendObject( MultiSelect.Model.prototype, {
         init: function () {
-
+            this.bindData();
         },
 
         defaultLabel: function () {
@@ -211,38 +254,59 @@ return _json;
             var _p = this,
                 _url = _p.ajaxUrl(),
                 _name = _p.attrProp('dataname'),
-                _tpl = [],
+                _tpl = '',
                 _box = _p.listBox();
 
             if ( !_url ) return;
 
-            _tpl.push('<ul><li class="SELECTIgnore"><label><input type="checkbox" value="" checktype="all" checkfor="///input[type=checkbox]">全选</label></li>');
-
             $.get(_url, function (_res) {
-                _res = _p.dataFilter( $.parseJSON(_res) );
-  
-                var i = 0,
-                    l = _res.length,
-                    _str = '',
-                    _checked;
 
-                for (i = 0; i < l; i++) {
-                    _checked = _res[i].isChecked? 'checked': '';
-                    _str = '<li><label><input type="checkbox" value="'
-                        + _res[i].id + '" name="' + _name + '" '
-                        + _checked 
-                        + ' data-text="' + _res[i].label + '" />'
-                        + _res[i].label + '</label></li>';
-                    
-                    _tpl.push(_str);
-                }
-         
-                _tpl.push('</ul>');
-                $(_tpl.join(' ')).prependTo(_box);
+                var data = _p.dataFilter( $.parseJSON(_res) );
+
+                _tpl = _p.calcTpl( data );
+
+                $( _tpl ).prependTo(_box);
                 JC.f.autoInit && JC.f.autoInit(_box);
+
+                var _l = data.length,
+                    _label = '';
+
+                _p.selector().find('.SELECTLabel').html( _l ? '已选择' + _l + '个' +  _label: '请选择' + _label );
 
             } );
 
+        },
+
+        calcTpl: function( data ) {
+
+            var _tpl = [],
+                _res = data,
+                _p = this,
+                _url = _p.ajaxUrl(),
+                _name = _p.attrProp('dataname'),
+                _tpl = [];
+
+            _tpl.push('<ul><li class="SELECTIgnore"><label><input type="checkbox" value="" checktype="all" checkfor="///input[type=checkbox]">全选</label></li>');
+        
+            var i = 0,
+                l = _res.length,
+                _str = '',
+                _checked;
+
+            for (i = 0; i < l; i++) {
+                _checked = _res[i].isChecked? 'checked': '';
+                _str = '<li><label><input type="checkbox" value="'
+                    + _res[i].id + '" name="' + _name + '" '
+                    + _checked 
+                    + ' data-text="' + _res[i].label + '" />'
+                    + _res[i].label + '</label></li>';
+                
+                _tpl.push(_str);
+            }
+     
+            _tpl.push('</ul>');
+
+            return _tpl.join(' ');
         },
 
         dataFilter: function ( _data ) {
@@ -270,7 +334,6 @@ return _json;
                     _str = '<li>' + _ipt.data('text') + '</li>' ;
                     _r.push(_str);
                 }
-
             });
 
             return _r;
@@ -287,6 +350,22 @@ return _json;
             _box.html('<ul>' + _datalist.join(' ') + '</ul>');
             _t = _l ? '已选择' + _l + '个' +  _label: '请选择' + _label;
             _p.selector().find('.SELECTLabel').html(_t);
+        },
+
+        update: function( data ) {
+            var _p = this,
+                _box = _p.listBox();
+
+            var _tpl = _p.calcTpl( data );
+
+            _box.html( '' );
+            $( _tpl ).prependTo(_box);
+            JC.f.autoInit && JC.f.autoInit(_box);
+
+            var _l = data.length,
+                _label = '';
+
+            _p.selector().find('.SELECTLabel').html( _l ? '已选择' + _l + '个' +  _label: '请选择' + _label );
         }
 
     });
@@ -316,46 +395,12 @@ return _json;
             }, 50), _selector, 'SELECTListBoxUi' );
         }
            
-        
-    });
-    
-    var doc = $(document);
-
-    doc.ready( function(){
-        var _insAr = 0;
-        MultiSelect.autoInit
-            && ( _insAr = MultiSelect.init() );
     });
 
-    doc.delegate('.js_bizMultiSelect', 'click', function () {
-        var _p = $(this), 
-            _ins;
- 
+    _jdoc.ready( function(){
         JC.f.safeTimeout( function(){
-            _ins = JC.BaseMVC.getInstance( _p, MultiSelect );
-            !_ins && ( _ins = new MultiSelect( _p ) );
-            _ins.show();
-        }, _p, 'bizMultiSelectClick', 50 );
-
-    });
-
-    doc.on('mousedown', function () {
-        JC.f.safeTimeout( function(){
-            $('.js_bizMultiSelect').each( function(){
-                var _ins = JC.BaseMVC.getInstance( $(this), MultiSelect );
-                    _ins && _ins.hide();
-            });
-        }, null, 'CLOSE_MULTI_SELECT')
-
-    } );
-
-    doc.delegate('.SELECTCloseBtn', 'mousedown', function () {
-        var _ins = JC.BaseMVC.getInstance( JC.f.getJqParent($(this), '.js_bizMultiSelect'), MultiSelect );
-        _ins && _ins.hide();
-    });
-
-    doc.delegate('.js_bizMultiSelect>.SELECTListBox', 'mousedown', function( _evt ){
-        _evt.stopPropagation();
+            MultiSelect.autoInit && MultiSelect.init();
+        }, null, 'MultiSelect23asdfa', 1 );
     });
 
     return Bizs.MultiSelect;

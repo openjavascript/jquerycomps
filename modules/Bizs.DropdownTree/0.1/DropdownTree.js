@@ -59,7 +59,7 @@
         <div class="bdtBox js_bizDropdownTree" bdtData="treeData1" bdtDefaultLabel="请选择" bdtDefaultValue="0">
             <i class="bdtIcon"></i>
             <span class="bdtLabel"></span>
-            <input type="hidden" name="tree03" value="" class="bdtInput" />                                            	
+            <input type="hidden" name="tree03" value="" class="bdtInput" />                                             
             <div class="bdtTreeBox"></div>
         </div>
  */
@@ -272,6 +272,9 @@
                 this._treeIns = _setter || JC.Tree.getInstance( this.bdtTreeBox() );
                 return this._treeIns;
             }
+        , treeSelectCallBack: function(){ 
+            return this.callbackProp( 'treeSelectCallBack' ); 
+        }
     });
 
     JC.f.extendObject( DropdownTree.View.prototype, {
@@ -302,7 +305,11 @@
                         _p._model.bdtInput().val( _dataid );
 
                         $( _p ).trigger( 'TriggerEvent', [ 'DropdownTreeSelected', _dataid, _dataname, _sp ] );
-                     });
+
+                        if( _p._model.treeSelectCallBack() ) {
+                            _p._model.treeSelectCallBack().call( _p.selector(), _p );
+                        }
+                    });
 
                     _p._model.treeIns().on( 'RenderLabel', function( _data ){
                         var _node = $(this);

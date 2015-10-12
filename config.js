@@ -53,10 +53,13 @@ requirejs.config( {
         , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
         , 'JC.DragSelect': 'modules/JC.DragSelect/0.1/DragSelect'
 
+        , 'JC.EchartWrap': 'modules/JC.EchartWrap/0.1/EchartWrap'
+
         , 'JC.FChart': 'modules/JC.FChart/0.1/FChart'
         , 'JC.Form': 'modules/JC.Form/0.2/Form'
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
         , 'JC.FlowChart': 'modules/JC.FlowChart/0.1/FlowChart'
+        , 'JC.FlowChartEditor': 'modules/JC.FlowChartEditor/0.1/FlowChartEditor'
 
         , 'JC.FormFillUrl': 'modules/JC.FormFillUrl/0.1/FormFillUrl'
         , 'JC.FrameUtil': 'modules/JC.FrameUtil/0.1/FrameUtil'
@@ -133,6 +136,7 @@ requirejs.config( {
 
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
+        , 'Bizs.MultiSelect0.2': 'modules/Bizs.MultiSelect/0.2/MultiSelect'
         , 'Bizs.MultiselectPanel': 'modules/Bizs.MultiselectPanel/0.1/MultiselectPanel'
         , 'Bizs.MultiSelectTree': 'modules/Bizs.MultiSelectTree/0.1/MultiSelectTree'
         //, 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
@@ -172,6 +176,9 @@ requirejs.config( {
 
         , 'artTemplate':  "modules/artTemplate/3.0/artTemplate"
         , 'store':  "modules/store/1.3.14/store"
+
+        , 'jsPlumb&Toolkit': 'modules/JC.FlowChartEditor/0.1/plugins/jsPlumb&Toolkit'
+
     }
 });
 /**

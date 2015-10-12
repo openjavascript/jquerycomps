@@ -1,0 +1,101 @@
+{
+    "nodes": [
+        {
+            "id": "start",
+            "type": "start",
+            "text": "Start",
+            "left": 50,
+            "top": 50,
+            "w": 100,
+            "h": 70
+        },
+        {
+            "id": "question1",
+            "type": "question",
+            "text": "Do Something?",
+            "left": 290,
+            "top": 79,
+            "w": 150,
+            "h": 150
+        },
+        {
+            "id": "decide",
+            "type": "action",
+            "text": "Make Decision",
+            "left": 660,
+            "top": 187,
+            "w": 120,
+            "h": 120
+        },
+        {
+            "id": "something",
+            "type": "output",
+            "text": "Do Something",
+            "left": 827,
+            "top": 414,
+            "w": 120,
+            "h": 50
+        },
+        {
+            "id": "question2",
+            "type": "question",
+            "text": "Do Nothing?",
+            "left": 74,
+            "top": 330,
+            "w": 150,
+            "h": 150
+        },
+        {
+            "id": "nothing",
+            "type": "output",
+            "text": "Do Nothing",
+            "left": 433,
+            "top": 558,
+            "w": 100,
+            "h": 50
+        }
+    ],
+    "edges": [
+        {
+            "id": 1,
+            "source": "start",
+            "target": "question1"
+        },
+        {
+            "id": 2,
+            "source": "question1",
+            "target": "decide",
+            "data":{ "label": "yes", "type":"connection" }
+        },
+        {
+            "id": 3,
+            "source": "question1",
+            "target": "question2",
+            "data":{ "label": "no", "type":"connection" }
+        },
+        {
+            "id": 4,
+            "source": "question2",
+            "target": "decide",
+            "data":{ "label": "no", "type":"connection" }
+        },
+        {
+            "id": 5,
+            "source": "question2",
+            "target": "nothing",
+            "data":{ "label": "yes", "type":"connection" }
+        },
+        {
+            "id":6,
+            "source":"decide",
+            "target":"nothing",
+            "data":{ "label":"Can't Decide", "type":"connection" }
+        },
+        {
+            "id":7,
+            "source":"decide",
+            "target":"something",
+            "data":{ "label":"Decision Made", "type":"connection" }
+        }
+    ]
+}
