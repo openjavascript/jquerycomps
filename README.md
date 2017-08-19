@@ -4,8 +4,8 @@ Open JQuery Components Library
     JC Project 的目标是建立一套 易于使用、功能齐全、编码规范、接口规范 的 jquery 组件库
 
 ##文档和资源链接
-<br>API文档: [http://jc2.openjavascript.org/docs_api/index.html](http://jc2.openjavascript.org/docs_api/index.html)
-<br>项目文档: [http://jc2.openjavascript.org/document.html](http://jc2.openjavascript.org/document.html)
+<br>API文档: [http://jc2.btbtd.com/docs_api/index.html](http://jc2.btbtd.com/docs_api/index.html)
+<br>项目文档: [http://jc2.btbtd.com/document.html](http://jc2.btbtd.com/document.html)
 
 ##沟通讨论
     飞信群: 81514206
